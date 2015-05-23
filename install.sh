@@ -5,7 +5,7 @@ homedir=~
 
 install() {
     echo "Linking $PWD/$1 to $homedir/$1"
-    ln -s "$PWD/$1" "$homedir/$1"
+    ln -s "$PWD/$1" "$homedir/"
 }
 
 uninstall() {
