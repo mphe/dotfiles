@@ -1,0 +1,5 @@
+style "xfdesktop-icon-view" {
+	font_name = "normal"
+	XfdesktopIconView::label-alpha = 0
+	XfdesktopIconView::selected-label-alpha = 30
+}
