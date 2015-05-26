@@ -1,28 +1,32 @@
 #!/bin/bash
 
-homedir=~
+shopt -s extglob
 
+homedir=~
+dotdir="$(dirname "$(readlink -f "$0")")" 
+
+# A (blacklist) pattern to match all files that will be automatically linked to $homedir.
+files=(!(.|..|.git|.gitignore|README|LICENSE|install.sh|.config))
 
 install() {
-    echo "Linking $PWD/$1 to $homedir/$1"
-    ln -s "$PWD/$1" "$homedir/"
+    ln -svT "$PWD/$1" "$homedir/$i"
 }
-
 uninstall() {
-    echo "Removing $homedir/$1"
-    rm "$homedir/$1"
+    rm -v "$homedir/$1"
 }
 
+cd "$dotdir"
 
 f=install
 if [ "$1" = "--uninstall" -o "$1" = "-u" ]; then
     f=uninstall
 fi
 
-cd "$(dirname "$(readlink -f "$0")")" 
-shopt -s extglob
-
-for i in !(.|..|.git|.gitignore|install.sh|README|LICENSE); do
+for i in "${files[@]}"; do
     $f "$i"
 done
 
+mkdir -pv "$homedir/.config"
+for i in .config/*; do
+    $f "$i"
+done
