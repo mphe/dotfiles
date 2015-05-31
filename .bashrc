@@ -56,7 +56,7 @@ prompt_command() {
     local red="\[$RED\]"
     PS1="$reset[$bold\u@\h $blue\w$yellow\$(git_prompt)$reset]"
     
-    if [ $err != 0 ]; then
+    if [ $err -ne 0 ]; then
         PS1+="$bold$red[$err]$reset"
     fi
 
@@ -76,3 +76,10 @@ export MAIN=/mnt/iomega/Main
 export CPPLIB=/mnt/iomega/C++/Lib
 export SHARED=~/Shared
 
+# disable flow control when using vim
+vim () {
+    local STTYOPTS="$(stty --save)"
+    stty stop "" -ixoff
+    command vim "$@"
+    stty "$STTYOPTS"
+}

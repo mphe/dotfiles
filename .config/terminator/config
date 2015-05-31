@@ -4,7 +4,7 @@
 [keybindings]
   reset = None
   scaled_zoom = None
-  next_tab = <Primary><Alt>Page_Up
+  next_tab = <Primary><Shift>j
   zoom_in = None
   close_window = None
   zoom_out = None
@@ -12,7 +12,7 @@
   new_terminator = None
   go_prev = None
   zoom_normal = None
-  prev_tab = <Primary><Alt>Page_Down
+  prev_tab = <Primary><Shift>k
   close_term = None
   reset_clear = None
   ungroup_all = None
