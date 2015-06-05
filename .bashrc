@@ -11,7 +11,7 @@ alias less='less -r'
 alias pacaur='pacaur --noedit'
 
 # Set git language to English
-alias git='LC_ALL=en_US git'
+alias git='LC_ALL=en_GB.UTF-8 git'
 
 # 256 colors
 export TERM=xterm-256color
@@ -83,3 +83,4 @@ vim () {
     command vim "$@"
     stty "$STTYOPTS"
 }
+
