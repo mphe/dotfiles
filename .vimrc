@@ -73,6 +73,7 @@ Plugin 'tomtom/tcomment_vim'
 Plugin 'Valloric/YouCompleteMe'
 Plugin 'tmhedberg/SimpylFold'
 Plugin 'kevinw/pyflakes-vim'
+Plugin 'rdnetto/YCM-Generator'
 
 " Turn filetype functionality back on
 filetype on
