@@ -73,7 +73,7 @@ export PATH="$PATH:~/bin"
 export PYTHONPATH="$PYTHONPATH:/mnt/iomega/Python/lib"
 
 export MAIN=/mnt/iomega/Main
-export CPPLIB=/mnt/iomega/C++/Lib
+export CPPLIB=/mnt/iomega/C++/lib
 export SHARED=~/Shared
 
 # disable flow control when using vim
