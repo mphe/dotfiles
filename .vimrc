@@ -47,6 +47,12 @@ imap <F2> <c-_><c-_>
 nnoremap j gj
 nnoremap k gk
 
+" map <leader>p to substitute the selection with yanked text in visual mode
+xnoremap <leader>p "_dP
+
+" faster substitution with yanked text
+nmap S viw<leader>p
+
 " ensure newline at eof
 autocmd BufWritePre *
     \ if match(getline('$'), '\S') != -1 |
