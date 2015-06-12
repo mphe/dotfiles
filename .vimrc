@@ -53,6 +53,9 @@ nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
 
+" Make Y behave like other capitals
+nnoremap Y y$
+
 " map <leader>p to substitute the selection with yanked text in visual mode
 xnoremap <leader>p "_dP
 
