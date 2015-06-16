@@ -90,6 +90,7 @@ Plugin 'tmhedberg/SimpylFold'
 Plugin 'kevinw/pyflakes-vim'
 Plugin 'rdnetto/YCM-Generator'
 Plugin 'Raimondi/delimitMate'
+Plugin 'xuqix/h2cppx'
 
 " Turn filetype functionality back on
 filetype on
@@ -150,4 +151,7 @@ highlight SpellBad term=underline ctermfg=160 gui=undercurl guisp=Orange
 " delimitMate
 let delimitMate_expand_cr = 1
 let delimitMate_expand_space = 1
+
+" h2cppx
+command TOCPP H2cppx
 
