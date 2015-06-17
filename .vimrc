@@ -121,6 +121,7 @@ colorscheme solarized
 " Solid background color
 highlight SignColumn ctermbg=black
 
+
 " easymotion
 let g:EasyMotion_smartcase = 1
 map / <Plug>(easymotion-sn)
@@ -147,6 +148,7 @@ let g:ycm_autoclose_preview_window_after_insertion = 0
 " Solid background color
 highlight YcmErrorSign ctermbg=black ctermfg=red
 highlight YcmWarningSign ctermbg=black ctermfg=red
+
 
 " SimpylFold
 let g:SimpylFold_fold_docstring = 0
