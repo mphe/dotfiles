@@ -66,10 +66,10 @@ xnoremap <leader>p "_dP
 nmap S viw<leader>p
 
 " ensure newline at eof
-autocmd BufWritePre *
-    \ if match(getline('$'), '\S') != -1 |
-    \     call append(line('$'), '') |
-    \ endif
+" autocmd BufWritePre *
+"     \ if match(getline('$'), '\S') != -1 |
+"     \     call append(line('$'), '') |
+"     \ endif
 
 " Don't screw up folds when inserting text that might affect them,
 " until leaving insert mode.
