@@ -22,6 +22,9 @@ set clipboard+=unnamed
 " disable swap files
 set noswapfile
 
+" Don't fold anything when opening a new buffer
+set foldlevelstart=99
+
 let mapleader = ","
 
 " insert a new line without switching to insert mode
