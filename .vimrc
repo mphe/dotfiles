@@ -91,6 +91,7 @@ Plugin 'kevinw/pyflakes-vim'
 Plugin 'rdnetto/YCM-Generator'
 Plugin 'Raimondi/delimitMate'
 Plugin 'xuqix/h2cppx'
+Plugin 'airblade/vim-gitgutter'
 
 " Turn filetype functionality back on
 filetype on
@@ -117,8 +118,8 @@ set background=dark
 let g:solarized_termtrans=1
 colorscheme solarized
 
-" Better gutter color
-highlight SignColumn ctermbg=Black
+" Solid background color
+highlight SignColumn ctermbg=black
 
 " easymotion
 let g:EasyMotion_smartcase = 1
@@ -142,6 +143,10 @@ let g:ycm_server_log_level = 'debug'
 let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
 let g:ycm_autoclose_preview_window_after_completion = 0
 let g:ycm_autoclose_preview_window_after_insertion = 0
+
+" Solid background color
+highlight YcmErrorSign ctermbg=black ctermfg=red
+highlight YcmWarningSign ctermbg=black ctermfg=red
 
 " SimpylFold
 let g:SimpylFold_fold_docstring = 0
