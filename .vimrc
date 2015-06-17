@@ -117,6 +117,9 @@ set background=dark
 let g:solarized_termtrans=1
 colorscheme solarized
 
+" Better gutter color
+highlight SignColumn ctermbg=Black
+
 " easymotion
 let g:EasyMotion_smartcase = 1
 map / <Plug>(easymotion-sn)
