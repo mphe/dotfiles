@@ -10,6 +10,9 @@ alias ls='ls --color=always'
 alias less='less -r'
 alias pacaur='pacaur --noedit'
 
+# Force python3 for ranger
+alias ranger='python3 $(which ranger)'
+
 # Set git language to English
 alias git='LC_ALL=en_GB.UTF-8 git'
 
