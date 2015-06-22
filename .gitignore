@@ -1,3 +1,4 @@
 .vim/view
 *.pyc
+.ncmpcpp/error.log
 
