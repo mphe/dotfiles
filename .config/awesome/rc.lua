@@ -10,6 +10,21 @@ local beautiful = require("beautiful")
 -- Notification library
 local naughty = require("naughty")
 local menubar = require("menubar")
+local vicious = require("vicious")
+local volume_control = require("volume-control")
+
+function run_once(cmd)
+    findme = cmd
+    firstspace = cmd:find(" ")
+    if firstspace then
+        findme = cmd:sub(0, firstspace-1)
+    end
+    awful.util.spawn_with_shell("pgrep -u $USER -x " .. findme .. " > /dev/null || (" .. cmd .. ")")
+end
+
+function run_term(cmd)
+    awful.util.spawn(terminal .. " -e " .. cmd)
+end
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -38,10 +53,12 @@ end
 
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
-beautiful.init("/usr/share/awesome/themes/default/theme.lua")
+-- beautiful.init("/usr/share/awesome/themes/default/theme.lua")
+beautiful.init("/home/marvin/.config/awesome/themes/default/theme.lua")
+-- beautiful.wallpaper_cmd = fbsetbg -f "/home/marvin/img/portal_2__long_time_by_paullus23-d5iga6v.jpg"
 
 -- This is used later as the default terminal and editor to run.
-terminal = "terminator"
+terminal = "termite"
 editor = os.getenv("EDITOR") or "vim"
 editor_cmd = terminal .. " -e " .. editor
 
@@ -107,6 +124,25 @@ mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
 -- Menubar configuration
 menubar.utils.terminal = terminal -- Set the terminal for applications that require it
 -- }}}
+
+-- Volume control widget
+volwidget = wibox.widget.textbox()
+volwidget:buttons(awful.util.table.join(
+    awful.button({}, 1, function() run_term("alsamixer") end)
+))
+vicious.register(volwidget, vicious.widgets.volume, "Vol: $1% $2", 5, "Master")
+
+-- Separator
+separator = wibox.widget.textbox()
+separator:set_text(" | ")
+
+-- CPU widget
+-- cpuwidget = wibox.widget.textbox()
+-- vicious.register(cpuwidget, vicious.widgets.cpu, "CPU: $1%", 3)
+
+-- Battery widget
+batwidget = wibox.widget.textbox()
+vicious.register(batwidget, vicious.widgets.bat, "Bat: $1$2% $3", 61, "BAT1")
 
 -- {{{ Wibox
 -- Create a textclock widget
@@ -191,6 +227,13 @@ for s = 1, screen.count() do
     -- Widgets that are aligned to the right
     local right_layout = wibox.layout.fixed.horizontal()
     if s == 1 then right_layout:add(wibox.widget.systray()) end
+    right_layout:add(separator)
+    right_layout:add(batwidget)
+    right_layout:add(separator)
+    -- right_layout:add(cpuwidget)
+    -- right_layout:add(separator)
+    right_layout:add(volwidget)
+    right_layout:add(separator)
     right_layout:add(mytextclock)
     right_layout:add(mylayoutbox[s])
 
@@ -217,6 +260,11 @@ globalkeys = awful.util.table.join(
     -- Enable brightness control keys
     awful.key({ }, "XF86MonBrightnessDown", function() awful.util.spawn("xbacklight -dec 15") end),
     awful.key({ }, "XF86MonBrightnessUp", function() awful.util.spawn("xbacklight -inc 15") end),
+
+    -- Enable sound control keys
+    awful.key({ }, "XF86AudioRaiseVolume", function () awful.util.spawn("amixer -c 0 set Master 1dB+") end),
+    awful.key({ }, "XF86AudioLowerVolume", function () awful.util.spawn("amixer -c 0 set Master 1dB-") end),
+    awful.key({ }, "XF86AudioMute", function () awful.util.spawn("amixer set Master toggle") end),
 
     awful.key({ modkey,           }, "Left",   awful.tag.viewprev       ),
     awful.key({ modkey,           }, "Right",  awful.tag.viewnext       ),
@@ -280,6 +328,9 @@ globalkeys = awful.util.table.join(
 )
 
 clientkeys = awful.util.table.join(
+    -- Remap close shortcut
+    awful.key({ "Mod1" }, "F4", function (c) c:kill() end),
+
     awful.key({ modkey,           }, "f",      function (c) c.fullscreen = not c.fullscreen  end),
     awful.key({ modkey, "Shift"   }, "c",      function (c) c:kill()                         end),
     awful.key({ modkey, "Control" }, "space",  awful.client.floating.toggle                     ),
@@ -363,7 +414,8 @@ awful.rules.rules = {
                      focus = awful.client.focus.filter,
                      raise = true,
                      keys = clientkeys,
-                     buttons = clientbuttons } },
+                     buttons = clientbuttons,
+                     size_hints_honor = false } },
     { rule = { class = "MPlayer" },
       properties = { floating = true } },
     { rule = { class = "pinentry" },
@@ -373,8 +425,8 @@ awful.rules.rules = {
       properties = { floating = true } },
 
     -- Fix youtube fullscreen
-    { rule = { class = "plugin-container" },
-      properties = { floating = true } },
+    -- { rule = { class = "plugin-container" },
+    --   properties = { floating = true } },
 }
 -- }}}
 
@@ -451,3 +503,7 @@ client.connect_signal("focus", function(c) c.border_color = beautiful.border_foc
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 -- }}}
 
+-- Autostart
+run_once("xset m 11/8 0")
+run_once("nm-applet")
+run_once("unagi")
