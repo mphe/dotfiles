@@ -11,7 +11,7 @@ local beautiful = require("beautiful")
 local naughty = require("naughty")
 local menubar = require("menubar")
 local vicious = require("vicious")
-local volume_control = require("volume-control")
+local xdg_menu = require("archmenu")
 
 function run_once(cmd)
     findme = cmd
@@ -61,6 +61,7 @@ beautiful.init("/home/marvin/.config/awesome/themes/default/theme.lua")
 terminal = "termite"
 editor = os.getenv("EDITOR") or "vim"
 editor_cmd = terminal .. " -e " .. editor
+filemgr = "pcmanfm"
 
 -- Default modkey.
 -- Usually, Mod4 is the key with a logo between Control and Alt.
@@ -113,10 +114,11 @@ myawesomemenu = {
    { "quit", awesome.quit }
 }
 
-mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesome_icon },
-                                    { "open terminal", terminal }
-                                  }
-                        })
+mymainmenu = awful.menu({ items = { 
+    { "awesome", myawesomemenu, beautiful.awesome_icon },
+    { "applications", xdgmenu },
+    { "open terminal", terminal },
+}})
 
 mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
                                      menu = mymainmenu })
@@ -125,16 +127,29 @@ mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
 menubar.utils.terminal = terminal -- Set the terminal for applications that require it
 -- }}}
 
--- Volume control widget
-volwidget = wibox.widget.textbox()
-volwidget:buttons(awful.util.table.join(
-    awful.button({}, 1, function() run_term("alsamixer") end)
-))
-vicious.register(volwidget, vicious.widgets.volume, "Vol: $1% $2", 5, "Master")
-
 -- Separator
 separator = wibox.widget.textbox()
 separator:set_text(" | ")
+
+-- Volume control widget
+function volumeChange(val)
+    awful.util.spawn("amixer -c 0 set Master " .. val)
+    vicious.force({volwidget})
+end
+
+function volumeToggle()
+    awful.util.pread("amixer set Master toggle") -- pread -> force wait
+    vicious.force({volwidget})
+end
+
+volwidget = wibox.widget.textbox()
+volwidget:buttons(awful.util.table.join(
+    awful.button({}, 1, function() run_term("alsamixer") end),
+    awful.button({}, 3, volumeToggle),
+    awful.button({}, 4, function() volumeChange("1dB+") end),
+    awful.button({}, 5, function() volumeChange("1dB-") end)
+))
+vicious.register(volwidget, vicious.widgets.volume, "Vol: $1% $2", 5, "Master")
 
 -- CPU widget
 -- cpuwidget = wibox.widget.textbox()
@@ -154,49 +169,55 @@ mypromptbox = {}
 mylayoutbox = {}
 mytaglist = {}
 mytaglist.buttons = awful.util.table.join(
-                    awful.button({ }, 1, awful.tag.viewonly),
-                    awful.button({ modkey }, 1, awful.client.movetotag),
-                    awful.button({ }, 3, awful.tag.viewtoggle),
-                    awful.button({ modkey }, 3, awful.client.toggletag),
-                    awful.button({ }, 4, function(t) awful.tag.viewnext(awful.tag.getscreen(t)) end),
-                    awful.button({ }, 5, function(t) awful.tag.viewprev(awful.tag.getscreen(t)) end)
-                    )
+    awful.button({ }, 1, awful.tag.viewonly),
+    awful.button({ modkey }, 1, awful.client.movetotag),
+    awful.button({ }, 3, awful.tag.viewtoggle),
+    awful.button({ modkey }, 3, awful.client.toggletag),
+    awful.button({ }, 4, function(t) awful.tag.viewnext(awful.tag.getscreen(t)) end),
+    awful.button({ }, 5, function(t) awful.tag.viewprev(awful.tag.getscreen(t)) end)
+)
+
 mytasklist = {}
 mytasklist.buttons = awful.util.table.join(
-                     awful.button({ }, 1, function (c)
-                                              if c == client.focus then
-                                                  c.minimized = true
-                                              else
-                                                  -- Without this, the following
-                                                  -- :isvisible() makes no sense
-                                                  c.minimized = false
-                                                  if not c:isvisible() then
-                                                      awful.tag.viewonly(c:tags()[1])
-                                                  end
-                                                  -- This will also un-minimize
-                                                  -- the client, if needed
-                                                  client.focus = c
-                                                  c:raise()
-                                              end
-                                          end),
-                     awful.button({ }, 3, function ()
-                                              if instance then
-                                                  instance:hide()
-                                                  instance = nil
-                                              else
-                                                  instance = awful.menu.clients({
-                                                      theme = { width = 250 }
-                                                  })
-                                              end
-                                          end),
-                     awful.button({ }, 4, function ()
-                                              awful.client.focus.byidx(1)
-                                              if client.focus then client.focus:raise() end
-                                          end),
-                     awful.button({ }, 5, function ()
-                                              awful.client.focus.byidx(-1)
-                                              if client.focus then client.focus:raise() end
-                                          end))
+    awful.button({ }, 1, function (c)
+        if c == client.focus then
+            c.minimized = true
+        else
+            -- Without this, the following
+            -- :isvisible() makes no sense
+            c.minimized = false
+            if not c:isvisible() then
+                awful.tag.viewonly(c:tags()[1])
+            end
+            -- This will also un-minimize
+            -- the client, if needed
+            client.focus = c
+            c:raise()
+        end
+    end),
+
+    awful.button({}, 2, function(c)
+        c:kill()
+    end),
+
+    awful.button({ }, 3, function ()
+        if instance then
+            instance:hide()
+            instance = nil
+        else
+            instance = awful.menu.clients({ theme = { width = 250 } })
+        end
+    end),
+
+    awful.button({ }, 4, function ()
+        awful.client.focus.byidx(1)
+        if client.focus then client.focus:raise() end
+    end),
+
+    awful.button({ }, 5, function ()
+        awful.client.focus.byidx(-1)
+        if client.focus then client.focus:raise() end
+    end))
 
 for s = 1, screen.count() do
     -- Create a promptbox for each screen
@@ -257,14 +278,20 @@ root.buttons(awful.util.table.join(
 
 -- {{{ Key bindings
 globalkeys = awful.util.table.join(
+    -- Screenshot
+    awful.key({}, "Print", function() awful.util.spawn("/home/marvin/bin/screenshot.sh") end),
+
+    -- Open file explorer
+    awful.key({ modkey }, "e", function() awful.util.spawn(filemgr) end),
+
     -- Enable brightness control keys
-    awful.key({ }, "XF86MonBrightnessDown", function() awful.util.spawn("xbacklight -dec 15") end),
-    awful.key({ }, "XF86MonBrightnessUp", function() awful.util.spawn("xbacklight -inc 15") end),
+    awful.key({ }, "XF86MonBrightnessDown", function() awful.util.spawn("xbacklight -dec 5") end),
+    awful.key({ }, "XF86MonBrightnessUp", function() awful.util.spawn("xbacklight -inc 5") end),
 
     -- Enable sound control keys
-    awful.key({ }, "XF86AudioRaiseVolume", function () awful.util.spawn("amixer -c 0 set Master 1dB+") end),
-    awful.key({ }, "XF86AudioLowerVolume", function () awful.util.spawn("amixer -c 0 set Master 1dB-") end),
-    awful.key({ }, "XF86AudioMute", function () awful.util.spawn("amixer set Master toggle") end),
+    awful.key({}, "XF86AudioRaiseVolume", function() volumeChange("1dB+") end),
+    awful.key({}, "XF86AudioLowerVolume", function() volumeChange("1dB-") end),
+    awful.key({}, "XF86AudioMute", function () volumeToggle() end),
 
     awful.key({ modkey,           }, "Left",   awful.tag.viewprev       ),
     awful.key({ modkey,           }, "Right",  awful.tag.viewnext       ),
@@ -330,6 +357,7 @@ globalkeys = awful.util.table.join(
 clientkeys = awful.util.table.join(
     -- Remap close shortcut
     awful.key({ "Mod1" }, "F4", function (c) c:kill() end),
+    awful.key({ "Mod4" }, "F4", function (c) c:kill() end),
 
     awful.key({ modkey,           }, "f",      function (c) c.fullscreen = not c.fullscreen  end),
     awful.key({ modkey, "Shift"   }, "c",      function (c) c:kill()                         end),
@@ -347,6 +375,7 @@ clientkeys = awful.util.table.join(
         function (c)
             c.maximized_horizontal = not c.maximized_horizontal
             c.maximized_vertical   = not c.maximized_vertical
+            c:raise()
         end)
 )
 
@@ -505,5 +534,7 @@ client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_n
 
 -- Autostart
 run_once("xset m 11/8 0")
+run_once("setxkbmap de")
+run_once("xmodmap -e 'keysym Menu = Super_L'")
 run_once("nm-applet")
 run_once("unagi")
