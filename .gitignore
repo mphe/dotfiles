@@ -1,4 +1,7 @@
 .vim/view
 *.pyc
 .ncmpcpp/error.log
+.config/ranger/bookmarks
+.config/ranger/history
+.config/ranger/tagged
 
