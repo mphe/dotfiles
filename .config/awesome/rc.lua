@@ -114,13 +114,26 @@ myawesomemenu = {
    { "quit", awesome.quit }
 }
 
-mymainmenu = awful.menu({ items = { 
-    { "awesome", myawesomemenu, beautiful.awesome_icon },
-    { "applications", xdgmenu },
-    { "open terminal", terminal },
-}})
+systemmenu = {
+   { "poweroff", "systemctl poweroff" },
+   { "reboot", "systemctl reboot" },
+   { "suspend", "systemctl suspend" },
+   { "hibernate", "systemctl hibernate" },
+}
 
-mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
+mymainmenu = awful.menu({
+    items = {
+        { "awesome", myawesomemenu, beautiful.awesome_icon },
+        { "applications", xdgmenu },
+        { "system", systemmenu },
+        { "open terminal", terminal, "/usr/share/icons/gnome/16x16/apps/utilities-terminal.png" },
+        { "open file manager", filemgr, "/usr/share/icons/gnome/16x16/apps/system-file-manager.png" },
+        { "open browser", "firefox", "/usr/share/icons/hicolor/16x16/apps/firefox.png" },
+    },
+    theme = { width = 150 },
+})
+
+mylauncher = awful.widget.launcher({ image = beautiful.arch_icon,
                                      menu = mymainmenu })
 
 -- Menubar configuration
@@ -454,8 +467,8 @@ awful.rules.rules = {
       properties = { floating = true } },
 
     -- Fix youtube fullscreen
-    -- { rule = { class = "plugin-container" },
-    --   properties = { floating = true } },
+    { rule = { class = "plugin-container" },
+      properties = { floating = true } },
 }
 -- }}}
 
