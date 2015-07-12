@@ -101,6 +101,7 @@ Plugin 'rdnetto/YCM-Generator'
 Plugin 'Raimondi/delimitMate'
 Plugin 'xuqix/h2cppx'
 Plugin 'airblade/vim-gitgutter'
+Plugin 'jeetsukumaran/vim-buffergator'
 
 " Turn filetype functionality back on
 filetype on
