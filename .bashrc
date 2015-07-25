@@ -2,6 +2,9 @@
 # ~/.bashrc
 #
 
+# 256 colors
+export TERM=xterm-256color
+
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
@@ -12,15 +15,13 @@
 alias ls='ls --color=always'
 alias less='less -r'
 alias pacaur='pacaur --noedit'
-
-# Force python3 for ranger
+alias android-studio='JAVA_HOME=/usr/lib/jvm/java-8-jdk android-studio'
+alias idea.sh='JAVA_HOME=/usr/lib/jvm/java-8-jdk idea.sh'
 alias ranger='python3 $(which ranger)'
 
 # Set git language to English
 alias git='LC_ALL=en_GB.UTF-8 git'
 
-# 256 colors
-export TERM=xterm-256color
 
 # colors
 BASE0="$(tput setaf 244)"
