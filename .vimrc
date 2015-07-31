@@ -25,6 +25,9 @@ set noswapfile
 " Don't fold anything when opening a new buffer
 set foldlevelstart=99
 
+" open splits on the right
+set splitright
+
 let mapleader = ","
 
 " insert a new line without switching to insert mode
@@ -141,6 +144,7 @@ map N <Plug>(easymotion-prev)
 
 " NERDTree shortcut
 command NT NERDTreeToggle
+let NERDTreeWinPos = "right"
 
 " YCM
 nnoremap <F5> :YcmForceCompileAndDiagnostics<CR><CR>
