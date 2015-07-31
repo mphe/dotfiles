@@ -105,6 +105,9 @@ Plugin 'Raimondi/delimitMate'
 Plugin 'xuqix/h2cppx'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'jeetsukumaran/vim-buffergator'
+Plugin 'xolox/vim-misc'
+Plugin 'xolox/vim-easytags'
+Plugin 'majutsushi/tagbar'
 
 " Turn filetype functionality back on
 filetype on
@@ -181,3 +184,10 @@ let delimitMate_expand_space = 1
 " h2cppx
 command TOCPP H2cppx
 
+" easytags
+let g:easytags_async = 1
+let g:easytags_auto_highlight = 0
+let g:easytags_resolve_links = 1
+
+" tagbar
+command TB TagbarToggle
