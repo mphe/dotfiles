@@ -78,6 +78,7 @@ eval $(dircolors /usr/share/dircolors/dircolors.ansi-dark)
 # env vars
 export PATH="$PATH:~/bin"
 export PYTHONPATH="$PYTHONPATH:/mnt/iomega/Python/lib"
+export ANDROID_HOME="/opt/android-sdk"
 
 export MAIN=/mnt/iomega/Main
 export CPPLIB=/mnt/iomega/C++/lib
