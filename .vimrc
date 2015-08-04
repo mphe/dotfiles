@@ -109,6 +109,8 @@ Plugin 'jeetsukumaran/vim-buffergator'
 Plugin 'xolox/vim-misc'
 Plugin 'xolox/vim-easytags'
 Plugin 'majutsushi/tagbar'
+" Plugin 'vim-scripts/taglist.vim'
+Plugin 'xolox/vim-lua-ftplugin.git'
 
 " Turn filetype functionality back on
 filetype on
