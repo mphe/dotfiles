@@ -12,6 +12,9 @@ local naughty = require("naughty")
 local menubar = require("menubar")
 local vicious = require("vicious")
 local xdg_menu = require("archmenu")
+local vain = require("vain")
+local alttab = require("alttab")
+local cal = require("cal")
 
 function run_once(cmd)
     findme = cmd
@@ -23,7 +26,7 @@ function run_once(cmd)
 end
 
 function run_term(cmd)
-    awful.util.spawn(terminal .. " -e " .. cmd)
+    awful.util.spawn(terminal .. " -e \"" .. cmd .. "\"")
 end
 
 -- {{{ Error handling
@@ -55,10 +58,10 @@ end
 -- Themes define colours, icons, font and wallpapers.
 -- beautiful.init("/usr/share/awesome/themes/default/theme.lua")
 beautiful.init("/home/marvin/.config/awesome/themes/default/theme.lua")
--- beautiful.wallpaper_cmd = fbsetbg -f "/home/marvin/img/portal_2__long_time_by_paullus23-d5iga6v.jpg"
 
 -- This is used later as the default terminal and editor to run.
 terminal = "termite"
+vain.widgets.terminal = terminal
 editor = os.getenv("EDITOR") or "vim"
 editor_cmd = terminal .. " -e " .. editor
 filemgr = "pcmanfm"
@@ -74,17 +77,28 @@ modkey = "Mod4"
 local layouts =
 {
     awful.layout.suit.floating,
-    awful.layout.suit.tile,
-    awful.layout.suit.tile.left,
-    awful.layout.suit.tile.bottom,
-    awful.layout.suit.tile.top,
-    awful.layout.suit.fair,
-    awful.layout.suit.fair.horizontal,
-    awful.layout.suit.spiral,
-    awful.layout.suit.spiral.dwindle,
+    vain.layout.browse,
+    vain.layout.uselesstile,
+    vain.layout.uselesstile.left,
+    vain.layout.uselesstile.bottom,
+    vain.layout.uselesstile.top,
+    vain.layout.uselessfair,
+    vain.layout.uselessfair.horizontal,
+    vain.layout.termfair,
+    -- awful.layout.suit.tile,
+    -- awful.layout.suit.tile.left,
+    -- awful.layout.suit.tile.bottom,
+    -- awful.layout.suit.tile.top,
+    -- awful.layout.suit.fair,
+    -- awful.layout.suit.fair.horizontal,
     awful.layout.suit.max,
     awful.layout.suit.max.fullscreen,
-    awful.layout.suit.magnifier
+    awful.layout.suit.magnifier,
+    awful.layout.suit.spiral,
+    awful.layout.suit.spiral.dwindle,
+    vain.layout.cascade,
+    vain.layout.cascadebrowse,
+    vain.layout.centerwork,
 }
 -- }}}
 
@@ -96,12 +110,18 @@ if beautiful.wallpaper then
 end
 -- }}}
 
+-- Alt Tab config
+-- alttab.settings.preview_box_bg = "#222222"
+-- alttab.settings.preview_box_border = "#000000"
+alttab.settings.client_opacity = true
+
+
 -- {{{ Tags
 -- Define a tag table which hold all screen tags.
 tags = {}
 for s = 1, screen.count() do
     -- Each screen has its own tag table.
-    tags[s] = awful.tag({ 1, 2, 3, 4, 5, 6, 7, 8, 9 }, s, layouts[2])
+    tags[s] = awful.tag({ 1, 2, 3, 4, 5, 6, 7, 8, 9 }, s, layouts[3])
 end
 -- }}}
 
@@ -133,8 +153,10 @@ mymainmenu = awful.menu({
     theme = { width = 150 },
 })
 
-mylauncher = awful.widget.launcher({ image = beautiful.arch_icon,
-                                     menu = mymainmenu })
+mylauncher = awful.widget.launcher({
+    image = beautiful.arch_icon,
+    menu = mymainmenu
+})
 
 -- Menubar configuration
 menubar.utils.terminal = terminal -- Set the terminal for applications that require it
@@ -157,16 +179,22 @@ end
 
 volwidget = wibox.widget.textbox()
 volwidget:buttons(awful.util.table.join(
-    awful.button({}, 1, function() run_term("alsamixer") end),
+    awful.button({}, 1, function() run_term("bash -c 'ps -a | grep alsamixer && pkill alsamixer || alsamixer'") end),
     awful.button({}, 3, volumeToggle),
     awful.button({}, 4, function() volumeChange("1dB+") end),
     awful.button({}, 5, function() volumeChange("1dB-") end)
 ))
 vicious.register(volwidget, vicious.widgets.volume, "Vol: $1% $2", 5, "Master")
 
+
 -- CPU widget
--- cpuwidget = wibox.widget.textbox()
--- vicious.register(cpuwidget, vicious.widgets.cpu, "CPU: $1%", 3)
+cpuwidget_text = wibox.widget.textbox()
+cpuwidget_text:set_text("CPU: ")
+cpuwidget = wibox.widget.textbox()
+cpuwidget:set_align("right")
+vicious.register(cpuwidget, vicious.widgets.cpu, "$1%", 3)
+vicious.cache(vicious.widgets.cpu)
+cpuwidget = wibox.layout.constraint(cpuwidget, "exact", 24, nil)
 
 -- Battery widget
 batwidget = wibox.widget.textbox()
@@ -175,6 +203,7 @@ vicious.register(batwidget, vicious.widgets.bat, "Bat: $1$2% $3", 61, "BAT1")
 -- {{{ Wibox
 -- Create a textclock widget
 mytextclock = awful.widget.textclock()
+cal.register(mytextclock)
 
 -- Create a wibox for each screen and add it
 mywibox = {}
@@ -186,8 +215,8 @@ mytaglist.buttons = awful.util.table.join(
     awful.button({ modkey }, 1, awful.client.movetotag),
     awful.button({ }, 3, awful.tag.viewtoggle),
     awful.button({ modkey }, 3, awful.client.toggletag),
-    awful.button({ }, 4, function(t) awful.tag.viewnext(awful.tag.getscreen(t)) end),
-    awful.button({ }, 5, function(t) awful.tag.viewprev(awful.tag.getscreen(t)) end)
+    awful.button({ }, 5, function(t) awful.tag.viewnext(awful.tag.getscreen(t)) end),
+    awful.button({ }, 4, function(t) awful.tag.viewprev(awful.tag.getscreen(t)) end)
 )
 
 mytasklist = {}
@@ -239,10 +268,11 @@ for s = 1, screen.count() do
     -- We need one layoutbox per screen.
     mylayoutbox[s] = awful.widget.layoutbox(s)
     mylayoutbox[s]:buttons(awful.util.table.join(
-                           awful.button({ }, 1, function () awful.layout.inc(layouts, 1) end),
-                           awful.button({ }, 3, function () awful.layout.inc(layouts, -1) end),
-                           awful.button({ }, 4, function () awful.layout.inc(layouts, 1) end),
-                           awful.button({ }, 5, function () awful.layout.inc(layouts, -1) end)))
+       awful.button({ }, 1, function () awful.layout.inc(layouts, 1) end),
+       awful.button({ }, 3, function () awful.layout.inc(layouts, -1) end),
+       awful.button({ }, 4, function () awful.layout.inc(layouts, 1) end),
+       awful.button({ }, 5, function () awful.layout.inc(layouts, -1) end)
+    ))
     -- Create a taglist widget
     mytaglist[s] = awful.widget.taglist(s, awful.widget.taglist.filter.all, mytaglist.buttons)
 
@@ -262,12 +292,17 @@ for s = 1, screen.count() do
     local right_layout = wibox.layout.fixed.horizontal()
     if s == 1 then right_layout:add(wibox.widget.systray()) end
     right_layout:add(separator)
+
     right_layout:add(batwidget)
     right_layout:add(separator)
-    -- right_layout:add(cpuwidget)
-    -- right_layout:add(separator)
+
+    right_layout:add(cpuwidget_text)
+    right_layout:add(cpuwidget)
+    right_layout:add(separator)
+
     right_layout:add(volwidget)
     right_layout:add(separator)
+
     right_layout:add(mytextclock)
     right_layout:add(mylayoutbox[s])
 
@@ -284,13 +319,17 @@ end
 -- {{{ Mouse bindings
 root.buttons(awful.util.table.join(
     awful.button({ }, 3, function () mymainmenu:toggle() end),
-    awful.button({ }, 4, awful.tag.viewnext),
-    awful.button({ }, 5, awful.tag.viewprev)
+    awful.button({ }, 5, awful.tag.viewnext),
+    awful.button({ }, 4, awful.tag.viewprev)
 ))
 -- }}}
 
 -- {{{ Key bindings
 globalkeys = awful.util.table.join(
+    -- Alt Tab
+    awful.key({ "Mod1", }, "Tab", function() alttab.switch(1, "Alt_L", "Tab", "ISO_Left_Tab") end),
+    awful.key({ "Mod1", "Shift" }, "Tab", function() alttab.switch(-1, "Alt_L", "Tab", "ISO_Left_Tab") end),
+
     -- Screenshot
     awful.key({}, "Print", function() awful.util.spawn("/home/marvin/bin/screenshot.sh") end),
 
@@ -310,17 +349,33 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey,           }, "Right",  awful.tag.viewnext       ),
     awful.key({ modkey,           }, "Escape", awful.tag.history.restore),
 
-    awful.key({ modkey,           }, "k", -- Switched "j" with "k"
+    awful.key({ modkey,           }, "j",
         function ()
-            awful.client.focus.byidx( 1)
+            -- awful.client.focus.byidx( 1)
+            awful.client.focus.bydirection("down")
             if client.focus then client.focus:raise() end
         end),
 
-    awful.key({ modkey,           }, "j", -- Switched "k" with "j"
+    awful.key({ modkey,           }, "k",
         function ()
-            awful.client.focus.byidx(-1)
+            -- awful.client.focus.byidx(-1)
+            awful.client.focus.bydirection("up")
             if client.focus then client.focus:raise() end
         end),
+
+    awful.key({ modkey,           }, "h",
+        function ()
+            awful.client.focus.bydirection("left")
+            if client.focus then client.focus:raise() end
+        end),
+
+    awful.key({ modkey,           }, "l",
+        function ()
+            awful.client.focus.bydirection("right")
+            if client.focus then client.focus:raise() end
+        end),
+
+
     awful.key({ modkey,           }, "w", function () mymainmenu:show() end),
 
     -- Layout manipulation
@@ -342,12 +397,33 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey, "Control" }, "r", awesome.restart),
     awful.key({ modkey, "Shift"   }, "q", awesome.quit),
 
-    awful.key({ modkey,           }, "l",     function () awful.tag.incmwfact( 0.05)    end),
-    awful.key({ modkey,           }, "h",     function () awful.tag.incmwfact(-0.05)    end),
-    awful.key({ modkey, "Shift"   }, "h",     function () awful.tag.incnmaster( 1)      end),
-    awful.key({ modkey, "Shift"   }, "l",     function () awful.tag.incnmaster(-1)      end),
-    awful.key({ modkey, "Control" }, "h",     function () awful.tag.incncol( 1)         end),
-    awful.key({ modkey, "Control" }, "l",     function () awful.tag.incncol(-1)         end),
+    awful.key({ modkey, "Mod1"     }, "l",     function () awful.tag.incmwfact( 0.01 )    end),
+    awful.key({ modkey, "Mod1"     }, "h",     function () awful.tag.incmwfact(-0.01)    end),
+    awful.key({ modkey, "Mod1"     }, "j",     function () awful.client.incwfact( 0.01 )    end),
+    awful.key({ modkey, "Mod1"     }, "k",     function () awful.client.incwfact(-0.01)    end),
+
+    awful.key({ modkey, "Shift"   }, "h",
+        function ()
+            awful.tag.incnmaster(1)
+            naughty.notify({ title = 'Master', text = tostring(awful.tag.getnmaster()), timeout = 1  })
+        end),
+    awful.key({ modkey, "Shift"   }, "l",
+        function ()
+            awful.tag.incnmaster(-1)
+            naughty.notify({ title = 'Master', text = tostring(awful.tag.getnmaster()), timeout = 1  })
+        end),
+
+    awful.key({ modkey, "Control" }, "h",
+        function ()
+            awful.tag.incncol(1)
+            naughty.notify({ title = 'Columns', text = tostring(awful.tag.getncol()), timeout = 1  })
+        end),
+    awful.key({ modkey, "Control" }, "l",
+        function ()
+            awful.tag.incncol(-1)
+            naughty.notify({ title = 'Columns', text = tostring(awful.tag.getncol()), timeout = 1  })
+        end),
+
     awful.key({ modkey,           }, "space", function () awful.layout.inc(layouts,  1) end),
     awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(layouts, -1) end),
 
@@ -541,8 +617,17 @@ client.connect_signal("manage", function (c, startup)
     end
 end)
 
-client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
-client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
+client.connect_signal("focus",
+    function(c)
+        c.border_color = beautiful.border_focus
+        c.opacity = 1
+    end)
+
+client.connect_signal("unfocus",
+    function(c)
+        c.border_color = beautiful.border_normal
+        c.opacity = 0.9
+    end)
 -- }}}
 
 -- Autostart
@@ -550,4 +635,5 @@ run_once("xset m 11/8 0")
 run_once("setxkbmap de")
 run_once("xmodmap -e 'keysym Menu = Super_L'")
 run_once("nm-applet")
+-- run_once("xcompmgr -cfF")
 run_once("unagi")
