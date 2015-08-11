@@ -9,8 +9,7 @@ export TERM=xterm-256color
 [[ $- != *i* ]] && return
 
 # Auto start tmux
-[[ -z "$TMUX"  ]] && exec tmux
-
+# [[ -z "$TMUX"  ]] && exec tmux
 
 alias ls='ls --color=always'
 alias less='less -r'
@@ -38,7 +37,6 @@ CYAN="$(tput setaf 37)"
 GREEN="$(tput setaf 64)"
 BOLD="$(tput bold)"
 RESET="$(tput sgr0)"
-
 
 # Git prompt stuff
 parse_git_dirty () {
@@ -92,3 +90,10 @@ vim () {
     stty "$STTYOPTS"
 }
 
+
+# Set window title to current command and to $PWD when finished
+set_title() {
+    [[ "$BASH_COMMAND" == "prompt_command" ]] && echo -ne "\e]0;$PWD\007" || echo -ne "\e]0;$BASH_COMMAND\007"
+}
+
+trap set_title DEBUG
