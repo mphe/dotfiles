@@ -93,7 +93,11 @@ vim () {
 
 # Set window title to current command and to $PWD when finished
 set_title() {
-    [[ "$BASH_COMMAND" == "prompt_command" ]] && echo -ne "\e]0;$PWD\007" || echo -ne "\e]0;$BASH_COMMAND\007"
+    [[ -z "$TMUX"  ]] && echo -ne "\e]0;$*\007" || echo -ne "\033k$*\033\\"
 }
 
-trap set_title DEBUG
+preexec() {
+    [[ "$BASH_COMMAND" == "prompt_command" ]] && set_title $PWD || set_title $BASH_COMMAND
+}
+
+trap preexec DEBUG
