@@ -1,2 +1,8 @@
 $include /etc/inputrc
 set completion-ignore-case On
+set completion-prefix-display-length 2
+
+Control-j: menu-complete
+Control-k: menu-complete-backward
+
+set show-all-if-ambiguous on
