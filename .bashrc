@@ -9,7 +9,7 @@ export TERM=xterm-256color
 [[ $- != *i* ]] && return
 
 # Auto start tmux
-# [[ -z "$TMUX"  ]] && exec tmux
+# [[ -z "$TMUX" ]] && exec tmux
 
 alias ls='ls --color=always'
 alias less='less -r'
@@ -93,7 +93,7 @@ vim () {
 
 # Set window title to current command and to $PWD when finished
 set_title() {
-    [[ -z "$TMUX"  ]] && echo -ne "\e]0;$*\007" || echo -ne "\033k$*\033\\"
+    [[ -z "$TMUX" ]] && echo -ne "\e]0;$*\007" || echo -ne "\033]2;$*\033\\"
 }
 
 preexec() {
