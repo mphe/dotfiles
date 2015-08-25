@@ -12,6 +12,9 @@ visualizer_sync_interval = 30
 # spectrum/wave
 visualizer_type = spectrum
 
+# classic/alternative
+user_interface = alternative
+
 ## Multiply received samples by given value. Very
 ## useful for proper visualization of quiet music.
 ##
