@@ -17,6 +17,7 @@ alias pacaur='pacaur --noedit'
 alias android-studio='JAVA_HOME=/usr/lib/jvm/java-8-jdk android-studio'
 alias idea.sh='JAVA_HOME=/usr/lib/jvm/java-8-jdk idea.sh'
 alias ranger='python3 $(which ranger)'
+alias youtube-dl='youtube-dl -o "%(title)s"'
 
 # Set git language to English
 alias git='LC_ALL=en_GB.UTF-8 git'
