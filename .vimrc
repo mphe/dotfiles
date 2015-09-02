@@ -30,6 +30,13 @@ set splitright
 
 let mapleader = ","
 
+" Don't wrap lines
+set nowrap
+
+" Horizontal scrolling
+nnoremap <C-l> 2zl
+nnoremap <C-h> 2zh
+
 " insert a new line without switching to insert mode
 nnoremap <leader>o o<ESC>
 nnoremap <leader>O O<ESC>
@@ -56,10 +63,10 @@ xnoremap j gj
 xnoremap k gk
 
 " Easy split navigation
-nnoremap <C-h> <C-w>h
+" nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
-nnoremap <C-l> <C-w>l
+" nnoremap <C-l> <C-w>l
 
 " Make Y behave like other capitals
 nnoremap Y y$
