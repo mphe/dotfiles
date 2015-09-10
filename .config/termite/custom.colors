@@ -1,0 +1,37 @@
+cursor = #8C8C88
+foreground = #687378
+foreground_bold = #93A1A1
+background = rgba(13, 20, 23, 0.95)
+
+# black
+color0 = #20282C
+color8 = #40484C
+
+# red
+color1 = #80293F
+color9 = #9C3A52
+
+# green
+color2 = #486448
+color10 = #5F855F
+
+# yellow
+color3 = #7A4C2D
+color11 = #AD7A57
+
+# blue
+color4 = #2E577D
+color12 = #52789C
+
+# magenta
+color5 = #583958
+color13 = #876887
+
+# cyan
+color6 = #305858
+color14 = #517373
+
+# white
+color7 = #8C8C6F
+color15 = #ABAB9A
+

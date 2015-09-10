@@ -8,6 +8,7 @@ dynamic_title = true
 urgent_on_bell = false
 clickable_url = true
 font = DejaVu Sans Mono for Powerline 10
+# font = hack 10
 scrollback_lines = 1000
 search_wrap = true
 #icon_name = terminal
@@ -28,17 +29,13 @@ cursor_shape = block
 # emit escape sequences for other keys modified by Control
 #modify_other_keys = false
 
-# Solarized dark color scheme
+
 [colors]
+# Solarized dark color scheme
 foreground = #839496
 foreground_bold = #eee8d5
-#foreground_dim = #888888
-#background = #002b36
 background = rgba(0, 43, 54, 0.9)
 cursor = #93a1a1
-
-# if unset, will reverse foreground and background
-#highlight = #839496
 
 # colors from color0 to color254 can be set
 color0 = #073642
@@ -57,6 +54,12 @@ color12 = #839496
 color13 = #6c71c4
 color14 = #93a1a1
 color15 = #fdf6e3
+
+#foreground_dim = #888888
+#background = #002b36
+
+# if unset, will reverse foreground and background
+#highlight = #839496
 
 
 [hints]

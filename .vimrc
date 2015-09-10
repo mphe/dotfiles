@@ -33,6 +33,11 @@ let mapleader = ","
 " Don't wrap lines
 set nowrap
 
+" Change buffers without writing changes to a file
+set hidden
+
+
+" -------------------------------------- Key mappings
 " Horizontal scrolling
 nnoremap <C-l> 2zl
 nnoremap <C-h> 2zh
@@ -77,11 +82,8 @@ xnoremap <leader>p "_dP
 " faster substitution with yanked text
 nmap S viw<leader>p
 
-" ensure newline at eof
-" autocmd BufWritePre *
-"     \ if match(getline('$'), '\S') != -1 |
-"     \     call append(line('$'), '') |
-"     \ endif
+" -------------------------------------- Key mappings end
+
 
 " Don't screw up folds when inserting text that might affect them,
 " until leaving insert mode.
@@ -89,7 +91,7 @@ autocmd InsertEnter * if !exists('w:last_fdm') | let w:last_fdm=&foldmethod | se
 autocmd InsertLeave,WinLeave * if exists('w:last_fdm') | let &l:foldmethod=w:last_fdm | unlet w:last_fdm | endif
 
 
-" vundle
+" -------------------------------------- vundle
 set nocompatible
 filetype off
 
@@ -97,18 +99,23 @@ set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
 
 Plugin 'gmarik/vundle'
+
+" color schemes
 Plugin 'altercation/vim-colors-solarized'
+Plugin 'whatyouhide/vim-gotham'
+Plugin 'twerth/ir_black'
+Plugin 'qualiabyte/vim-colorstepper'
+
 Plugin 'scrooloose/nerdtree'
 Plugin 'bling/vim-airline'
 Plugin 'Lokaltog/vim-easymotion'
 Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-surround'
 Plugin 'tomtom/tcomment_vim'
-" Plugin 'davidhalter/jedi-vim'
 Plugin 'Valloric/YouCompleteMe'
+Plugin 'rdnetto/YCM-Generator'
 Plugin 'tmhedberg/SimpylFold'
 Plugin 'kevinw/pyflakes-vim'
-Plugin 'rdnetto/YCM-Generator'
 Plugin 'Raimondi/delimitMate'
 Plugin 'xuqix/h2cppx'
 Plugin 'airblade/vim-gitgutter'
@@ -116,7 +123,6 @@ Plugin 'jeetsukumaran/vim-buffergator'
 Plugin 'xolox/vim-misc'
 Plugin 'xolox/vim-easytags'
 Plugin 'majutsushi/tagbar'
-" Plugin 'vim-scripts/taglist.vim'
 Plugin 'xolox/vim-lua-ftplugin.git'
 
 " Turn filetype functionality back on
@@ -124,28 +130,65 @@ filetype on
 filetype plugin on
 filetype plugin indent on
 
-
-" vim-airline
-set guifont=DejaVu\ Sans\ Mono\ for\ Powerline
-set laststatus=2
-let g:airline_powerline_fonts = 1
-let g:airline#extensions#tabline#enabled = 1
-" set timeoutlen=50
-
-" disable separators since it doesn't work right in terminal
-let g:airline_symbols = {}
-let g:airline_left_sep = ''
-let g:airline_right_sep = ''
+" -------------------------------------- vundle end
 
 
-" solarized
+" -------------------------------------- Style config
+" ------------------ General
 set t_Co=256
 set background=dark
+set guifont=DejaVu\ Sans\ Mono\ for\ Powerline
+set laststatus=2
+
+" ------------------ Solarized
 let g:solarized_termtrans=1
 colorscheme solarized
 
-" Solid background color
 highlight SignColumn ctermbg=black
+highlight CursorLineNr ctermbg=black cterm=bold
+
+" Solid background color for YCM indicators
+highlight YcmWarningSign ctermbg=black ctermfg=red
+highlight YcmErrorSign ctermbg=black ctermfg=red
+highlight YcmErrorSection cterm=underline ctermfg=darkred
+
+" ------------------ Custom
+" colorscheme peachpuff
+" highlight LineNr ctermfg=darkgray
+" highlight SignColumn ctermbg=NONE
+"
+" let g:airline_theme = 'hybridline'
+
+" autocmd BufWinEnter * highlight airline_tabsel ctermfg=black
+" autocmd BufWinEnter * highlight airline_tabmod ctermfg=black
+" autocmd BufWinEnter * highlight airline_tabhid ctermfg=gray
+
+" highlight airline_c ctermfg=gray
+" highlight airline_x ctermfg=gray
+
+" Transparent background color for YCM indicators
+" highlight YcmWarningSign ctermbg=none ctermfg=red
+" highlight YcmErrorSign ctermbg=none ctermfg=red
+" highlight YcmErrorSection ctermbg=none cterm=underline ctermfg=red
+
+" ------------------ Cursorline
+set cursorline
+highlight CursorLine ctermbg=Black cterm=NONE
+
+" -------------------------------------- Style config end
+
+
+" -------------------------------------- Plugin configuration
+" vim-airline
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#whitespace#enabled = 0
+let g:airline_symbols = {}
+let g:airline_powerline_fonts = 1
+let g:airline_symbols.branch = '⎇ '
+let g:airline#extensions#tabline#left_sep = ' '
+let g:airline#extensions#tabline#left_alt_sep = ' '
+let g:airline_left_sep = '█▓░'
+let g:airline_right_sep = '░▓█'
 
 
 " easymotion
@@ -174,11 +217,6 @@ let g:ycm_autoclose_preview_window_after_completion = 0
 let g:ycm_autoclose_preview_window_after_insertion = 0
 let g:ycm_always_populate_location_list = 1
 
-" Solid background color
-highlight YcmErrorSign ctermbg=black ctermfg=red
-highlight YcmWarningSign ctermbg=black ctermfg=red
-
-
 " SimpylFold
 let g:SimpylFold_fold_docstring = 0
 autocmd BufWinEnter *.py setlocal foldexpr=SimpylFold(v:lnum) foldmethod=expr
@@ -190,6 +228,7 @@ highlight SpellBad term=underline ctermfg=160 gui=undercurl guisp=Orange
 " delimitMate
 let delimitMate_expand_cr = 1
 let delimitMate_expand_space = 1
+let delimitMate_jump_expansion = 1
 
 " h2cppx
 command TOCPP H2cppx
@@ -201,3 +240,16 @@ let g:easytags_resolve_links = 1
 
 " tagbar
 command TB TagbarToggle
+
+" ColorStepper Keys
+nmap <F6> <Plug>ColorstepPrev
+nmap <F7> <Plug>ColorstepNext
+nmap <S-F7> <Plug>ColorstepReload
+
+" -------------------------------------- Plugin configuration end
+"
+" buffer shortcuts
+nnoremap <leader>bn :bn<CR>
+nnoremap <leader>bp :bp<CR>
+nnoremap <leader>bl :b#<CR>
+nnoremap <leader>bb :BuffergatorOpen<CR>
