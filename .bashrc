@@ -2,14 +2,16 @@
 # ~/.bashrc
 #
 
-# 256 colors
-export TERM=xterm-256color
-
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
-# Auto start tmux
-# [[ -z "$TMUX" ]] && exec tmux
+if [[ -z "$TMUX" ]]; then
+    # 256 colors
+    export TERM=xterm-256color
+
+    # Auto start tmux
+    # exec tmux
+fi
 
 alias ls='ls --color=always'
 alias less='less -r'
@@ -18,24 +20,36 @@ alias android-studio='JAVA_HOME=/usr/lib/jvm/java-8-jdk android-studio'
 alias idea.sh='JAVA_HOME=/usr/lib/jvm/java-8-jdk idea.sh'
 alias ranger='python3 $(which ranger)'
 alias youtube-dl='youtube-dl -o "%(title)s.%(ext)s"'
+alias cmake-debug='cmake -DCMAKE_BUILD_TYPE=Debug'
+alias cmake-release='cmake -DCMAKE_BUILD_TYPE=Release'
 
 # Set git language to English
 alias git='LC_ALL=en_GB.UTF-8 git'
 
 
 # colors
-BASE0="$(tput setaf 244)"
-BASE1="$(tput setaf 245)"
-BASE2="$(tput setaf 254)"
-BASE3="$(tput setaf 230)"
-YELLOW="$(tput setaf 136)"
-ORANGE="$(tput setaf 166)"
-RED="$(tput setaf 160)"
-MAGENTA="$(tput setaf 125)"
-VIOLET="$(tput setaf 61)"
-BLUE="$(tput setaf 33)"
-CYAN="$(tput setaf 37)"
-GREEN="$(tput setaf 64)"
+# solarized
+# BASE0="$(tput setaf 244)"
+# BASE1="$(tput setaf 245)"
+# BASE2="$(tput setaf 254)"
+# BASE3="$(tput setaf 230)"
+# YELLOW="$(tput setaf 136)" # Use this for solarized palette
+# ORANGE="$(tput setaf 166)"
+# RED="$(tput setaf 160)"
+# MAGENTA="$(tput setaf 125)"
+# VIOLET="$(tput setaf 61)"
+# BLUE="$(tput setaf 33)" # Use this for solarized palette
+# CYAN="$(tput setaf 37)"
+# GREEN="$(tput setaf 64)"
+
+BLACK="$(tput setaf 0)"
+RED="$(tput setaf 1)"
+GREEN="$(tput setaf 2)"
+YELLOW="$(tput setaf 3)"
+BLUE="$(tput setaf 4)"
+MAGENTA="$(tput setaf 5)"
+CYAN="$(tput setaf 6)"
+WHITE="$(tput setaf 7)"
 BOLD="$(tput bold)"
 RESET="$(tput sgr0)"
 
@@ -60,7 +74,8 @@ prompt_command() {
     local blue="\[$BLUE\]"
     local yellow="\[$YELLOW\]"
     local red="\[$RED\]"
-    PS1="$reset[$bold\u@\h $blue\w$yellow\$(git_prompt)$reset]"
+    PS1="$reset[$bold\u@\h$reset $blue\w$yellow\$(git_prompt)$reset]"
+    # PS1="$reset[$bold\u@\h $blue\w$yellow\$(git_prompt)$reset]"
     
     if [ $err -ne 0 ]; then
         PS1+="$bold$red[$err]$reset"
@@ -71,17 +86,13 @@ prompt_command() {
 
 
 # solarized dircolor (ls, usw)
-eval $(dircolors /usr/share/dircolors/dircolors.ansi-dark)
+eval $(dircolors ~/.dir_colors/dircolors.ansi-dark)
+# eval $(dircolors ~/.dir_colors/dircolors_alt)
 
 
 # env vars
 export PATH="$PATH:~/bin"
 export PYTHONPATH="$PYTHONPATH:/mnt/iomega/Python/lib"
-export ANDROID_HOME="/opt/android-sdk"
-
-export MAIN=/mnt/iomega/Main
-export CPPLIB=/mnt/iomega/C++/lib
-export SHARED=~/Shared
 
 # disable flow control when using vim
 vim () {
