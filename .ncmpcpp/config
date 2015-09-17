@@ -15,6 +15,9 @@ visualizer_type = spectrum
 # classic/alternative
 user_interface = alternative
 
+# disable mouse support
+mouse_support = no
+
 ## Multiply received samples by given value. Very
 ## useful for proper visualization of quiet music.
 ##
@@ -364,7 +367,6 @@ user_interface = alternative
 #
 #block_search_constraints_change_if_items_found = yes
 #
-#mouse_support = yes
 #
 #mouse_list_scroll_whole_page = yes
 #
