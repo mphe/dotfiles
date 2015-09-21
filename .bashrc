@@ -24,24 +24,14 @@ alias cmake-debug='cmake -DCMAKE_BUILD_TYPE=Debug'
 alias cmake-release='cmake -DCMAKE_BUILD_TYPE=Release'
 
 # Set git language to English
-alias git='LC_ALL=en_GB.UTF-8 git'
+alias git='LANG=en_US.UTF-8 git'
+
+# Enable checkwinsize so that bash will check the terminal size when
+# it regains control. (http://cnswww.cns.cwru.edu/~chet/bash/FAQ (E11))
+shopt -s checkwinsize
 
 
 # colors
-# solarized
-# BASE0="$(tput setaf 244)"
-# BASE1="$(tput setaf 245)"
-# BASE2="$(tput setaf 254)"
-# BASE3="$(tput setaf 230)"
-# YELLOW="$(tput setaf 136)" # Use this for solarized palette
-# ORANGE="$(tput setaf 166)"
-# RED="$(tput setaf 160)"
-# MAGENTA="$(tput setaf 125)"
-# VIOLET="$(tput setaf 61)"
-# BLUE="$(tput setaf 33)" # Use this for solarized palette
-# CYAN="$(tput setaf 37)"
-# GREEN="$(tput setaf 64)"
-
 BLACK="$(tput setaf 0)"
 RED="$(tput setaf 1)"
 GREEN="$(tput setaf 2)"
