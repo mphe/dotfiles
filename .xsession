@@ -6,3 +6,4 @@ xset dpms 1800 1800 1800
 setxkbmap de
 xmodmap -e 'keysym Menu = Super_L'
 syndaemon -dKi 2
+xrandr --output LVDS1 --auto --output VGA1 --auto --left-of LVDS1
