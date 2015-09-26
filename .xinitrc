@@ -1,4 +1,5 @@
 #!/bin/sh
+$HOME/.monicarc   #monitor calibration
 
 userresources=$HOME/.Xresources
 usermodmap=$HOME/.Xmodmap
