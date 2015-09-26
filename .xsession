@@ -2,7 +2,8 @@
 
 xset m 4/3 4 # mouse sensitivity
 xset r rate 300 30 # key repeat rate
-xset dpms 1800 1800 1800
+xset dpms 1800 1800 1800 # set dpms timeout to 30 minutes
+xset s off # disable screensaver
 setxkbmap de
 xmodmap -e 'keysym Menu = Super_L'
 syndaemon -dKi 2
