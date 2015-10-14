@@ -255,3 +255,7 @@ nnoremap <leader>bn :bn<CR>
 nnoremap <leader>bp :bp<CR>
 nnoremap <leader>bl :b#<CR>
 nnoremap <leader>bb :BuffergatorOpen<CR>
+
+" Delete current buffer and open the next or an empty buffer
+" instead of closing the window
+nnoremap <leader>bd :bp<bar>sp<bar>bn<bar>bd<CR>
