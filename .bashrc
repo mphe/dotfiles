@@ -99,6 +99,27 @@ vim () {
 }
 
 
+# switch between src and include directory in a C++ project
+switchdir() {
+    if [[ -z $1 ]]; then
+        if [[ "$PWD" =~ .*src.* ]]; then
+            src=crs
+            dest=edulcni
+        elif [[ "$PWD" =~ .*include* ]]; then
+            local src=edulcni
+            local dest=crs
+        else
+            echo "Not inside include or src directory"
+            exit
+        fi
+    fi
+    # elif [[ $1 == "src" ]]; then
+    #     local src=include
+    #     local dest=src
+    cd "$(pwd | rev | sed -e "s/$src\//$dest\//" | rev)"
+}
+
+
 # Set window title to current command and to $PWD when finished
 set_title() {
     [[ -z "$TMUX" ]] && echo -ne "\e]0;$*\007" || echo -ne "\033]2;$*\033\\"
