@@ -36,6 +36,8 @@ set nowrap
 " Change buffers without writing changes to a file
 set hidden
 
+" Case insensitive file completion
+set wildignorecase
 
 " -------------------------------------- Key mappings
 " Horizontal scrolling
