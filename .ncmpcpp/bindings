@@ -63,10 +63,10 @@ def_key "d"
 def_key "d"
  delete_stored_playlist
 
-def_key "l"
+def_key "o"
  next_column
 
-def_key "h"
+def_key "i"
  previous_column
 
 def_key "right"
@@ -338,9 +338,9 @@ def_key "J"
 #def_key "S"
 #  save_playlist
 #
-#def_key "o"
-#  jump_to_playing_song
-#
+def_key "O"
+ jump_to_playing_song
+
 #def_key "G"
 #  jump_to_browser
 #
