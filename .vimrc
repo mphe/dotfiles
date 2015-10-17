@@ -71,8 +71,8 @@ xnoremap k gk
 
 " Easy split navigation
 " nnoremap <C-h> <C-w>h
-nnoremap <C-j> <C-w>j
-nnoremap <C-k> <C-w>k
+" nnoremap <C-j> <C-w>j
+" nnoremap <C-k> <C-w>k
 " nnoremap <C-l> <C-w>l
 
 " Make Y behave like other capitals
@@ -127,6 +127,8 @@ Plugin 'xolox/vim-easytags'
 Plugin 'majutsushi/tagbar'
 Plugin 'xolox/vim-lua-ftplugin.git'
 Plugin 'derekwyatt/vim-fswitch'
+Plugin 'SirVer/ultisnips'
+Plugin 'honza/vim-snippets'
 
 " Turn filetype functionality back on
 filetype on
@@ -252,6 +254,11 @@ nmap <S-F7> <Plug>ColorstepReload
 
 " FSwitch
 nnoremap <leader>gf :FSHere<CR>
+
+" UltiSnip
+let g:UltiSnipsExpandTrigger="<c-z>"
+let g:UltiSnipsJumpForwardTrigger="<c-j>"
+let g:UltiSnipsJumpBackwardTrigger="<c-k>"
 
 " -------------------------------------- Plugin configuration end
 
