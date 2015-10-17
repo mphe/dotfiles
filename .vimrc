@@ -126,6 +126,7 @@ Plugin 'xolox/vim-misc'
 Plugin 'xolox/vim-easytags'
 Plugin 'majutsushi/tagbar'
 Plugin 'xolox/vim-lua-ftplugin.git'
+Plugin 'derekwyatt/vim-fswitch'
 
 " Turn filetype functionality back on
 filetype on
@@ -249,8 +250,11 @@ nmap <F6> <Plug>ColorstepPrev
 nmap <F7> <Plug>ColorstepNext
 nmap <S-F7> <Plug>ColorstepReload
 
+" FSwitch
+nnoremap <leader>gf :FSHere<CR>
+
 " -------------------------------------- Plugin configuration end
-"
+
 " buffer shortcuts
 nnoremap <leader>bn :bn<CR>
 nnoremap <leader>bp :bp<CR>
