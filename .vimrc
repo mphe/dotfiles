@@ -144,6 +144,7 @@ set laststatus=2
 
 " ------------------ Solarized
 let g:solarized_termtrans=1
+let g:solarized_hitrail=1
 colorscheme solarized
 
 highlight SignColumn ctermbg=black
