@@ -21,7 +21,7 @@ cursor_blink = system
 cursor_shape = block
 
 # $BROWSER is used by default
-#browser = firefox
+browser = firefox
 
 # set size hints for the window
 #size_hints = false
