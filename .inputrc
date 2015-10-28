@@ -8,3 +8,4 @@ Control-k: menu-complete-backward
 set show-all-if-ambiguous on
 
 set mark-symlinked-directories on
+set bell-style none
