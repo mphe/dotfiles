@@ -75,7 +75,7 @@ prompt_command() {
     # PS1="$reset[$bold\u@\h $blue\w$yellow\$(git_prompt)$reset]"
     
     if [ $err -ne 0 ]; then
-        PS1+="$bold$red[$err]$reset"
+        PS1+="$red[$err]$reset"
     fi
 
     PS1+="$bold\$ $reset"
