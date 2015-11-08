@@ -64,13 +64,14 @@ prompt_command() {
     local blue="\[$BLUE\]"
     local yellow="\[$YELLOW\]"
     local red="\[$RED\]"
+    local white="\[$WHITE\]"
 
     # Use short path if the full path is longer than half the terminal size
     local hw=$(($(tput cols) / 2))
     local path="\w"
     [ ${#PWD} -gt $hw ] && path="...${PWD:$((-$hw + 20))}"
 
-    PS1="$reset[$bold\u@\h$reset $blue$path$yellow\$(git_prompt)$reset]"
+    PS1="$reset[$white$bold\u$reset@$white$bold\h $reset$blue$path$yellow\$(git_prompt)$reset]"
     # PS1="$reset[$bold\u@\h $blue\w$yellow\$(git_prompt)$reset]"
     
     if [ $err -ne 0 ]; then
