@@ -14,7 +14,7 @@ set foldmethod=syntax
 
 " save foldings
 autocmd BufWinLeave *.* mkview
-autocmd BufWinEnter *.* silent loadview 
+autocmd BufWinEnter *.* silent loadview
 
 " global clipboard
 set clipboard+=unnamed
