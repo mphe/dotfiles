@@ -130,6 +130,7 @@ Plugin 'derekwyatt/vim-fswitch'
 Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
 Plugin 'vim-scripts/cscope.vim'
+Plugin 'kshenoy/vim-signature'
 
 " Turn filetype functionality back on
 filetype on
