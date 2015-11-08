@@ -209,7 +209,7 @@ map N <Plug>(easymotion-prev)
 
 " NERDTree shortcut
 command NT NERDTreeToggle
-let NERDTreeWinPos = "right"
+" let NERDTreeWinPos = "right"
 
 " YCM
 nnoremap <F5> :YcmForceCompileAndDiagnostics<CR><CR>
