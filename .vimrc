@@ -151,6 +151,7 @@ let g:solarized_termtrans=1
 let g:solarized_hitrail=1
 let g:solarized_termcolors=256
 colorscheme solarized
+let g:airline_theme = 'lucius'
 
 highlight SignColumn ctermbg=black
 highlight CursorLineNr ctermbg=black cterm=bold
