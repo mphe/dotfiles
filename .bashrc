@@ -54,11 +54,20 @@ git_prompt() {
     git branch &> /dev/null && echo " ($(parse_git_branch))"
 }
 
+# Retain cwd when opening new terminals
+# http://unix.stackexchange.com/questions/93476/gnome-terminal-keep-track-of-directory-in-new-tab
+source /etc/profile.d/vte.sh
+
 export PROMPT_COMMAND=prompt_command
 
 # [user@host path (branch)] [$?]$ 
 prompt_command() {
     local err=$?
+
+    # Must be called to retain working directory when opening new terminals
+    # Only works in terminal emulators.
+    [ "$(type -t __vte_osc7)" = "function" ] && __vte_osc7
+
     local reset="\[$RESET\]"
     local bold="\[$BOLD\]"
     local blue="\[$BLUE\]"
