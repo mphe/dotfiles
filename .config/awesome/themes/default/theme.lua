@@ -32,7 +32,7 @@ theme.border_marked = "#91231c"
 -- mouse_finder_[color|timeout|animate_timeout|radius|factor]
 -- Example:
 --theme.taglist_bg_focus = "#ff0000"
-
+--
 -- Display the taglist squares
 theme.taglist_squares_sel   = "/usr/share/awesome/themes/default/taglist/squarefw.png"
 theme.taglist_squares_unsel = "/usr/share/awesome/themes/default/taglist/squarew.png"
@@ -73,33 +73,33 @@ theme.titlebar_maximized_button_focus_inactive  = "/usr/share/awesome/themes/def
 theme.titlebar_maximized_button_normal_active = "/usr/share/awesome/themes/default/titlebar/maximized_normal_active.png"
 theme.titlebar_maximized_button_focus_active  = "/usr/share/awesome/themes/default/titlebar/maximized_focus_active.png"
 
-theme.wallpaper = "/home/marvin/img/fate_to_zero_by_nanfe-d8zdj14_1366x768.jpg"
 
--- You can use your own layout icons like this:
-theme.layout_fairh = "/usr/share/awesome/themes/default/layouts/fairhw.png"
-theme.layout_fairv = "/usr/share/awesome/themes/default/layouts/fairvw.png"
-theme.layout_floating  = "/usr/share/awesome/themes/default/layouts/floatingw.png"
-theme.layout_magnifier = "/usr/share/awesome/themes/default/layouts/magnifierw.png"
-theme.layout_max = "/usr/share/awesome/themes/default/layouts/maxw.png"
-theme.layout_fullscreen = "/usr/share/awesome/themes/default/layouts/fullscreenw.png"
-theme.layout_tilebottom = "/usr/share/awesome/themes/default/layouts/tilebottomw.png"
-theme.layout_tileleft   = "/usr/share/awesome/themes/default/layouts/tileleftw.png"
-theme.layout_tile = "/usr/share/awesome/themes/default/layouts/tilew.png"
-theme.layout_tiletop = "/usr/share/awesome/themes/default/layouts/tiletopw.png"
-theme.layout_spiral  = "/usr/share/awesome/themes/default/layouts/spiralw.png"
-theme.layout_dwindle = "/usr/share/awesome/themes/default/layouts/dwindlew.png"
+local themedir = os.getenv("HOME") .. "/.config/awesome/themes/default/"
+theme.wallpaper = themedir .. "wallpaper.jpg"
+
+local layoutdir = themedir .. "layouts/"
+theme.layout_fairh = layoutdir .. "fairhw.png"
+theme.layout_fairv = layoutdir .. "fairvw.png"
+theme.layout_floating  = layoutdir .. "floatingw.png"
+theme.layout_magnifier = layoutdir .. "magnifierw.png"
+theme.layout_max = layoutdir .. "maxw.png"
+theme.layout_fullscreen = layoutdir .. "fullscreenw.png"
+theme.layout_tilebottom = layoutdir .. "tilebottomw.png"
+theme.layout_tileleft   = layoutdir .. "tileleftw.png"
+theme.layout_tile = layoutdir .. "tilew.png"
+theme.layout_tiletop = layoutdir .. "tiletopw.png"
+theme.layout_spiral  = layoutdir .. "spiralw.png"
+theme.layout_dwindle = layoutdir .. "dwindlew.png"
 
 -- vain stuff
-theme.layout_termfair      = os.getenv("HOME") .. "/.config/awesome/vain/themes/default/layouts/termfairw.png"
-theme.layout_browse        = os.getenv("HOME") .. "/.config/awesome/vain/themes/default/layouts/browsew.png"
-theme.layout_cascade       = os.getenv("HOME") .. "/.config/awesome/vain/themes/default/layouts/cascadew.png"
-theme.layout_cascadebrowse = os.getenv("HOME") .. "/.config/awesome/vain/themes/default/layouts/cascadebrowsew.png"
-theme.layout_centerwork    = os.getenv("HOME") .. "/.config/awesome/vain/themes/default/layouts/centerworkw.png"
+local vaindir = layoutdir .. "vain/"
+theme.layout_termfair      = vaindir .. "termfairw.png"
+theme.layout_browse        = vaindir .. "browsew.png"
+theme.layout_cascade       = vaindir .. "cascadew.png"
+theme.layout_cascadebrowse = vaindir .. "cascadebrowsew.png"
+theme.layout_centerwork    = vaindir .. "centerworkw.png"
 
 theme.useless_gap_width = "5"
-
-theme.arch_icon = "/home/marvin/.config/awesome/themes/default/arch.png"
-theme.awesome_icon = "/usr/share/awesome/icons/awesome16.png"
 
 -- Define the icon theme for application icons. If not set then the icons 
 -- from /usr/share/icons and /usr/share/icons/hicolor will be used.
