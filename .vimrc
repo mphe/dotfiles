@@ -192,6 +192,9 @@ highlight EasyMotionMoveHL ctermbg=240 ctermfg=black
 set cursorline
 highlight CursorLine ctermbg=Black cterm=NONE
 
+" No underline in folds
+highlight Folded cterm=bold
+
 " -------------------------------------- Style config end
 
 
