@@ -79,10 +79,11 @@ xnoremap k gk
 nnoremap Y y$
 
 " map <leader>p to substitute the selection with yanked text in visual mode
-xnoremap <leader>p "_dP
+xnoremap <leader>P "_dP
+xnoremap <leader>p "_dp
 
 " faster substitution with yanked text
-nmap S viw<leader>p
+nmap S viw<leader>P
 
 " -------------------------------------- Key mappings end
 
