@@ -3,6 +3,7 @@ export ANDROID_HOME="/opt/android-sdk"
 export MAIN=/mnt/iomega/Main
 export CPPLIB=/mnt/iomega/C++/lib
 export SHARED=~/Shared
+export EDITOR="vim"
 
 # force gtk2 for libreoffice
 export SAL_USE_VCLPLUGIN=gtk
