@@ -135,6 +135,8 @@ Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
 Plugin 'vim-scripts/cscope.vim'
 Plugin 'kshenoy/vim-signature'
+Plugin 'artur-shaik/vim-javacomplete2'
+Plugin 'scrooloose/syntastic'
 
 " Turn filetype functionality back on
 filetype on
@@ -276,6 +278,7 @@ nnoremap <leader>gf :FSHere<CR>
 let g:UltiSnipsExpandTrigger="<c-j>"
 let g:UltiSnipsJumpForwardTrigger="<c-j>"
 let g:UltiSnipsJumpBackwardTrigger="<c-k>"
+let g:ultisnips_java_brace_style="nl"
 
 " vim-cscope
 let g:cscope_auto_update = 0
@@ -299,6 +302,32 @@ nnoremap  <leader>ff :call cscope#find('f', expand('<cword>'))<CR>
 " i: Find files #including this file
 nnoremap  <leader>fi :call cscope#find('i', expand('<cword>'))<CR>
 
+" vim-javacomplete2
+autocmd FileType java set omnifunc=javacomplete#Complete
+
+if filereadable("AndroidManifest.xml")
+    let g:JavaComplete_SourcesPath = "target/generated-sources/r"
+endif
+
+" syntastic
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 0
+let g:syntastic_check_on_wq = 0
+let g:syntastic_java_javac_config_file_enabled = 1
+let g:syntastic_java_javac_delete_output = 0
+let g:syntastic_mode_map = {
+    \ "mode": "passive",
+    \ "active_filetypes": ["java"],
+    \ "passive_filetypes": [] }
+
+autocmd FileType java
+    \ nnoremap <F5> :SyntasticCheck<CR> |
+    \ inoremap <F5> <c-o>:SyntasticCheck<CR>
 
 " -------------------------------------- Plugin configuration end
 
