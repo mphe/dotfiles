@@ -130,6 +130,7 @@ Plugin 'xolox/vim-misc'
 Plugin 'xolox/vim-easytags'
 Plugin 'majutsushi/tagbar'
 Plugin 'xolox/vim-lua-ftplugin.git'
+Plugin 'xolox/vim-lua-inspect'
 Plugin 'derekwyatt/vim-fswitch'
 Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
@@ -301,6 +302,9 @@ nnoremap  <leader>fe :call cscope#find('e', expand('<cword>'))<CR>
 nnoremap  <leader>ff :call cscope#find('f', expand('<cword>'))<CR>
 " i: Find files #including this file
 nnoremap  <leader>fi :call cscope#find('i', expand('<cword>'))<CR>
+
+" lua inspect
+let g:lua_inspect_events = ''
 
 " vim-javacomplete2
 autocmd FileType java set omnifunc=javacomplete#Complete
