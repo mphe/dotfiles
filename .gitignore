@@ -1,4 +1,6 @@
 .vim/view
+.vim/bundle/*
+!.vim/bundle/vundle
 *.pyc
 .ncmpcpp/error.log
 .config/ranger/bookmarks
