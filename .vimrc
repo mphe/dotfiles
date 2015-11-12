@@ -166,6 +166,9 @@ highlight YcmWarningSign ctermbg=black ctermfg=red
 highlight YcmErrorSign ctermbg=black ctermfg=red
 highlight YcmErrorSection cterm=underline ctermfg=darkred
 
+" Search highlight color
+highlight EasyMotionMoveHL ctermbg=240 ctermfg=black
+
 " ------------------ Custom
 " colorscheme peachpuff
 " highlight LineNr ctermfg=darkgray
