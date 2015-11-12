@@ -263,6 +263,7 @@ command! TOCPP H2cppx
 let g:easytags_async = 1
 let g:easytags_auto_highlight = 0
 let g:easytags_resolve_links = 1
+let g:easytags_include_members = 1
 
 " tagbar
 command! TB TagbarToggle
