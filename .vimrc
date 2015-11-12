@@ -273,7 +273,7 @@ nmap <S-F7> <Plug>ColorstepReload
 nnoremap <leader>gf :FSHere<CR>
 
 " UltiSnip
-let g:UltiSnipsExpandTrigger="<c-z>"
+let g:UltiSnipsExpandTrigger="<c-j>"
 let g:UltiSnipsJumpForwardTrigger="<c-j>"
 let g:UltiSnipsJumpBackwardTrigger="<c-k>"
 
