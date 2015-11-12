@@ -219,7 +219,7 @@ map n <Plug>(easymotion-next)
 map N <Plug>(easymotion-prev)
 
 " NERDTree shortcut
-command NT NERDTreeToggle
+command! NT NERDTreeToggle
 " let NERDTreeWinPos = "right"
 
 " YCM
@@ -254,7 +254,7 @@ let delimitMate_expand_space = 1
 let delimitMate_jump_expansion = 1
 
 " h2cppx
-command TOCPP H2cppx
+command! TOCPP H2cppx
 
 " easytags
 let g:easytags_async = 1
@@ -262,7 +262,7 @@ let g:easytags_auto_highlight = 0
 let g:easytags_resolve_links = 1
 
 " tagbar
-command TB TagbarToggle
+command! TB TagbarToggle
 
 " ColorStepper Keys
 nmap <F6> <Plug>ColorstepPrev
