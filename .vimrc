@@ -85,6 +85,9 @@ xnoremap <leader>p "_dp
 " faster substitution with yanked text
 nmap S viw<leader>P
 
+" write file with root permissions
+command! SudoWrite w !sudo tee %
+
 " -------------------------------------- Key mappings end
 
 
