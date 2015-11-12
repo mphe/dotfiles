@@ -223,14 +223,14 @@ command! NT NERDTreeToggle
 " let NERDTreeWinPos = "right"
 
 " YCM
-nnoremap <F5> :YcmForceCompileAndDiagnostics<CR><CR>
-inoremap <F5> <c-o>:YcmForceCompileAndDiagnostics<CR>
-" nnoremap <leader>jd :YcmCompleter GoTo<CR>
-nnoremap <leader>jd :YcmCompleter GoToDefinition<CR>
-nnoremap <leader>jD :YcmCompleter GoToDeclaration<CR>
-nnoremap <leader>gt :YcmCompleter GetType<CR>
-nnoremap <leader>gp :YcmCompleter GetParent<CR>
-nnoremap <leader>gd :YcmCompleter GetDoc<CR>
+autocmd FileType c,cpp,python
+    \ nnoremap <F5> :YcmForceCompileAndDiagnostics<CR><CR> |
+    \ inoremap <F5> <c-o>:YcmForceCompileAndDiagnostics<CR> |
+    \ nnoremap <leader>jd :YcmCompleter GoToDefinition<CR> |
+    \ nnoremap <leader>jD :YcmCompleter GoToDeclaration<CR> |
+    \ nnoremap <leader>gt :YcmCompleter GetType<CR> |
+    \ nnoremap <leader>gp :YcmCompleter GetParent<CR> |
+    \ nnoremap <leader>gd :YcmCompleter GetDoc<CR> |
 let g:ycm_min_num_of_chars_for_completion = 1
 let g:ycm_server_keep_logfiles = 1
 let g:ycm_server_log_level = 'debug'
