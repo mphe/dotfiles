@@ -62,8 +62,7 @@ configdir = os.getenv("HOME") .. "/.config/awesome"
 modkey = "Mod4"
 
 -- Table of layouts to cover with awful.layout.inc, order matters.
-local layouts =
-{
+local layouts = {
     awful.layout.suit.floating,
     vain.layout.browse,
     vain.layout.uselesstile,
@@ -186,29 +185,6 @@ wifiwidget = net_widgets.wireless({
 -- wiredwidget = net_widgets.indicator({
 --     interfaces = {"enp2s0f0"},
 -- })
-
-volwidget = wibox.widget.textbox()
-volwidget:buttons(awful.util.table.join(
-    awful.button({}, 1, function() run_term("bash -c 'ps -a | grep alsamixer && pkill alsamixer || alsamixer'") end),
-    awful.button({}, 3, volumeToggle),
-    awful.button({}, 4, function() volumeChange("1dB+") end),
-    awful.button({}, 5, function() volumeChange("1dB-") end)
-))
-vicious.register(volwidget, vicious.widgets.volume, "Vol: $1% $2", 5, "Master")
-
-
--- CPU widget
-cpuwidget_text = wibox.widget.textbox()
-cpuwidget_text:set_text("CPU: ")
-cpuwidget = wibox.widget.textbox()
-cpuwidget:set_align("right")
-vicious.register(cpuwidget, vicious.widgets.cpu, "$1%", 3)
-vicious.cache(vicious.widgets.cpu)
-cpuwidget = wibox.layout.constraint(cpuwidget, "exact", 24, nil)
-
--- Battery widget
-batwidget = wibox.widget.textbox()
-vicious.register(batwidget, vicious.widgets.bat, "Bat: $1$2% $3", 61, "BAT1")
 
 -- {{{ Wibox
 -- Create a textclock widget
