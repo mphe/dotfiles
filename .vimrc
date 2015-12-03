@@ -5,6 +5,7 @@ set showcmd
 
 " tab size = 4, spaces instead of tabs, and auto indent
 set shiftwidth=4
+set tabstop=4
 set expandtab
 set smarttab
 set autoindent
