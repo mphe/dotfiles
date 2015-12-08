@@ -35,6 +35,6 @@ fi
 
 [[ -f ~/.xsession  ]] && source ~/.xsession
 
-unagi&
+compton&
 
 exec awesome

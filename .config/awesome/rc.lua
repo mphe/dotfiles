@@ -677,5 +677,4 @@ client.connect_signal("unfocus",
 -- }}}
 
 -- Autostart
-utils.run_once("unagi")
--- run_once("xcompmgr -cfF")
+utils.run_once("compton")
