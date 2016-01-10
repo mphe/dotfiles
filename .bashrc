@@ -109,12 +109,13 @@ vim () {
 }
 
 
-# switch between src and include directory in a C++ project
+# Switch between src and include directory in a C++ project.
+# If the destination path doesn't exist, it will be created.
 switchdir() {
     if [[ -z $1 ]]; then
         if [[ "$PWD" =~ .*src.* ]]; then
-            src=crs
-            dest=edulcni
+            local src=crs
+            local dest=edulcni
         elif [[ "$PWD" =~ .*include* ]]; then
             local src=edulcni
             local dest=crs
@@ -123,10 +124,9 @@ switchdir() {
             exit
         fi
     fi
-    # elif [[ $1 == "src" ]]; then
-    #     local src=include
-    #     local dest=src
-    cd "$(pwd | rev | sed -e "s/$src\//$dest\//" | rev)"
+    local dir="$(pwd | rev | sed -e "s/$src\//$dest\//" | rev)"
+    mkdir -p "$dir"
+    cd "$dir"
 }
 
 
