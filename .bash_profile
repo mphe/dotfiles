@@ -4,6 +4,7 @@ export MAIN=/mnt/iomega/Main
 export CPPLIB=/mnt/iomega/C++/lib
 export SHARED=~/Shared
 export EDITOR="vim"
+export GOPATH=~/golib
 
 # force gtk2 for libreoffice
 export SAL_USE_VCLPLUGIN=gtk
