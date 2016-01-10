@@ -39,3 +39,6 @@ progressbar_elapsed_color = "blue"
 active_column_color = "blue"
 color1 = "white"
 visualizer_color = "blue"
+
+autocenter_mode = yes
+centered_cursor = yes
