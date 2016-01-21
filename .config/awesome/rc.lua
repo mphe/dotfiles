@@ -472,6 +472,7 @@ clientkeys = awful.util.table.join(
     -- Remap close shortcut
     awful.key({ "Mod1" }, "F4", function (c) c:kill() end),
     awful.key({ modkey }, "F4", function (c) c:kill() end),
+    awful.key({ modkey }, "c", function (c) c:kill() end),
 
     -- awful.key({ modkey, "Control" }, "Return", function(c)
     --     -- Find the newest shell child process -> Read its cwd -> pass it to cd -> Run terminal
