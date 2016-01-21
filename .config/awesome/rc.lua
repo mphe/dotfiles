@@ -338,6 +338,7 @@ globalkeys = awful.util.table.join(
 
     -- Open file explorer
     awful.key({ modkey }, "e", function() awful.util.spawn(filemgr) end),
+    awful.key({ modkey , "Shift" }, "e", function() awful.util.spawn_with_shell("urxvt -e python3 $(which ranger)") end),
 
     -- Enable brightness control keys
     awful.key({ }, "XF86MonBrightnessDown", function()
