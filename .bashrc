@@ -23,8 +23,11 @@ alias youtube-dl='youtube-dl -o "%(title)s.%(ext)s"'
 alias cmake-debug='cmake -DCMAKE_BUILD_TYPE=Debug'
 alias cmake-release='cmake -DCMAKE_BUILD_TYPE=Release'
 
-# Set git language to English
-alias git='LANG=en_US.UTF-8 git'
+# thefuck
+eval "$(thefuck --alias)"
+
+# Set git language to english (setting LANG doesn't work with thefuck)
+# alias git='LANG=en_US.UTF-8 git'
 
 # Enable checkwinsize so that bash will check the terminal size when
 # it regains control. (http://cnswww.cns.cwru.edu/~chet/bash/FAQ (E11))
@@ -97,7 +100,7 @@ eval $(dircolors ~/.dir_colors/dircolors.ansi-dark)
 
 
 # env vars
-export PATH="$PATH:~/bin"
+export PATH="$PATH:/home/marvin/bin"
 export PYTHONPATH="$PYTHONPATH:/mnt/iomega/Python/lib"
 
 # disable flow control when using vim
