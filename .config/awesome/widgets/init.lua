@@ -14,22 +14,25 @@ M.widgets = {
     tray = require("widgets.tray")
 }
 
-function M.create(witype, icon, args)
-    local reg = witype(args)
-    reg.witype = witype
-
-    -- Create container to store the icon and widget
+-- Returns a wibox.layout.fixed.horizontal containing the widget and icon
+function M.bind_to_icon(widget, icon)
     local box = wibox.layout.fixed.horizontal()
     if icon then
         box:add(icons.loadIcon(icon))
     end
-    box:add(reg.widget)
-    if witype.attach then
-        witype.attach(box, reg)
-    end
+    box:add(widget)
 
-    -- Add the container to the registration object
-    reg.container = box
+    return box
+end
+
+function M.create(witype, icon, args)
+    local reg = witype(args)
+    reg.witype = witype
+    reg.container = M.bind_to_icon(reg.widget, icon)
+
+    if witype.attach then
+        witype.attach(reg.container, reg)
+    end
 
     return reg
 end
