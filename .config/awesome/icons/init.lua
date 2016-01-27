@@ -13,6 +13,7 @@ M.speaker = icondir .. "spkr_01.png"
 M.brightness = icondir .. "brightness.png"
 M.mem = icondir .. "mem.png"
 M.mpd = icondir .. "note.png"
+M.temp = icondir .. "temp.png"
 
 function M.loadIcon(icon)
     w = wibox.widget.imagebox()

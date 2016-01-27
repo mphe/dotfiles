@@ -171,6 +171,7 @@ cpuwidget = widgets.create(widgets.widgets.cpu, icons.cpu)
 memwidget = widgets.create(widgets.widgets.mem, icons.mem)
 mpdwidget = widgets.create(widgets.widgets.mpd, icons.mpd)
 batwidget = widgets.create(widgets.widgets.bat)
+tempwidget = widgets.create(widgets.widgets.temp, icons.temp)
 brightwidget = widgets.create(widgets.widgets.brightness, icons.brightness)
 systray = widgets.create(widgets.widgets.tray)
 systray.witype.toggle(systray, false)
@@ -290,6 +291,9 @@ for s = 1, screen.count() do
     -- right_layout:add(separator)
 
     right_layout:add(brightwidget.container)
+    right_layout:add(separator)
+
+    right_layout:add(tempwidget.container)
     right_layout:add(separator)
 
     right_layout:add(volwidget.container)

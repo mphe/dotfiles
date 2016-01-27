@@ -11,7 +11,8 @@ M.widgets = {
     cpu = require("widgets.cpu"),
     mem = require("widgets.mem"),
     bat = require("widgets.bat"),
-    tray = require("widgets.tray")
+    tray = require("widgets.tray"),
+    temp = require("widgets.temp")
 }
 
 -- Returns a wibox.layout.fixed.horizontal containing the widget and icon
