@@ -87,6 +87,7 @@ local layouts = {
     vain.layout.cascadebrowse,
     vain.layout.centerwork,
 }
+-- }}}
 
 
 beautiful.init(configdir .. "/themes/default/theme.lua")
@@ -97,6 +98,7 @@ if beautiful.wallpaper then
         gears.wallpaper.centered(beautiful.wallpaper, s)
     end
 end
+-- }}}
 
 -- Alt Tab config
 -- alttab.settings.preview_box_bg = "#222222"
@@ -104,7 +106,7 @@ end
 alttab.settings.client_opacity = true
 
 
--- Tags
+-- {{{ Tags
 -- Define a tag table which hold all screen tags.
 tags = {}
 for s = 1, screen.count() do
@@ -120,8 +122,9 @@ if screen.count() > 1 then
     awful.tag.setmwfact(0.33, tags[2][1])
     awful.layout.set(vain.layout.uselessfair, tags[2][9]) -- Steam
 end
+-- }}}
 
--- Menu
+-- {{{ Menu
 -- Create a laucher widget and a main menu
 myawesomemenu = {
    { "manual", function() run_term("man awesome") end },
@@ -148,12 +151,12 @@ mymainmenu = awful.menu({
     },
     theme = { width = 150 },
 })
+-- }}}
 
 mylauncher = awful.widget.launcher({
     image = icons.arch,
     menu = mymainmenu
 })
-
 
 -- Menubar configuration
 menubar.utils.terminal = terminal -- Set the terminal for applications that require it
