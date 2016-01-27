@@ -23,7 +23,7 @@ end
 
 function M.attach(widget, reg)
     widget:buttons(awful.util.table.join(
-        awful.button({}, 1, function() utils.toggle_run_term("htop") end)
+        awful.button({}, 1, function() utils.toggle_run_term("htop --sort-key PERCENT_MEM") end)
     ))
 
     utils.registerPopupNotify(widget, "Memory", function(w)
