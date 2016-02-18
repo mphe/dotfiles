@@ -5,7 +5,7 @@ audible_bell = false
 mouse_autohide = true
 allow_bold = true
 dynamic_title = true
-urgent_on_bell = false
+urgent_on_bell = true
 clickable_url = true
 # font = DejaVu Sans Mono for Powerline 10
 font = Terminess Powerline 10
@@ -35,17 +35,19 @@ browser = firefox
 
 # Solarized dark color scheme
 foreground = #839496
-foreground_bold = #eee8d5
+foreground_bold = #b0b5b7
+#foreground_bold = #eee8d5
 background = rgba(0, 43, 54, 0.9)
 cursor = #93a1a1
 
+#black
 color0 = #073642
-color8 = #073642
+color8 = #657b83
 # color8 = #002b36
 
+# red
 color1 = #dc322f
-color9 = #dc322f
-# color9 = #cb4b16
+color9 = #cb4b16
 
 color2 = #859900
 color10 = #859900
