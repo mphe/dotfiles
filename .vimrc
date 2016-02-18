@@ -140,8 +140,8 @@ Plugin 'honza/vim-snippets'
 Plugin 'kien/ctrlp.vim'
 Plugin 'vim-scripts/cscope.vim'
 Plugin 'kshenoy/vim-signature'
-Plugin 'artur-shaik/vim-javacomplete2'
-Plugin 'scrooloose/syntastic'
+" Plugin 'artur-shaik/vim-javacomplete2'
+" Plugin 'scrooloose/syntastic'
 
 " Turn filetype functionality back on
 filetype on
@@ -205,7 +205,7 @@ highlight Folded cterm=bold
 " -------------------------------------- Style config end
 
 
-" -------------------------------------- Plugin configuration
+" -------------------------------------- Plugin configuration {{{
 " vim-airline
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#whitespace#enabled = 0
@@ -316,33 +316,39 @@ nnoremap  <leader>fi :call cscope#find('i', expand('<cword>'))<CR>
 let g:lua_inspect_events = ''
 
 " vim-javacomplete2
-autocmd FileType java set omnifunc=javacomplete#Complete
-
-if filereadable("AndroidManifest.xml")
-    let g:JavaComplete_SourcesPath = "target/generated-sources/r"
-endif
+" autocmd FileType java set omnifunc=javacomplete#Complete
+"
+" if filereadable("AndroidManifest.xml")
+"     let g:JavaComplete_SourcesPath = "target/generated-sources/r"
+" endif
 
 " syntastic
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
+" set statusline+=%#warningmsg#
+" set statusline+=%{SyntasticStatuslineFlag()}
+" set statusline+=%*
+"
+" let g:syntastic_always_populate_loc_list = 1
+" let g:syntastic_auto_loc_list = 1
+" let g:syntastic_check_on_open = 0
+" let g:syntastic_check_on_wq = 0
+" let g:syntastic_java_javac_config_file_enabled = 1
+" let g:syntastic_java_javac_delete_output = 0
+" let g:syntastic_mode_map = {
+"     \ "mode": "passive",
+"     \ "active_filetypes": ["java"],
+"     \ "passive_filetypes": [] }
+"
+" autocmd FileType java
+"     \ nnoremap <F5> :SyntasticCheck<CR> |
+"     \ inoremap <F5> <c-o>:SyntasticCheck<CR>
 
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 0
-let g:syntastic_check_on_wq = 0
-let g:syntastic_java_javac_config_file_enabled = 1
-let g:syntastic_java_javac_delete_output = 0
-let g:syntastic_mode_map = {
-    \ "mode": "passive",
-    \ "active_filetypes": ["java"],
-    \ "passive_filetypes": [] }
-
+" eclim
+let g:EclimCompletionMethod = 'omnifunc'
 autocmd FileType java
-    \ nnoremap <F5> :SyntasticCheck<CR> |
-    \ inoremap <F5> <c-o>:SyntasticCheck<CR>
+    \ nnoremap <F5> :Validate<CR> |
+    \ inoremap <F5> <c-o>:Validate<CR>
 
-" -------------------------------------- Plugin configuration end
+" -------------------------------------- Plugin configuration end }}}
 
 " buffer shortcuts
 nnoremap <leader>bn :bn<CR>
