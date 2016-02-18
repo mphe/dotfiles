@@ -151,7 +151,7 @@ filetype plugin indent on
 " -------------------------------------- vundle end }}}
 
 
-" -------------------------------------- Style config
+" -------------------------------------- Style config {{{
 " ------------------ General
 set t_Co=256
 set background=dark
@@ -169,8 +169,8 @@ highlight SignColumn ctermbg=black
 highlight CursorLineNr ctermbg=black cterm=bold
 
 " Solid background color for YCM indicators
-highlight YcmWarningSign ctermbg=black ctermfg=red
-highlight YcmErrorSign ctermbg=black ctermfg=red
+highlight YcmWarningSign cterm=bold ctermbg=black ctermfg=red
+highlight YcmErrorSign cterm=bold ctermbg=black ctermfg=red
 highlight YcmErrorSection cterm=underline ctermfg=darkred
 
 " Search highlight color
@@ -202,7 +202,7 @@ highlight CursorLine ctermbg=Black cterm=NONE
 " No underline in folds
 highlight Folded cterm=bold
 
-" -------------------------------------- Style config end
+" -------------------------------------- Style config end }}}
 
 
 " -------------------------------------- Plugin configuration {{{
