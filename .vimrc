@@ -99,7 +99,7 @@ autocmd InsertEnter * if !exists('w:last_fdm') | let w:last_fdm=&foldmethod | se
 autocmd InsertLeave,WinLeave * if exists('w:last_fdm') | let &l:foldmethod=w:last_fdm | unlet w:last_fdm | endif
 
 
-" -------------------------------------- vundle
+" -------------------------------------- vundle {{{
 set nocompatible
 filetype off
 
@@ -120,7 +120,8 @@ Plugin 'Lokaltog/vim-easymotion'
 Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-surround'
 Plugin 'tomtom/tcomment_vim'
-Plugin 'Valloric/YouCompleteMe'
+" Plugin 'Valloric/YouCompleteMe'
+Plugin 'oblitum/YouCompleteMe'
 Plugin 'rdnetto/YCM-Generator'
 Plugin 'tmhedberg/SimpylFold'
 Plugin 'kevinw/pyflakes-vim'
@@ -147,7 +148,7 @@ filetype on
 filetype plugin on
 filetype plugin indent on
 
-" -------------------------------------- vundle end
+" -------------------------------------- vundle end }}}
 
 
 " -------------------------------------- Style config
@@ -245,6 +246,10 @@ let g:ycm_confirm_extra_conf = 0
 let g:ycm_autoclose_preview_window_after_completion = 0
 let g:ycm_autoclose_preview_window_after_insertion = 0
 let g:ycm_always_populate_location_list = 1
+
+" Enable tab for completion (removed in oblitum's fork)
+let g:ycm_key_list_select_completion = ['<TAB>', '<Down>']
+let g:ycm_key_list_previous_completion = ['<S-TAB>', '<Up>']
 
 " SimpylFold
 let g:SimpylFold_fold_docstring = 0
