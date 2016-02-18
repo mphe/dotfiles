@@ -2,8 +2,6 @@ mpd_music_dir = "~/music"
 mpd_host = localhost
 mpd_port = 6600
 
-default_space_mode = select
-
 visualizer_fifo_path = /tmp/mpd.fifo
 visualizer_output_name = "my_fifo"
 visualizer_in_stereo = yes

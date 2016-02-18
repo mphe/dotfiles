@@ -27,10 +27,10 @@ def_key "j"
 #def_key "}"
 #  scroll_down_artist
 #
-def_key "ctrl_b"
+def_key "ctrl-b"
  page_up
 
-def_key "ctrl_f"
+def_key "ctrl-f"
  page_down
 
 def_key "g"
@@ -45,12 +45,10 @@ def_key "home"
 def_key "end"
  move_end
 
-#def_key "space"
-#  press_space
-#
-# def_key "enter"
-#  press_enter
-#
+def_key "space"
+  select_item
+  scroll_down
+
 def_key "l"
  enter_directory
 
@@ -234,13 +232,13 @@ def_key "b"
 #def_key "u"
 #  update_database
 #
-#def_key "ctrl_v"
+#def_key "ctrl-v"
 #  sort_playlist
 #
-#def_key "ctrl_r"
+#def_key "ctrl-r"
 #  reverse_playlist
 #
-def_key "ctrl_f"
+def_key "ctrl-f"
  dummy
 # apply_filter
 
@@ -380,7 +378,7 @@ def_key "O"
 #def_key "F"
 #  toggle_fetching_lyrics_in_background
 #
-#def_key "ctrl_l"
+#def_key "ctrl-l"
 #  toggle_screen_lock
 #
 #def_key "`"
@@ -395,7 +393,7 @@ def_key "O"
 #def_key "`"
 #  add_random_items
 #
-#def_key "ctrl_p"
+#def_key "ctrl-p"
 #  set_selected_items_priority
 #
 #def_key "q"
