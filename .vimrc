@@ -126,7 +126,6 @@ Plugin 'rdnetto/YCM-Generator'
 Plugin 'tmhedberg/SimpylFold'
 Plugin 'kevinw/pyflakes-vim'
 Plugin 'Raimondi/delimitMate'
-Plugin 'xuqix/h2cppx'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'jeetsukumaran/vim-buffergator'
 Plugin 'xolox/vim-misc'
@@ -142,6 +141,7 @@ Plugin 'vim-scripts/cscope.vim'
 Plugin 'kshenoy/vim-signature'
 " Plugin 'artur-shaik/vim-javacomplete2'
 " Plugin 'scrooloose/syntastic'
+Plugin 'derekwyatt/vim-protodef'
 
 " Turn filetype functionality back on
 filetype on
@@ -263,9 +263,6 @@ highlight SpellBad term=underline ctermfg=160 gui=undercurl guisp=Orange
 let delimitMate_expand_cr = 1
 let delimitMate_expand_space = 1
 let delimitMate_jump_expansion = 1
-
-" h2cppx
-command! TOCPP H2cppx
 
 " easytags
 let g:easytags_async = 1
