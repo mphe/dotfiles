@@ -100,6 +100,7 @@ eval $(dircolors ~/.dir_colors/dircolors.ansi-dark)
 
 
 # env vars
+export LANG='en_US.UTF-8'
 export PATH="$PATH:/home/marvin/bin"
 export PYTHONPATH="$PYTHONPATH:/mnt/iomega/Python/lib"
 
