@@ -41,7 +41,7 @@ set hidden
 " Case insensitive file completion
 set wildignorecase
 
-" -------------------------------------- Key mappings
+" -------------------------------------- Key mappings {{{
 " Horizontal scrolling
 nnoremap <C-l> 2zl
 nnoremap <C-h> 2zh
@@ -90,7 +90,7 @@ nmap S viw<leader>P
 " write file with root permissions
 command! SudoWrite w !sudo tee %
 
-" -------------------------------------- Key mappings end
+" -------------------------------------- Key mappings end }}}
 
 
 " Don't screw up folds when inserting text that might affect them,
@@ -98,6 +98,8 @@ command! SudoWrite w !sudo tee %
 autocmd InsertEnter * if !exists('w:last_fdm') | let w:last_fdm=&foldmethod | setlocal foldmethod=manual | endif
 autocmd InsertLeave,WinLeave * if exists('w:last_fdm') | let &l:foldmethod=w:last_fdm | unlet w:last_fdm | endif
 
+" Markdown preview (requires 'Markdown Viewer' addon)
+autocmd FileType markdown,md nnoremap <F5> :!firefox % &<CR><CR>
 
 " -------------------------------------- vundle {{{
 set nocompatible
@@ -280,6 +282,7 @@ nmap <S-F7> <Plug>ColorstepReload
 
 " FSwitch
 nnoremap <leader>gf :FSHere<CR>
+nnoremap <leader>gF :vsp<CR>:FSHere<CR>
 
 " UltiSnip
 let g:UltiSnipsExpandTrigger="<c-j>"
@@ -348,6 +351,8 @@ autocmd FileType java
 " -------------------------------------- Plugin configuration end }}}
 
 " buffer shortcuts
+nnoremap <tab> :bn<CR>
+nnoremap <s-tab> :bp<CR>
 nnoremap <leader>bn :bn<CR>
 nnoremap <leader>bp :bp<CR>
 nnoremap <leader>bl :b#<CR>
