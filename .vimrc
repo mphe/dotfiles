@@ -121,6 +121,7 @@ Plugin 'bling/vim-airline'
 Plugin 'Lokaltog/vim-easymotion'
 Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-surround'
+Plugin 'tpope/vim-repeat'
 Plugin 'tomtom/tcomment_vim'
 " Plugin 'Valloric/YouCompleteMe'
 Plugin 'oblitum/YouCompleteMe'
@@ -143,7 +144,13 @@ Plugin 'vim-scripts/cscope.vim'
 Plugin 'kshenoy/vim-signature'
 " Plugin 'artur-shaik/vim-javacomplete2'
 " Plugin 'scrooloose/syntastic'
+Plugin 'Rykka/mathematic.vim'
+Plugin 'richq/vim-cmake-completion'
 Plugin 'derekwyatt/vim-protodef'
+Plugin 'aperezdc/vim-template'
+Plugin 'BohrShaw/vim-vimperator-syntax'
+Plugin 'idanarye/vim-vebugger'
+Plugin 'Shougo/vimproc.vim'
 
 " Turn filetype functionality back on
 filetype on
@@ -347,6 +354,10 @@ let g:EclimCompletionMethod = 'omnifunc'
 autocmd FileType java
     \ nnoremap <F5> :Validate<CR> |
     \ inoremap <F5> <c-o>:Validate<CR>
+
+" vim-template
+let g:username = 'Marvin Ewald'
+let g:email = 'marvin.e@protonmail.ch'
 
 " -------------------------------------- Plugin configuration end }}}
 
