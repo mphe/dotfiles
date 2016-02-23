@@ -3,8 +3,10 @@ local wibox = require("wibox")
 
 local M = {}
 
-function M.getBrightness()
-    return tonumber(awful.util.pread("xbacklight -get"))
+function M.getBrightness(device)
+    -- xbacklight causes lags
+    -- return tonumber(awful.util.pread("xbacklight -get"))
+    return tonumber(awful.util.pread("cat /sys/class/backlight/" .. device .. "/brightness")) / 10
 end
 
 function M.changeBrightness(x)
@@ -13,15 +15,16 @@ end
 
 function M.update(reg)
     -- reg.callback(reg.widget, M.getBrightness())
-    reg.widget:set_text(tostring(math.ceil(M.getBrightness())) .. "%")
+    reg.widget:set_text(tostring(math.ceil(M.getBrightness(reg.device))) .. "%")
 end
 
 local function creator(args)
     local args = args or {}
     local reg = {
         widget = wibox.widget.textbox(),
+        device = args.device or "intel_backlight",
         -- callback = callback,
-        timer = timer({ timeout = args.interval or 5 })
+        timer = timer({ timeout = args.interval or 11 })
     }
 
     reg.timer:connect_signal("timeout", function() M.update(reg) end)
