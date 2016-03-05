@@ -489,10 +489,17 @@ clientkeys = awful.util.table.join(
     awful.key({ modkey,           }, "f",      function (c) c.fullscreen = not c.fullscreen  end),
     awful.key({ modkey,           }, "s",      function (c) c.sticky = not c.sticky          end),
     awful.key({ modkey, "Shift"   }, "c",      function (c) c:kill()                         end),
-    awful.key({ modkey, "Control" }, "space",  awful.client.floating.toggle                     ),
     awful.key({ modkey, "Control" }, "Return", function (c) c:swap(awful.client.getmaster(c.screen)) end),
     awful.key({ modkey,           }, "o",      awful.client.movetoscreen                        ),
     awful.key({ modkey,           }, "t",      function (c) c.ontop = not c.ontop            end),
+
+    awful.key({ modkey, "Control" }, "space",  function (c)
+            awful.client.floating.toggle(c)
+            if awful.client.floating.get(c) and not (c.maximized_horizontal or c.maximized_vertical) then
+                awful.placement.centered(c, nil)
+            end
+        end),
+
     awful.key({ modkey,           }, "n", function (c)
             -- The client currently has the input focus, so it cannot be
             -- minimized, since minimized clients can't have the focus.
@@ -588,7 +595,13 @@ awful.rules.rules = {
                      raise = true,
                      keys = clientkeys,
                      buttons = clientbuttons,
-                     size_hints_honor = false } },
+                     size_hints_honor = false },
+      callback = function(c)
+          if awful.client.floating.get(c) and not (c.maximized_horizontal or c.maximized_vertical) then
+              awful.placement.centered(c, nil)
+          end
+      end },
+
     { rule = { class = "MPlayer" },
       properties = { floating = true } },
 
