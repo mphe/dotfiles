@@ -87,6 +87,9 @@ xnoremap <leader>p "_dp
 " faster substitution with yanked text
 nmap S viw<leader>P
 
+" visually select the text just pasted
+nnoremap gz `[v`]
+
 " write file with root permissions
 command! SudoWrite w !sudo tee %
 
