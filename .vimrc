@@ -259,6 +259,7 @@ let g:ycm_confirm_extra_conf = 0
 let g:ycm_autoclose_preview_window_after_completion = 0
 let g:ycm_autoclose_preview_window_after_insertion = 0
 let g:ycm_always_populate_location_list = 1
+let g:ycm_filetype_blacklist = {}
 
 " Enable tab for completion (removed in oblitum's fork)
 let g:ycm_key_list_select_completion = ['<TAB>', '<Down>']
