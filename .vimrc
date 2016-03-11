@@ -300,6 +300,7 @@ let g:UltiSnipsExpandTrigger="<c-j>"
 let g:UltiSnipsJumpForwardTrigger="<c-j>"
 let g:UltiSnipsJumpBackwardTrigger="<c-k>"
 let g:ultisnips_java_brace_style="nl"
+let g:UltiSnipsUsePythonVersion = 2
 
 " vim-cscope
 let g:cscope_auto_update = 0
