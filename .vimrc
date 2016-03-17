@@ -41,6 +41,9 @@ set hidden
 " Case insensitive file completion
 set wildignorecase
 
+" allow incrementing/decrementing letters with c-a / c-x
+set nrformats+=alpha
+
 " -------------------------------------- Key mappings {{{
 " Horizontal scrolling
 nnoremap <C-l> 2zl
