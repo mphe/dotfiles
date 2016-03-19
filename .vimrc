@@ -99,6 +99,11 @@ command! SudoWrite w !sudo tee %
 
 " -------------------------------------- Key mappings end }}}
 
+" -------------------------------------- Aliases {{{
+" Treat E as e command
+cnoreabbrev E e
+
+" -------------------------------------- Aliases end }}}
 
 " Don't screw up folds when inserting text that might affect them,
 " until leaving insert mode.
