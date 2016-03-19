@@ -75,6 +75,7 @@ xnoremap j gj
 xnoremap k gk
 
 " Easy split navigation
+nnoremap <s-tab> <c-w><c-w><CR>
 " nnoremap <C-h> <C-w>h
 " nnoremap <C-j> <C-w>j
 " nnoremap <C-k> <C-w>k
@@ -371,8 +372,8 @@ let g:email = 'marvin.e@protonmail.ch'
 " -------------------------------------- Plugin configuration end }}}
 
 " buffer shortcuts
-nnoremap <tab> :bn<CR>
-nnoremap <s-tab> :bp<CR>
+nnoremap <F3> :bn<CR>
+nnoremap <F2> :bp<CR>
 nnoremap <leader>bn :bn<CR>
 nnoremap <leader>bp :bp<CR>
 nnoremap <leader>bl :b#<CR>
