@@ -97,6 +97,8 @@ nnoremap gz `[v`]
 " write file with root permissions
 command! SudoWrite w !sudo tee %
 
+command! FollowSymlink exec "file ". resolve(expand('%:p')) | e
+
 " -------------------------------------- Key mappings end }}}
 
 " -------------------------------------- Aliases {{{
