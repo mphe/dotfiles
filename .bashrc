@@ -5,13 +5,10 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
-if [[ -z "$TMUX" ]]; then
-    # 256 colors
-    export TERM=xterm-256color
-
-    # Auto start tmux
-    # exec tmux
-fi
+# if [[ -z "$TMUX" ]]; then
+#     # Auto start tmux
+#     exec tmux
+# fi
 
 alias ls='ls --color=always'
 alias less='less -r'
