@@ -173,7 +173,6 @@ Plugin 'tomtom/tcomment_vim'
 Plugin 'oblitum/YouCompleteMe'
 Plugin 'rdnetto/YCM-Generator'
 Plugin 'tmhedberg/SimpylFold'
-Plugin 'kevinw/pyflakes-vim'
 Plugin 'Raimondi/delimitMate'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'jeetsukumaran/vim-buffergator'
@@ -189,7 +188,7 @@ Plugin 'kien/ctrlp.vim'
 Plugin 'vim-scripts/cscope.vim'
 Plugin 'kshenoy/vim-signature'
 " Plugin 'artur-shaik/vim-javacomplete2'
-" Plugin 'scrooloose/syntastic'
+Plugin 'scrooloose/syntastic'
 Plugin 'Rykka/mathematic.vim'
 Plugin 'richq/vim-cmake-completion'
 Plugin 'derekwyatt/vim-protodef'
@@ -236,6 +235,9 @@ highlight CursorLine ctermbg=Black cterm=NONE
 
 " No underline in folds
 highlight Folded cterm=bold
+
+" Syntastic Errors
+highlight SpellBad term=underline ctermfg=160 gui=undercurl guisp=Orange 
 
 " -------------------------------------- Style config end }}}
 
@@ -404,9 +406,6 @@ let g:SimpylFold_fold_docstring = 0
 autocmd BufWinEnter *.py setlocal foldexpr=SimpylFold(v:lnum) foldmethod=expr
 autocmd BufWinLeave *.py setlocal foldexpr< foldmethod<
 
-" pyflakes
-highlight SpellBad term=underline ctermfg=160 gui=undercurl guisp=Orange 
-
 " delimitMate
 let delimitMate_expand_cr = 1
 let delimitMate_expand_space = 1
@@ -470,24 +469,28 @@ let g:lua_inspect_events = ''
 " endif
 
 " syntastic
-" set statusline+=%#warningmsg#
-" set statusline+=%{SyntasticStatuslineFlag()}
-" set statusline+=%*
-"
-" let g:syntastic_always_populate_loc_list = 1
-" let g:syntastic_auto_loc_list = 1
-" let g:syntastic_check_on_open = 0
-" let g:syntastic_check_on_wq = 0
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 0
+let g:syntastic_check_on_open = 0
+let g:syntastic_check_on_wq = 0
+let g:syntastic_quiet_messages = { "type": "style"  }
+let g:syntastic_python_checkers = ['flake8']
+" let g:syntastic_aggregate_errors = 1
 " let g:syntastic_java_javac_config_file_enabled = 1
 " let g:syntastic_java_javac_delete_output = 0
-" let g:syntastic_mode_map = {
-"     \ "mode": "passive",
-"     \ "active_filetypes": ["java"],
-"     \ "passive_filetypes": [] }
-"
-" autocmd FileType java
-"     \ nnoremap <F5> :SyntasticCheck<CR> |
-"     \ inoremap <F5> <c-o>:SyntasticCheck<CR>
+let g:syntastic_mode_map = {
+    \ "mode": "passive",
+    \ "active_filetypes": ["python"],
+    \ "passive_filetypes": [] }
+
+autocmd FileType python
+    \ nnoremap <F5> :SyntasticCheck<CR> |
+    \ inoremap <F5> <c-o>:SyntasticCheck<CR> |
+    \ nnoremap <leader>gd :Errors<CR>
 
 " eclim
 let g:EclimCompletionMethod = 'omnifunc'
