@@ -115,6 +115,24 @@ cnoreabbrev E e
 
 " -------------------------------------- Aliases end }}}
 
+" -------------------------------------- Functions {{{
+
+" Function for time measurement
+function! HowLong(command)
+    " We don't want to be prompted by a message if the command being tried is
+    " an echo as that would slow things down while waiting for user input.
+    let more = &more
+    set nomore
+    let startTime = localtime()
+    execute a:command
+    let &more = more
+    echo localtime() - startTime 
+endfunction
+
+command! -nargs=1 HowLong call HowLong(<q-args>)
+
+" -------------------------------------- Functions end }}}
+
 " Don't screw up folds when inserting text that might affect them,
 " until leaving insert mode.
 autocmd InsertEnter * if !exists('w:last_fdm') | let w:last_fdm=&foldmethod | setlocal foldmethod=manual | endif
