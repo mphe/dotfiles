@@ -1,6 +1,7 @@
 " Clean autocmds
 autocmd!
 
+" -------------------------------------- General settings start {{{
 syntax enable
 set number
 set ruler
@@ -15,10 +16,6 @@ set autoindent
 
 " enable folding
 set foldmethod=syntax
-
-" save foldings
-autocmd BufWinLeave *.* mkview
-autocmd BufWinEnter *.* silent loadview
 
 " global clipboard
 set clipboard+=unnamed
@@ -52,68 +49,13 @@ set noshowmode
 
 " -------------------------------------- General settings end }}}
 
-" -------------------------------------- Key mappings {{{
-" Horizontal scrolling
-nnoremap <C-l> 2zl
-nnoremap <C-h> 2zh
-
-" insert a new line without switching to insert mode
-nnoremap <leader>o o<ESC>
-nnoremap <leader>O O<ESC>
-
-" Shortcuts for :w 
-inoremap <c-s> <c-o>:w<CR>
-noremap <c-s> :w<CR>
-vnoremap <c-s> <ESC>:w<CR>gv
-
-" Shortcut for <Esc>
-inoremap jk <Esc>
-
-" Keep selections
-vnoremap > >gv
-vnoremap < <gv
-
-" Comment shortcut for insert mode
-imap <F2> <c-_><c-_>
-
-" better j and k
-nnoremap j gj
-nnoremap k gk
-xnoremap j gj
-xnoremap k gk
-
-" Easy split navigation
-nnoremap <s-tab> <c-w><c-w><CR>
-" nnoremap <C-h> <C-w>h
-" nnoremap <C-j> <C-w>j
-" nnoremap <C-k> <C-w>k
-" nnoremap <C-l> <C-w>l
-
-" Make Y behave like other capitals
-nnoremap Y y$
-
-" map <leader>p to substitute the selection with yanked text in visual mode
-xnoremap <leader>P "_dP
-xnoremap <leader>p "_dp
-
-" faster substitution with yanked text
-nmap S viw<leader>P
-
-" visually select the text just pasted
-nnoremap gz `[v`]
-
-" write file with root permissions
-command! SudoWrite w !sudo tee %
-
-command! FollowSymlink exec "file ". resolve(expand('%:p')) | e
-
-" -------------------------------------- Key mappings end }}}
 
 " -------------------------------------- Aliases {{{
 " Treat E as e command
 cnoreabbrev E e
 
 " -------------------------------------- Aliases end }}}
+
 
 " -------------------------------------- Functions {{{
 
@@ -133,17 +75,6 @@ command! -nargs=1 HowLong call HowLong(<q-args>)
 
 " -------------------------------------- Functions end }}}
 
-" Don't screw up folds when inserting text that might affect them,
-" until leaving insert mode.
-autocmd InsertEnter * if !exists('w:last_fdm') | let w:last_fdm=&foldmethod | setlocal foldmethod=manual | endif
-autocmd InsertLeave,WinLeave * if exists('w:last_fdm') | let &l:foldmethod=w:last_fdm | unlet w:last_fdm | endif
-
-" filetype specific foldmethods
-autocmd FileType cmake setlocal foldmethod=marker
-autocmd FileType vim setlocal foldmethod=marker
-
-" Markdown preview (requires 'Markdown Viewer' addon)
-autocmd FileType markdown,md nnoremap <F5> :!firefox % &<CR><CR>
 
 " -------------------------------------- vundle {{{
 set nocompatible
@@ -169,8 +100,11 @@ Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-repeat'
 Plugin 'tomtom/tcomment_vim'
+
+" ./install.py --clang-completer
 " Plugin 'Valloric/YouCompleteMe'
 Plugin 'oblitum/YouCompleteMe'
+
 Plugin 'rdnetto/YCM-Generator'
 Plugin 'tmhedberg/SimpylFold'
 Plugin 'Raimondi/delimitMate'
@@ -504,6 +438,87 @@ let g:email = 'marvin.e@protonmail.ch'
 
 " -------------------------------------- Plugin configuration end }}}
 
+
+" -------------------------------------- Autocmds {{{
+" save foldings
+autocmd BufWinLeave *.* mkview
+autocmd BufWinEnter *.* silent loadview
+
+" Don't screw up folds when inserting text that might affect them,
+" until leaving insert mode.
+autocmd InsertEnter * if !exists('w:last_fdm') | let w:last_fdm=&foldmethod | setlocal foldmethod=manual | endif
+autocmd InsertLeave,WinLeave * if exists('w:last_fdm') | let &l:foldmethod=w:last_fdm | unlet w:last_fdm | endif
+
+" automatically :retab on save
+" autocmd BufWritePre * :retab
+
+" filetype specific foldmethods
+autocmd FileType cmake setlocal foldmethod=marker
+autocmd FileType vim setlocal foldmethod=marker
+
+" Markdown preview (requires 'Markdown Viewer' addon)
+autocmd FileType markdown,md nnoremap <F5> :!firefox % &<CR><CR>
+
+" -------------------------------------- Autocmds end }}}
+
+
+" -------------------------------------- Key mappings {{{
+" Horizontal scrolling
+nnoremap <C-l> 2zl
+nnoremap <C-h> 2zh
+
+" insert a new line without switching to insert mode
+nnoremap <leader>o o<ESC>
+nnoremap <leader>O O<ESC>
+
+" Shortcuts for :w 
+inoremap <c-s> <c-o>:w<CR>
+noremap <c-s> :w<CR>
+vnoremap <c-s> <ESC>:w<CR>gv
+
+" Shortcut for <Esc>
+inoremap jk <Esc>
+
+" Keep selections
+vnoremap > >gv
+vnoremap < <gv
+
+" Comment shortcut for insert mode
+imap <F2> <c-_><c-_>
+
+" better j and k
+nnoremap j gj
+nnoremap k gk
+xnoremap j gj
+xnoremap k gk
+
+" Easy split navigation
+nnoremap <s-tab> <c-w><c-w><CR>
+" nnoremap <C-h> <C-w>h
+" nnoremap <C-j> <C-w>j
+" nnoremap <C-k> <C-w>k
+" nnoremap <C-l> <C-w>l
+
+" Make Y behave like other capitals
+nnoremap Y y$
+
+" map <leader>p to substitute the selection with yanked text in visual mode
+xnoremap <leader>P "_dP
+xnoremap <leader>p "_dp
+
+" faster substitution with yanked text
+nmap S viw<leader>P
+
+" visually select the text just pasted
+nnoremap gz `[v`]
+
+" write file with root permissions
+command! SudoWrite w !sudo tee %
+
+command! PabsFormat %s/:/\r    {\r\r    } \/\/
+
+command! FollowSymlink exec "file ". resolve(expand('%:p')) | e
+
 " buffer shortcuts
 nnoremap <F3> :bn<CR>
 nnoremap <F2> :bp<CR>
@@ -515,3 +530,5 @@ nnoremap <leader>bb :BuffergatorOpen<CR>
 " Delete current buffer and open the next or an empty buffer
 " instead of closing the window
 nnoremap <leader>bd :bp<bar>sp<bar>bn<bar>bd<CR>
+
+" -------------------------------------- Key mappings end }}}
