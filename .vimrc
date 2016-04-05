@@ -1,3 +1,6 @@
+" Clean autocmds
+autocmd!
+
 syntax enable
 set number
 set ruler
