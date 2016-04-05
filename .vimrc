@@ -44,6 +44,11 @@ set wildignorecase
 " allow incrementing/decrementing letters with c-a / c-x
 set nrformats+=alpha
 
+" don't echo the mode
+set noshowmode
+
+" -------------------------------------- General settings end }}}
+
 " -------------------------------------- Key mappings {{{
 " Horizontal scrolling
 nnoremap <C-l> 2zl
@@ -131,8 +136,9 @@ Plugin 'twerth/ir_black'
 Plugin 'qualiabyte/vim-colorstepper'
 
 Plugin 'scrooloose/nerdtree'
-Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
+Plugin 'itchyny/lightline.vim'
+Plugin 'bling/vim-bufferline'
+Plugin 'pearofducks/vim-quack-lightline'
 Plugin 'Lokaltog/vim-easymotion'
 Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-surround'
@@ -187,7 +193,6 @@ let g:solarized_termtrans=1
 let g:solarized_hitrail=1
 let g:solarized_termcolors=256
 colorscheme solarized
-let g:airline_theme = 'lucius'
 
 highlight SignColumn ctermbg=black
 highlight CursorLineNr ctermbg=black cterm=bold
@@ -200,25 +205,6 @@ highlight YcmErrorSection cterm=underline ctermfg=darkred
 " Search highlight color
 highlight EasyMotionMoveHL ctermbg=240 ctermfg=black
 
-" ------------------ Custom
-" colorscheme peachpuff
-" highlight LineNr ctermfg=darkgray
-" highlight SignColumn ctermbg=NONE
-"
-" let g:airline_theme = 'hybridline'
-
-" autocmd BufWinEnter * highlight airline_tabsel ctermfg=black
-" autocmd BufWinEnter * highlight airline_tabmod ctermfg=black
-" autocmd BufWinEnter * highlight airline_tabhid ctermfg=gray
-
-" highlight airline_c ctermfg=gray
-" highlight airline_x ctermfg=gray
-
-" Transparent background color for YCM indicators
-" highlight YcmWarningSign ctermbg=none ctermfg=red
-" highlight YcmErrorSign ctermbg=none ctermfg=red
-" highlight YcmErrorSection ctermbg=none cterm=underline ctermfg=red
-
 " ------------------ Cursorline
 set cursorline
 highlight CursorLine ctermbg=Black cterm=NONE
@@ -230,17 +216,128 @@ highlight Folded cterm=bold
 
 
 " -------------------------------------- Plugin configuration {{{
-" vim-airline
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#whitespace#enabled = 0
-let g:airline_symbols = {}
-let g:airline_powerline_fonts = 1
-let g:airline_symbols.branch = '⎇ '
-let g:airline#extensions#tabline#left_sep = ' '
-let g:airline#extensions#tabline#left_alt_sep = ' '
-let g:airline_left_sep = '█▓░'
-let g:airline_right_sep = '░▓█'
+" bufferline
+set showtabline=2
+let g:bufferline_echo = 0
+let g:bufferline_active_buffer_left = ''
+let g:bufferline_active_buffer_right = ''
+let g:bufferline_modified = '[+]'
+let g:bufferline_show_bufnr = 0
 
+" lightline {{{
+let g:lightline = {
+    \ 'colorscheme': 'custom_solarized',
+    \ 'active': {
+    \   'left': [ [ 'mode', 'paste' ], [ 'fugitive', 'filename' ] ],
+    \   'right': [ [ 'syntastic', 'lineinfo' ], ['percent'], [ 'fileformat', 'fileencoding', 'filetype' ] ]
+    \ },
+    \ 'tab': {
+    \   'active': ['tabnum'],
+    \   'inactive': ['tabnum']
+    \ },
+    \ 'tabline': {
+    \   'left': [ ['bufferline'] ],
+    \   'right': [ ['tabs'] ]
+    \ },
+    \ 'component': {
+    \ },
+    \ 'component_expand': {
+    \   'syntastic': 'SyntasticStatuslineFlag',
+    \   'bufferline': 'LightLineBufferline',
+    \ },
+    \ 'component_function': {
+    \   'fugitive': 'LightLineFugitive',
+    \   'filename': 'LightLineFilename',
+    \   'fileformat': 'LightLineFileFormat',
+    \   'fileencoding': 'LightLineFileEnc',
+    \   'filetype': 'LightLineFileType'
+    \ },
+    \ 'component_visible_condition': {
+    \ },
+    \ 'component_type': {
+    \   'syntastic': 'error',
+    \   'bufferline': 'tabsel',
+    \ },
+    \ 'separator': { 'left': '▓░', 'right': '░▓' },
+    \ 'subseparator': { 'left': '|', 'right': '|' },
+    \ 'tabline_subseparator': { 'left': '', 'right': '' },
+    \ 'tabline_separator':  { 'left': '▓░', 'right': '░▓' },
+    \ }
+    " \ 'separator': { 'left': '█▓░', 'right': '░▓█' },
+
+function LightLineFileFormat()
+    return winwidth(0) > 85 ? &fileformat : ''
+endfunction
+
+function LightLineFileEnc()
+    return winwidth(0) > 80 ? strlen(&fenc) ? &fenc : &enc : ''
+endfunction
+
+function LightLineFileType()
+    return winwidth(0) > 80 ? strlen(&filetype) ? &filetype : 'unknown' : ''
+endfunction
+
+function! LightLineFilename()
+    return (&readonly != '' ? '⭤ ' : '') . 
+        \ (expand('%:t') != '' ? expand('%:t') : '[No Name]') .
+        \ (&modified != '' ? '[+]' : '')
+endfunction
+
+function! LightLineFugitive()
+    if exists('*fugitive#head') && strlen(fugitive#head())
+        return '⎇  '.fugitive#head()
+    endif
+    return ''
+endfunction
+
+function! LightLineBufferline()
+    call bufferline#refresh_status()
+    call Trim_status_info(&columns - 8 - 5 * tabpagenr('$'))
+    return [ g:bufferline_status_info.before, g:bufferline_status_info.current, g:bufferline_status_info.after ]
+endfunction
+
+let s:scroll_start = 0
+
+" Copied from here:
+" https://github.com/critiqjo/vim-bufferline/blob/master/autoload/bufferline.vim#L97
+function! Trim_status_info(width)
+    let line = bufferline#get_echo_string()
+    if g:bufferline_status_info.current == ' '
+        let g:bufferline_status_info.current = '[No Name]'
+    endif
+    if len(line) < a:width
+        return
+    endif
+    let before = g:bufferline_status_info.before
+    let current = g:bufferline_status_info.current
+    let after = g:bufferline_status_info.after
+    let beg_i = len(before)
+    let end_i = beg_i + len(current)
+    let scr_i = s:scroll_start
+    if beg_i < scr_i
+        let scr_i = beg_i
+    endif
+    if end_i > (scr_i + a:width)
+        let scr_i = end_i - a:width + 1
+    endif
+    if len(line[scr_i :]) < a:width
+        let scr_i = len(line) - a:width + 1
+    endif
+    let g:bufferline_status_info.before = before[scr_i :]
+    let beg_i__scr_i = beg_i - scr_i
+    if beg_i__scr_i < 0
+        let g:bufferline_status_info.current = current[-beg_i__scr_i :]
+    endif
+    let width__end_i = a:width - len(g:bufferline_status_info.before) - len(g:bufferline_status_info.current) - 1
+    if width__end_i == -1
+        let g:bufferline_status_info.after = '' " VimL sucks!
+    else
+        let g:bufferline_status_info.after = after[: width__end_i]
+    endif
+    let s:scroll_start = scr_i
+endfunction
+
+" lightline end }}}
 
 " easymotion
 let g:EasyMotion_smartcase = 1
