@@ -138,6 +138,10 @@ command! -nargs=1 HowLong call HowLong(<q-args>)
 autocmd InsertEnter * if !exists('w:last_fdm') | let w:last_fdm=&foldmethod | setlocal foldmethod=manual | endif
 autocmd InsertLeave,WinLeave * if exists('w:last_fdm') | let &l:foldmethod=w:last_fdm | unlet w:last_fdm | endif
 
+" filetype specific foldmethods
+autocmd FileType cmake setlocal foldmethod=marker
+autocmd FileType vim setlocal foldmethod=marker
+
 " Markdown preview (requires 'Markdown Viewer' addon)
 autocmd FileType markdown,md nnoremap <F5> :!firefox % &<CR><CR>
 
