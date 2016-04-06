@@ -50,6 +50,8 @@ set noshowmode
 " Disable visual and audio bell
 set vb t_vb=
 
+set viewoptions=cursor,folds
+
 " -------------------------------------- General settings end }}}
 
 
@@ -442,9 +444,6 @@ let g:email = 'marvin.e@protonmail.ch'
 
 
 " -------------------------------------- Autocmds {{{
-" save foldings
-autocmd BufWinLeave *.* mkview
-autocmd BufWinEnter *.* silent loadview
 
 " Don't screw up folds when inserting text that might affect them,
 " until leaving insert mode.
@@ -460,6 +459,10 @@ autocmd FileType vim setlocal foldmethod=marker
 
 " Markdown preview (requires 'Markdown Viewer' addon)
 autocmd FileType markdown,md nnoremap <F5> :!firefox % &<CR><CR>
+
+" Save/Restore folds
+autocmd BufWinLeave ?* if !&diff | mkview | endif
+autocmd BufRead ?* if !&diff | silent loadview | endif
 
 " -------------------------------------- Autocmds end }}}
 
