@@ -531,6 +531,7 @@ nnoremap <leader>bn :bn<CR>
 nnoremap <leader>bp :bp<CR>
 nnoremap <leader>bl :b#<CR>
 nnoremap <leader>bb :BuffergatorOpen<CR>
+nnoremap <leader>l :ls<CR>:b 
 
 " Delete current buffer and open the next or an empty buffer
 " instead of closing the window
