@@ -47,6 +47,9 @@ set nrformats+=alpha
 " don't echo the mode
 set noshowmode
 
+" Disable visual and audio bell
+set vb t_vb=
+
 " -------------------------------------- General settings end }}}
 
 
