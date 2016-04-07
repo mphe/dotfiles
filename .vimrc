@@ -444,6 +444,9 @@ let g:templates_directory = [ $HOME.'/.vim/templates', $HOME.'/.vim/bundle/vim-t
 autocmd BufNewFile *.h,*.hpp Template *.h
 autocmd BufNewFile *.c,*.cpp Template *.c
 
+" CtrlP
+let g:ctrlp_show_hidden=1
+
 " -------------------------------------- Plugin configuration end }}}
 
 
