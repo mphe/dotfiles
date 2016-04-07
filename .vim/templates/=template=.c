@@ -1,0 +1,3 @@
+#include "%FILE%.h"
+
+%HERE%

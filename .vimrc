@@ -439,6 +439,10 @@ autocmd FileType java
 " vim-template
 let g:username = 'Marvin Ewald'
 let g:email = 'marvin.e@protonmail.ch'
+let g:templates_no_autocmd = 1
+let g:templates_directory = [ $HOME.'/.vim/templates', $HOME.'/.vim/bundle/vim-template/templates' ]
+autocmd BufNewFile *.h,*.hpp Template *.h
+autocmd BufNewFile *.c,*.cpp Template *.c
 
 " -------------------------------------- Plugin configuration end }}}
 
