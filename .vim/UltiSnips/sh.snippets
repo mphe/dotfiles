@@ -1,0 +1,16 @@
+priority 0
+
+snippet cdhere "cd in this file's directory"
+cd \$(dirname $(readlink -f "\$0"))
+
+endsnippet
+
+snippet doc "Skeleton for script documentation"
+if [ \$# -eq 0 ] || [ "\$1" == "-h" ] || [ "\$1" == "--help" ]; then
+	echo "${1:docstring}"
+	echo -e "Usage:\n\t\$\{0##*/\} [options] ${2:arguments}"
+	echo -e "\nOptions:"
+	echo -e "\t-h, --help\tShow help"
+	exit
+fi
+endsnippet
