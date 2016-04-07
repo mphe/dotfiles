@@ -535,6 +535,7 @@ nnoremap <leader>l :ls<CR>:b
 
 " Delete current buffer and open the next or an empty buffer
 " instead of closing the window
-nnoremap <leader>bd :bp<bar>sp<bar>bn<bar>bd<CR>
+nnoremap <leader>bD :bp<bar>sp<bar>bn<bar>bd<CR>
+nnoremap <leader>bd :bn<bar>sp<bar>bp<bar>bd<CR>
 
 " -------------------------------------- Key mappings end }}}
