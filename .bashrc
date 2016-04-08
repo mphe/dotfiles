@@ -19,6 +19,7 @@ alias ranger='python3 $(which ranger)'
 alias youtube-dl='youtube-dl -o "%(title)s.%(ext)s"'
 alias cmake-debug='cmake -DCMAKE_BUILD_TYPE=Debug'
 alias cmake-release='cmake -DCMAKE_BUILD_TYPE=Release'
+alias xclip='xclip -selection c'
 
 # thefuck
 eval "$(thefuck --alias)"
