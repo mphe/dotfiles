@@ -134,6 +134,7 @@ Plugin 'aperezdc/vim-template'
 Plugin 'BohrShaw/vim-vimperator-syntax'
 Plugin 'idanarye/vim-vebugger'
 Plugin 'Shougo/vimproc.vim'
+Plugin 'dhruvasagar/vim-table-mode'
 
 " Turn filetype functionality back on
 filetype on
