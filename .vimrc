@@ -267,8 +267,10 @@ let s:scroll_start = 0
 " https://github.com/critiqjo/vim-bufferline/blob/master/autoload/bufferline.vim#L97
 function! Trim_status_info(width)
     let line = bufferline#get_echo_string()
-    if g:bufferline_status_info.current == ' '
+    if g:bufferline_status_info.current == ' ' || g:bufferline_status_info.current == ''
         let g:bufferline_status_info.current = '[No Name]'
+    elseif g:bufferline_status_info.current == '[+]'
+        let g:bufferline_status_info.current = '[No Name][+]'
     endif
     if len(line) < a:width
         return
