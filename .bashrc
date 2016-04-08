@@ -55,6 +55,14 @@ git_prompt() {
     git branch &> /dev/null && echo " ($(parse_git_branch))"
 }
 
+# fzf
+source /etc/profile.d/fzf.bash
+export FZF_COMPLETION_TRIGGER=',,'
+_fzf_compgen_path() {
+    bfs -L "$1" -path "*.ccache" -prune -o -path "*.git" -prune -o -path "*.config/teamviewer*" -prune -o -name "*" 2> /dev/null
+    # ag --silent --hidden --ignore .git --ignore "*teamviewer10/dosdevices" -f -g "" "$1"
+}
+
 # Retain cwd when opening new terminals
 # http://unix.stackexchange.com/questions/93476/gnome-terminal-keep-track-of-directory-in-new-tab
 source /etc/profile.d/vte.sh
