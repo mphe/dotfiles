@@ -2,6 +2,7 @@
 local gears = require("gears")
 local awful = require("awful")
 awful.rules = require("awful.rules")
+awful.remote = require("awful.remote")
 require("awful.autofocus")
 -- Widget and layout library
 local wibox = require("wibox")
