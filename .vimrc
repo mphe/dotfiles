@@ -421,6 +421,7 @@ let g:syntastic_check_on_open = 0
 let g:syntastic_check_on_wq = 0
 let g:syntastic_quiet_messages = { "type": "style"  }
 let g:syntastic_python_checkers = ['flake8']
+let g:syntastic_vim_checkers = ['vint']
 " let g:syntastic_aggregate_errors = 1
 " let g:syntastic_java_javac_config_file_enabled = 1
 " let g:syntastic_java_javac_delete_output = 0
@@ -429,7 +430,7 @@ let g:syntastic_mode_map = {
     \ "active_filetypes": ["python", "lua"],
     \ "passive_filetypes": [] }
 
-autocmd FileType python,lua
+autocmd FileType python,lua,vim,sh
     \ nnoremap <F5> :SyntasticCheck<CR> |
     \ inoremap <F5> <c-o>:SyntasticCheck<CR> |
     \ nnoremap <leader>gd :Errors<CR>
