@@ -119,10 +119,14 @@ awful.layout.set(vain.layout.browse, tags[1][9]) -- Steam
 awful.layout.set(vain.layout.uselessfair, tags[1][8]) -- Skype
 awful.layout.set(vain.layout.browse, tags[1][1])
 if screen.count() > 1 then
-    awful.tag.setncol(2, tags[2][1])
-    awful.tag.setmwfact(0.33, tags[2][1])
     awful.layout.set(vain.layout.uselessfair, tags[2][9]) -- Steam
 end
+
+-- Config file for temporary/frequently changing layouts (untracked by git)
+if utils.file_exists(configdir .. "/layoutconfig.lua") then
+    require("layoutconfig")
+end
+
 -- }}}
 
 -- {{{ Menu

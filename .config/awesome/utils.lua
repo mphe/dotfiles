@@ -4,6 +4,16 @@ local wibox = require("wibox")
 
 local M = {}
 
+function M.file_exists(fname)
+    local f = io.open(fname, "r")
+    if f ~= nil then
+        io.close(f)
+        return true
+    else
+        return false
+    end
+end
+
 -- Wrapper for naughty.notify to use mouse.screen as default screen
 function M.notify(args)
     args.screen = args.screen or mouse.screen
