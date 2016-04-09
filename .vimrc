@@ -118,7 +118,7 @@ Plugin 'jeetsukumaran/vim-buffergator'
 Plugin 'xolox/vim-misc'
 Plugin 'xolox/vim-easytags'
 Plugin 'majutsushi/tagbar'
-Plugin 'xolox/vim-lua-ftplugin.git'
+" Plugin 'xolox/vim-lua-ftplugin.git'
 Plugin 'xolox/vim-lua-inspect'
 Plugin 'derekwyatt/vim-fswitch'
 Plugin 'SirVer/ultisnips'
@@ -401,6 +401,7 @@ nnoremap  <leader>fi :call cscope#find('i', expand('<cword>'))<CR>
 
 " lua inspect
 let g:lua_inspect_events = ''
+let g:lua_inspect_mappings = 0
 
 " vim-javacomplete2
 " autocmd FileType java set omnifunc=javacomplete#Complete
@@ -425,10 +426,10 @@ let g:syntastic_python_checkers = ['flake8']
 " let g:syntastic_java_javac_delete_output = 0
 let g:syntastic_mode_map = {
     \ "mode": "passive",
-    \ "active_filetypes": ["python"],
+    \ "active_filetypes": ["python", "lua"],
     \ "passive_filetypes": [] }
 
-autocmd FileType python
+autocmd FileType python,lua
     \ nnoremap <F5> :SyntasticCheck<CR> |
     \ inoremap <F5> <c-o>:SyntasticCheck<CR> |
     \ nnoremap <leader>gd :Errors<CR>
