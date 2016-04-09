@@ -1,3 +1,4 @@
+-- Includes {{{
 -- Standard awesome library
 local gears = require("gears")
 local awful = require("awful")
@@ -20,7 +21,7 @@ local net_widgets = require("net_widgets")
 local utils = require("utils")
 local widgets = require("widgets")
 local icons = require("icons")
-
+-- }}}
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -88,24 +89,23 @@ local layouts = {
     vain.layout.cascadebrowse,
     vain.layout.centerwork,
 }
--- }}}
-
-
-beautiful.init(configdir .. "/themes/default/theme.lua")
-
--- {{{ Wallpaper
-if beautiful.wallpaper then
-    for s = 1, screen.count() do
-        gears.wallpaper.centered(beautiful.wallpaper, s)
-    end
-end
--- }}}
 
 -- Alt Tab config
 -- alttab.settings.preview_box_bg = "#222222"
 -- alttab.settings.preview_box_border = "#000000"
 alttab.settings.client_opacity = true
 
+-- }}}
+
+-- {{{ Beautiful
+beautiful.init(configdir .. "/themes/default/theme.lua")
+
+if beautiful.wallpaper then
+    for s = 1, screen.count() do
+        gears.wallpaper.centered(beautiful.wallpaper, s)
+    end
+end
+-- }}}
 
 -- {{{ Tags
 -- Define a tag table which hold all screen tags.
@@ -158,6 +158,7 @@ mymainmenu = awful.menu({
 })
 -- }}}
 
+-- widgets {{{
 mylauncher = awful.widget.launcher({
     image = icons.arch,
     menu = mymainmenu
@@ -194,6 +195,7 @@ wifiwidget = net_widgets.wireless({
 -- wiredwidget = net_widgets.indicator({
 --     interfaces = {"enp2s0f0"},
 -- })
+-- }}}
 
 -- {{{ Wibox
 -- Create a textclock widget
@@ -340,6 +342,7 @@ function switch_focus(dir)
     if client.focus then client.focus:raise() end
 end
 
+-- Global keys {{{
 globalkeys = awful.util.table.join(
     -- Alt Tab
     awful.key({ "Mod1", }, "Tab", function() alttab.switch(1, "Alt_L", "Tab", "ISO_Left_Tab") end),
@@ -479,7 +482,9 @@ globalkeys = awful.util.table.join(
     -- Toggle systray visibility
     awful.key({ modkey, "Control" }, "s", function(c) systray.witype.toggle(systray) end)
 )
+-- }}}
 
+-- Client keys {{{
 clientkeys = awful.util.table.join(
     -- Remap close shortcut
     awful.key({ "Mod1" }, "F4", function (c) c:kill() end),
@@ -525,7 +530,9 @@ clientkeys = awful.util.table.join(
             c:raise()
         end)
 )
+-- }}}
 
+-- Tag keys {{{
 -- Bind all key numbers to tags.
 -- Be careful: we use keycodes to make it works on any keyboard layout.
 -- This should map on the top row of your keyboard, usually 1 to 9.
@@ -579,6 +586,7 @@ for i = 1, 9 do
                       end
                   end))
 end
+-- }}}
 
 clientbuttons = awful.util.table.join(
     awful.button({ }, 1, function (c) client.focus = c; c:raise() end),
