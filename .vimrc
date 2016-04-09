@@ -231,15 +231,15 @@ let g:lightline = {
     \ }
     " \ 'separator': { 'left': '█▓░', 'right': '░▓█' },
 
-function LightLineFileFormat()
+function! LightLineFileFormat()
     return winwidth(0) > 85 ? &fileformat : ''
 endfunction
 
-function LightLineFileEnc()
+function! LightLineFileEnc()
     return winwidth(0) > 80 ? strlen(&fenc) ? &fenc : &enc : ''
 endfunction
 
-function LightLineFileType()
+function! LightLineFileType()
     return winwidth(0) > 80 ? strlen(&filetype) ? &filetype : 'unknown' : ''
 endfunction
 
