@@ -244,9 +244,9 @@ function! LightLineFileType()
 endfunction
 
 function! LightLineFilename()
-    return (&readonly != '' ? '⭤ ' : '') . 
-        \ (expand('%:t') != '' ? expand('%:t') : '[No Name]') .
-        \ (&modified != '' ? '[+]' : '')
+    return (expand('%:t') != '' ? expand('%:t') : '[No Name]') .
+        \ (&modified != '' ? '[+]' : '') .
+        \ (&readonly != '' ? ' ⭤' : '')
 endfunction
 
 function! LightLineFugitive()
