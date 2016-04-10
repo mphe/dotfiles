@@ -510,7 +510,7 @@ xnoremap j gj
 xnoremap k gk
 
 " Easy split navigation
-nnoremap <s-tab> <c-w><c-w><CR>
+nnoremap <s-tab> <c-w><c-w>
 " nnoremap <C-h> <C-w>h
 " nnoremap <C-j> <C-w>j
 " nnoremap <C-k> <C-w>k
