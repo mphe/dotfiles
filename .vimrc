@@ -30,7 +30,7 @@ set foldlevelstart=99
 set splitright
 set splitbelow
 
-let mapleader = ","
+let mapleader = ','
 
 " Don't wrap lines
 set nowrap
@@ -371,10 +371,10 @@ nnoremap <leader>gf :FSHere<CR>
 nnoremap <leader>gF :vsp<CR>:FSHere<CR>
 
 " UltiSnip
-let g:UltiSnipsExpandTrigger="<c-j>"
-let g:UltiSnipsJumpForwardTrigger="<c-j>"
-let g:UltiSnipsJumpBackwardTrigger="<c-k>"
-let g:ultisnips_java_brace_style="nl"
+let g:UltiSnipsExpandTrigger='<c-j>'
+let g:UltiSnipsJumpForwardTrigger='<c-j>'
+let g:UltiSnipsJumpBackwardTrigger='<c-k>'
+let g:ultisnips_java_brace_style='nl'
 let g:UltiSnipsUsePythonVersion = 2
 
 " vim-cscope
@@ -419,16 +419,16 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 0
 let g:syntastic_check_on_open = 0
 let g:syntastic_check_on_wq = 0
-let g:syntastic_quiet_messages = { "type": "style"  }
+let g:syntastic_quiet_messages = { 'type': 'style' }
 let g:syntastic_python_checkers = ['flake8']
 let g:syntastic_vim_checkers = ['vint']
 " let g:syntastic_aggregate_errors = 1
 " let g:syntastic_java_javac_config_file_enabled = 1
 " let g:syntastic_java_javac_delete_output = 0
 let g:syntastic_mode_map = {
-    \ "mode": "passive",
-    \ "active_filetypes": ["python", "lua"],
-    \ "passive_filetypes": [] }
+    \ 'mode': 'passive',
+    \ 'active_filetypes': ['python', 'lua'],
+    \ 'passive_filetypes': [] }
 
 autocmd FileType python,lua,vim,sh
     \ nnoremap <F5> :SyntasticCheck<CR> |
@@ -534,7 +534,7 @@ command! SudoWrite w !sudo tee %
 
 command! PabsFormat %s/:/\r    {\r\r    } \/\/
 
-command! FollowSymlink exec "file ". resolve(expand('%:p')) | e
+command! FollowSymlink exec 'file '.resolve(expand('%:p')) | e
 
 " buffer shortcuts
 nnoremap <F3> :bn<CR>
