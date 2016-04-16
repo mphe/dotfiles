@@ -138,6 +138,7 @@ Plugin 'BohrShaw/vim-vimperator-syntax'
 Plugin 'idanarye/vim-vebugger'
 Plugin 'Shougo/vimproc.vim'
 Plugin 'dhruvasagar/vim-table-mode'
+Plugin 'mall0c/grayout.vim'
 
 " Turn filetype functionality back on
 filetype on
@@ -456,6 +457,10 @@ autocmd BufNewFile *.c,*.cpp Template *.c
 
 " CtrlP
 let g:ctrlp_show_hidden=1
+
+" grayout.vim
+let g:grayout_confirm = 0
+let g:grayout_cmd_line = 'clang -x c++ -w -P -nostdinc -nostdinc++ -E -'
 
 " -------------------------------------- Plugin configuration end }}}
 
