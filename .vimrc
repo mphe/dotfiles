@@ -563,4 +563,7 @@ nnoremap <leader>bd :bn<bar>sp<bar>bp<bar>bd<CR>
 " Remap { } and [ ] to ö and ä
 set langmap=ö{,ä},Ö[,Ä]
 
+" Jump to line end in insert mode
+inoremap <C-L> <C-O>A
+
 " -------------------------------------- Key mappings end }}}
