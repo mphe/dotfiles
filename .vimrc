@@ -560,4 +560,7 @@ nnoremap <leader>l :ls<CR>:b
 nnoremap <leader>bD :bp<bar>sp<bar>bn<bar>bd<CR>
 nnoremap <leader>bd :bn<bar>sp<bar>bp<bar>bd<CR>
 
+" Remap { } and [ ] to ö and ä
+set langmap=ö{,ä},Ö[,Ä]
+
 " -------------------------------------- Key mappings end }}}
