@@ -622,6 +622,9 @@ awful.rules.rules = {
     { rule = { class = "Plugin-container" },
       properties = { floating = true } },
 
+    { rule = { class = "SessionManager" },
+      properties = { floating = true } },
+
     -- Force skype windows to be moved to tag 8
     { rule = { class = "Skype" },
       properties = { tag = tags[1][8] }},
@@ -710,6 +713,3 @@ client.connect_signal("unfocus",
         -- c.opacity = 0.95
     end)
 -- }}}
-
--- Autostart
-utils.run_once("compton")
