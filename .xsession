@@ -8,4 +8,3 @@ setxkbmap de
 xmodmap -e 'keysym Menu = Super_L'
 [[ -f ~/.Xresources  ]] && xrdb -merge -I$HOME ~/.Xresources
 syndaemon -dKi 2
-xrandr --output LVDS1 --auto --pos 1920x312 --output VGA1 --auto --pos 0x0
