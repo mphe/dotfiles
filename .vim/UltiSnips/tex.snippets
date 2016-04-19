@@ -1,52 +1,181 @@
 priority 0
 
-snippet part "Part" bm
+extends textheorem
+
+snippet part "Part" wm
 \part{${1:part name}}
 \label{prt:${2:${1/(\w+)|\W+/(?1:\L$0\E:_)/ga}}}
 
 ${0}
 endsnippet
 
-snippet cha "Chapter" bm
+snippet cha "Chapter" wm
 \chapter{${1:chapter name}}
 \label{cha:${2:${1/\\\w+\{(.*?)\}|\\(.)|(\w+)|([^\w\\]+)/(?4:_:\L$1$2$3\E)/ga}}}
 
 ${0}
 endsnippet
 
-snippet sec "Section" bm
+snippet sec "Section" wm
 \section{${1:section name}}
 \label{sec:${2:${1/\\\w+\{(.*?)\}|\\(.)|(\w+)|([^\w\\]+)/(?4:_:\L$1$2$3\E)/ga}}}
 
 ${0}
 endsnippet
 
-snippet sub "Subsection" bm
+snippet sub "Subsection" wm
 \subsection{${1:subsection name}}
 \label{sub:${2:${1/\\\w+\{(.*?)\}|\\(.)|(\w+)|([^\w\\]+)/(?4:_:\L$1$2$3\E)/ga}}}
 
 ${0}
 endsnippet
 
-snippet ssub "Subsubsection" bm
+snippet ssub "Subsubsection" wm
 \subsubsection{${1:subsubsection name}}
 \label{ssub:${2:${1/\\\w+\{(.*?)\}|\\(.)|(\w+)|([^\w\\]+)/(?4:_:\L$1$2$3\E)/ga}}}
 
 ${0}
 endsnippet
 
-snippet par "Paragraph" bm
+snippet par "Paragraph" wm
 \paragraph{${1:paragraph name}}
 \label{par:${2:${1/\\\w+\{(.*?)\}|\\(.)|(\w+)|([^\w\\]+)/(?4:_:\L$1$2$3\E)/ga}}}
 
 ${0}
 endsnippet
 
-snippet subp "Subparagraph" bm
+snippet subp "Subparagraph" wm
 \subparagraph{${1:subparagraph name}}
 \label{par:${2:${1/\\\w+\{(.*?)\}|\\(.)|(\w+)|([^\w\\]+)/(?4:_:\L$1$2$3\E)/ga}}}
 
 ${0}
+endsnippet
+
+
+# Alternatives to their lrX equivalent that don't trigger delimitMate.
+snippet lr) "left( right)" w
+\left( ${1:${VISUAL}} \right)
+endsnippet
+
+snippet lr} "left\{ right\}" w
+\left\\{ ${1:${VISUAL}} \right\\}
+endsnippet
+
+snippet lr] "left[ right]" w
+\left[ ${1:${VISUAL}} \right]
+endsnippet
+
+
+# matrix snippets
+snippet vec "2x1 pmatrix" w
+\begin{pmatrix}
+	${1:0} \\\\
+	${2:0}
+\end{pmatrix}
+endsnippet
+
+snippet vec3 "3x1 pmatrix" w
+\begin{pmatrix}
+	${1:0} \\\\
+	${2:0} \\\\
+	${3:0}
+\end{pmatrix}
+endsnippet
+
+snippet vec4 "4x1 pmatrix" w
+\begin{pmatrix}
+	${1:0} \\\\
+	${2:0} \\\\
+	${3:0} \\\\
+	${4:0}
+\end{pmatrix}
+endsnippet
+
+snippet avec "3x1 arbitrary sized pmatrix" w
+\begin{pmatrix}
+	${1:v}_1 \\\\
+	\\vdots \\\\
+	${1}_n
+\end{pmatrix}
+endsnippet
+
+snippet mat1 "1x2 pmatrix" w
+\begin{pmatrix} ${1:0} & ${2:0} \end{pmatrix}
+endsnippet
+
+snippet mat2 "2x2 pmatrix" w
+\begin{pmatrix}
+	${1:0} & ${2:0} \\\\
+	${3:0} & ${4:0}
+\end{pmatrix}
+endsnippet
+
+snippet mat3 "3x3 pmatrix" w
+\begin{pmatrix}
+	${1:0} & ${2:0} & ${3:0} \\\\
+	${4:0} & ${5:0} & ${6:0} \\\\
+	${7:0} & ${8:0} & ${9:0}
+\end{pmatrix}
+endsnippet
+
+snippet mat4 "4x4 pmatrix" w
+\begin{pmatrix}
+	${1:0} & ${2:0} & ${3:0} & ${4:0} \\\\
+	${5:0} & ${6:0} & ${7:0} & ${8:0} \\\\
+	${9:0} & ${10:0} & ${11:0} & ${12:0} \\\\
+	${13:0} & ${14:0} & ${15:0} & ${16:0}
+\end{pmatrix}
+endsnippet
+
+snippet amat "arbitrary sized pmatrix" w
+\begin{pmatrix}
+	${1:a_{1,1}} & ${2:a_{1,2}} & \cdots & ${3:a_{1,n}} \\\\
+	${4:a_{2,1}} & ${5:a_{2,2}} & \cdots & ${6:a_{2,n}} \\\\
+	\vdots & \vdots & \ddots & \vdots  \\\\
+	${7:a_{m,1}} & ${8:a_{m,2}} & \cdots & ${9:a_{m,n}} 
+\end{pmatrix}
+endsnippet
+
+
+# snippets for \mathbb
+snippet RR "\mathbb{R}" w
+\mathbb{R}
+endsnippet
+
+snippet NN "\mathbb{N}" w
+\mathbb{N}
+endsnippet
+
+snippet N0 "\mathbb{N}_0" w
+\mathbb{N}_0
+endsnippet
+
+snippet CC "\mathbb{C}" w
+\mathbb{C}
+endsnippet
+
+snippet QQ "\mathbb{Q}" w
+\mathbb{Q}
+endsnippet
+
+
+# mapsto snippets
+snippet map "map" w
+${1:f}: ${2:\\mathbb{R}} \\to ${3:\\mathbb{R}}
+endsnippet
+
+snippet mapf "mapsto function" w
+${1:f}: ${2:x} \\mapsto ${3:x}
+endsnippet
+
+
+# etc
+snippet f-1 "f^-1" w
+f^{-1}
+endsnippet
+
+snippet img "Insert image"
+\includegraphics[width=300pt]{${1:filename}}
 endsnippet
 
 # vim:ft=snippets:

@@ -81,6 +81,43 @@ endfunction
 
 command! -nargs=1 HowLong call HowLong(<q-args>)
 
+function! ToggleLatexMath()
+    if ! exists('s:latex_math_mode')
+        let s:latex_math_mode = 1
+    else
+        let s:latex_math_mode = !s:latex_math_mode
+    endif
+
+    if s:latex_math_mode
+        inoremap * \cdot
+        inoremap ( \left(
+        inoremap ) \right)
+        let g:delimitMate_matchpairs = "[:],{:},<:>"
+        DelimitMateReload
+        let g:surround_{char2nr(')')} = "\\left(\r\\right)"
+        let g:surround_{char2nr('(')} = "\\left( \r \\right)"
+        let g:surround_{char2nr(']')} = "\\left[\r\\right]"
+        let g:surround_{char2nr('[')} = "\\left[ \r \\right]"
+        let g:surround_{char2nr('}')} = "\\left{\r\\right}"
+        let g:surround_{char2nr('{')} = "\\left{ \r \\right}"
+    else
+        iunmap *
+        iunmap (
+        iunmap )
+        let g:delimitMate_matchpairs = "(:),[:],{:},<:>"
+        DelimitMateReload
+        let g:surround_{char2nr(')')} = "(\r)"
+        let g:surround_{char2nr('(')} = "( \r )"
+        let g:surround_{char2nr(']')} = "[\r]"
+        let g:surround_{char2nr('[')} = "[ \r ]"
+        let g:surround_{char2nr('}')} = "{\r}"
+        let g:surround_{char2nr('{')} = "{ \r }"
+    endif
+    return ''
+endfunction
+
+command! ToggleLatexMath call ToggleLatexMath()
+
 " -------------------------------------- Functions end }}}
 
 
@@ -139,6 +176,7 @@ Plugin 'idanarye/vim-vebugger'
 Plugin 'Shougo/vimproc.vim'
 Plugin 'dhruvasagar/vim-table-mode'
 Plugin 'mall0c/grayout.vim'
+Plugin 'LaTeX-Box-Team/LaTeX-Box'
 
 " Turn filetype functionality back on
 filetype on
@@ -462,6 +500,17 @@ let g:ctrlp_show_hidden=1
 let g:grayout_confirm = 0
 let g:grayout_cmd_line = 'clang -x c++ -w -P -nostdinc -nostdinc++ -E -'
 
+" latex box
+let g:LatexBox_viewer = 'zathura'
+let g:LatexBox_complete_inlineMath = 1
+let g:LatexBox_custom_indent = 0
+let g:LatexBox_Folding = 1
+let g:LatexBox_fold_automatic = 0
+" let g:LatexBox_fold_sections=[ "part", "chapter", "section", "subsection", "subsubsection", "paragraph", "subparagraph" ]
+autocmd FileType tex nnoremap <F5> :Latexmk<CR>
+" let g:LatexBox_completion_close_braces = 0
+" let g:LatexBox_complete_inlineMath = 0
+
 " -------------------------------------- Plugin configuration end }}}
 
 
@@ -565,5 +614,8 @@ set langmap=ö{,ä},Ö[,Ä]
 
 " Jump to line end in insert mode
 inoremap <C-L> <C-O>A
+
+" Remaps some keys for easier latex math input, e.g. * -> \cdot.
+inoremap <expr> <F4> ToggleLatexMath()
 
 " -------------------------------------- Key mappings end }}}
