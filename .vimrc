@@ -483,8 +483,8 @@ autocmd FileType vim setlocal foldmethod=marker
 autocmd FileType markdown,md nnoremap <F5> :!firefox % &<CR><CR>
 
 " Save/Restore folds
-autocmd BufWinLeave * if !&diff && strlen(expand('%')) | mkview | endif
-autocmd BufRead * if !&diff && strlen(expand('%')) | silent loadview | endif
+autocmd BufWinLeave * if !&diff && strlen(expand('%')) && &ft != 'gitcommit' | mkview | endif
+autocmd BufRead * if !&diff && strlen(expand('%')) && &ft != 'gitcommit' | silent loadview | endif
 
 " -------------------------------------- Autocmds end }}}
 
