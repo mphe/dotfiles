@@ -615,6 +615,9 @@ set langmap=ö{,ä},Ö[,Ä]
 " Jump to line end in insert mode
 inoremap <C-L> <C-O>A
 
+" Repeat last ex command
+nnoremap ; @:
+
 " Remaps some keys for easier latex math input, e.g. * -> \cdot.
 inoremap <expr> <F4> ToggleLatexMath()
 
