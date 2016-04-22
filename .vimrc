@@ -280,11 +280,11 @@ function! LightLineFileFormat()
 endfunction
 
 function! LightLineFileEnc()
-    return winwidth(0) > 80 ? strlen(&fenc) ? &fenc : &enc : ''
+    return !strlen(SyntasticStatuslineFlag()) && winwidth(0) > 80 ? strlen(&fenc) ? &fenc : &enc : ''
 endfunction
 
 function! LightLineFileType()
-    return winwidth(0) > 80 ? strlen(&filetype) ? &filetype : 'unknown' : ''
+    return !strlen(SyntasticStatuslineFlag()) && winwidth(0) > 80 ? strlen(&filetype) ? &filetype : 'unknown' : ''
 endfunction
 
 function! LightLineFilename()
@@ -474,9 +474,22 @@ let g:syntastic_mode_map = {
     \ 'active_filetypes': ['python', 'lua'],
     \ 'passive_filetypes': [] }
 
+function! s:SynCheck()
+    SyntasticCheck
+    call lightline#update()
+endfunction
+
+function! s:SynReset()
+    SyntasticReset
+    call lightline#update()
+endfunction
+
+command! SynCheck call s:SynCheck()
+command! SynReset call s:SynReset()
+
 autocmd FileType python,lua,vim,sh
-    \ nnoremap <F5> :SyntasticCheck<CR> |
-    \ inoremap <F5> <c-o>:SyntasticCheck<CR> |
+    \ nnoremap <F5> :SynCheck<CR> |
+    \ inoremap <F5> <c-o>:SynCheck<CR> |
     \ nnoremap <leader>gd :Errors<CR>
 
 " eclim
