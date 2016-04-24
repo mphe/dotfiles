@@ -63,6 +63,9 @@ _fzf_compgen_path() {
     bfs -L "$1" -path "*.ccache" -prune -o -path "*.git" -prune -o -path "*.config/teamviewer*" -prune -o -name "*" 2> /dev/null
     # ag --silent --hidden --ignore .git --ignore "*teamviewer10/dosdevices" -f -g "" "$1"
 }
+_fzf_compgen_dir() {
+    bfs -L "$1" -path "*.ccache" -prune -o -path "*.git" -prune -o -path "*.config/teamviewer*" -prune -o -type d 2> /dev/null
+}
 
 # Retain cwd when opening new terminals
 # http://unix.stackexchange.com/questions/93476/gnome-terminal-keep-track-of-directory-in-new-tab
