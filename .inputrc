@@ -2,10 +2,25 @@ $include /etc/inputrc
 set completion-ignore-case On
 set completion-prefix-display-length 2
 
-Control-j: menu-complete
-Control-k: menu-complete-backward
-
 set show-all-if-ambiguous on
 
 set mark-symlinked-directories on
 set bell-style none
+
+set editing-mode vi
+
+$if mode=vi
+    set keymap vi-insert
+    "jk": vi-movement-mode
+    "\C-p": history-search-backward
+    "\C-n": history-search-forward
+    "\C-j": menu-complete
+    "\C-k": menu-complete-backward
+    "\C-a": beginning-of-line
+    "\C-l": clear-screen
+    "\e[1;5D": backward-word
+    "\e[1;5C": forward-word
+$else
+    Control-j: menu-complete
+    Control-k: menu-complete-backward
+$endif

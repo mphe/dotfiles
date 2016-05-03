@@ -32,7 +32,6 @@ eval "$(thefuck --alias)"
 # it regains control. (http://cnswww.cns.cwru.edu/~chet/bash/FAQ (E11))
 shopt -s checkwinsize
 
-
 # colors
 BLACK="$(tput setaf 0)"
 RED="$(tput setaf 1)"
@@ -57,6 +56,7 @@ git_prompt() {
 }
 
 # fzf
+set -o vi
 source /etc/profile.d/fzf.bash
 export FZF_COMPLETION_TRIGGER=',,'
 _fzf_compgen_path() {
