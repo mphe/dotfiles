@@ -636,4 +636,7 @@ nnoremap ; @:
 " Remaps some keys for easier latex math input, e.g. * -> \cdot.
 inoremap <expr> <F4> ToggleLatexMath()
 
+" Find next character when using f/F or t/T
+nnoremap <space> ;
+
 " -------------------------------------- Key mappings end }}}
