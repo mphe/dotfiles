@@ -3,6 +3,7 @@
 !.vim/bundle/vundle
 *.pyc
 .ncmpcpp/error.log
+.ncmpcpp/patterns.list
 .config/ranger/bookmarks
 .config/ranger/history
 .config/ranger/tagged
