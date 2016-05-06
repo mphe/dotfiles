@@ -179,6 +179,8 @@ Plugin 'Shougo/vimproc.vim'
 Plugin 'dhruvasagar/vim-table-mode'
 Plugin 'mall0c/grayout.vim'
 Plugin 'LaTeX-Box-Team/LaTeX-Box'
+Plugin 'kana/vim-textobj-indent'
+Plugin 'kana/vim-textobj-user'
 
 " Turn filetype functionality back on
 filetype on
