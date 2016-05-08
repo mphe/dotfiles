@@ -57,7 +57,7 @@ git_prompt() {
 
 # fzf
 set -o vi
-source /etc/profile.d/fzf.bash
+source /usr/share/fzf/key-bindings.bash
 export FZF_COMPLETION_TRIGGER=',,'
 _fzf_compgen_path() {
     bfs -L "$1" -path "*.ccache" -prune -o -path "*.git" -prune -o -path "*.config/teamviewer*" -prune -o -name "*" 2> /dev/null
