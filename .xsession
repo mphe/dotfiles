@@ -7,4 +7,4 @@ xset s off # disable screensaver
 setxkbmap de
 xmodmap -e 'keysym Menu = Super_L'
 [[ -f ~/.Xresources  ]] && xrdb -merge -I$HOME ~/.Xresources
-syndaemon -dKi 2
+pgrep syndaemon || syndaemon -dKi 2
