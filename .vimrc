@@ -475,7 +475,7 @@ let g:syntastic_vim_checkers = ['vint']
 " let g:syntastic_java_javac_delete_output = 0
 let g:syntastic_mode_map = {
     \ 'mode': 'passive',
-    \ 'active_filetypes': ['python', 'lua'],
+    \ 'active_filetypes': ['lua'],
     \ 'passive_filetypes': [] }
 
 function! s:SynCheck()
