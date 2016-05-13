@@ -55,6 +55,8 @@ set viewoptions=cursor,folds
 " fold functions, if, for, and while in shell scripts
 let g:sh_fold_enabled=7
 
+set previewheight=4
+
 " -------------------------------------- General settings end }}}
 
 
@@ -549,6 +551,8 @@ autocmd FileType markdown,md nnoremap <F5> :!firefox % &<CR><CR>
 " Save/Restore folds
 autocmd BufWinLeave * if !&diff && strlen(expand('%')) && &ft != 'gitcommit' | mkview | endif
 autocmd BufRead * if !&diff && strlen(expand('%')) && &ft != 'gitcommit' | silent loadview | endif
+
+autocmd BufEnter ?* if &previewwindow | exec 'setlocal winheight='.&previewheight | endif
 
 " -------------------------------------- Autocmds end }}}
 
