@@ -8,15 +8,13 @@ visualizer_in_stereo = yes
 visualizer_sync_interval = 30
 
 # spectrum/wave
-visualizer_type = spectrum
+visualizer_type = wave_filled
 
 # classic/alternative
 user_interface = alternative
 
 mouse_support = no
 
-## Multiply received samples by given value. Very
-## useful for proper visualization of quiet music.
 #visualizer_sample_multipler = 1
 #visualizer_look = ●▮
 
@@ -35,8 +33,9 @@ main_window_highlight_color = "default"
 #progressbar_color = "red"
 progressbar_elapsed_color = "blue"
 active_column_color = "blue"
+#visualizer_color = "blue"
+visualizer_color = blue, 32, 25, 26, black
 color1 = "white"
-visualizer_color = "blue"
 
 autocenter_mode = yes
 centered_cursor = yes
