@@ -499,7 +499,13 @@ clientkeys = awful.util.table.join(
     awful.key({ modkey,           }, "f",      function (c) c.fullscreen = not c.fullscreen  end),
     awful.key({ modkey,           }, "s",      function (c) c.sticky = not c.sticky          end),
     awful.key({ modkey, "Shift"   }, "c",      function (c) c:kill()                         end),
-    awful.key({ modkey, "Control" }, "Return", function (c) c:swap(awful.client.getmaster(c.screen)) end),
+    awful.key({ modkey, "Control" }, "Return", function (c)
+        o = awful.client.focus.history.get(mouse.screen, 1)
+        if o then
+            c:swap(o)
+            awful.client.focus.history.previous()
+        end
+    end),
     awful.key({ modkey,           }, "o",      awful.client.movetoscreen                        ),
     awful.key({ modkey,           }, "t",      function (c) c.ontop = not c.ontop            end),
 
