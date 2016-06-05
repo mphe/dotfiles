@@ -32,6 +32,9 @@ eval "$(thefuck --alias)"
 # it regains control. (http://cnswww.cns.cwru.edu/~chet/bash/FAQ (E11))
 shopt -s checkwinsize
 
+# Expand variables on tab complete
+shopt -s direxpand
+
 # colors
 BLACK="$(tput setaf 0)"
 RED="$(tput setaf 1)"
