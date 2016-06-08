@@ -62,6 +62,7 @@ git_prompt() {
 set -o vi
 source /usr/share/fzf/key-bindings.bash
 export FZF_COMPLETION_TRIGGER=',,'
+export FZF_DEFAULT_OPTS='--color=16'
 _fzf_compgen_path() {
     bfs -L "$1" -path "*.ccache" -prune -o -path "*.git" -prune -o -path "*.config/teamviewer*" -prune -o -name "*" 2> /dev/null
     # ag --silent --hidden --ignore .git --ignore "*teamviewer10/dosdevices" -f -g "" "$1"
