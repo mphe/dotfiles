@@ -16,15 +16,15 @@ set autoindent
 
 " enable folding
 set foldmethod=syntax
+set nofoldenable
+" Don't fold anything when opening a new buffer
+set foldlevelstart=99
 
 " global clipboard
 set clipboard+=unnamed
 
 " disable swap files
 set noswapfile
-
-" Don't fold anything when opening a new buffer
-set foldlevelstart=99
 
 " open splits on the right/bottom
 set splitright
