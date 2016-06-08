@@ -1,0 +1,52 @@
+priority 0
+
+global !p
+
+SINGLE_QUOTES = "'"
+DOUBLE_QUOTES = '"'
+
+class Arg(object):
+	def __init__(self, arg):
+		self.arg = arg
+		self.name = arg.split('=')[0].strip()
+
+	def __str__(self):
+		return self.name
+
+	def __unicode__(self):
+		return self.name
+
+	def is_kwarg(self):
+		return '=' in self.arg
+
+def get_args(arglist):
+	args = [Arg(arg) for arg in arglist.split(',') if arg]
+	args = [arg for arg in args if arg.name != 'self']
+
+	return args
+
+def get_quoting_style(snip):
+	style = snip.opt("g:ultisnips_python_quoting_style", "double")
+	if style == 'single':
+		return SINGLE_QUOTES
+	return DOUBLE_QUOTES
+
+endglobal
+
+snippet init "def __init__" b
+def __init__(self$1):`!p
+args = get_args(t[1])
+for arg in args:
+	snip += "    self._%s = %s" % (arg, arg)`
+${0}
+endsnippet
+
+snippet main "main" b
+if __name__ == `!p snip.rv = get_quoting_style(snip)`__main__`!p snip.rv = get_quoting_style(snip)`:
+	${1:${VISUAL:main()}}
+endsnippet
+
+snippet doc "doc block" b
+"""${1}
+"""
+endsnippet
