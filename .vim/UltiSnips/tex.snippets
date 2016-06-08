@@ -136,6 +136,18 @@ snippet amat "arbitrary sized pmatrix" w
 \end{pmatrix}
 endsnippet
 
+snippet amat3 "arbitrary sized pmatrix" w
+\begin{pmatrix}
+	\hdots & ${1:a_1} & \hdots \\\\
+	& \vdots &  \\\\
+	\hdots & ${2:a_n} & \hdots \\\\
+\end{pmatrix}
+endsnippet
+
+snippet aij "aij" w
+(a_{i,j})_{i,j}
+endsnippet
+
 
 # snippets for \mathbb
 snippet RR "\mathbb{R}" w
@@ -174,8 +186,24 @@ snippet f-1 "f^-1" w
 f^{-1}
 endsnippet
 
+snippet knn "K^{n\times n}" w
+K^{n\times n}
+endsnippet
+
 snippet img "Insert image"
 \includegraphics[width=300pt]{${1:filename}}
+endsnippet
+
+snippet prod "product" w
+\prod^{${1:n}}_{${2:i=1}} 
+endsnippet
+
+snippet cup "\bigcup" w
+\bigcup^{${1:n}}_{${2:i=1}} 
+endsnippet
+
+snippet osp "(Omega, Sigma, p)" w
+(\Omega, \Sigma, p)
 endsnippet
 
 # vim:ft=snippets:
