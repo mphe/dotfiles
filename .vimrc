@@ -368,14 +368,21 @@ command! NT NERDTreeToggle
 
 " YCM
 autocmd FileType c,cpp
-    \ nnoremap <F5> :YcmForceCompileAndDiagnostics<CR><CR> |
-    \ inoremap <F5> <c-o>:YcmForceCompileAndDiagnostics<CR> |
-    \ nnoremap <leader>gd :YcmCompleter GetDoc<CR>
+    \ nnoremap <F5> :YcmForceCompileAndDiagnostics<CR><CR>|
+    \ inoremap <F5> <c-o>:YcmForceCompileAndDiagnostics<CR><CR>|
+    \ nnoremap <leader>gd :YcmCompleter GetDoc<CR>|
+    \ nnoremap <leader>fx :YcmCompleter FixIt<CR>
 autocmd FileType c,cpp,python
-    \ nnoremap <leader>jd :YcmCompleter GoToDefinition<CR> |
-    \ nnoremap <leader>jD :YcmCompleter GoToDeclaration<CR> |
-    \ nnoremap <leader>gt :YcmCompleter GetType<CR> |
-    \ nnoremap <leader>gp :YcmCompleter GetParent<CR>
+    \ nnoremap <leader>jd :YcmCompleter GoToDefinition<CR>|
+    \ nnoremap <leader>jD :YcmCompleter GoToDeclaration<CR>|
+    \ nnoremap <leader>gt :YcmCompleter GetType<CR>|
+    \ nnoremap <leader>gp :YcmCompleter GetParent<CR>|
+    \ nnoremap <leader>gi :call ShowPreview()<CR>
+
+function! ShowPreview()
+    call feedkeys("i\<c-space>\<c-n>\<esc>")
+endfunction
+
 let g:ycm_min_num_of_chars_for_completion = 1
 let g:ycm_server_keep_logfiles = 1
 let g:ycm_server_log_level = 'debug'
@@ -385,6 +392,8 @@ let g:ycm_autoclose_preview_window_after_completion = 0
 let g:ycm_autoclose_preview_window_after_insertion = 0
 let g:ycm_always_populate_location_list = 1
 let g:ycm_filetype_blacklist = {}
+
+autocmd FileType tex let g:ycm_min_num_of_chars_for_completion = 5
 
 " Enable tab for completion (removed in oblitum's fork)
 let g:ycm_key_list_select_completion = ['<TAB>', '<Down>']
