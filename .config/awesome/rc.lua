@@ -91,9 +91,10 @@ local layouts = {
 }
 
 -- Alt Tab config
--- alttab.settings.preview_box_bg = "#222222"
--- alttab.settings.preview_box_border = "#000000"
+alttab.settings.preview_box = false
 alttab.settings.client_opacity = true
+alttab.settings.client_opacity_value = 0.5
+alttab.settings.client_opacity_delay = 0
 
 -- }}}
 
