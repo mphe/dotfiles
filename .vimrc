@@ -557,6 +557,7 @@ autocmd InsertLeave,WinLeave * if exists('w:last_fdm') | let &l:foldmethod=w:las
 " filetype specific foldmethods
 autocmd FileType cmake setlocal foldmethod=marker
 autocmd FileType vim setlocal foldmethod=marker
+autocmd FileType lua setlocal foldmethod=marker
 
 " Markdown preview (requires 'Markdown Viewer' addon)
 autocmd FileType markdown,md nnoremap <F5> :!firefox % &<CR><CR>
