@@ -19,6 +19,8 @@ set foldmethod=syntax
 set nofoldenable
 " Don't fold anything when opening a new buffer
 set foldlevelstart=99
+" Skip over closed folds with { }
+set foldopen-=block
 
 " global clipboard
 set clipboard+=unnamed
