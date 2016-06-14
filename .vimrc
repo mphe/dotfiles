@@ -148,7 +148,7 @@ Plugin 'Lokaltog/vim-easymotion'
 Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-repeat'
-Plugin 'tpope/vim-commentary'
+Plugin 'tomtom/tcomment_vim'
 
 " ./install.py --clang-completer
 " Plugin 'Valloric/YouCompleteMe'
@@ -537,9 +537,6 @@ let g:LatexBox_fold_automatic = 0
 autocmd FileType tex nnoremap <F5> :Latexmk<CR>
 " let g:LatexBox_completion_close_braces = 0
 " let g:LatexBox_complete_inlineMath = 0
-
-" vim-commentary
-autocmd FileType c setlocal commentstring=//\ %s
 
 " -------------------------------------- Plugin configuration end }}}
 
