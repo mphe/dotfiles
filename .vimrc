@@ -57,7 +57,7 @@ set viewoptions=cursor,folds
 " fold functions, if, for, and while in shell scripts
 let g:sh_fold_enabled=7
 
-set previewheight=4
+set previewheight=5
 
 " -------------------------------------- General settings end }}}
 
