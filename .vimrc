@@ -538,6 +538,13 @@ autocmd FileType tex nnoremap <F5> :Latexmk<CR>
 " let g:LatexBox_completion_close_braces = 0
 " let g:LatexBox_complete_inlineMath = 0
 
+" tcomment
+let g:tcommentLineC = {
+            \ 'commentstring': '// %s',
+            \ 'replacements': g:tcomment#replacements_c
+            \ }
+call tcomment#DefineType('c', g:tcommentLineC)
+
 " -------------------------------------- Plugin configuration end }}}
 
 
