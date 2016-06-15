@@ -21,6 +21,8 @@ alias cmake-debug='cmake -DCMAKE_BUILD_TYPE=Debug'
 alias cmake-release='cmake -DCMAKE_BUILD_TYPE=Release'
 alias xclip='xclip -selection c'
 alias ll='ls -l'
+alias g++='g++ -fdiagnostics-color=auto'
+alias gcc='gcc -fdiagnostics-color=auto'
 
 # thefuck
 eval "$(thefuck --alias)"
