@@ -518,8 +518,8 @@ let g:username = 'Marvin Ewald'
 let g:email = 'marvin.e@protonmail.ch'
 let g:templates_no_autocmd = 1
 let g:templates_directory = [ $HOME.'/.vim/templates', $HOME.'/.vim/bundle/vim-template/templates' ]
-autocmd BufNewFile *.h,*.hpp Template *.h
-autocmd BufNewFile *.c,*.cpp Template *.c
+" autocmd BufNewFile *.h,*.hpp Template *.h
+" autocmd BufNewFile *.c,*.cpp Template *.c
 
 " CtrlP
 let g:ctrlp_show_hidden=1
