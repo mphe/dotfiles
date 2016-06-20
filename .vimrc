@@ -661,4 +661,15 @@ inoremap <expr> <F4> ToggleLatexMath()
 " Find next character when using f/F or t/T
 nnoremap <space> ;
 
+" Substitute a range with yanked text
+nnoremap <leader>s :set opfunc=Substitute<CR>g@
+function! Substitute(type)
+    silent exec 'normal! `[v`]"_d'
+    if col(".") == col("$")-1
+        silent exec 'normal! p'
+    else
+        silent exec 'normal! P'
+    endif
+endfunction
+
 " -------------------------------------- Key mappings end }}}
