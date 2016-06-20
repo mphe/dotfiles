@@ -182,6 +182,7 @@ Plugin 'mall0c/grayout.vim'
 Plugin 'LaTeX-Box-Team/LaTeX-Box'
 Plugin 'kana/vim-textobj-indent'
 Plugin 'kana/vim-textobj-user'
+Plugin 'davinche/godown-vim'
 
 " Turn filetype functionality back on
 filetype on
@@ -545,6 +546,9 @@ let g:tcommentLineC = {
             \ }
 call tcomment#DefineType('c', g:tcommentLineC)
 
+" Godown
+autocmd FileType markdown,md nnoremap <F5> :GodownPreview<CR>
+
 " -------------------------------------- Plugin configuration end }}}
 
 
@@ -564,7 +568,7 @@ autocmd FileType vim setlocal foldmethod=marker
 autocmd FileType lua setlocal foldmethod=marker
 
 " Markdown preview (requires 'Markdown Viewer' addon)
-autocmd FileType markdown,md nnoremap <F5> :!firefox % &<CR><CR>
+" autocmd FileType markdown,md nnoremap <F5> :!firefox % &<CR><CR>
 
 " Save/Restore folds
 autocmd BufWinLeave * if !&diff && strlen(expand('%')) && &ft != 'gitcommit' | mkview | endif
