@@ -403,11 +403,6 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey,           }, "h", function() switch_focus("left") end),
     awful.key({ modkey,           }, "l", function() switch_focus("right") end),
 
-    awful.key({ modkey, "Mod1"     }, "l",     function () awful.tag.incmwfact( 0.01 )    end),
-    awful.key({ modkey, "Mod1"     }, "h",     function () awful.tag.incmwfact(-0.01)    end),
-    awful.key({ modkey, "Mod1"     }, "j",     function () awful.client.incwfact( 0.05 )    end),
-    awful.key({ modkey, "Mod1"     }, "k",     function () awful.client.incwfact(-0.05)    end),
-
     awful.key({ modkey, "Shift"   }, "j", function () awful.client.swap.global_bydirection("down") end),
     awful.key({ modkey, "Shift"   }, "k", function () awful.client.swap.global_bydirection("up") end),
     awful.key({ modkey, "Shift"   }, "h", function () awful.client.swap.global_bydirection("left") end),
@@ -535,7 +530,17 @@ clientkeys = awful.util.table.join(
     awful.key({ modkey, "Mod1" }, "n", function(c)
             c.maximized_horizontal = not c.maximized_horizontal
             c:raise()
-        end)
+        end),
+
+    awful.key({ modkey, "Mod1" }, "l", function(c) utils.moveresize(0, 0, 1, 0, c) end),
+    awful.key({ modkey, "Mod1" }, "h", function(c) utils.moveresize(0, 0, -1, 0, c) end),
+    awful.key({ modkey, "Mod1" }, "j", function(c) utils.moveresize(0, 0, 0, 1, c) end),
+    awful.key({ modkey, "Mod1" }, "k", function(c) utils.moveresize(0, 0, 0, -1, c) end),
+
+    awful.key({ modkey, "Mod1", "Shift" }, "l", function(c) utils.moveresize(15, 0, 0, 0) end),
+    awful.key({ modkey, "Mod1", "Shift" }, "h", function(c) utils.moveresize(-15, 0, 0, 0) end),
+    awful.key({ modkey, "Mod1", "Shift" }, "j", function(c) utils.moveresize(0, 15, 0, 0) end),
+    awful.key({ modkey, "Mod1", "Shift" }, "k", function(c) utils.moveresize(0, -15, 0, 0) end)
 )
 -- }}}
 

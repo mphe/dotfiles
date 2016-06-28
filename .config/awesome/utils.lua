@@ -75,4 +75,15 @@ function M.registerPopupNotify(widget, title, callback)
     end)
 end
 
+-- Move/Resize a client relative.
+-- Works for both, floating and non-floating clients.
+function M.moveresize(x, y, w, h, c)
+    if awful.client.floating.get(c) then
+        awful.client.moveresize(x, y, w * 15, h * 15, c)
+    else
+        awful.tag.incmwfact(w * 0.01)
+        awful.client.incwfact(h * 0.05, c)
+    end
+end
+
 return M
