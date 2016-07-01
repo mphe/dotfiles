@@ -75,7 +75,7 @@ theme.titlebar_maximized_button_focus_active  = "/usr/share/awesome/themes/defau
 
 
 local themedir = os.getenv("HOME") .. "/.config/awesome/themes/default/"
-theme.wallpaper = themedir .. "wallpaper.jpg"
+theme.wallpaper = os.getenv("HOME") .. "/.cache/awesome/wallpaper.png"
 
 local layoutdir = themedir .. "layouts/"
 theme.layout_fairh = layoutdir .. "fairhw.png"
