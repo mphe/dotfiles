@@ -183,6 +183,7 @@ Plugin 'LaTeX-Box-Team/LaTeX-Box'
 Plugin 'kana/vim-textobj-indent'
 Plugin 'kana/vim-textobj-user'
 Plugin 'davinche/godown-vim'
+Plugin 'vim-scripts/ReplaceWithRegister'
 
 " Turn filetype functionality back on
 filetype on
@@ -619,12 +620,8 @@ nnoremap <s-tab> <c-w><c-w>
 " Make Y behave like other capitals
 nnoremap Y y$
 
-" map <leader>p to substitute the selection with yanked text in visual mode
-xnoremap <leader>P "_dP
-xnoremap <leader>p "_dp
-
 " faster substitution with yanked text
-nmap S viw<leader>P
+nmap S griw
 
 " visually select the text just pasted
 nnoremap gz `[v`]
@@ -664,16 +661,5 @@ inoremap <expr> <F4> ToggleLatexMath()
 
 " Find next character when using f/F or t/T
 nnoremap <space> ;
-
-" Substitute a range with yanked text
-nnoremap <leader>s :set opfunc=Substitute<CR>g@
-function! Substitute(type)
-    silent exec 'normal! `[v`]"_d'
-    if col(".") == col("$")-1
-        silent exec 'normal! p'
-    else
-        silent exec 'normal! P'
-    endif
-endfunction
 
 " -------------------------------------- Key mappings end }}}
