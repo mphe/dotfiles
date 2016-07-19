@@ -154,6 +154,7 @@ mymainmenu = awful.menu({
         { "open terminal", terminal, "/usr/share/icons/gnome/16x16/apps/utilities-terminal.png" },
         { "open file manager", filemgr, "/usr/share/icons/gnome/16x16/apps/system-file-manager.png" },
         { "open browser", "firefox", "/usr/share/icons/hicolor/16x16/apps/firefox.png" },
+        { "open thunderbird", "thunderbird", "/usr/share/icons/hicolor/16x16/apps/thunderbird.png" },
     },
     theme = { width = 150 },
 })
