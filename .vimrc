@@ -136,14 +136,11 @@ Plugin 'gmarik/vundle'
 
 " color schemes
 Plugin 'altercation/vim-colors-solarized'
-Plugin 'whatyouhide/vim-gotham'
-Plugin 'twerth/ir_black'
 Plugin 'qualiabyte/vim-colorstepper'
 
 Plugin 'scrooloose/nerdtree'
 Plugin 'itchyny/lightline.vim'
 Plugin 'bling/vim-bufferline'
-Plugin 'pearofducks/vim-quack-lightline'
 Plugin 'Lokaltog/vim-easymotion'
 Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-surround'
