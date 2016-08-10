@@ -602,6 +602,8 @@ command! PabsFormat %s/:/\r    {\r\r    } \/\/
 
 command! FollowSymlink exec 'file '.resolve(expand('%:p')) | e
 
+command! -range=% ToSource <line1>,<line2>s/;/\r    {\r\r    }\r
+
 " buffer shortcuts
 nnoremap <F3> :bn<CR>
 nnoremap <F2> :bp<CR>
