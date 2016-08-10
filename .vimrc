@@ -630,6 +630,7 @@ inoremap <expr> <F4> ToggleLatexMath()
 
 " Find next character when using f/F or t/T
 nnoremap <space> ;
+vnoremap <space> ;
 
 map <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
             \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
