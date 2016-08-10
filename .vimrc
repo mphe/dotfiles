@@ -519,6 +519,9 @@ call tcomment#DefineType('c', g:tcommentLineC)
 " Godown
 autocmd FileType markdown,md nnoremap <F5> :GodownPreview<CR>
 
+" fugitive
+command! Gst Gtabedit :
+
 " -------------------------------------- Plugin configuration end }}}
 
 
