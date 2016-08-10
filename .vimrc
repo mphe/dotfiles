@@ -184,6 +184,7 @@ Plugin 'kana/vim-textobj-indent'
 Plugin 'kana/vim-textobj-user'
 Plugin 'davinche/godown-vim'
 Plugin 'vim-scripts/ReplaceWithRegister'
+Plugin 'derekwyatt/vim-protodef'
 
 " Turn filetype functionality back on
 filetype on
@@ -518,6 +519,17 @@ call tcomment#DefineType('c', g:tcommentLineC)
 
 " Godown
 autocmd FileType markdown,md nnoremap <F5> :GodownPreview<CR>
+
+" protodef
+function! s:Implement(...)
+    if a:0 > 0
+        " DelimitMate handles the closing }
+        execute 'normal inamespace '.a:1."\<cr>{\<cr>"
+    endif
+    execute 'normal i'.protodef#ReturnSkeletonsFromPrototypesForCurrentBuffer({ 'includeNS' : 0 })
+endfunction
+
+command! -nargs=? Implement call s:Implement(<f-args>)
 
 " fugitive
 command! Gst Gtabedit :
