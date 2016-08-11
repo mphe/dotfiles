@@ -10,7 +10,7 @@
 #     exec tmux
 # fi
 
-alias ls='ls --color=always'
+alias ls='ls --color=always --group-directories-first'
 alias less='less -r'
 alias pacaur='pacaur --noedit'
 alias android-studio='JAVA_HOME=/usr/lib/jvm/java-8-jdk android-studio'
