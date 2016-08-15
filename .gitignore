@@ -8,4 +8,4 @@
 .config/ranger/history
 .config/ranger/tagged
 .config/awesome/layoutconfig.lua
-
+.vim/colors/*
