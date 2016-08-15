@@ -182,6 +182,7 @@ Plugin 'kana/vim-textobj-user'
 Plugin 'davinche/godown-vim'
 Plugin 'vim-scripts/ReplaceWithRegister'
 Plugin 'derekwyatt/vim-protodef'
+Plugin 'hynek/vim-python-pep8-indent'
 
 " Turn filetype functionality back on
 filetype on
@@ -370,7 +371,7 @@ let g:ycm_key_list_select_completion = ['<TAB>', '<Down>']
 let g:ycm_key_list_previous_completion = ['<S-TAB>', '<Up>']
 
 " SimpylFold
-let g:SimpylFold_fold_docstring = 0
+let g:SimpylFold_fold_docstring = 1
 autocmd BufWinEnter *.py setlocal foldexpr=SimpylFold(v:lnum) foldmethod=expr
 autocmd BufWinLeave *.py setlocal foldexpr< foldmethod<
 
