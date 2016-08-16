@@ -63,6 +63,7 @@ git_prompt() {
 # fzf
 set -o vi
 source /usr/share/fzf/key-bindings.bash
+source /usr/share/fzf/completion.bash
 export FZF_COMPLETION_TRIGGER=',,'
 export FZF_DEFAULT_OPTS='--color=16'
 _fzf_compgen_path() {
