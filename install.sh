@@ -31,3 +31,6 @@ mkdir -pv "$homedir/.config"
 for i in .config/*; do
     $f "$i"
 done
+
+mkdir -p "$homedir/.ipython/profile_default"
+$f .ipython/profile_default/ipython_config.py
