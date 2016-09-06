@@ -23,6 +23,7 @@ alias xclip='xclip -selection c'
 alias ll='ls -l'
 alias g++='g++ -fdiagnostics-color=auto'
 alias gcc='gcc -fdiagnostics-color=auto'
+alias mkdir='mkdir -p'
 
 # thefuck
 eval "$(thefuck --alias)"
