@@ -185,18 +185,22 @@ systray = widgets.create(widgets.widgets.tray)
 systray.witype.toggle(systray, false)
 
 -- Wifi widget
-wifiwidget = net_widgets.wireless({
-    interface="wlp3s0b1",
+-- wifiwidget = net_widgets.wireless({
+--     interface="wlp3s0b1",
+--     timeout=30,
+--     font="monospace",
+--     popup_signal=true,
+--     onclick = terminal_cmd .. "\"bash -c 'ps -e | grep nmtui && pkill nmtui || nmtui'\""
+-- })
+
+-- Wired widget
+wiredwidget = net_widgets.indicator({
+    interfaces = {"enp2s0f0"},
     timeout=30,
     font="monospace",
     popup_signal=true,
     onclick = terminal_cmd .. "\"bash -c 'ps -e | grep nmtui && pkill nmtui || nmtui'\""
 })
-
--- Wired widget
--- wiredwidget = net_widgets.indicator({
---     interfaces = {"enp2s0f0"},
--- })
 -- }}}
 
 -- {{{ Wibox
@@ -295,8 +299,8 @@ for s = 1, screen.count() do
     right_layout:add(mpdwidget.container)
     right_layout:add(separator)
 
-    -- right_layout:add(wiredwidget)
-    right_layout:add(wifiwidget)
+    right_layout:add(wiredwidget)
+    -- right_layout:add(wifiwidget)
     -- right_layout:add(separator)
 
     right_layout:add(brightwidget.container)
