@@ -59,6 +59,9 @@ let g:sh_fold_enabled=7
 
 set previewheight=5
 
+" Disable preview window
+set completeopt-=preview
+
 " -------------------------------------- General settings end }}}
 
 
@@ -338,6 +341,12 @@ command! NT NERDTreeToggle
 " let NERDTreeWinPos = "right"
 
 " YCM
+" The preview window is disabled to prevent heavy laggs when cycling through
+" completion candidates.
+" Instead there are custom mappings for <c-y> and <c-l> to show the preview
+" for the current entry. They do both the same except that <c-y> also closes
+" the popup menu.
+
 autocmd FileType c,cpp
     \ nnoremap <F5> :YcmForceCompileAndDiagnostics<CR><CR>|
     \ inoremap <F5> <c-o>:YcmForceCompileAndDiagnostics<CR><CR>|
@@ -348,10 +357,21 @@ autocmd FileType c,cpp,python
     \ nnoremap <leader>jD :YcmCompleter GoToDeclaration<CR>|
     \ nnoremap <leader>gt :YcmCompleter GetType<CR>|
     \ nnoremap <leader>gp :YcmCompleter GetParent<CR>|
-    \ nnoremap <leader>gi :call ShowPreview()<CR>
+    \ nnoremap <leader>gi :call ShowPreview()<CR>|
+    \ inoremap <expr> <c-y> pumvisible() ? "\<c-p>\<c-r>=TogglePreview(1)\<CR>\<c-n>\<c-y>\<c-r>=TogglePreview(0)\<CR>" : "\<c-y>"|
+    \ inoremap <expr> <c-l> pumvisible() ? "\<c-p>\<c-r>=TogglePreview(1)\<CR>\<c-n>\<c-r>=TogglePreview(0)\<CR>" : "\<c-l>"
 
 function! ShowPreview()
     call feedkeys("i\<c-space>\<c-n>\<esc>")
+endfunction
+
+function! TogglePreview(on)
+    if a:on
+        set completeopt+=preview
+    else
+        set completeopt-=preview
+    endif
+    return ""
 endfunction
 
 let g:ycm_min_num_of_chars_for_completion = 1
