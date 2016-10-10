@@ -2,6 +2,7 @@ map , <leader>
 
 " unmap d to prevent accidental tab closing
 nnoremap d <NOP>
+nnoremap p <NOP>
 
 " faster scrolling
 noremap j 2j
