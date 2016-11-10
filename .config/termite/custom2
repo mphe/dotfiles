@@ -1,0 +1,95 @@
+[options]
+scroll_on_output = false
+scroll_on_keystroke = true
+audible_bell = false
+mouse_autohide = true
+allow_bold = true
+dynamic_title = true
+urgent_on_bell = true
+clickable_url = true
+# font = DejaVu Sans Mono for Powerline 10
+font = Terminess Powerline 10
+scrollback_lines = 1000
+search_wrap = true
+#icon_name = terminal
+#geometry = 640x480
+
+# "system", "on" or "off"
+cursor_blink = system
+
+# "block", "underline" or "ibeam"
+cursor_shape = block
+
+# $BROWSER is used by default
+browser = firefox
+
+# set size hints for the window
+#size_hints = false
+
+# emit escape sequences for other keys modified by Control
+#modify_other_keys = false
+
+
+[colors]
+# colors from color0 to color254 can be set
+
+# Solarized dark color scheme
+foreground = #838284
+#foreground_bold = #b0b5b7
+#background = rgba(0, 43, 54, 0.9)
+background = rgba(35, 24, 33, 0.9)
+
+#cursor = #93a1a1
+
+#black
+color0 = #221526
+color8 = #221526
+
+# red
+color1 = #da7f80
+color9 = #da7f80
+
+# green
+color2 = #5E7F68
+color10 = #5E7F68
+
+# yellow
+color3 = #7A4C2D
+color11 = #AD7A57
+
+# blue
+color4 = #605e78
+color12 = #605e78
+
+# magenta
+color5 = #ad8d9c
+color13 = #ad8d9c
+
+# cyan
+color6 = #504857
+color14 = #504857
+
+# white
+color7 = #fffdf9
+color15 = #fffdf9
+
+
+#foreground_dim = #888888
+#background = #002b36
+
+# if unset, will reverse foreground and background
+#highlight = #839496
+
+
+[hints]
+#font = Monospace 12
+#foreground = #dcdccc
+#background = #3f3f3f
+#active_foreground = #e68080
+#active_background = #3f3f3f
+#padding = 2
+#border = #3f3f3f
+#border_width = 0.5
+#roundness = 2.0
+
+# vim: ft=dosini cms=#%s

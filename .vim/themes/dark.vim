@@ -3,12 +3,12 @@ set t_Co=256
 set background=dark
 set laststatus=2
 
-" colorscheme peachpuff
 " ------------------ Solarized
-let g:solarized_termtrans=1
-let g:solarized_hitrail=1
+" let g:solarized_termtrans=1
+" let g:solarized_hitrail=1
 " let g:solarized_termcolors=256
-colorscheme solarized
+" colorscheme solarized
+colorscheme peachpuff
 
 highlight SignColumn ctermbg=black
 highlight CursorLineNr ctermbg=black cterm=bold

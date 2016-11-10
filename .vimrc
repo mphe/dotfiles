@@ -197,6 +197,7 @@ filetype plugin indent on
 
 " -------------------------------------- Style config {{{
 source /home/marvin/.vim/themes/solarized.vim
+" source /home/marvin/.vim/themes/dark.vim
 
 " -------------------------------------- Style config end }}}
 
