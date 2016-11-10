@@ -77,13 +77,13 @@ def_key "i"
  previous_column
 
 def_key "right"
- volume_up
+ seek_forward
 
 def_key "+"
  volume_up
 
 def_key "left"
- volume_down
+ seek_backward
 
 def_key "-"
  volume_down
