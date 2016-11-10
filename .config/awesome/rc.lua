@@ -355,7 +355,9 @@ globalkeys = awful.util.table.join(
     awful.key({ "Mod1", "Shift" }, "Tab", function() alttab.switch(-1, "Alt_L", "Tab", "ISO_Left_Tab") end),
 
     -- Screenshot
-    awful.key({}, "Print", function() awful.util.spawn("/home/marvin/scripts/screenshot.sh") end),
+    awful.key({},          "Print", function() utils.screenshot(mouse.screen) end),
+    awful.key({ "Shift" }, "Print", function() utils.screenshot(-1) end),
+    awful.key({ modkey },  "Print", function() utils.screenshot(0) end),
 
     -- Open file explorer
     awful.key({ modkey }, "e", function() awful.util.spawn(filemgr) end),

@@ -4,6 +4,25 @@ local wibox = require("wibox")
 
 local M = {}
 
+-- Takes a screenshot of the given screen or the whole screen when
+-- passing -1 (default).
+-- snum: screen number or -1 for whole screen or 0 for interactive select.
+-- dir: the output directory (defaults to ~/img).
+function M.screenshot(snum, dir)
+    snum = snum or -1
+    local path = (dir or "~/img") .. "/screenshot$(date +%Y%m%d%H%M%S).png"
+    local cmd = "import "
+
+    if snum < 0 then
+        cmd = "import -window root "
+    elseif snum > 0 then
+        local g = screen[snum].geometry
+        cmd = string.format("import -window root -crop %ix%i+%i+%i +repage ",
+            g.width, g.height, g.x, g.y)
+    end
+    awful.util.spawn_with_shell(cmd .. path)
+end
+
 function M.file_exists(fname)
     local f = io.open(fname, "r")
     if f ~= nil then
