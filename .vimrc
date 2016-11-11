@@ -360,7 +360,7 @@ autocmd FileType c,cpp,python
     \ nnoremap <leader>gp :YcmCompleter GetParent<CR>|
     \ nnoremap <leader>gi :call ShowPreview()<CR>|
     \ inoremap <expr> <c-y> pumvisible() ? "\<c-p>\<c-r>=TogglePreview(1)\<CR>\<c-n>\<c-y>\<c-r>=TogglePreview(0)\<CR>" : "\<c-y>"|
-    \ inoremap <expr> <CR>  pumvisible() ? "\<c-p>\<c-r>=TogglePreview(1)\<CR>\<c-n>\<c-y>\<c-r>=TogglePreview(0)\<CR>" : "\<CR>"|
+    \ imap     <expr>  <CR> pumvisible() ? "\<c-p>\<c-r>=TogglePreview(1)\<CR>\<c-n>\<c-y>\<c-r>=TogglePreview(0)\<CR>" : "<Plug>delimitMateCR"|
     \ inoremap <expr> <c-l> pumvisible() ? "\<c-p>\<c-r>=TogglePreview(1)\<CR>\<c-n>\<c-r>=TogglePreview(0)\<CR>" : "\<c-l>"
 
 function! ShowPreview()
