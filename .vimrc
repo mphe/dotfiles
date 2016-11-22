@@ -639,6 +639,12 @@ command! FollowSymlink exec 'file '.resolve(expand('%:p')) | e
 
 command! -range=% ToSource <line1>,<line2>s/;/\r    {\r\r    }\r
 
+" Puts exactly one space between operator and operands.
+" Does not pick up all occurrences in some corner cases, but good enough.
+" If this breaks some day, try something like this:
+" s/\[(\w\+\)]\{-}\s*\(||\|&&\|%\|+\|-\|\*\|\/\)\s*\(\w\+\)/\1 \2 \3/g
+command! -range=% OpSpacing <line1>,<line2>s/\(\w\+\)\{-}\s*\(||\|&&\|%\|+\|-\|\*\|\/\)\s*\(\w\+\)/\1 \2 \3/g
+
 " buffer shortcuts
 nnoremap <F3> :bn<CR>
 nnoremap <F2> :bp<CR>
