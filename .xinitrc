@@ -37,5 +37,6 @@ fi
 
 compton -b
 anamnesis --start
+redshift &
 
 exec awesome
