@@ -25,8 +25,9 @@ alias g++='g++ -fdiagnostics-color=auto'
 alias gcc='gcc -fdiagnostics-color=auto'
 alias mkdir='mkdir -p'
 
-# thefuck
-eval "$(thefuck --alias)"
+# thefuck (slow as fuck startup)
+# eval "$(thefuck --alias)"
+alias fuck='TF_CMD=$(TF_ALIAS=fuck PYTHONIOENCODING=utf-8 TF_SHELL_ALIASES=$(alias) thefuck $(fc -ln -1)) && eval $TF_CMD && history -s $TF_CMD'
 
 # Set git language to english (setting LANG doesn't work with thefuck)
 # alias git='LANG=en_US.UTF-8 git'
