@@ -68,6 +68,7 @@ set completeopt-=preview
 " -------------------------------------- Aliases {{{
 " Treat E as e command
 cnoreabbrev E e
+cnoreabbrev git Git
 
 " -------------------------------------- Aliases end }}}
 
@@ -386,6 +387,7 @@ let g:ycm_autoclose_preview_window_after_completion = 0
 let g:ycm_autoclose_preview_window_after_insertion = 0
 let g:ycm_always_populate_location_list = 1
 let g:ycm_filetype_blacklist = {}
+let g:ycm_warning_symbol = '!!'
 
 autocmd FileType tex let g:ycm_min_num_of_chars_for_completion = 5
 
@@ -639,6 +641,7 @@ command! PabsFormat %s/:/\r    {\r\r    } \/\/
 command! FollowSymlink exec 'file '.resolve(expand('%:p')) | e
 
 command! -range=% ToSource <line1>,<line2>s/;/\r    {\r\r    }\r
+command! -nargs=1 -range=% ToSourceAuto <line1>,<line2>s/auto \(.\{-}\)\s*->\s*\(.\{-}\)\s*;/\2 <args>::\1\r    {\r\r    }\r/
 
 " Puts exactly one space between operator and operands.
 " Does not pick up all occurrences in some corner cases, but good enough.
