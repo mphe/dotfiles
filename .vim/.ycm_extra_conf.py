@@ -12,10 +12,10 @@ flags = [
 '-std=c++11',
 '-x', 'c++',
 '-I', '.',
-'-isystem', '/usr/include/c++/6.1.1',
-'-isystem', '/include',
-'-isystem', '/usr/include',
-'-isystem', '/usr/local/include',
+'-isystem', '/usr/include/c++/6.2.1',
+# '-isystem', '/include',
+# '-isystem', '/usr/include',
+# '-isystem', '/usr/local/include',
 ]
 
 
