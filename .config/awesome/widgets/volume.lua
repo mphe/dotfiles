@@ -1,53 +1,55 @@
 local awful = require("awful")
 local utils = require("utils")
-local vicious = require("vicious")
-local wibox = require("wibox")
+local lain = require("lain")
+local icons = require("icons")
+local BaseWidget = require("widgets.base").BaseWidget
 
-local M = {}
+local VolWidget = BaseWidget.derive()
 
-local function creator(args)
-    local reg = {
-        widget = wibox.widget.textbox()
-    }
-    vicious.register(reg.widget, vicious.widgets.volume, "$2 $1%", 5, "Master")
-    return reg
-end
+-- timeout: refresh interval
+-- icon: icon path
+function VolWidget:create(args)
+    args = args or {}
+    args.channel = args.channel or "Master"
+    args.togglechannel = args.togglechannel or "Master"
+    args.settings = function()
+        widget:set_markup(volume_now.level .. "%")
+        self:updateIcon(volume_now.status)
+    end
 
-function M.update(reg)
-    vicious.force({ reg.widget })
-end
+    self.status = "on"
+    self.lainwidget = lain.widgets.alsa(args)
+    local box = self:init(self.lainwidget.widget, args.icon or icons.volume)
 
-function M.attach(widget, reg)
-    widget:buttons(awful.util.table.join(
+    box:buttons(awful.util.table.join(
         awful.button({}, 1, function() utils.toggle_run("pavucontrol") end),
-
-        awful.button({}, 3, function()
-            M.toggleMute()
-            M.update(reg)
-        end),
-
-        awful.button({}, 4, function()
-            M.changeVolume("1dB+")
-            M.update(reg)
-        end),
-
-        awful.button({}, 5, function()
-            M.changeVolume("1dB-")
-            M.update(reg)
-        end)
+        awful.button({}, 3, function() self:toggleMute() end),
+        awful.button({}, 4, function() self:changeVolume("1dB+") end),
+        awful.button({}, 5, function() self:changeVolume("1dB-") end)
     ))
 end
 
-function M.changeVolume(val)
-    awful.util.spawn("amixer -c 0 set Master " .. val)
+function VolWidget:update()
+    self.lainwidget.update()
 end
 
-function M.toggleMute()
-    awful.util.pread("amixer set Master toggle") -- pread -> force wait
+function VolWidget:updateIcon(status)
+    if self.status == status then
+        return
+    elseif status == "on" then
+        self:set_icon(icons.volume)
+    else
+        self:set_icon(icons.muted)
+    end
+    self.status = status
 end
 
-function M.isMuted()
-    return awful.util.pread("amixer get Master | grep off") ~= ""
+function VolWidget:changeVolume(val)
+    utils.async("amixer -c 0 set Master " .. val, function(stdout) self:update() end)
 end
 
-return setmetatable(M, {__call = function(_,...) return creator(...) end})
+function VolWidget:toggleMute(reg)
+    utils.async("amixer set Master toggle", function(stdout) self:update() end)
+end
+
+return VolWidget

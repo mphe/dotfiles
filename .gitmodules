@@ -1,15 +1,9 @@
 [submodule ".vim/bundle/vundle"]
 	path = .vim/bundle/vundle
 	url = https://github.com/gmarik/vundle.git
-[submodule ".config/awesome/alttab"]
-	path = .config/awesome/alttab
-	url = https://github.com/jorenheit/awesome_alttab
-[submodule ".config/awesome/net_widgets"]
-	path = .config/awesome/net_widgets
-	url = https://github.com/plotnikovanton/net_widgets.git
-[submodule ".config/awesome/vain"]
-	path = .config/awesome/vain
-	url = https://github.com/copycat-killer/vain-again.git
 [submodule ".config/awesome/vicious"]
 	path = .config/awesome/vicious
 	url = http://git.sysphere.org/vicious
+[submodule ".config/awesome/lain"]
+	path = .config/awesome/lain
+	url = https://github.com/copycat-killer/lain.git

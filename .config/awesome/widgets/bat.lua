@@ -1,29 +1,41 @@
 local awful = require("awful")
 local utils = require("utils")
-local vicious = require("vicious")
-local wibox = require("wibox")
+local lain = require("lain")
+local icons = require("icons")
+local BaseWidget = require("widgets.base").BaseWidget
 
-local M = {}
+local BatWidget = BaseWidget.derive()
 
-local function creator(args)
-    local reg = {
-        widget = wibox.widget.textbox()
-    }
-    reg.vicwidget = vicious.register(reg.widget, vicious.widgets.bat, function(w, args)
-        M.args = args
-        return string.format("%s %i%%", args[1], args[2])
-    end, 61, "BAT1")
-    return reg
+function BatWidget:create(args)
+    args = args or {}
+    args.settings = function()
+        widget:set_markup(bat_now.perc .. "%")
+        self.data = bat_now
+        self:updateIcon()
+    end
+
+    self.oldstatus = 1
+    self.lainwidget = lain.widgets.bat(args)
+    local box = self:init(self.lainwidget.widget, args.icon or icons.ac)
+
+    utils.registerPopupNotify(box, "Battery", function(w)
+            return string.format("Time remaining:\t%s", self.data.time)
+        end)
 end
 
-function M.update(reg)
-    vicious.force({ reg.widget })
+function BatWidget:updateIcon()
+    if self.data.ac_status == self.oldstatus then
+        return
+    elseif self.data.ac_status == 1 then
+        self:set_icon(icons.ac)
+    else
+        self:set_icon(icons.bat)
+    end
+    self.oldstatus = self.data.ac_status
 end
 
-function M.attach(widget, reg)
-    utils.registerPopupNotify(widget, "Battery", function(w)
-        return string.format("Time remaining:\t%s\nWear level:\t\t%i%%", M.args[3], M.args[4])
-    end)
+function BatWidget:update()
+    self.lainwidget.update()
 end
 
-return setmetatable(M, {__call = function(_,...) return creator(...) end})
+return BatWidget

@@ -1,41 +1,29 @@
 local awful = require("awful")
 local utils = require("utils")
-local vicious = require("vicious")
-local wibox = require("wibox")
+local lain = require("lain")
+local icons = require("icons")
+local BaseWidget = require("widgets.base").BaseWidget
 
-local M = {}
+local TempWidget = BaseWidget.derive()
 
-local function creator(args)
+function TempWidget:create(args)
     args = args or {}
     args.critical = args.critical or 80
     args.critcolor = args.critcolor or "#FF0000"
-    args.interval = args.interval or 59
-
-    local reg = {
-        widget = wibox.widget.textbox()
-    }
-
-    reg.vicwidget = vicious.register(reg.widget, vicious.widgets.thermal, function(w, args_)
-        t = args_[1]
+    args.settings = function()
+        local t = coretemp_now
         if t >= args.critical then
-            return string.format('<span color="%s">%s°C</span>', args.critcolor, t)
+            widget:set_markup(string.format('<span color="%s">%s°C</span>',
+                args.critcolor, coretemp_now))
+        else
+            widget:set_markup(t .. "°C")
         end
-        return t .. "°C"
-    end , args.interval, "thermal_zone0")
+    end
 
-    vicious.cache(vicious.widgets.thermal)
-
-    return reg
-end
-
-function M.update(reg)
-    vicious.force({ reg.vicwidget })
-end
-
-function M.attach(widget, reg)
-    widget:buttons(awful.util.table.join(
+    local box = self:init(lain.widgets.temp(args), args.icon or icons.temp)
+    box:buttons(awful.util.table.join(
         awful.button({}, 1, function() utils.toggle_run("psensor") end)
     ))
 end
 
-return setmetatable(M, {__call = function(_,...) return creator(...) end})
+return TempWidget

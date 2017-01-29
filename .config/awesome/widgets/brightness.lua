@@ -1,49 +1,51 @@
 local awful = require("awful")
 local wibox = require("wibox")
+local utils = require("utils")
+local icons = require("icons")
+local BaseWidget = require("widgets.base").BaseWidget
 
-local M = {}
+local BrightWidget = BaseWidget.derive()
 
-function M.getBrightness(device)
-    -- xbacklight causes lags
-    -- return tonumber(awful.util.pread("xbacklight -get"))
-    return tonumber(awful.util.pread("cat /sys/class/backlight/" .. device .. "/brightness")) / 10
+function BrightWidget:update()
+    self.widget:set_text(tostring(self:getBrightness()) .. "%")
 end
 
-function M.changeBrightness(x)
-    awful.util.pread("xbacklight -inc " .. tostring(x))
-end
-
-function M.update(reg)
-    -- reg.callback(reg.widget, M.getBrightness())
-    reg.widget:set_text(tostring(math.ceil(M.getBrightness(reg.device))) .. "%")
-end
-
-local function creator(args)
+function BrightWidget:create(args)
     local args = args or {}
-    local reg = {
-        widget = wibox.widget.textbox(),
-        device = args.device or "intel_backlight",
-        -- callback = callback,
-        timer = timer({ timeout = args.interval or 11 })
-    }
 
-    reg.timer:connect_signal("timeout", function() M.update(reg) end)
-    reg.timer:start()
-    M.update(reg)
-    return reg
+    self.widget = wibox.widget.textbox()
+    self.device = "/sys/class/backlight/" .. (args.device or "intel_backlight") .. "/brightness"
+    self.addcmd = args.addcmd or "light -A"
+    self.subcmd = args.subcmd or "light -U"
+
+    local box = self:init(self.widget, args.icon or icons.brightness)
+    self:attach(box)
+
+    self.timer = timer({ timeout = args.timeout or 11 })
+    self.timer:connect_signal("timeout", function() self:update() end)
+    self.timer:start()
+    self:update()
 end
 
-function M.attach(widget, reg)
-    widget:buttons(awful.util.table.join(
+function BrightWidget:attach(box)
+    box:buttons(awful.util.table.join(
         awful.button({}, 4, function()
-            M.changeBrightness(5)
-            M.update(reg)
+            self:incBrightness(5)
         end),
         awful.button({}, 5, function()
-            M.changeBrightness(-5)
-            M.update(reg)
+            self:incBrightness(-5)
         end)
     ))
 end
 
-return setmetatable(M, {__call = function(_,...) return creator(...) end})
+function BrightWidget:getBrightness()
+    -- xbacklight causes freezes
+    return math.ceil((utils.read_number(self.device, -10)) / 10)
+end
+
+function BrightWidget:incBrightness(val)
+    local cmd = val < 0 and self.subcmd or self.addcmd
+    utils.async(cmd .. " " .. tostring(math.abs(val)), function(out) self:update() end)
+end
+
+return BrightWidget

@@ -1,40 +1,40 @@
 local awful = require("awful")
 local utils = require("utils")
-local vicious = require("vicious")
+local lain = require("lain")
 local wibox = require("wibox")
+local icons = require("icons")
+local BaseWidget = require("widgets.base").BaseWidget
 
-local M = {}
+local CPUWidget = BaseWidget.derive()
 
-local function creator(args)
-    local reg = {
-        widget = wibox.layout.constraint(wibox.widget.textbox(), "exact", 24, nil),
-    }
-    reg.widget.widget:set_align("right")
-    reg.vicwidget = vicious.register(reg.widget.widget, vicious.widgets.cpu, function(w, args)
-        M.args = args
-        return args[1] .. "%"
-    end, 3)
-    vicious.cache(vicious.widgets.cpu)
-    return reg
+function CPUWidget:create(args)
+    args = args or {}
+    args.settings = function()
+        self.data = cpu_now
+        widget:set_markup(cpu_now.usage .. "%")
+    end
+
+    local widget = wibox.container.constraint(lain.widgets.cpu(args), "exact", 24, nil)
+    widget.widget:set_align("right")
+
+    local box = self:init(widget, args.icon or icons.cpu)
+    self:attach(box)
 end
 
-function M.update(reg)
-    vicious.force({ reg.widget })
-end
-
--- Adds buttons and mouse enter/leave signals
-function M.attach(widget, reg)
-    widget:buttons(awful.util.table.join(
-        awful.button({}, 1, function() utils.toggle_run_term("htop --sort-key PERCENT_CPU") end)
+function CPUWidget:attach(box)
+    box:buttons(awful.util.table.join(
+        awful.button({}, 1, function()
+                utils.toggle_run_term("htop --sort-key PERCENT_CPU")
+            end)
     ))
 
-    utils.registerPopupNotify(widget, "CPU", function(w)
-        local cpus = {}
-        for i=2,#M.args do
-            table.insert(cpus, string.format("Core %i:\t%i%%", i - 1, M.args[i]))
-        end
-        return table.concat(cpus, "\n")
-    end)
+    utils.registerPopupNotify(box, "CPU", function(w)
+            local cpus = {}
+            for i=1,#self.data do
+                cpus[i] = string.format("Core %i:\t%i%%", i, self.data[i].usage)
+            end
+            return table.concat(cpus, "\n")
+        end)
 end
 
-return setmetatable(M, {__call = function(_,...) return creator(...) end})
+return CPUWidget

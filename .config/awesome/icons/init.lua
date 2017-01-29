@@ -1,24 +1,24 @@
-local wibox = require("wibox")
-local configdir = os.getenv("HOME") .. "/.config/awesome"
-local icondir = configdir .. "/icons/"
+local icondir = os.getenv("HOME") .. "/.config/awesome/icons/"
 
-local M = {}
-
-M.awesome = "/usr/share/awesome/icons/awesome16.png"
-M.arch = icondir .. "arch.png"
-M.cpu = icondir .. "cpu.png"
-M.wifi = icondir .. "wifi_02.png"
-M.bat = icondir .. "bat_full_02.png"
-M.speaker = icondir .. "spkr_01.png"
-M.brightness = icondir .. "brightness.png"
-M.mem = icondir .. "mem.png"
-M.mpd = icondir .. "note.png"
-M.temp = icondir .. "temp.png"
-
-function M.loadIcon(icon)
-    w = wibox.widget.imagebox()
-    w:set_image(icon)
-    return w
-end
-
-return M
+return {
+    awesome         = "/usr/share/awesome/icons/awesome16.png",
+    arch            = icondir .. "arch.png",
+    cpu             = icondir .. "cpu.png",
+    ac              = icondir .. "ac.png",
+    bat             = icondir .. "bat_full_01.png",
+    brightness      = icondir .. "brightness.png",
+    mem             = icondir .. "mem.png",
+    mpd             = icondir .. "note.png",
+    temp            = icondir .. "temp.png",
+    volume          = icondir .. "spkr_01.png",
+    muted           = icondir .. "spkr_02.png",
+    net_wired       = icondir .. "net_wired.png",
+    net_wired_na    = icondir .. "net_wired_na.png",
+    wifi            = {
+        icondir .. "wifi_03.png",
+        icondir .. "wifi_04.png",
+        icondir .. "wifi_05.png",
+        icondir .. "wifi_06.png"
+    },
+    wifi_na         = icondir .. "wifi_na.png",
+}
