@@ -1,9 +1,8 @@
-export ANDROID_HOME="/opt/android-sdk"
-
+export ANDROID_HOME=/opt/android-sdk
 export MAIN=/mnt/iomega/Main
 export CPPLIB=/mnt/iomega/C++/lib
 export SHARED=~/Shared
-export EDITOR="vim"
+export EDITOR=vim
 export GOPATH=~/golib
 
 # force gtk2 for libreoffice

@@ -21,9 +21,10 @@ alias cmake-debug='cmake -DCMAKE_BUILD_TYPE=Debug'
 alias cmake-release='cmake -DCMAKE_BUILD_TYPE=Release'
 alias xclip='xclip -selection c'
 alias ll='ls -l'
-alias g++='g++ -fdiagnostics-color=auto'
-alias gcc='gcc -fdiagnostics-color=auto'
+alias g++='g++ -fdiagnostics-color=auto -Wall -Wno-switch'
+alias gcc='gcc -fdiagnostics-color=auto -Wall -Wno-switch'
 alias mkdir='mkdir -p'
+alias cdir='switchdir'
 
 # thefuck (slow as fuck startup)
 # eval "$(thefuck --alias)"
@@ -120,7 +121,7 @@ eval $(dircolors ~/.dir_colors/dircolors.ansi-dark)
 
 # env vars
 export LANG='en_US.UTF-8'
-export PATH="$PATH:/home/marvin/bin:/home/marvin/scripts"
+export PATH="/home/marvin/bin:/home/marvin/scripts:$PATH"
 export PYTHONPATH="$PYTHONPATH:/mnt/iomega/Python/lib"
 
 # disable flow control when using vim
@@ -144,7 +145,7 @@ switchdir() {
             local dest=crs
         else
             echo "Not inside include or src directory"
-            exit
+            return
         fi
     fi
     local dir="$(pwd | rev | sed -e "s/$src\//$dest\//" | rev)"
