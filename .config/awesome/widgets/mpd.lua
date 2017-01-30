@@ -29,6 +29,9 @@ local function getFilename(fname)
 end
 
 local function prettyTime(seconds)
+    if not seconds then
+        return -1
+    end
     local sec = (seconds % 60)
     return math.floor(seconds / 60) .. ":" .. (sec < 10 and "0" or "") .. sec
 end
