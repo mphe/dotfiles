@@ -301,7 +301,7 @@ root.buttons(awful.util.table.join(
 -- }}}
 
 -- {{{ Key bindings
-function switch_focus(dir)
+local function switch_focus(dir)
     awful.client.focus.global_bydirection(dir)
     if client.focus then client.focus:raise() end
 end
@@ -510,12 +510,20 @@ clientkeys = awful.util.table.join(
     awful.key({ modkey,           }, "s",      function (c) c.sticky = not c.sticky          end),
     awful.key({ modkey, "Shift"   }, "c",      function (c) c:kill()                         end,
               {description = "close", group = "client"}),
-    awful.key({ modkey, "Control" }, "Return", function (c) c:swap(awful.client.getmaster()) end,
-              {description = "move to master", group = "client"}),
     awful.key({ modkey,           }, "o",      function (c) c:move_to_screen()               end,
               {description = "move to screen", group = "client"}),
     awful.key({ modkey,           }, "t",      function (c) c.ontop = not c.ontop            end,
               {description = "toggle keep on top", group = "client"}),
+
+    awful.key({ modkey, "Control" }, "Return",
+              function(c)
+                  o = awful.client.focus.history.get(mouse.screen, 1)
+                  if o then
+                      c:swap(o)
+                      awful.client.focus.history.previous()
+                  end
+              end,
+              {description = "switch with previously focused client", group = "client"}),
 
     awful.key({ modkey, "Control" }, "space", function(c)
             awful.client.floating.toggle(c)
