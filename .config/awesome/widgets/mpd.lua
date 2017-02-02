@@ -55,12 +55,11 @@ end
 function MPDWidget:updateText()
     self.data = mpd_now
     if mpd_now.state == "stop" then
-        widget:set_markup("")
-        return
+        widget:set_text("")
     elseif mpd_now.title == "N/A" then
-        widget:set_markup(getFilename(self.data.file))
+        widget:set_text(getFilename(self.data.file))
     else
-        widget:set_markup(mpd_now.title)
+        widget:set_text(mpd_now.title)
     end
 end
 
