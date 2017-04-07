@@ -13,7 +13,7 @@ nnoremap bn :tn<CR>
 nnoremap bp :tp<CR>
 nnoremap bd :q<CR>
 nnoremap bl :buffer #<CR>
-nmap bb :buffer!
+nmap <leader>l :buffer!
 
 " ctrl+a -> select all
 inoremap <C-a> <Ins><C-a><Ins>
@@ -34,6 +34,8 @@ noremap / :js toggle_bottombar('on')<CR>/
 " cnoremap <CR> <CR>:js toggle_bottombar('off')<CR>
 cnoremap <Esc> <Esc>:js toggle_bottombar('off')<CR>
 nnoremap <Esc> <Esc>:js toggle_bottombar('off')<CR>
+
+colorscheme indigo
 
 :js << EOF
 function toggle_bottombar(p) {
