@@ -11,6 +11,8 @@ local beautiful = require("beautiful")
 local naughty = require("naughty")
 local menubar = require("menubar")
 local hotkeys_popup = require("awful.hotkeys_popup").widget
+-- Enable VIM help for hotkeys widget when client with matching name is opened:
+require("awful.hotkeys_popup.keys.vim")
 local utils = require("utils")
 local icons = require("icons")
 local cal = require("cal")
@@ -678,6 +680,7 @@ awful.rules.rules = {
             },
             class = {
                 "MPlayer",
+                "mpv",
                 "Plugin-container",
                 "Arandr",
                 "Gpick",
@@ -702,6 +705,19 @@ awful.rules.rules = {
             placement = awful.placement.centered
         }
     },
+
+    -- mpv/mplayer fullscreen border fix
+    {
+        rule_any = {
+            class = {
+                "MPlayer",
+                "mpv"
+            }
+        },
+        properties = {
+            border_width = 0
+        }
+    }
 
     -- Add titlebars to normal clients and dialogs
     -- { rule_any = {type = { "normal", "dialog" }
@@ -729,7 +745,7 @@ end)
 -- Add a titlebar if titlebars_enabled is set to true in the rules.
 client.connect_signal("request::titlebars", function(c)
     -- buttons for the titlebar
-    local buttons = awful.util.table.join(
+    local buttons = gears.table.join(
         awful.button({ }, 1, function()
             client.focus = c
             c:raise()
@@ -796,5 +812,5 @@ end)
 
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
-screen.connect_signal("list", function() awful.screen.focus(mouse.screen) end)
+-- screen.connect_signal("list", function() awful.screen.focus(mouse.screen) end)
 -- }}}
