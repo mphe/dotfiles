@@ -7,7 +7,7 @@ homedir=~
 dotdir="$(dirname "$(readlink -f "$0")")" 
 
 # A (blacklist) pattern to match all files that will be automatically linked to $homedir.
-files=(!(.|..|.git|.gitignore|.gitmodules|README|LICENSE|install.sh|.config))
+files=(!(.|..|.git|.gitignore|.gitmodules|README|LICENSE|install.sh|.config|firefox))
 
 install() {
     ln -svT "$PWD/$1" "$homedir/$i"
