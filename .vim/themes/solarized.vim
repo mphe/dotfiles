@@ -1,7 +1,7 @@
 " ------------------ General
 set t_Co=256
 set background=dark
-set guifont=DejaVu\ Sans\ Mono\ for\ Powerline
+set guifont="xos4 Terminus"
 set laststatus=2
 
 " ------------------ Solarized

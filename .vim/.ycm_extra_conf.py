@@ -14,8 +14,8 @@ flags = [
 '-I', '.',
 '-isystem', '/usr/include/c++/6.3.1',
 # '-isystem', '/include',
-# '-isystem', '/usr/include',
-# '-isystem', '/usr/local/include',
+'-isystem', '/usr/include',
+'-isystem', '/usr/local/include',
 ]
 
 

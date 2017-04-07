@@ -51,6 +51,7 @@ set noshowmode
 
 " Disable visual and audio bell
 set vb t_vb=
+set novisualbell
 
 set viewoptions=cursor,folds
 
@@ -61,6 +62,9 @@ set previewheight=5
 
 " Disable preview window
 set completeopt-=preview
+
+" Gvim settings
+set guioptions=aic
 
 " -------------------------------------- General settings end }}}
 
@@ -122,6 +126,19 @@ function! ToggleLatexMath()
         let g:surround_{char2nr('{')} = "{ \r }"
     endif
     return ''
+endfunction
+
+function! ShowPreview()
+    call feedkeys("i\<c-space>\<c-n>\<esc>")
+endfunction
+
+function! TogglePreview(on)
+    if a:on
+        set completeopt+=preview
+    else
+        set completeopt-=preview
+    endif
+    return ""
 endfunction
 
 command! ToggleLatexMath call ToggleLatexMath()
@@ -360,27 +377,11 @@ autocmd FileType c,cpp,python
     \ nnoremap <leader>jD :YcmCompleter GoToDeclaration<CR>|
     \ nnoremap <leader>gt :YcmCompleter GetType<CR>|
     \ nnoremap <leader>gp :YcmCompleter GetParent<CR>|
-    \ nnoremap <leader>gi :call ShowPreview()<CR>|
-    \ inoremap <expr> <c-y> pumvisible() ? "\<c-p>\<c-r>=TogglePreview(1)\<CR>\<c-n>\<c-y>\<c-r>=TogglePreview(0)\<CR>" : "\<c-y>"|
-    \ imap     <expr>  <CR> pumvisible() ? "\<c-p>\<c-r>=TogglePreview(1)\<CR>\<c-n>\<c-y>\<c-r>=TogglePreview(0)\<CR>" : "<Plug>delimitMateCR"|
-    \ inoremap <expr> <c-l> pumvisible() ? "\<c-p>\<c-r>=TogglePreview(1)\<CR>\<c-n>\<c-r>=TogglePreview(0)\<CR>" : "\<c-l>"
-
-function! ShowPreview()
-    call feedkeys("i\<c-space>\<c-n>\<esc>")
-endfunction
-
-function! TogglePreview(on)
-    if a:on
-        set completeopt+=preview
-    else
-        set completeopt-=preview
-    endif
-    return ""
-endfunction
+    \ nnoremap <leader>gi :call ShowPreview()<CR>
 
 let g:ycm_min_num_of_chars_for_completion = 1
 let g:ycm_server_keep_logfiles = 1
-let g:ycm_server_log_level = 'debug'
+" let g:ycm_server_log_level = 'debug'
 let g:ycm_global_ycm_extra_conf = '~/.vim/.ycm_extra_conf.py'
 let g:ycm_confirm_extra_conf = 0
 let g:ycm_autoclose_preview_window_after_completion = 0
@@ -434,23 +435,24 @@ let g:UltiSnipsUsePythonVersion = 2
 let g:cscope_auto_update = 0
 autocmd BufWritePost *.c,*.h,*.cpp,*.hpp call cscope#updateDB()
 
-nnoremap <leader>fa :call cscope#findInteractive(expand('<cword>'))<CR>
-" s: Find this C symbol
-nnoremap  <leader>fs :call cscope#find('s', expand('<cword>'))<CR>
-" g: Find this definition
-nnoremap  <leader>fg :call cscope#find('g', expand('<cword>'))<CR>
-" d: Find functions called by this function
-nnoremap  <leader>fd :call cscope#find('d', expand('<cword>'))<CR>
-" c: Find functions calling this function
-nnoremap  <leader>fc :call cscope#find('c', expand('<cword>'))<CR>
-" t: Find this text string
-nnoremap  <leader>ft :call cscope#find('t', expand('<cword>'))<CR>
-" e: Find this egrep pattern
-nnoremap  <leader>fe :call cscope#find('e', expand('<cword>'))<CR>
-" f: Find this file
-nnoremap  <leader>ff :call cscope#find('f', expand('<cword>'))<CR>
-" i: Find files #including this file
-nnoremap  <leader>fi :call cscope#find('i', expand('<cword>'))<CR>
+autocmd FileType c,cpp
+    \ nnoremap <leader>fa :call cscope#findInteractive(expand('<cword>'))<CR>|
+    " s: Find this C symbol
+    \ nnoremap  <leader>fs :call cscope#find('s', expand('<cword>'))<CR>|
+    " g: Find this definition
+    \ nnoremap  <leader>fg :call cscope#find('g', expand('<cword>'))<CR>|
+    " d: Find functions called by this function
+    \ nnoremap  <leader>fd :call cscope#find('d', expand('<cword>'))<CR>|
+    " c: Find functions calling this function
+    \ nnoremap  <leader>fc :call cscope#find('c', expand('<cword>'))<CR>|
+    " t: Find this text string
+    \ nnoremap  <leader>ft :call cscope#find('t', expand('<cword>'))<CR>|
+    " e: Find this egrep pattern
+    \ nnoremap  <leader>fe :call cscope#find('e', expand('<cword>'))<CR>|
+    " f: Find this file
+    \ nnoremap  <leader>ff :call cscope#find('f', expand('<cword>'))<CR>|
+    " i: Find files #including this file
+    \ nnoremap  <leader>fi :call cscope#find('i', expand('<cword>'))<CR>
 
 " lua inspect
 let g:lua_inspect_events = ''
@@ -475,6 +477,7 @@ let g:syntastic_check_on_wq = 0
 let g:syntastic_quiet_messages = { 'type': 'style' }
 let g:syntastic_python_checkers = ['flake8']
 let g:syntastic_vim_checkers = ['vint']
+let g:syntastic_warning_symbol = '!!'
 " let g:syntastic_aggregate_errors = 1
 " let g:syntastic_java_javac_config_file_enabled = 1
 " let g:syntastic_java_javac_delete_output = 0
@@ -505,7 +508,9 @@ autocmd FileType python,lua,vim,sh
 let g:EclimCompletionMethod = 'omnifunc'
 autocmd FileType java
     \ nnoremap <F5> :Validate<CR> |
-    \ inoremap <F5> <c-o>:Validate<CR>
+    \ inoremap <F5> <c-o>:Validate<CR> |
+    \ nnoremap <leader>fx :JavaCorrect<CR>|
+    \ nnoremap <leader>fi :JavaImport<CR>
 
 " vim-template
 let g:username = 'Marvin Ewald'
@@ -584,6 +589,13 @@ autocmd BufRead * if !&diff && strlen(expand('%')) && &ft != 'gitcommit' | silen
 
 autocmd BufEnter ?* if &previewwindow | exec 'setlocal winheight='.&previewheight | endif
 
+" Open the preview window only when accepting a completion candidate
+" Reduces lag when cycling through completions
+autocmd FileType c,cpp,python,java
+    \ inoremap <expr> <c-y> pumvisible() ? "\<c-p>\<c-r>=TogglePreview(1)\<CR>\<c-n>\<c-y>\<c-r>=TogglePreview(0)\<CR>" : "\<c-y>"|
+    \ imap     <expr>  <CR> pumvisible() ? "\<c-p>\<c-r>=TogglePreview(1)\<CR>\<c-n>\<c-y>\<c-r>=TogglePreview(0)\<CR>" : "<Plug>delimitMateCR"|
+    \ inoremap <expr> <c-l> pumvisible() ? "\<c-p>\<c-r>=TogglePreview(1)\<CR>\<c-n>\<c-r>=TogglePreview(0)\<CR>" : "\<c-l>"
+
 " -------------------------------------- Autocmds end }}}
 
 
@@ -629,6 +641,9 @@ nnoremap Y y$
 
 " faster substitution with yanked text
 nmap S griw
+
+" substitute word under the cursor
+nnoremap <leader>s :%s/\<<C-r><C-w>\>//g<Left><Left>
 
 " visually select the text just pasted
 nnoremap gz `[v`]
