@@ -532,6 +532,7 @@ clientkeys = awful.util.table.join(
             if awful.client.floating.get(c) and not (c.maximized_horizontal or c.maximized_vertical) then
                 awful.placement.centered(c, nil)
             end
+            c:raise()
         end,
         { description = "toggle floating", group = "client" }),
 
@@ -717,7 +718,16 @@ awful.rules.rules = {
         properties = {
             border_width = 0
         }
+    },
+
+    -- Center floating clients
+    {
+        rule = { },
+        properties = {
+            placement = awful.placement.centered
+        }
     }
+
 
     -- Add titlebars to normal clients and dialogs
     -- { rule_any = {type = { "normal", "dialog" }
