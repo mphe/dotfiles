@@ -111,8 +111,12 @@ function M.moveresize(x, y, w, h, c)
     if c and c.floating then
         c:relative_move(x, y, w * 15, h * 15, c)
     else
-        awful.tag.incmwfact(w * 0.01)
-        awful.client.incwfact(h * 0.05, c)
+        if w ~= 0 then
+            awful.tag.incmwfact(w * 0.01)
+        end
+        if h ~= 0 then
+            awful.client.incwfact(h * 0.05, c)
+        end
     end
 end
 

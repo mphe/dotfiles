@@ -815,6 +815,9 @@ tag.connect_signal("request::screen", function(t)
             else
                 t.screen = s
             end
+            -- if t.selected then
+            --     t:view_only()
+            -- end
             return
         end
     end
@@ -823,4 +826,13 @@ end)
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 -- screen.connect_signal("list", function() awful.screen.focus(mouse.screen) end)
+
+-- Ensure notifications with icons aren't larger than a certain size
+naughty.config.notify_callback = function(args)
+    if args.icon then
+        args.height = 75
+    end
+    return args
+end
+
 -- }}}
