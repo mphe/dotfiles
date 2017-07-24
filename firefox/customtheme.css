@@ -1,5 +1,3 @@
-/* Custom firefox theme with AwesomeWM colors for use with Stylish */
-
 /* Hide zoom level indicator */
 #urlbar-zoom-button {
   display: none !important;
@@ -11,64 +9,84 @@
 }
 
 #PlacesChevron {
-    -moz-appearance: none;
-    -moz-image-region: rect(0px, 630px, 18px, 612px);
-    list-style-image: url("chrome://browser/skin/Toolbar-inverted.png") !important;
+  -moz-appearance: none;
+	-moz-image-region: rect(0px, 630px, 18px, 612px);
+	list-style-image: url("chrome://browser/skin/Toolbar-inverted.png") !important;
 }
 
 /*
 #PlacesChevron:hover .toolbarbutton-icon {
-    filter:invert(1)hue-rotate(180deg)  
+	filter:invert(1)hue-rotate(180deg)	
 }
 */
 
+#bookmarks-menu-button .box-inherit.toolbarbutton-menubutton-button {
+	display: none !important;
+}
+
+
+/* Remove star symbol from bookmark icon */
+#bookmarks-menu-button .toolbarbutton-menubutton-dropmarker {
+	margin-top: 0px !important;
+	margin-bottom: -1px !important;
+	margin-left: 0px !important;
+	margin-right: 0px !important;
+}
+
+/* Fix size of bookmark icon */
+#bookmarks-menu-button .toolbarbutton-menubutton-dropmarker .dropmarker-icon {
+  margin-bottom: 1px !important;
+	margin-top: -1px !important;
+}
+
+
 /* personal menu addon */
 #appmenu-button {
-    background: none !important;
-    border: none !important;
-    box-shadow: none !important;
-    /*padding-right: 5px !important;
-    padding-left: 5px !important;
-    padding-top: 2px !important;
-    padding-bottom: 0px !important;*/
-    padding-left: 30px !important;
-    padding-right: 30px !important;
-    padding-top: 30px !important;
-    padding-bottom: 30px !important;
+	background: none !important;
+	border: none !important;
+	box-shadow: none !important;
+	/*padding-right: 5px !important;
+	padding-left: 5px !important;
+	padding-top: 2px !important;
+	padding-bottom: 0px !important;*/
+	padding-left: 30px !important;
+	padding-right: 30px !important;
+	padding-top: 30px !important;
+	padding-bottom: 30px !important;
 }
 
 #appmenu-button .toolbarbutton-menu-dropmarker {
-    display: none !important;
+	display: none !important;
 }
 
 #appmenu-button .toolbarbutton-icon {
-    -moz-image-region: rect(0px, 486px, 18px, 468px) !important;
-    list-style-image: url("chrome://browser/skin/Toolbar-inverted.png") !important;
-    height: 18px !important;
-    width: 18px !important;
-    /*height: 32px !important;
-    width: 32px !important;*/
+	-moz-image-region: rect(0px, 486px, 18px, 468px) !important;
+	list-style-image: url("chrome://browser/skin/Toolbar-inverted.png") !important;
+	height: 18px !important;
+	width: 18px !important;
+	/*height: 32px !important;
+	width: 32px !important;*/
 }
 
 /*#fixer-menu-button {
-    display: none !important;
+	display: none !important;
 }*/
 
 
 /* Recreate toolbar button style */
 #PlacesChevron:hover, #back-button:not([disabled]):hover, #forward-button:hover, #appmenu-container:hover {
-    background: -moz-linear-gradient(bottom, #929292, #c7c7c7);
-    border-radius: 1px;
+	background: -moz-linear-gradient(bottom, #929292, #c7c7c7);
+	border-radius: 1px;
 }
 
 #main-window, #browser-bottombox, #urlbar, #nav-bar, #TabsToolbar, #navigator-toolbox {
   background: #222222 !important;
-    color: #aaaaaa !important;
-    box-shadow: none !important;
+	color: #aaaaaa !important;
+	box-shadow: none !important;
 }
 
 #browser-bottombox {
-    margin-bottom: -1px !important;
+	margin-bottom: -1px !important;
 }
 
 
@@ -76,52 +94,52 @@
 /* navbar */
 #urlbar {
   border: none !important;
-    background: #333333 !important;
-    color: #bbbbbb !important;
-    font-size: 11px !important;
+	background: #333333 !important;
+	color: #bbbbbb !important;
+	font-size: 11px !important;
   /*margin-top: 6px !important;*/    /* for tabs below navbar */
-    /*margin-bottom: 4px !important;*/ /* for tabs below navbar */
-    margin-top: 3px !important;     /* for tabs on top */
-    margin-bottom: 5px !important;  /* for tabs on top */
-    margin-left: 5px !important;
-    /*max-width: 900px !important;*/
+	/*margin-bottom: 4px !important;*/ /* for tabs below navbar */
+	margin-top: 3px !important;     /* for tabs on top */
+	margin-bottom: 5px !important;  /* for tabs on top */
+	margin-left: 5px !important;
+	/*max-width: 900px !important;*/
 }
 
 .autocomplete-textbox.urlbar-input.textbox-input.uri-element-right-align:focus {
-    background: #444444 !important;
-    padding-top: 3px !important;
-    padding-bottom: 3px !important;
+	background: #444444 !important;
+	padding-top: 3px !important;
+	padding-bottom: 3px !important;
 }
 
 #nav-bar {
   padding: 0 !important;
-    padding-left: 5px !important;
+	padding-left: 5px !important;
 }
 
 #navigator-toolbox {
-    /*margin-bottom: -2px !important;*/  /* for tabs on top IF there buttons other than newtab button in the tabbar */
-    margin-bottom: -2px !important;  /* for tabs on top */
-    /*margin-bottom: -4px !important;*/  /* for tabs on top IF autohide navbar is enabled */
-    /*margin-bottom: -1px !important;*/  /* for tabs below navbar */
-    /*margin-top: -1px !important;*/     /* for tabs below navbar */
+	/*margin-bottom: -2px !important;*/  /* for tabs on top IF there buttons other than newtab button in the tabbar */
+	margin-bottom: -2px !important;  /* for tabs on top */
+	/*margin-bottom: -4px !important;*/  /* for tabs on top IF autohide navbar is enabled */
+	/*margin-bottom: -1px !important;*/  /* for tabs below navbar */
+	/*margin-top: -1px !important;*/     /* for tabs below navbar */
 }
 
 #identity-box {
-    background: transparent !important;
-    max-height: 18px !important;     /* navbar height */
-    min-height: 18px !important;     /* navbar height */
+	background: transparent !important;
+	max-height: 18px !important;     /* navbar height */
+	min-height: 18px !important;     /* navbar height */
 }
 
 #identity-box:hover {
-    background: #222222 !important;
+	background: #222222 !important;
 }
 
 
 /* urlbar autocomplete popup */
 #PopupAutoCompleteRichResult {
-    margin-top: -1px !important;
-    background: #222222;
-    border-color: #535D6C;
+	margin-top: -1px !important;
+	background: #222222;
+	border-color: #535D6C;
 }
 
 .autocomplete-richlistitem {
@@ -137,120 +155,120 @@
 }*/
 
 .autocomplete-richlistitem[selected=true] {
-    color: #ffffff;
-    background: #535D6C;
+	color: #ffffff;
+	background: #535D6C;
 }
 
 /* make dropmarker white */
 .autocomplete-history-dropmarker.urlbar-history-dropmarker {
-    filter:invert(1)hue-rotate(180deg)
+	filter:invert(1)hue-rotate(180deg)
 }
 
 
 
 /* tabs */
 #TabsToolbar {
-    /*margin-bottom: -2px !important;*/  /* for tabs below navbar */
-    margin-bottom: -5px !important;  /* for tabs on top if autohide is disabled */
-    padding-bottom: 4px !important;
-    /*margin-bottom: -8px !important;*/  /* for tabs on top IF there buttons other than newtab button in the tabbar */
+	/*margin-bottom: -2px !important;*/  /* for tabs below navbar */
+	margin-bottom: -5px !important;  /* for tabs on top if autohide is disabled */
+	padding-bottom: 4px !important;
+	/*margin-bottom: -8px !important;*/  /* for tabs on top IF there buttons other than newtab button in the tabbar */
 }
 
 #TabsToolbar, #tabbrowser-tabs {
-    padding-left: 5px !important;
-    -moz-appearance: none !important;
-    
+	padding-left: 5px !important;
+	-moz-appearance: none !important;
+	
 }
 
 #tabbrowser-tabs {
-    margin-left: 0px !important;
+	margin-left: 0px !important;
   min-height: 22px !important;    /* tab height IF autohide navbar is enabled */
-    max-height: 22px !important;    /* tab height IF autohide navbar is enabled */
-    /*min-height: 22px !important;*/    /* tab height */
-    /*max-height: 22px !important;*/    /* tab height */
-    margin-left: -14px !important; /* only when there's no menu button left from tabbar */
+	max-height: 22px !important;    /* tab height IF autohide navbar is enabled */
+	/*min-height: 22px !important;*/    /* tab height */
+	/*max-height: 22px !important;*/    /* tab height */
+	margin-left: -14px !important; /* only when there's no menu button left from tabbar */
 }
 
 .tabbrowser-tab:hover, .tabs-newtab-button:hover {
-    background: #444444 !important;
-    color: #ffffff !important;
+	background: #444444 !important;
+	color: #ffffff !important;
 }
 
 .tabbrowser-tab[selected=true] .tab-content {
-    color: #ffffff !important;
-    background: #535D6C !important;
+	color: #ffffff !important;
+	background: #535D6C !important;
 }
 
 .tabbrowser-tab .tab-text {
-    margin-left: 4px !important;
-    font-size: 11px !important;
-    /*text-align: center !important;*/
+	margin-left: 4px !important;
+	font-size: 11px !important;
+	/*text-align: center !important;*/
 }
 
 .tabbrowser-tabs:not([drag=detach]) > .tabbrowser-tab:not([pinned])[fadein] {
-    min-width: 130px !important;    /* tab width */
-    max-width: 100% !important;
+	min-width: 130px !important;    /* tab width */
+	max-width: 100% !important;
 }
 
 .tab-close-button {
-    margin-right: 5px !important;
+	margin-right: 5px !important;
 }
 
 
 /* make buttons scale properly */
 .toolbarbutton-1 {
-    padding-top: 0px !important;
-    padding-bottom: 0px !important;
+	padding-top: 0px !important;
+	padding-bottom: 0px !important;
 }
 
 
 /* hide alltabs button and tab scroll arrows */
 toolbarbutton#alltabs-button,
 .tabbrowser-arrowscrollbox > .scrollbutton-up, .tabbrowser-arrowscrollbox > .scrollbutton-down {
-    display: none !important;
+	display: none !important;
 }
 
 /* tab icon/throbber placement */
 .tabbrowser-tab:not([pinned]) .tab-icon-image,
 .tab-throbber[fadein], .tab-throbber[layer], .tab-throbber[budsy], .tab-throbber[progress] {
-    margin-left: 6px !important;
-    margin-top: -1px !important;
+	margin-left: 6px !important;
+	margin-top: -1px !important;
 }
 
 /* Hide tab decoration (rounded tabs) */
 .notificationbox-stack, .tab-background-start, .tab-background-end {
-    display: none !important;
+	display: none !important;
 }
 
 .tab-content, .tab-background, .tabs-newtab-button, .tab-background-middle {
-    background: none !important;
-    margin: 0 0 0 0 !important;
-    padding: 0 0 0 0 !important;
+	background: none !important;
+	margin: 0 0 0 0 !important;
+	padding: 0 0 0 0 !important;
 }
 
 
 /* tab separators */
 .tabbrowser-tab::before, .tabbrowser-tab::after {
-    display: none !important;
+	display: none !important;
 }
 
 
 /* newtab button */
 .tabs-newtab-button {
-    width: 40px !important;
-    margin-right: -15px !important;
+	width: 40px !important;
+	margin-right: -15px !important;
 }
 
 .tabs-newtab-button .toolbarbutton-icon {
-    height: 16px !important;
+	height: 16px !important;
 }
 
 #new-tab-button {
-    width: 40px !important;
+	width: 40px !important;
 }
 
 #new-tab-button .toolbarbutton-icon {
-    height: 22px !important;
+	height: 22px !important;
 }
 
 
@@ -258,32 +276,32 @@ toolbarbutton#alltabs-button,
 /* Based on https://userstyles.org/styles/109643/ui-reduced-navbar-height-small-back-button */
 
 #forward-button > .toolbarbutton-icon, #back-button > .toolbarbutton-icon {
-    border: none !important;
-    background: none !important;;
-    padding: 3px 6px !important;
+	border: none !important;
+	background: none !important;;
+	padding: 3px 6px !important;
 }
 
 #back-button {
-    margin-left: -5px !important;
+	margin-left: -5px !important;
 }
 
 #back-button > .toolbarbutton-icon {
-    -moz-image-region: rect(0, 54px, 18px, 36px);
+	-moz-image-region: rect(0, 54px, 18px, 36px);
 }
 
 #forward-button > .toolbarbutton-icon {
-    padding-top: 4px !important;
-    padding-bottom: 5px !important;
-    margin-bottom: -1px !important;
+	padding-top: 4px !important;
+	padding-bottom: 5px !important;
+	margin-bottom: -1px !important;
 }
 
 #forward-button[disabled] {
-    visibility: hidden !important;
+	visibility: hidden !important;
 }
 
 #urlbar-wrapper {
-    clip-path: none !important;
-    -moz-margin-start: 0px !important;
+	clip-path: none !important;
+	-moz-margin-start: 0px !important;
 }
 
 
@@ -310,14 +328,14 @@ toolbarbutton#alltabs-button,
 #nav-bar {
   visibility: collapse !important;
   transition: visibility 0.2s;
-    position: fixed !important;
-    width: 100% !important;
+	position: fixed !important;
+	width: 100% !important;
   margin-top: -3px !important;
   height: 26px !important;
 }
 
 #nav-bar-customization-target {
-    width: 100% !important;
+	width: 100% !important;
 }
 
 #navigator-toolbox:hover #nav-bar {
