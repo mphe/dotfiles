@@ -661,7 +661,7 @@ command! PabsFormat %s/:/\r    {\r\r    } \/\/
 command! FollowSymlink exec 'file '.resolve(expand('%:p')) | e
 
 command! -range=% ToSource <line1>,<line2>s/;/\r    {\r\r    }\r
-command! -nargs=1 -range=% ToSourceAuto <line1>,<line2>s/auto \(.\{-}\)\s*->\s*\(.\{-}\)\s*;/\2 <args>::\1\r    {\r\r    }\r/
+command! -nargs=1 -range=% ToSourceAuto exec '<line1>,<line2>normal ==' | <line1>,<line2>s/auto \(.\{-}\)\s*->\s*\(.\{-}\)\s*;/\2 <args>::\1\r    {\r\r    }\r/
 
 " Puts exactly one space between operator and operands.
 " Does not pick up all occurrences in some corner cases, but good enough.
