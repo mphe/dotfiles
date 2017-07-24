@@ -204,6 +204,7 @@ Plugin 'davinche/godown-vim'
 Plugin 'vim-scripts/ReplaceWithRegister'
 Plugin 'derekwyatt/vim-protodef'
 Plugin 'hynek/vim-python-pep8-indent'
+Plugin 'withgod/vim-sourcepawn'
 
 " Turn filetype functionality back on
 filetype on
@@ -562,6 +563,9 @@ command! -nargs=? Implement call s:Implement(<f-args>)
 " fugitive
 command! Gst Gtabedit :
 
+" vim-sourcepawn
+au FileType sourcepawn setlocal makeprg=/home/marvin/servers/steamcmd/tf2/tf/addons/sourcemod/scripting/spcomp\ %
+
 " -------------------------------------- Plugin configuration end }}}
 
 
@@ -579,6 +583,7 @@ autocmd InsertLeave,WinLeave * if exists('w:last_fdm') | let &l:foldmethod=w:las
 autocmd FileType cmake setlocal foldmethod=marker
 autocmd FileType vim setlocal foldmethod=marker
 autocmd FileType lua setlocal foldmethod=marker
+autocmd FileType sourcepawn setlocal commentstring=//\ %s
 
 " Markdown preview (requires 'Markdown Viewer' addon)
 " autocmd FileType markdown,md nnoremap <F5> :!firefox % &<CR><CR>
