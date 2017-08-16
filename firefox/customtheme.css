@@ -27,7 +27,6 @@
 
 
 /* personal menu addon */
-/* Probably broken since Firefox 55 */
 #appmenu-button {
     background: none !important;
     border: none !important;
@@ -142,9 +141,21 @@ display: none !important;
 color: #aaaaaa !important;
 }*/
 
+/* Obsolete since Firefox 55 */
+/*
 .autocomplete-richlistitem[selected=true] {
+color: #ffffff;
+background: #535D6C;
+}
+ */
+
+.autocomplete-richlistitem:hover {
     color: #ffffff;
     background: #535D6C;
+}
+
+.autocomplete-richlistitem:hover .ac-url, .autocomplete-richlistitem .ac-separator {
+    color: #aaaaaa;
 }
 
 /* make dropmarker white */
