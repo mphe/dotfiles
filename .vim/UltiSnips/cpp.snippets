@@ -18,3 +18,32 @@ namespace${1/.+/ /m}${1:`!p snip.rv = snip.basename or "name"`}
 	${VISUAL}${0}
 }
 endsnippet
+
+snippet range "begin(), end() header"
+auto begin() const -> ${1:container}::const_iterator;
+auto begin()       -> $1::iterator;
+auto end() const   -> $1::const_iterator;
+auto end()         -> $1::iterator;
+endsnippet
+
+snippet rangeimpl "begin(), end() implementation"
+${1:container}::const_iterator ${2:class}::begin() const
+{
+	return ${3:container}.begin();
+}
+
+$1::iterator $2::begin()
+{
+	return $3.begin();
+}
+
+$1::const_iterator $2::end() const
+{
+	return $3.end();
+}
+
+$1::iterator $2::end()
+{
+	return $3.end();
+}
+endsnippet
