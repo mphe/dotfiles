@@ -1,0 +1,233 @@
+:root {
+    --tabsize: 22px;
+    --navbarsize: 26px;
+    --tabbar-offset: 0px;
+    --tabtext-offset: 4px;
+    --color-bg: #222222;
+    --color-gray: #444444;
+    --color-fg: #aaaaaa;
+    --color-active: #535D6C;
+    --color-fg-active: #ffffff;
+}
+
+/* Main colors */
+#main-window, #browser-bottombox, #urlbar, #nav-bar, #TabsToolbar, #navigator-toolbox, #toolbar-menubar,
+#browser-panel, #tab-view-deck, #tabbrowser-tabs, .tabbrowser-arrowscrollbox {
+    background: var(--color-bg) !important;
+    color: var(--color-fg) !important;
+    box-shadow: none !important;
+}
+
+
+/* Tabs {{{ */
+#TabsToolbar {
+    min-height: var(--tabsize) !important;
+    max-height: var(--tabsize) !important;
+    margin-bottom: 1px !important;
+    border: none !important;
+}
+
+/* for some reason the background refuses to have the correct color */
+/* fix: don't move */
+.tabbrowser-tabs {
+    /* margin-left: 5px !important; */
+}
+
+.tabbrowser-arrowscrollbox  {
+    min-height: var(--tabsize) !important;
+    max-height: var(--tabsize) !important;
+}
+
+.tabbrowser-tabs:not([drag=detach]) > .tabbrowser-tab:not([pinned])[fadein] {
+    min-width: 130px !important;    /* tab width */
+    max-width: 100% !important;
+}
+
+/* hide alltabs button and tab scroll arrows */
+toolbarbutton#alltabs-button,
+.tabbrowser-arrowscrollbox > .scrollbutton-up, .tabbrowser-arrowscrollbox > .scrollbutton-down {
+    display: none !important;
+}
+
+/* tab icon/throbber placement */
+.tabbrowser-tab:not([pinned]) .tab-icon-image,
+.tab-throbber[fadein], .tab-throbber[layer], .tab-throbber[busy], .tab-throbber[progress] {
+    margin-left: 6px !important;
+    margin-top: -1px !important;
+}
+
+
+/* remove tab separators */
+.tabbrowser-tab::before, .tabbrowser-tab::after {
+    display: none !important;
+}
+
+/* Remove blue line on top of tabs */
+.tab-line {
+    /* transition: none !important; */
+    display: none !important;
+}
+
+
+.tabbrowser-tab {
+    background: var(--color-bg) !important;
+}
+
+.tabbrowser-tab:hover {
+    background: var(--color-gray) !important;
+    color: var(--color-fg-active) !important;
+}
+
+.tabbrowser-tab[selected=true] .tab-content {
+    background: var(--color-active) !important;
+    color: var(--color-fg-active) !important;
+}
+
+.tabbrowser-tab .tab-text {
+    margin-left: var(--tabtext-offset) !important;
+    font-size: 11px !important;
+}
+
+/* }}} */
+
+
+
+/* navbar {{{ */
+
+/* hide zoom indicator */
+#urlbar-zoom-button {
+    display: none !important;
+}
+
+#urlbar-container, #nav-bar {
+    max-height: var(--navbarsize) !important;     /* navbar height */
+    min-height: var(--navbarsize) !important;     /* navbar height */
+    margin-top: 0px !important;
+    border: none !important;
+}
+
+
+#nav-bar {
+    padding: 0 !important;
+    /* padding-left: 5px !important; */
+}
+
+#urlbar {
+    border: none !important;
+    background: #333333 !important;
+    color: #bbbbbb !important;
+    font-size: 11px !important;
+    /* margin-top: 2px !important; */
+    margin-top: 2px !important;
+    margin-bottom: 6px !important;
+    /* margin-left: 5px !important; */
+    /*max-width: 900px !important;*/
+}
+
+
+.autocomplete-textbox.urlbar-input.textbox-input.uri-element-right-align:focus {
+    background: var(--color-gray) !important;
+}
+
+#identity-box:hover {
+    background: var(--color-bg) !important;
+}
+
+/* urlbar autocomplete popup {{{ */
+#PopupAutoCompleteRichResult {
+    background: var(--color-bg) !important;
+    border-color: var(--color-active) !important;
+}
+
+.autocomplete-richlistitem {
+    color: var(--color-fg) !important;
+}
+
+.autocomplete-richlistitem .ac-url, .autocomplete-richlistitem .ac-separator {
+    color: var(--color-gray) !important;
+}
+
+.autocomplete-richlistitem:hover {
+    color: var(--color-fg-active) !important;
+    background: var(--color-active) !important;
+}
+
+.autocomplete-richlistitem:hover .ac-url, .autocomplete-richlistitem .ac-separator {
+    color: var(--color-fg) !important;
+}
+
+/* }}} */
+
+/* }}} */
+
+
+/* make some buttons scale properly */
+.toolbarbutton-1 {
+    padding-top: 0px !important;
+    padding-bottom: 0px !important;
+}
+
+/* fix button alignment */
+#forward-button .toolbarbutton-icon,
+#back-button .toolbarbutton-icon,
+#reload-button .toolbarbutton-icon,
+#stop-reload-button .toolbarbutton-icon,
+#bookmarks-menu-button .toolbarbutton-icon,
+#home-button .toolbarbutton-icon,
+#nav-bar-overflow-button .toolbarbutton-icon {
+    /* margin-top: -2px !important; */
+    margin-bottom: 2px !important;
+}
+
+#forward-button > .toolbarbutton-icon, #back-button > .toolbarbutton-icon {
+    border: none !important;
+    /* background: none !important; */
+    border-radius: 4px !important;
+    /* margin-top: -2px !important; */
+    /* padding-top: -4px !important; */
+}
+
+/* fix new tab button */
+#new-tab-button, #new-tab-button > .toolbarbutton-icon {
+    margin-bottom: 5px !important;
+    width: 25px !important;
+}
+
+
+#forward-button[disabled] {
+    visibility: hidden !important;
+}
+
+#forward-button[disabled] > .toolbarbutton-icon {
+    visibility: hidden !important;
+    width: 0px !important;
+}
+
+#back-button > .toolbarbutton-icon {
+    padding: 6px !important;
+}
+
+#back-button:not([disabled]):hover > .toolbarbutton-icon,
+#new-tab-button:hover > .toolbarbutton-icon {
+    background: var(--color-gray) !important;
+}
+
+#back-button > .toolbarbutton-icon,
+#new-tab-button, #new-tab-button > .toolbarbutton-icon {
+    background: var(--color-bg) !important;
+}
+
+
+/* disable urlbar buttons */
+#page-action-buttons {
+    visibility: collapse !important;
+}
+
+/* fix dropmarker size */
+.autocomplete-history-dropmarker.urlbar-history-dropmarker {
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+
+/* vim: foldmethod=marker */
