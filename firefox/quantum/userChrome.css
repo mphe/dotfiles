@@ -1,5 +1,6 @@
 :root {
     --tabsize: 22px;
+    --tabwidth: 130px;
     --navbarsize: 26px;
     --tabbar-offset: 0px;
     --tabtext-offset: 4px;
@@ -39,7 +40,7 @@
 }
 
 .tabbrowser-tabs:not([drag=detach]) > .tabbrowser-tab:not([pinned])[fadein] {
-    min-width: 130px !important;    /* tab width */
+    min-width: var(--tabwidth) !important;    /* tab width */
     max-width: 100% !important;
 }
 
@@ -71,6 +72,7 @@ toolbarbutton#alltabs-button,
 
 .tabbrowser-tab {
     background: var(--color-bg) !important;
+    min-width: var(--tabwidth) !important;    /* tab width */
 }
 
 .tabbrowser-tab:hover {
