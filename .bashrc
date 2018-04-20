@@ -122,7 +122,8 @@ eval $(dircolors ~/.dir_colors/dircolors.ansi-dark)
 # env vars
 export LANG='en_US.UTF-8'
 export PATH="/home/marvin/bin:/home/marvin/scripts:$PATH"
-export PYTHONPATH="$PYTHONPATH:/mnt/iomega/Python/lib"
+# export PYTHONPATH="$PYTHONPATH:/mnt/iomega/Python/lib"
+export PYTHONPATH="$PYTHONPATH"
 
 # disable flow control when using vim
 vim () {
