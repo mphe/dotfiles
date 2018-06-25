@@ -38,8 +38,7 @@ browser = firefox
 foreground = #839496
 foreground_bold = #b0b5b7
 #foreground_bold = #eee8d5
-; background = rgba(0, 43, 54, 0.9)
-background = rgba(0, 35, 40, 0.85)
+background = rgba(0, 43, 54, 0.9)
 cursor = #93a1a1
 
 #black
