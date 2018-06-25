@@ -605,6 +605,9 @@ autocmd FileType c,cpp,python,java
 
 
 " -------------------------------------- Key mappings {{{
+" Disable Ex mode
+map Q <Nop>
+
 " Horizontal scrolling
 nnoremap <C-l> 2zl
 nnoremap <C-h> 2zh
@@ -660,8 +663,8 @@ command! PabsFormat %s/:/\r    {\r\r    } \/\/
 
 command! FollowSymlink exec 'file '.resolve(expand('%:p')) | e
 
-command! -range=% ToSource <line1>,<line2>s/;/\r    {\r\r    }\r
-command! -nargs=? -range=% ToSourceAuto exec '<line1>,<line2>normal ==' | <line1>,<line2>s/auto \(.\{-}\)\s*->\s*\(.\{-}\)\s*;/\2 <args>::\1\r    {\r\r    }\r/ | <line1>,<line2>s/\(virtual \|static \|constexpr \)//g
+command! -range=% ToSource <line1>,<line2>s/\s*=.*\(,\|)\)/\1/ge | <line1>,<line2>s/;/\r    {\r\r    }\r/
+command! -nargs=? -range=% ToSourceAuto exec '<line1>,<line2>normal ==' | <line1>,<line2>s/\s*=.*\(,\|)\)/\1/ge | <line1>,<line2>s/auto \(.\{-}\)\s*->\s*\(.\{-}\)\s*;/\2 <args>::\1\r    {\r\r    }\r/ | <line1>,<line2>s/\(virtual \|static \|constexpr \)//ge
 
 " Puts exactly one space between operator and operands.
 " Does not pick up all occurrences in some corner cases, but good enough.
