@@ -10,6 +10,24 @@ local M = {}
 function M.screenshot(snum, dir)
     snum = snum or -1
     local path = (dir or "~/img") .. "/screenshot$(date +%Y%m%d%H%M%S).png"
+    local cmd = "maim "
+
+    if snum == 0 then
+        cmd = cmd .. "-s "
+    elseif snum > 0 then
+        local g = screen[snum].geometry
+        cmd = cmd .. string.format("--geometry=%ix%i+%i+%i ", g.width, g.height, g.x, g.y)
+    end
+    awful.spawn.with_shell(cmd .. path)
+end
+
+-- Takes a screenshot of the given screen or the whole screen when
+-- passing -1 (default).
+-- snum: screen number or -1 for whole screen or 0 for interactive select.
+-- dir: the output directory (defaults to ~/img).
+function M.screenshot_import(snum, dir)
+    snum = snum or -1
+    local path = (dir or "~/img") .. "/screenshot$(date +%Y%m%d%H%M%S).png"
     local cmd = "import "
 
     if snum < 0 then

@@ -52,7 +52,7 @@ terminal = "termite"
 terminal_cmd = terminal .. " -e "
 editor = os.getenv("EDITOR") or "vim"
 editor_cmd = terminal_cmd .. editor
-filemgr = "pcmanfm"
+filemgr = "nemo"
 configdir = os.getenv("HOME") .. "/.config/awesome"
 
 -- Config file for temporary/frequently changing layouts (untracked by git)
