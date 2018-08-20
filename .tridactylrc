@@ -1,0 +1,48 @@
+fixamo_quiet
+
+" unmap certain buttons to prevent accidental tab closing
+unbind d
+unbind D
+unbind ZZ
+
+unbind gH
+unbind gh
+bind gH tabopen www.google.de
+bind gh open www.google.de
+
+unbind j
+unbind k
+bind j scrollline 4
+bind k scrollline -4
+
+unbind yy
+bind y clipboard yank
+bind Y clipboard yankmd
+
+" tab controls
+unbind b
+bind bn tabnext
+bind bp tabprev
+bind bd tabclose
+bind bl buffer #
+bind ,l fillcmdline buffer
+bind bb fillcmdline buffer
+command bl tablast
+command bf tabfirst
+
+unbind p
+bind . find
+bind n findnext
+bind N findnext -1
+bind p findnext -1
+
+" restore default button behaviour
+unbind <c-f>
+unbind <c-c>
+unbind <c-a>
+
+set theme dark
+set home www.google.de
+set newtab moz-extension://fcc7eb82-283d-47ef-acc3-c4215d5ac73a/newtab.html
+
+" vim: ft=vim
