@@ -5,6 +5,7 @@ export CPPLIB=/mnt/iomega/C++/lib
 export SHARED=~/Shared
 export EDITOR=vim
 export GOPATH=~/golib
+export QT_QPA_PLATFORMTHEME="qt5ct"
 
 # force gtk2 for libreoffice
 export SAL_USE_VCLPLUGIN=gtk
