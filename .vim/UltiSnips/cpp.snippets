@@ -1,5 +1,22 @@
 priority 0
 
+global !p
+def fullpath():
+	return os.getcwd() + "/" + path
+
+def find_namespace(snip):
+	fp = fullpath()
+	if "/include/" in fp:
+		folder = "include"
+	elif "/src/" in fp:
+		folder = "src"
+	else:
+		return snip.basename or "name"
+	
+	return re.sub(r'.*/{}/(.*?)/.*'.format(folder), '\\1', fullpath())
+endglobal
+
+
 snippet cl "class .. (class)"
 class ${1:`!p snip.rv = snip.basename or "name"`}
 {
@@ -13,7 +30,7 @@ class ${1:`!p snip.rv = snip.basename or "name"`}
 endsnippet
 
 snippet ns "namespace .. (namespace)"
-namespace${1/.+/ /m}${1:`!p snip.rv = snip.basename or "name"`}
+namespace ${1:`!p snip.rv = find_namespace(snip)`}
 {
 	${VISUAL}${0}
 }
@@ -45,5 +62,56 @@ $1::const_iterator $2::end() const
 $1::iterator $2::end()
 {
 	return $3.end();
+}
+endsnippet
+
+snippet ifdeflinux "#ifdef __linux__"
+#ifdef __linux__
+	${VISUAL}${0}
+#endif
+endsnippet
+
+snippet ifdefwin "#ifdef _WIN32"
+#ifdef _WIN32
+	${VISUAL}${0}
+#endif
+endsnippet
+
+snippet ifdefos "#ifdef switch for windows, linux, and others"
+#ifdef __linux__ 
+	// linux code goes here
+#elif _WIN32
+	// windows code goes here
+#else
+
+#endif
+endsnippet
+
+snippet header "Include guards + namespace"
+#ifndef ${2/.*/\U$0\E/}_${1:`!p
+snip.rv = re.sub(r'[^A-Za-z0-9]+','_', snip.fn).upper() if not snip.c else snip.c`}
+#define ${2/.*/\U$0\E/}_$1
+
+namespace ${2:`!p snip.rv = find_namespace(snip)`}
+{
+	${VISUAL}${0}
+}
+
+#endif
+endsnippet
+
+snippet src "Include + namespace"
+#include "${1:`!p
+if snip.c:
+	snip.rv = snip.c
+elif "/src/" in fullpath():
+	snip.rv = re.sub(r'.*/src/(.*)' + snip.fn,'\\1', fullpath())
+else:
+	snip.rv = ""
+`}`!p snip.rv = snip.basename`.hpp"
+
+namespace ${2:`!p snip.rv = find_namespace(snip)`}
+{
+	${VISUAL}${0}
 }
 endsnippet
