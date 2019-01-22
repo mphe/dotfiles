@@ -1272,7 +1272,7 @@ set listsize 20
 
 python Dashboard.start()
 
-dashboard -layout !assembly expressions history !memory !registers source stack threads
+dashboard -layout !assembly expressions history !memory !registers source stack !threads
 dashboard source -style context 15
 dashboard -style syntax_highlighting 'manni'
 
