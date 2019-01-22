@@ -524,6 +524,13 @@ let g:templates_directory = [ $HOME.'/.vim/templates', $HOME.'/.vim/bundle/vim-t
 
 " CtrlP
 let g:ctrlp_show_hidden=1
+" let g:ctrlp_custom_ignore = '\.pyc'
+let g:ctrlp_open_multiple_files = 'ijr'
+let g:ctrlp_custom_ignore = {
+            \ 'dir':  '\v[\/]\.(git|hg|svn)$',
+            \ 'file': '\v\.(exe|so|dll|pyc|o|a)$'
+            \ }
+" let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files . -c -o --exclude-standard && git submodule --quiet foreach --recursive "git ls-files . -c -o --exclude-standard"', 'find %s -type f']
 
 " grayout.vim
 let g:grayout_confirm = 0
