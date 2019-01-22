@@ -58,10 +58,10 @@ set viewoptions=cursor,folds
 " fold functions, if, for, and while in shell scripts
 let g:sh_fold_enabled=7
 
-set previewheight=5
+set previewheight=3
 
 " Disable preview window
-set completeopt-=preview
+" set completeopt-=preview
 
 " Gvim settings
 set guioptions=aic
@@ -134,9 +134,9 @@ endfunction
 
 function! TogglePreview(on)
     if a:on
-        set completeopt+=preview
+        setlocal completeopt+=preview
     else
-        set completeopt-=preview
+        setlocal completeopt-=preview
     endif
     return ""
 endfunction
@@ -592,14 +592,15 @@ autocmd FileType sourcepawn setlocal commentstring=//\ %s
 autocmd BufWinLeave * if !&diff && strlen(expand('%')) && &ft != 'gitcommit' | mkview | endif
 autocmd BufRead * if !&diff && strlen(expand('%')) && &ft != 'gitcommit' | silent! loadview | endif
 
-autocmd BufEnter ?* if &previewwindow | exec 'setlocal winheight='.&previewheight | endif
+autocmd BufEnter * if &previewwindow | exec 'setlocal laststatus=0 | setlocal nocursorline | setlocal nonumber | setlocal winheight='.&previewheight | endif
 
 " Open the preview window only when accepting a completion candidate
 " Reduces lag when cycling through completions
-autocmd FileType c,cpp,python,java
-    \ inoremap <expr> <c-y> pumvisible() ? "\<c-p>\<c-r>=TogglePreview(1)\<CR>\<c-n>\<c-y>\<c-r>=TogglePreview(0)\<CR>" : "\<c-y>"|
-    \ imap     <expr>  <CR> pumvisible() ? "\<c-p>\<c-r>=TogglePreview(1)\<CR>\<c-n>\<c-y>\<c-r>=TogglePreview(0)\<CR>" : "<Plug>delimitMateCR"|
-    \ inoremap <expr> <c-l> pumvisible() ? "\<c-p>\<c-r>=TogglePreview(1)\<CR>\<c-n>\<c-r>=TogglePreview(0)\<CR>" : "\<c-l>"
+" ! Might not be necessary anymore !
+" autocmd FileType c,cpp,python,java
+"     \ inoremap <expr> <c-y> pumvisible() ? "\<c-p>\<c-r>=TogglePreview(1)\<CR>\<c-n>\<c-y>\<c-r>=TogglePreview(0)\<CR>" : "\<c-y>"|
+"     \ imap     <expr>  <CR> pumvisible() ? "\<c-p>\<c-r>=TogglePreview(1)\<CR>\<c-n>\<c-y>\<c-r>=TogglePreview(0)\<CR>" : "<Plug>delimitMateCR"|
+"     \ inoremap <expr> <c-l> pumvisible() ? "\<c-p>\<c-r>=TogglePreview(1)\<CR>\<c-n>\<c-r>=TogglePreview(0)\<CR>" : "\<c-l>"
 
 " -------------------------------------- Autocmds end }}}
 
