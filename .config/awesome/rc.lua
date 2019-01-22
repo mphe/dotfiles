@@ -115,6 +115,7 @@ myawesomemenu = {
 }
 
 systemmenu = {
+   { "lock", "/home/marvin/scripts/lockscreen.sh" },
    { "poweroff", "systemctl poweroff" },
    { "reboot", "systemctl reboot" },
    { "suspend", "systemctl suspend" },
