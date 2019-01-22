@@ -7,3 +7,9 @@
 [submodule ".config/awesome/lain"]
 	path = .config/awesome/lain
 	url = https://github.com/copycat-killer/lain.git
+[submodule ".config/awesome/treetile"]
+	path = .config/awesome/treetile
+	url = https://github.com/guotsuan/awesome-treetile
+[submodule ".config/awesome/freedesktop"]
+	path = .config/awesome/freedesktop
+	url = https://github.com/lcpz/awesome-freedesktop.git

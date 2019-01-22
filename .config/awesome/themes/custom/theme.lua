@@ -144,7 +144,7 @@ theme.layout_centerwork    = vaindir .. "centerworkw.png"
 
 -- Define the icon theme for application icons. If not set then the icons
 -- from /usr/share/icons and /usr/share/icons/hicolor will be used.
-theme.icon_theme = nil
+theme.icon_theme = "mate"
 
 return theme
 

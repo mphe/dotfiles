@@ -18,6 +18,8 @@ local icons = require("icons")
 local cal = require("cal")
 local widgets = require("widgets")
 local systray = require("systray")
+local freedesktop = require("freedesktop")
+
 -- }}}
 
 -- {{{ Error handling
@@ -119,17 +121,20 @@ systemmenu = {
    { "hibernate", "systemctl hibernate" },
 }
 
-mymainmenu = awful.menu({
-    items = {
-        { "awesome", myawesomemenu, beautiful.awesome_icon },
-        { "system", systemmenu },
-        { "open terminal", terminal, "/usr/share/icons/gnome/16x16/apps/utilities-terminal.png" },
-        { "open file manager", filemgr, "/usr/share/icons/gnome/16x16/apps/system-file-manager.png" },
-        { "open browser", "firefox", "/usr/share/icons/hicolor/16x16/apps/firefox.png" },
-        { "open thunderbird", "thunderbird", "/usr/share/icons/hicolor/16x16/apps/thunderbird.png" },
+mymainmenu = freedesktop.menu.build({
+    sub_menu = "Applications",
+    before = {
+        { "Awesome", myawesomemenu, beautiful.awesome_icon },
+        { "System", systemmenu },
     },
-    theme = { width = 150 },
+    after = {
+        { "Open terminal", terminal, "/usr/share/icons/gnome/16x16/apps/utilities-terminal.png" },
+        { "Open file manager", filemgr, "/usr/share/icons/gnome/16x16/apps/system-file-manager.png" },
+        { "Open browser", "firefox", "/usr/share/icons/hicolor/16x16/apps/firefox.png" },
+        { "Open thunderbird", "thunderbird", "/usr/share/icons/hicolor/16x16/apps/thunderbird.png" },
+    }
 })
+mymainmenu.theme.width = 150
 
 mylauncher = awful.widget.launcher({
     image = icons.arch,
