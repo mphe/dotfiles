@@ -566,6 +566,10 @@ command! Gst Gtabedit :
 " vim-sourcepawn
 au FileType sourcepawn setlocal makeprg=/home/marvin/servers/steamcmd/tf2/tf/addons/sourcemod/scripting/spcomp\ %
 
+" tablemode
+au FileType markdown,md let table_mode_corner = '|'
+
+
 " -------------------------------------- Plugin configuration end }}}
 
 
