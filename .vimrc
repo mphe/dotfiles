@@ -609,6 +609,7 @@ autocmd BufWinLeave * if !&diff && strlen(expand('%')) && &ft != 'gitcommit' | m
 autocmd BufRead * if !&diff && strlen(expand('%')) && &ft != 'gitcommit' | silent! loadview | endif
 
 autocmd BufEnter * if &previewwindow | exec 'setlocal laststatus=0 | setlocal nocursorline | setlocal nonumber | setlocal winheight='.&previewheight | endif
+autocmd BufDelete * if &previewwindow | exec 'setlocal laststatus=2' | endif
 
 " Open the preview window only when accepting a completion candidate
 " Reduces lag when cycling through completions
