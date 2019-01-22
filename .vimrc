@@ -380,7 +380,7 @@ autocmd FileType c,cpp,python
     \ nnoremap <leader>gi :call ShowPreview()<CR>
 
 let g:ycm_min_num_of_chars_for_completion = 1
-let g:ycm_server_keep_logfiles = 1
+let g:ycm_server_keep_logfiles = 0
 " let g:ycm_server_log_level = 'debug'
 let g:ycm_global_ycm_extra_conf = '~/.vim/.ycm_extra_conf.py'
 let g:ycm_confirm_extra_conf = 0
@@ -389,8 +389,10 @@ let g:ycm_autoclose_preview_window_after_insertion = 0
 let g:ycm_always_populate_location_list = 1
 let g:ycm_filetype_blacklist = {}
 let g:ycm_warning_symbol = '!!'
+let g:ycm_collect_identifiers_from_comments_and_strings = 1
+let g:ycm_complete_in_comments = 1
 
-autocmd FileType tex let g:ycm_min_num_of_chars_for_completion = 5
+" autocmd FileType tex let g:ycm_min_num_of_chars_for_completion = 5
 
 " Enable tab for completion (removed in oblitum's fork)
 let g:ycm_key_list_select_completion = ['<TAB>', '<Down>']
@@ -414,6 +416,8 @@ let g:easytags_include_members = 1
 
 " tagbar
 command! TB TagbarToggle
+nnoremap <F8> :TagbarOpen fjc<CR>
+nnoremap tt :TagbarOpen fjc<CR>
 
 " ColorStepper Keys
 nmap <F6> <Plug>ColorstepPrev
@@ -595,6 +599,7 @@ autocmd FileType cmake setlocal foldmethod=marker
 autocmd FileType vim setlocal foldmethod=marker
 autocmd FileType lua setlocal foldmethod=marker
 autocmd FileType sourcepawn setlocal commentstring=//\ %s
+autocmd FileType markdown setlocal tabstop=2 | setlocal shiftwidth=2 | setlocal wrap
 
 " Markdown preview (requires 'Markdown Viewer' addon)
 " autocmd FileType markdown,md nnoremap <F5> :!firefox % &<CR><CR>
@@ -621,8 +626,8 @@ autocmd BufEnter * if &previewwindow | exec 'setlocal laststatus=0 | setlocal no
 map Q <Nop>
 
 " Horizontal scrolling
-nnoremap <C-l> 2zl
-nnoremap <C-h> 2zh
+nnoremap <C-l> 3zl
+nnoremap <C-h> 3zh
 
 " insert a new line without switching to insert mode
 nnoremap <leader>o o<ESC>
@@ -675,14 +680,17 @@ command! PabsFormat %s/:/\r    {\r\r    } \/\/
 
 command! FollowSymlink exec 'file '.resolve(expand('%:p')) | e
 
-command! -range=% ToSource <line1>,<line2>s/\s*=.*\(,\|)\)/\1/ge | <line1>,<line2>s/;/\r    {\r\r    }\r/
-command! -nargs=? -range=% ToSourceAuto exec '<line1>,<line2>normal ==' | <line1>,<line2>s/\s*=.*\(,\|)\)/\1/ge | <line1>,<line2>s/auto \(.\{-}\)\s*->\s*\(.\{-}\)\s*;/\2 <args>::\1\r    {\r\r    }\r/ | <line1>,<line2>s/\(virtual \|static \|constexpr \)//ge
+command! -range=% ToSource <line1>,<line2>s/\s*=.*\(,\|)\)/\1/ge | <line1>,<line2>s/\(virtual \|static \|constexpr \)//ge | <line1>,<line2>s/;/\r    {\r        \/\/ TODO\r    }\r/
+command! -nargs=? -range=% ToSourceAuto exec '<line1>,<line2>normal ==' | <line1>,<line2>s/\(virtual \|static \|constexpr \)//ge | <line1>,<line2>s/\s*=.*\(,\|)\)/\1/ge | <line1>,<line2>s/auto \(.\{-}\)\s*->\s*\(.\{-}\)\s*;/\2 <args>::\1\r    {\r        \/\/ TODO\r    }\r/
 
 " Puts exactly one space between operator and operands.
 " Does not pick up all occurrences in some corner cases, but good enough.
 " If this breaks some day, try something like this:
 " s/\[(\w\+\)]\{-}\s*\(||\|&&\|%\|+\|-\|\*\|\/\)\s*\(\w\+\)/\1 \2 \3/g
 command! -range=% OpSpacing <line1>,<line2>s/\(\w\+\)\{-}\s*\(||\|&&\|%\|+\|-\|\*\|\/\)\s*\(\w\+\)/\1 \2 \3/g
+
+command! ID exe "normal a0x". system("uuidgen | sed 's/-.*//'")
+command! Fname echo expand('%:p')
 
 " buffer shortcuts
 nnoremap <F3> :bn<CR>
