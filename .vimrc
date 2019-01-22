@@ -477,6 +477,7 @@ let g:syntastic_check_on_open = 0
 let g:syntastic_check_on_wq = 0
 let g:syntastic_quiet_messages = { 'type': 'style' }
 let g:syntastic_python_checkers = ['flake8']
+let g:syntastic_python_flake8_args = '--ignore=F403,F401'
 let g:syntastic_vim_checkers = ['vint']
 let g:syntastic_warning_symbol = '!!'
 " let g:syntastic_aggregate_errors = 1
