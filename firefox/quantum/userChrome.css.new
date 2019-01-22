@@ -1,0 +1,121 @@
+:root {
+    --tabsize: 22px;
+    --tabwidth: 130px;
+    --navbarsize: 26px;
+    --tabbar-offset: 0px;
+    --tabtext-offset: 4px;
+    --color-bg: #222222;
+    --color-gray: #444444;
+    --color-fg: #aaaaaa;
+    --color-active: #535D6C;
+    --color-fg-active: #ffffff;
+    --font-size: 12px;
+}
+
+/* Main colors */
+#main-window, #browser-bottombox, #urlbar, #nav-bar, #TabsToolbar, #navigator-toolbox, #toolbar-menubar,
+#browser-panel, #tab-view-deck, #tabbrowser-tabs, .tabbrowser-arrowscrollbox {
+    background: var(--color-bg) !important;
+    color: var(--color-fg) !important;
+    box-shadow: none !important;
+}
+
+#urlbar, .tabbrowser-tab .tab-text {
+    font-size: var(--font-size) !important;
+}
+
+
+/* Tabs {{{ */
+#TabsToolbar {
+    border: none !important;
+}
+
+/* for some reason the background refuses to have the correct color */
+/* fix: don't move */
+.tabbrowser-tabs {
+    /* margin-left: 5px !important; */
+}
+
+/* remove tab separators */
+.tabbrowser-tab::before, .tabbrowser-tab::after {
+    display: none !important;
+}
+
+/* Remove blue line on top of tabs */
+.tab-line {
+    /* transition: none !important; */
+    display: none !important;
+}
+
+
+.tabbrowser-tab {
+    background: var(--color-bg) !important;
+}
+
+.tabbrowser-tab:hover {
+    background: var(--color-gray) !important;
+    color: var(--color-fg-active) !important;
+}
+
+.tabbrowser-tab[selected=true] .tab-content {
+    background: var(--color-active) !important;
+    color: var(--color-fg-active) !important;
+}
+
+/* }}} */
+
+
+
+/* navbar {{{ */
+
+#urlbar-container, #nav-bar {
+    border: none !important;
+}
+
+
+#urlbar {
+    border: none !important;
+    background: #333333 !important;
+    color: #bbbbbb !important;
+    /* font-size: var(--font-size) !important; */
+}
+
+
+.autocomplete-textbox.urlbar-input.textbox-input.uri-element-right-align:focus {
+    background: var(--color-gray) !important;
+}
+
+#identity-box:hover {
+    background: var(--color-bg) !important;
+}
+
+/* urlbar autocomplete popup {{{ */
+#PopupAutoCompleteRichResult {
+    background: var(--color-bg) !important;
+    border-color: var(--color-active) !important;
+}
+
+.autocomplete-richlistitem {
+    color: var(--color-fg) !important;
+}
+
+.autocomplete-richlistitem .ac-url, .autocomplete-richlistitem .ac-separator {
+    color: var(--color-gray) !important;
+}
+
+.autocomplete-richlistitem:hover {
+    color: var(--color-fg-active) !important;
+    background: var(--color-active) !important;
+}
+
+.autocomplete-richlistitem:hover .ac-url, .autocomplete-richlistitem .ac-separator {
+    color: var(--color-fg) !important;
+}
+
+/* }}} */
+
+/* }}} */
+
+
+
+/* vim: foldmethod=marker */

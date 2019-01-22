@@ -196,29 +196,29 @@ toolbarbutton#alltabs-button,
 }
 
 
-#forward-button[disabled] {
-    visibility: hidden !important;
-}
-
-#forward-button[disabled] > .toolbarbutton-icon {
-    visibility: hidden !important;
-    width: 0px !important;
-}
-
-#back-button > .toolbarbutton-icon {
-    padding: 6px !important;
-}
-
-#back-button:not([disabled]):hover > .toolbarbutton-icon,
-#new-tab-button:hover > .toolbarbutton-icon {
-    background: var(--color-gray) !important;
-}
-
-#back-button > .toolbarbutton-icon,
-#new-tab-button, #new-tab-button > .toolbarbutton-icon {
-    background: var(--color-bg) !important;
-}
-
+/* #forward-button[disabled] { */
+/*     visibility: hidden !important; */
+/* } */
+/*  */
+/* #forward-button[disabled] > .toolbarbutton-icon { */
+/*     visibility: hidden !important; */
+/*     width: 0px !important; */
+/* } */
+/*  */
+/* #back-button > .toolbarbutton-icon { */
+/*     padding: 6px !important; */
+/* } */
+/*  */
+/* #back-button:not([disabled]):hover > .toolbarbutton-icon, */
+/* #new-tab-button:hover > .toolbarbutton-icon { */
+/*     background: var(--color-gray) !important; */
+/* } */
+/*  */
+/* #back-button > .toolbarbutton-icon, */
+/* #new-tab-button, #new-tab-button > .toolbarbutton-icon { */
+/*     background: var(--color-bg) !important; */
+/* } */
+/*  */
 
 /* disable urlbar buttons */
 #page-action-buttons {
