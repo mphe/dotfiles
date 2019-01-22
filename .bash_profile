@@ -8,7 +8,7 @@ export GOPATH=~/golib
 export QT_QPA_PLATFORMTHEME="qt5ct"
 
 # force gtk2 for libreoffice
-export SAL_USE_VCLPLUGIN=gtk
+# export SAL_USE_VCLPLUGIN=gtk
 
 if [ $(tty) == "/dev/tty1" ]; then
     startx
