@@ -25,6 +25,9 @@ alias g++='g++ -fdiagnostics-color=auto -Wall -Wno-switch'
 alias gcc='gcc -fdiagnostics-color=auto -Wall -Wno-switch'
 alias mkdir='mkdir -p'
 alias cdir='switchdir'
+alias steam='steam -nofriendsui'
+alias make='make -j4'
+alias hibernate='sudo systemctl hibernate'
 
 # thefuck (slow as fuck startup)
 # eval "$(thefuck --alias)"
