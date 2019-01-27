@@ -161,6 +161,7 @@ mpdwidget = widgets.mpd({ timeout = 3, notify = "off" })
 brightwidget = widgets.brightness()
 wiredwidget = widgets.wired({ autohide = true })
 wifiwidget = widgets.wifi({ autohide = true })
+fswidget = widgets.fs()
 
 mytextclock = wibox.widget.textclock()
 cal.register(mytextclock)
@@ -275,6 +276,8 @@ awful.screen.connect_for_each_screen(function(s)
             wifiwidget:get_container(),
             wiredwidget:get_container(),
             -- separator,
+            fswidget:get_container(),
+            separator,
             brightwidget:get_container(),
             separator,
             tempwidget:get_container(),

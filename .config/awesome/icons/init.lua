@@ -21,4 +21,5 @@ return {
         icondir .. "wifi_06.png"
     },
     wifi_na         = icondir .. "wifi_na.png",
+    fs              = icondir .. "fs_02.png",
 }
