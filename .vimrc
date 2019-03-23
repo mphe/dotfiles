@@ -161,7 +161,9 @@ Plugin 'qualiabyte/vim-colorstepper'
 
 Plugin 'scrooloose/nerdtree'
 Plugin 'itchyny/lightline.vim'
-Plugin 'bling/vim-bufferline'
+Plugin 'mengelbrecht/lightline-bufferline'
+" Plugin 'vim-airline/vim-airline'
+" Plugin 'vim-airline/vim-airline-themes'
 Plugin 'Lokaltog/vim-easymotion'
 Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-surround'
@@ -221,16 +223,28 @@ source /home/marvin/.vim/themes/solarized.vim
 
 
 " -------------------------------------- Plugin configuration {{{
-" bufferline
-set showtabline=2
-let g:bufferline_echo = 0
-let g:bufferline_active_buffer_left = ''
-let g:bufferline_active_buffer_right = ''
-let g:bufferline_modified = '[+]'
-let g:bufferline_show_bufnr = 0
-let g:bufferline_pathshorten = 1
-let g:bufferline_fname_mod = ':t'
-" let g:bufferline_fname_mod = ':.'
+" airline
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#left_sep = '▓░'
+let g:airline#extensions#tabline#left_alt_sep = ''
+let g:airline#extensions#tabline#right_sep = '░▓'
+let g:airline#extensions#tabline#right_alt_sep = ''
+let g:airline#extensions#tabline#fnamemod = ':.'
+let g:airline#extensions#tabline#show_close_button = 0
+let g:airline#extensions#tabline#show_tabs = 0
+let g:airline#extensions#tabline#show_tab_count = 1
+let g:airline#extensions#tabline#show_tab_type = 0
+let g:airline#extensions#tabline#buf_label_first = 0
+let g:airline#extensions#tabline#current_first = 0
+let g:airline_highlighting_cache = 1
+let g:airline_theme='solarized'
+let g:airline_left_sep='▓░'
+let g:airline_right_sep='░▓'
+let g:airline_detect_spell=0
+let g:airline_powerline_fonts = 1
+let g:airline#extensions#tagbar#enabled = 0
+let g:airline_skip_empty_sections = 1
+let g:airline_solarized_dark_text = 1
 
 " lightline {{{
 let g:lightline = {
@@ -244,14 +258,14 @@ let g:lightline = {
     \   'inactive': ['tabnum']
     \ },
     \ 'tabline': {
-    \   'left': [ ['bufferline'] ],
+    \   'left': [ ['buffers'] ],
     \   'right': [ ['tabs'] ]
     \ },
     \ 'component': {
     \ },
     \ 'component_expand': {
     \   'syntastic': 'SyntasticStatuslineFlag',
-    \   'bufferline': 'LightLineBufferline',
+    \   'buffers': 'lightline#bufferline#buffers',
     \ },
     \ 'component_function': {
     \   'fugitive': 'LightLineFugitive',
@@ -264,7 +278,7 @@ let g:lightline = {
     \ },
     \ 'component_type': {
     \   'syntastic': 'error',
-    \   'bufferline': 'tabsel',
+    \   'buffers': 'tabsel',
     \ },
     \ 'separator': { 'left': '▓░', 'right': '░▓' },
     \ 'subseparator': { 'left': '|', 'right': '|' },
@@ -297,57 +311,14 @@ function! LightLineFugitive()
     endif
     return ''
 endfunction
-
-function! LightLineBufferline()
-    call bufferline#refresh_status()
-    call Trim_status_info(&columns - 8 - 5 * tabpagenr('$'))
-    return [ g:bufferline_status_info.before, g:bufferline_status_info.current, g:bufferline_status_info.after ]
-endfunction
-
-let s:scroll_start = 0
-
-" Copied from here:
-" https://github.com/critiqjo/vim-bufferline/blob/master/autoload/bufferline.vim#L97
-function! Trim_status_info(width)
-    let line = bufferline#get_echo_string()
-    if g:bufferline_status_info.current == ' ' || g:bufferline_status_info.current == ''
-        let g:bufferline_status_info.current = '[No Name]'
-    elseif g:bufferline_status_info.current == '[+]'
-        let g:bufferline_status_info.current = '[No Name][+]'
-    endif
-    if len(line) < a:width
-        return
-    endif
-    let before = g:bufferline_status_info.before
-    let current = g:bufferline_status_info.current
-    let after = g:bufferline_status_info.after
-    let beg_i = len(before)
-    let end_i = beg_i + len(current)
-    let scr_i = s:scroll_start
-    if beg_i < scr_i
-        let scr_i = beg_i
-    endif
-    if end_i > (scr_i + a:width)
-        let scr_i = end_i - a:width + 1
-    endif
-    if len(line[scr_i :]) < a:width
-        let scr_i = len(line) - a:width + 1
-    endif
-    let g:bufferline_status_info.before = before[scr_i :]
-    let beg_i__scr_i = beg_i - scr_i
-    if beg_i__scr_i < 0
-        let g:bufferline_status_info.current = current[-beg_i__scr_i :]
-    endif
-    let width__end_i = a:width - len(g:bufferline_status_info.before) - len(g:bufferline_status_info.current) - 1
-    if width__end_i == -1
-        let g:bufferline_status_info.after = '' " VimL sucks!
-    else
-        let g:bufferline_status_info.after = after[: width__end_i]
-    endif
-    let s:scroll_start = scr_i
-endfunction
-
 " lightline end }}}
+
+" lightline-bufferline
+set showtabline=2
+let g:lightline#bufferline#unnamed = '[No Name]'
+let g:lightline#bufferline#modified = '[+]'
+let g:lightline#bufferline#read_only = ' ⭤'
+let g:lightline#bufferline#filename_modifier = ':t'
 
 " easymotion
 let g:EasyMotion_smartcase = 1
