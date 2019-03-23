@@ -656,8 +656,23 @@ command! PabsFormat %s/:/\r    {\r\r    } \/\/
 
 command! FollowSymlink exec 'file '.resolve(expand('%:p')) | e
 
-command! -range=% ToSource <line1>,<line2>s/\s*=.*\(,\|)\)/\1/ge | <line1>,<line2>s/\(virtual \|static \|constexpr \)//ge | <line1>,<line2>s/;/\r    {\r        \/\/ TODO\r    }\r/
-command! -nargs=? -range=% ToSourceAuto exec '<line1>,<line2>normal ==' | <line1>,<line2>s/\(virtual \|static \|constexpr \)//ge | <line1>,<line2>s/\s*=.*\(,\|)\)/\1/ge | <line1>,<line2>s/auto \(.\{-}\)\s*->\s*\(.\{-}\)\s*;/\2 <args>::\1\r    {\r        \/\/ TODO\r    }\r/
+command! -range=% StripTrailingSpaces <line1>,<line2>s/\s\+$//e
+
+command! -range=% StripExtraSpaces <line1>,<line2>s/\(\S\)\s\+/\1 /ge | StripTrailingSpaces
+
+command! -range=% ToSource silent <line1>,<line2>s/\s*=.*\(,\|)\)/\1/ge |
+            \ exec '<line1>,<line2>normal ==' |
+            \ silent exec '<line1>,<line2>StripExtraSpaces' |
+            \ silent <line1>,<line2>s/\(virtual \|static \|constexpr \)//ge |
+            \ silent <line1>,<line2>s/\( override\| final\)//ge |
+            \ silent <line1>,<line2>s/;/\r    {\r        \/\/ TODO\r    }\r/ge |
+
+command! -nargs=? -range=% ToSourceAuto exec '<line1>,<line2>normal ==' |
+            \ silent exec '<line1>,<line2>StripExtraSpaces' |
+            \ silent <line1>,<line2>s/\(virtual \|static \|constexpr \)//ge |
+            \ silent <line1>,<line2>s/\( override\| final\)//ge |
+            \ silent <line1>,<line2>s/\s*=.*\(,\|)\)/\1/ge |
+            \ silent <line1>,<line2>s/auto \(.\{-}\)\s*->\s*\(.\{-}\)\s*;/\2 <args>::\1\r    {\r        \/\/ TODO\r    }\r/
 
 " Puts exactly one space between operator and operands.
 " Does not pick up all occurrences in some corner cases, but good enough.
