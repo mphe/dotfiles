@@ -13,6 +13,7 @@ set tabstop=4
 set expandtab
 set smarttab
 set autoindent
+set cino+=j1
 
 " enable folding
 set foldmethod=syntax
