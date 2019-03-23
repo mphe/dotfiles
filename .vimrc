@@ -54,7 +54,7 @@ set noshowmode
 set vb t_vb=
 set novisualbell
 
-set viewoptions=cursor,folds
+set viewoptions=cursor,folds,slash,unix
 
 " fold functions, if, for, and while in shell scripts
 let g:sh_fold_enabled=7
@@ -207,6 +207,8 @@ Plugin 'vim-scripts/ReplaceWithRegister'
 Plugin 'derekwyatt/vim-protodef'
 Plugin 'hynek/vim-python-pep8-indent'
 Plugin 'withgod/vim-sourcepawn'
+Plugin 'Konfekt/FastFold'
+Plugin 'zhimsel/vim-stay'
 
 " Turn filetype functionality back on
 filetype on
@@ -560,8 +562,12 @@ au FileType markdown,md let table_mode_corner = '|'
 
 " Don't screw up folds when inserting text that might affect them,
 " until leaving insert mode.
-autocmd InsertEnter * if !exists('w:last_fdm') | let w:last_fdm=&foldmethod | setlocal foldmethod=manual | endif
-autocmd InsertLeave,WinLeave * if exists('w:last_fdm') | let &l:foldmethod=w:last_fdm | unlet w:last_fdm | endif
+" autocmd InsertEnter * if !exists('w:last_fdm') | let w:last_fdm=&foldmethod | setlocal foldmethod=manual | endif
+" autocmd InsertLeave,WinLeave * if exists('w:last_fdm') | let &l:foldmethod=w:last_fdm | unlet w:last_fdm | endif
+
+" Save/Restore folds
+" autocmd BufWinLeave * if !&diff && strlen(expand('%')) && &ft != 'gitcommit' | mkview | endif
+" autocmd BufRead * if !&diff && strlen(expand('%')) && &ft != 'gitcommit' | silent! loadview | endif
 
 " automatically :retab on save
 " autocmd BufWritePre * :retab
@@ -576,10 +582,7 @@ autocmd FileType markdown setlocal tabstop=2 | setlocal shiftwidth=2 | setlocal 
 " Markdown preview (requires 'Markdown Viewer' addon)
 " autocmd FileType markdown,md nnoremap <F5> :!firefox % &<CR><CR>
 
-" Save/Restore folds
-autocmd BufWinLeave * if !&diff && strlen(expand('%')) && &ft != 'gitcommit' | mkview | endif
-autocmd BufRead * if !&diff && strlen(expand('%')) && &ft != 'gitcommit' | silent! loadview | endif
-
+" simplify preview window
 autocmd BufEnter * if &previewwindow | exec 'setlocal laststatus=0 | setlocal nocursorline | setlocal nonumber | setlocal winheight='.&previewheight | endif
 autocmd BufDelete * if &previewwindow | exec 'setlocal laststatus=2' | endif
 
