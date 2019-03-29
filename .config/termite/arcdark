@@ -9,6 +9,7 @@ urgent_on_bell = true
 clickable_url = true
 # font = DejaVu Sans Mono for Powerline 10
 font = xos4 Terminus 10
+#font = Terminess Powerline 10
 scrollback_lines = 1000
 search_wrap = true
 #icon_name = terminal
@@ -33,45 +34,65 @@ browser = firefox
 [colors]
 # colors from color0 to color254 can be set
 
-# Solarized dark color scheme
-foreground = #838284
-#foreground_bold = #b0b5b7
-#background = rgba(0, 43, 54, 0.9)
-background = rgba(35, 24, 33, 0.9)
+cursor = #93a1a1
 
-#cursor = #93a1a1
+# background = rgba(56, 60, 74, 0.9)
+background = rgba(56,60,74, 0.9)
+
+# [BackgroundFaint]
+# Color=56,60,74
+
+# [BackgroundIntense]
+# Color=56,60,74
 
 #black
-color0 = #221526
-color8 = #221526
+color0=rgb(75,81,100)
+# color0Faint=rgb(44,47,58)
+color8=rgb(97,105,129)
 
 # red
-color1 = #da7f80
-color9 = #da7f80
+color1=rgb(225,66,69)
+# color1Faint=rgb(120,50,40)
+color9=rgb(225,111,126)
 
 # green
-color2 = #5E7F68
-color10 = #5E7F68
+color2=rgb(92,167,91)
+# color2Faint=rgb(75,124,22)
+color10=rgb(173,212,136)
 
 # yellow
-color3 = #7A4C2D
-color11 = #AD7A57
+color3=rgb(246,171,50)
+# color3Faint=rgb(182,86,25)
+color11=rgb(253,195,95)
 
 # blue
-color4 = #605e78
-color12 = #605e78
+color4=rgb(72,119,177)
+# color4Faint=rgb(43,72,107)
+color12=rgb(140,169,191)
 
 # magenta
-color5 = #ad8d9c
-color13 = #ad8d9c
+color5=rgb(166,96,195)
+# color5Faint=rgb(97,74,115)
+color13=rgb(226,175,236)
 
 # cyan
-color6 = #504857
-color14 = #504857
+color6=rgb(82,148,226)
+# color6Faint=rgb(27,102,143)
+color14=rgb(115,197,226)
 
 # white
-color7 = #fffdf9
-color15 = #fffdf9
+color7=rgb(169,169,170)
+# color7Faint=rgb(99,104,109)
+color15=rgb(252,252,252)
+
+[Foreground]
+foreground = rgb(211,218,227)
+
+# [ForegroundFaint]
+# Color=211,218,227
+
+[ForegroundIntense]
+foreground_bold = rgb(252,252,252)
 
 
 #foreground_dim = #888888

@@ -67,6 +67,8 @@ set previewheight=3
 " Gvim settings
 set guioptions=aic
 
+set laststatus=2
+
 " -------------------------------------- General settings end }}}
 
 

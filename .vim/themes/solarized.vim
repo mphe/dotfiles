@@ -2,13 +2,13 @@
 set t_Co=256
 set background=dark
 set guifont="xos4 Terminus"
-set laststatus=2
 
 " ------------------ Solarized
 let g:solarized_termtrans=1
 let g:solarized_hitrail=1
 let g:solarized_termcolors=256
 colorscheme solarized
+" colorscheme flattened_dark
 
 highlight SignColumn ctermbg=black
 highlight CursorLineNr ctermbg=black cterm=bold
