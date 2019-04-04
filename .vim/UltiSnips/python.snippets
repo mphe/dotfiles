@@ -42,6 +42,14 @@ ${0}
 endsnippet
 
 snippet main "main" b
+def main():
+	${0:${VISUAL:pass}}
+
+if __name__ == `!p snip.rv = get_quoting_style(snip)`__main__`!p snip.rv = get_quoting_style(snip)`:
+	sys.exit(main())
+endsnippet
+
+snippet maincustom "custom main" b
 if __name__ == `!p snip.rv = get_quoting_style(snip)`__main__`!p snip.rv = get_quoting_style(snip)`:
 	${1:${VISUAL:main()}}
 endsnippet
