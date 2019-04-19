@@ -176,6 +176,7 @@ Plugin 'tomtom/tcomment_vim'
 " ./install.py --clang-completer
 " Plugin 'Valloric/YouCompleteMe'
 Plugin 'oblitum/YouCompleteMe'
+" Plugin 'neoclide/coc.nvim'
 
 Plugin 'rdnetto/YCM-Generator'
 Plugin 'tmhedberg/SimpylFold'
@@ -524,6 +525,7 @@ let g:LatexBox_complete_inlineMath = 1
 let g:LatexBox_custom_indent = 0
 let g:LatexBox_Folding = 1
 let g:LatexBox_fold_automatic = 0
+let g:LatexBox_quickfix = 2
 " let g:LatexBox_fold_sections=[ "part", "chapter", "section", "subsection", "subsubsection", "paragraph", "subparagraph" ]
 autocmd FileType tex nnoremap <F5> :Latexmk<CR>
 " let g:LatexBox_completion_close_braces = 0
@@ -540,6 +542,8 @@ call tcomment#DefineType('c', g:tcommentLineC)
 autocmd FileType markdown,md nnoremap <F5> :GodownPreview<CR>
 
 " protodef
+let g:disable_protodef_sorting = 1
+
 function! s:Implement(...)
     if a:0 > 0
         " DelimitMate handles the closing }

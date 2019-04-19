@@ -18,6 +18,8 @@ local icons = require("icons")
 local cal = require("cal")
 local widgets = require("widgets")
 local systray = require("systray")
+local treetile = require("treetile")
+treetile.focusnew = true
 local freedesktop = require("freedesktop")
 
 -- }}}
@@ -86,6 +88,7 @@ awful.layout.layouts = {
     awful.layout.suit.corner.ne,
     awful.layout.suit.corner.sw,
     awful.layout.suit.corner.se,
+    treetile
 }
 -- }}}
 
@@ -234,6 +237,8 @@ awful.screen.connect_for_each_screen(function(s)
 
     -- Each screen has its own tag table.
     awful.tag({ "1", "2", "3", "4", "5", "6", "7", "8", "9" }, s, awful.layout.layouts[2])
+
+    -- s.tags[2].layout = treetile
 
     -- Create a promptbox for each screen
     s.mypromptbox = awful.widget.prompt()
@@ -825,9 +830,9 @@ tag.connect_signal("request::screen", function(t)
             else
                 t.screen = s
             end
-            -- if t.selected then
-            --     t:view_only()
-            -- end
+            if t.selected then
+                t:view_only()
+            end
             return
         end
     end

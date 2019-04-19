@@ -38,5 +38,6 @@ fi
 compton -b
 anamnesis --start
 redshift &
+dxreminders &
 
 exec awesome
