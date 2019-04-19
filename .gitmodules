@@ -1,12 +1,12 @@
-[submodule "configdir/awesome/freedesktop"]
-	path = configdir/awesome/freedesktop
-	url = https://github.com/lcpz/awesome-freedesktop.git
-[submodule "configdir/awesome/treetile"]
-	path = configdir/awesome/treetile
-	url = https://github.com/guotsuan/awesome-treetile
-[submodule "configdir/awesome/lain"]
-	path = configdir/awesome/lain
-	url = https://github.com/copycat-killer/lain.git
 [submodule "homedir/.vim/bundle/Vundle.vim"]
 	path = homedir/.vim/bundle/Vundle.vim
 	url = https://github.com/VundleVim/Vundle.vim
+[submodule "configdir/awesome/lain"]
+	path = configdir/awesome/lain
+	url = https://github.com/copycat-killer/lain.git
+[submodule "configdir/awesome/treetile"]
+	path = configdir/awesome/treetile
+	url = https://github.com/guotsuan/awesome-treetile
+[submodule "configdir/awesome/freedesktop"]
+	path = configdir/awesome/freedesktop
+	url = https://github.com/lcpz/awesome-freedesktop.git
