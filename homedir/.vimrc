@@ -153,10 +153,10 @@ command! ToggleLatexMath call ToggleLatexMath()
 set nocompatible
 filetype off
 
-set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
 
-Plugin 'gmarik/vundle'
+Plugin 'VundleVim/Vundle.vim'
 
 " color schemes
 Plugin 'altercation/vim-colors-solarized'
@@ -215,9 +215,7 @@ Plugin 'Konfekt/FastFold'
 Plugin 'junegunn/vim-easy-align'
 Plugin 'osyo-manga/vim-over'
 
-" Turn filetype functionality back on
-filetype on
-filetype plugin on
+call vundle#end()
 filetype plugin indent on
 
 " -------------------------------------- vundle end }}}

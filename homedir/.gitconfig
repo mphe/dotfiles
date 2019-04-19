@@ -1,7 +1,0 @@
-[user]
-	email = marvin.e@protonmail.ch
-	name = Marvin Ewald
-[core]
-	editor = vim
-[push]
-	default = simple

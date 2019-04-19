@@ -1,6 +1,6 @@
 homedir/.vim/view
 homedir/.vim/bundle/*
-!homedir/.vim/bundle/vundle
+!homedir/.vim/bundle/Vundle.vim
 *.pyc
 homedir/.ncmpcpp/error.log
 homedir/.ncmpcpp/patterns.list
