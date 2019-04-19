@@ -593,7 +593,7 @@ autocmd FileType markdown setlocal tabstop=2 | setlocal shiftwidth=2 | setlocal 
 " autocmd FileType markdown,md nnoremap <F5> :!firefox % &<CR><CR>
 
 " simplify preview window
-autocmd BufEnter * if &previewwindow | exec 'setlocal laststatus=0 | setlocal nocursorline | setlocal nonumber | setlocal winheight='.&previewheight | endif
+autocmd BufEnter * if &previewwindow | exec 'setlocal laststatus=0 | setlocal nobuflisted | setlocal nocursorline | setlocal nonumber | setlocal winheight='.&previewheight | endif
 autocmd BufDelete * if &previewwindow | exec 'setlocal laststatus=2' | endif
 
 " Open the preview window only when accepting a completion candidate
