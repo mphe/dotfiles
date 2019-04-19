@@ -127,6 +127,7 @@ eval $(dircolors ~/.dir_colors/dircolors.ansi-dark)
 # env vars
 export LANG='en_US.UTF-8'
 export PATH="/home/marvin/bin:/home/marvin/scripts:$PATH"
+export PATH="/home/marvin/.gem/ruby/2.5.0/bin:$PATH"
 # export PYTHONPATH="$PYTHONPATH:/mnt/iomega/Python/lib"
 export PYTHONPATH="$PYTHONPATH"
 
