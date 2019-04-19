@@ -305,7 +305,8 @@ function! LightLineFileType()
 endfunction
 
 function! LightLineFilename()
-    return (expand('%:t') != '' ? expand('%:t') : '[No Name]') .
+    " return (expand('%:t') != '' ? expand('%:t') : '[No Name]') .
+    return (expand('%') != '' ? expand('%') : '[No Name]') .
         \ (&modified != '' ? '[+]' : '') .
         \ (&readonly != '' ? ' ⭤' : '')
 endfunction
