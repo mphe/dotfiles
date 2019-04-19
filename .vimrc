@@ -210,7 +210,9 @@ Plugin 'derekwyatt/vim-protodef'
 Plugin 'hynek/vim-python-pep8-indent'
 Plugin 'withgod/vim-sourcepawn'
 Plugin 'Konfekt/FastFold'
-Plugin 'zhimsel/vim-stay'
+" Plugin 'zhimsel/vim-stay'
+Plugin 'junegunn/vim-easy-align'
+Plugin 'osyo-manga/vim-over'
 
 " Turn filetype functionality back on
 filetype on
@@ -556,6 +558,11 @@ au FileType sourcepawn setlocal makeprg=/home/marvin/servers/steamcmd/tf2/tf/add
 
 " tablemode
 au FileType markdown,md let table_mode_corner = '|'
+
+" easy align
+xmap ga <Plug>(EasyAlign)
+nmap ga <Plug>(EasyAlign)
+let g:easy_align_delimiters = { '>': { 'pattern': '->' } }
 
 
 " -------------------------------------- Plugin configuration end }}}
