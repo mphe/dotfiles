@@ -15,7 +15,7 @@ function BatWidget:create(args)
     end
 
     self.oldstatus = 1
-    self.lainwidget = lain.widgets.bat(args)
+    self.lainwidget = lain.widget.bat(args)
     local box = self:init(self.lainwidget.widget, args.icon or icons.ac)
 
     utils.registerPopupNotify(box, "Battery", function(w)

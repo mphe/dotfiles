@@ -4,6 +4,7 @@ local lain = require("lain")
 local wibox = require("wibox")
 local icons = require("icons")
 local BaseWidget = require("widgets.base").BaseWidget
+local utils = require("utils")
 
 local CPUWidget = BaseWidget.derive()
 
@@ -14,8 +15,9 @@ function CPUWidget:create(args)
         widget:set_markup(cpu_now.usage .. "%")
     end
 
-    local widget = wibox.container.constraint(lain.widgets.cpu(args), "exact", 24, nil)
-    widget.widget:set_align("right")
+    self.lainwidget = lain.widget.cpu(args)
+    local widget = wibox.container.constraint(self.lainwidget.widget, "exact", 24, nil)
+    widget.widget.align = "right"
 
     local box = self:init(widget, args.icon or icons.cpu)
     self:attach(box)

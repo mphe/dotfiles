@@ -15,7 +15,8 @@ function MemWidget:create(args)
         widget:set_markup(mem_now.perc .. "%")
     end
 
-    local box = self:init(lain.widgets.mem(args), args.icon or icons.mem)
+    self.lainwidget = lain.widget.mem(args)
+    local box = self:init(self.lainwidget.widget, args.icon or icons.mem)
     self:attach(box)
 end
 

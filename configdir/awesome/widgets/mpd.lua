@@ -40,7 +40,7 @@ function MPDWidget:create(args)
     args = args or {}
     args.settings = function() self:updateText() end
 
-    self.lainwidget = lain.widgets.mpd(args)
+    self.lainwidget = lain.widget.mpd(args)
     local widget = wibox.container.constraint(self.lainwidget.widget, "max", 125, nil)
     widget.widget:set_align("right")
 

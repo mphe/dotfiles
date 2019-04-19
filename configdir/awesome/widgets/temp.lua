@@ -20,7 +20,8 @@ function TempWidget:create(args)
         end
     end
 
-    local box = self:init(lain.widgets.temp(args), args.icon or icons.temp)
+    self.lainwidget = lain.widget.temp(args)
+    local box = self:init(self.lainwidget.widget, args.icon or icons.temp)
     box:buttons(awful.util.table.join(
         awful.button({}, 1, function() utils.toggle_run("psensor") end)
     ))

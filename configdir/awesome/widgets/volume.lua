@@ -18,7 +18,7 @@ function VolWidget:create(args)
     end
 
     self.status = "on"
-    self.lainwidget = lain.widgets.alsa(args)
+    self.lainwidget = lain.widget.alsa(args)
     local box = self:init(self.lainwidget.widget, args.icon or icons.volume)
 
     box:buttons(awful.util.table.join(
