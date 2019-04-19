@@ -28,6 +28,8 @@ alias cdir='switchdir'
 alias steam='steam -nofriendsui'
 alias make='make -j4'
 alias hibernate='sudo systemctl hibernate'
+alias fcut='fpaste.sh cut'
+alias fpaste='fpaste.sh paste'
 
 # thefuck (slow as fuck startup)
 # eval "$(thefuck --alias)"
