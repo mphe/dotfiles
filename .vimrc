@@ -682,7 +682,14 @@ command! -nargs=? -range=% ToSourceAuto exec '<line1>,<line2>normal ==' |
             \ silent <line1>,<line2>s/\(virtual \|static \|constexpr \)//ge |
             \ silent <line1>,<line2>s/\( override\| final\)//ge |
             \ silent <line1>,<line2>s/\s*=.*\(,\|)\)/\1/ge |
-            \ silent <line1>,<line2>s/auto \(.\{-}\)\s*->\s*\(.\{-}\)\s*;/\2 <args>::\1\r    {\r        \/\/ TODO\r    }\r/
+            \ silent <line1>,<line2>s/auto \(.\{-}\)\s*->\s*\(.\{-}\)\s*;/auto <args>::\1 -> \2\r    {\r        \/\/ TODO\r    }\r/
+
+" command! -nargs=? -range=% ToSourceAuto exec '<line1>,<line2>normal ==' |
+"             \ silent exec '<line1>,<line2>StripExtraSpaces' |
+"             \ silent <line1>,<line2>s/\(virtual \|static \|constexpr \)//ge |
+"             \ silent <line1>,<line2>s/\( override\| final\)//ge |
+"             \ silent <line1>,<line2>s/\s*=.*\(,\|)\)/\1/ge |
+"             \ silent <line1>,<line2>s/auto \(.\{-}\)\s*->\s*\(.\{-}\)\s*;/\2 <args>::\1\r    {\r        \/\/ TODO\r    }\r/
 
 " Puts exactly one space between operator and operands.
 " Does not pick up all occurrences in some corner cases, but good enough.
