@@ -10,17 +10,34 @@ local BaseWidget = require("widgets.base").BaseWidget
 local FSWidget = BaseWidget.derive()
 
 function print_info(name, data)
-    units = string.upper(data.units)
-    return string.format("\n%s - %i%%\n\tFree:\t\t%.2f %s\n\tUsed:\t%.2f %s\n\tSize:\t\t%.2f %s\n",
-        name, data.percentage,
+    local units = string.upper(data.units)
+    local percentage = tostring(data.percentage) .. "%"
+    local color = "#535D6C"
+
+    if data.percentage > 85 then
+        percentage = string.format("<span color='red'>%s%%</span>", data.percentage)
+        color = "red"
+    end
+
+    local barsize = 15
+    local barused = math.floor(barsize * data.percentage / 100.0)
+    local barstring = string.format("<span color='%s'>%s</span>%s",
+        color,
+        string.rep("█", barused),
+        string.rep("█", barsize - barused)
+    )
+
+    return string.format("\n<b>%s</b>\n\t%s %s\n\tFree:\t\t%.2f %s\n\tUsed:\t%.2f %s\n\tSize:\t\t%.2f %s\n",
+        name,
+        barstring, percentage,
         data.free, units,
         data.used, units,
         data.size, units)
 end
 
 function FSWidget:generate_popup_string()
-    keys = {}
-    s = ""
+    local keys = {}
+    local s = ""
 
     for k in pairs(self.data) do
         table.insert(keys, k)
