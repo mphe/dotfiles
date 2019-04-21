@@ -178,6 +178,13 @@ Plugin 'tomtom/tcomment_vim'
 Plugin 'oblitum/YouCompleteMe'
 " Plugin 'neoclide/coc.nvim'
 
+" Plugin 'Shougo/deoplete.nvim'
+" Plugin 'roxma/nvim-yarp'
+" Plugin 'roxma/vim-hug-neovim-rpc'
+" Plugin 'zchee/deoplete-clang'
+" Plugin 'Shougo/neosnippet.vim'
+" Plugin 'Shougo/neosnippet-snippets'
+
 Plugin 'rdnetto/YCM-Generator'
 Plugin 'tmhedberg/SimpylFold'
 Plugin 'Raimondi/delimitMate'
@@ -565,6 +572,11 @@ au FileType markdown,md let table_mode_corner = '|'
 xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
 let g:easy_align_delimiters = { '>': { 'pattern': '->' } }
+
+" deoplete
+" let g:deoplete#enable_at_startup = 1
+" call deoplete#custom#source('_', 'matchers', ['matcher_full_fuzzy'])
+" let g:neosnippet#enable_completed_snippet = 1
 
 
 " -------------------------------------- Plugin configuration end }}}
