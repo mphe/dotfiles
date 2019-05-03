@@ -601,7 +601,7 @@ autocmd FileType cmake setlocal foldmethod=marker
 autocmd FileType vim setlocal foldmethod=marker
 autocmd FileType lua setlocal foldmethod=marker
 autocmd FileType sourcepawn setlocal commentstring=//\ %s
-autocmd FileType markdown setlocal tabstop=2 | setlocal shiftwidth=2 | setlocal wrap
+autocmd FileType markdown setlocal wrap
 
 " Markdown preview (requires 'Markdown Viewer' addon)
 " autocmd FileType markdown,md nnoremap <F5> :!firefox % &<CR><CR>
