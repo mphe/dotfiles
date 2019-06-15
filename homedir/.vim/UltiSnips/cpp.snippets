@@ -125,3 +125,12 @@ snippet fore "for (auto& i : container) "
 for (auto& i : ${1})
 	${0}
 endsnippet
+
+snippet forit "for (auto it = begin(), end = end(); ...)"
+for (auto it = ${1}.begin(), end = $1.end(); it != end; ++it)
+	${0}
+endsnippet
+
+snippet sc "static_cast<>()" w
+static_cast<${1}>(${0})
+endsnippet
