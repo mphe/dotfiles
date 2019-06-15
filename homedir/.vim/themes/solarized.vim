@@ -6,12 +6,19 @@ set guifont="xos4 Terminus"
 " ------------------ Solarized
 let g:solarized_termtrans=1
 let g:solarized_hitrail=1
-let g:solarized_termcolors=256
+
+" comment out if using alacritty
+" let g:solarized_termcolors=256
+
+if &term == 'xterm-termite'
+    let g:solarized_termcolors=256
+endif
+
 colorscheme solarized
 " colorscheme flattened_dark
 
 highlight SignColumn ctermbg=black
-highlight CursorLineNr ctermbg=black cterm=bold
+highlight CursorLineNr ctermfg=3 ctermbg=black cterm=bold
 
 " Solid background color for YCM indicators
 highlight YcmWarningSign cterm=bold ctermbg=black ctermfg=red
