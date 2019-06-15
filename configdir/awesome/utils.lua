@@ -78,7 +78,7 @@ end
 
 -- Open a terminal and run a command inside
 function M.run_term(cmd)
-    awful.spawn.spawn(terminal_cmd .. "\"" .. cmd .. "\"")
+    awful.spawn.spawn(string.format(terminal_cmd_format, cmd))
 end
 
 -- Run the process if it isn't already running, otherwise kill it.
@@ -88,7 +88,7 @@ end
 
 -- Same as above but open a terminal
 function M.toggle_run_term(cmd)
-    awful.spawn.with_shell("pkill -u $USER -fnx \"" .. terminal_cmd .. cmd .. "\" || " .. terminal_cmd .. "\"" .. cmd .. "\"")
+    awful.spawn.with_shell("pkill -u $USER -fnx \"" .. terminal_cmd .. cmd .. "\" || " .. string.format(terminal_cmd_format, cmd))
 end
 
 -- Add mouse enter/leave signal to a widget.

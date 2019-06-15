@@ -52,11 +52,13 @@ end
 -- {{{ Variable definitions
 -- This is used later as the default terminal and editor to run.
 shell = "bash"
-terminal = "alacritty"
 -- terminal = "termite"
+terminal = "alacritty"
 terminal_cmd = terminal .. " -e "
+-- terminal_cmd_format = terminal_cmd .. "\"%s\""
+terminal_cmd_format = terminal_cmd .. "%s"
 editor = os.getenv("EDITOR") or "vim"
-editor_cmd = terminal_cmd .. editor
+editor_cmd = string.format(terminal_cmd_format,  editor)
 filemgr = "nemo"
 configdir = os.getenv("HOME") .. "/.config/awesome"
 
