@@ -1,0 +1,8 @@
+vim
+python-pip
+termite
+cscope
+terminus-font
+ranger
+atool
+alacritty
