@@ -174,8 +174,9 @@ Plugin 'tpope/vim-repeat'
 Plugin 'tomtom/tcomment_vim'
 
 " ./install.py --clang-completer
-" Plugin 'Valloric/YouCompleteMe'
-Plugin 'oblitum/YouCompleteMe'
+Plugin 'Valloric/YouCompleteMe'
+" Plugin 'oblitum/YouCompleteMe.oblitum'
+" Plugin 'oblitum/YouCompleteMe.merge'
 " Plugin 'neoclide/coc.nvim'
 
 " Plugin 'Shougo/deoplete.nvim'
@@ -742,7 +743,7 @@ nnoremap <leader>bd :bn<bar>sp<bar>bp<bar>bd<CR>
 set langmap=ö{,ä},Ö[,Ä]
 
 " Jump to line end in insert mode
-inoremap <C-L> <C-O>A
+" inoremap <C-L> <C-O>A
 
 " Repeat last ex command
 nnoremap ; @:
@@ -759,3 +760,11 @@ map <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans
             \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
 
 " -------------------------------------- Key mappings end }}}
+
+source ~/.vim/completion_preview.vim
+
+" we need <c-r>= syntax because <expr> doesn't allow buffer modification
+inoremap <c-h> <c-r>=PrevCompletionString()<CR>
+inoremap <c-l> <c-r>=NextCompletionString()<CR>
+nnoremap <leader>pp :call PrevCompletionString()<CR>
+nnoremap <leader>pn :call NextCompletionString()<CR>
