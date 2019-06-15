@@ -222,6 +222,7 @@ Plugin 'Konfekt/FastFold'
 " Plugin 'zhimsel/vim-stay'
 Plugin 'junegunn/vim-easy-align'
 Plugin 'osyo-manga/vim-over'
+Plugin 'bfrg/vim-cpp-modern'
 
 call vundle#end()
 filetype plugin indent on
@@ -584,6 +585,12 @@ xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
 let g:easy_align_delimiters = { '>': { 'pattern': '->' } }
 
+" vim-cpp-modern
+" let g:cpp_no_function_highlight = 0
+" let g:cpp_simple_highlight = 0
+" let g:cpp_named_requirements_highlight = 1
+highlight cUserFunction ctermfg=13
+
 " deoplete
 " let g:deoplete#enable_at_startup = 1
 " call deoplete#custom#source('_', 'matchers', ['matcher_full_fuzzy'])
@@ -698,23 +705,16 @@ command! -range=% StripExtraSpaces <line1>,<line2>s/\(\S\)\s\+/\1 /ge | StripTra
 command! -range=% ToSource silent <line1>,<line2>s/\s*=.*\(,\|)\)/\1/ge |
             \ exec '<line1>,<line2>normal ==' |
             \ silent exec '<line1>,<line2>StripExtraSpaces' |
-            \ silent <line1>,<line2>s/\(virtual \|static \|constexpr \)//ge |
+            \ silent <line1>,<line2>s/\(virtual \|static \|constexpr \|explicit \)//ge |
             \ silent <line1>,<line2>s/\( override\| final\)//ge |
             \ silent <line1>,<line2>s/;/\r    {\r        \/\/ TODO\r    }\r/ge |
 
 command! -nargs=? -range=% ToSourceAuto exec '<line1>,<line2>normal ==' |
             \ silent exec '<line1>,<line2>StripExtraSpaces' |
-            \ silent <line1>,<line2>s/\(virtual \|static \|constexpr \)//ge |
+            \ silent <line1>,<line2>s/\(virtual \|static \|constexpr \|explicit \)//ge |
             \ silent <line1>,<line2>s/\( override\| final\)//ge |
             \ silent <line1>,<line2>s/\s*=.*\(,\|)\)/\1/ge |
             \ silent <line1>,<line2>s/auto \(.\{-}\)\s*->\s*\(.\{-}\)\s*;/auto <args>::\1 -> \2\r    {\r        \/\/ TODO\r    }\r/
-
-" command! -nargs=? -range=% ToSourceAuto exec '<line1>,<line2>normal ==' |
-"             \ silent exec '<line1>,<line2>StripExtraSpaces' |
-"             \ silent <line1>,<line2>s/\(virtual \|static \|constexpr \)//ge |
-"             \ silent <line1>,<line2>s/\( override\| final\)//ge |
-"             \ silent <line1>,<line2>s/\s*=.*\(,\|)\)/\1/ge |
-"             \ silent <line1>,<line2>s/auto \(.\{-}\)\s*->\s*\(.\{-}\)\s*;/\2 <args>::\1\r    {\r        \/\/ TODO\r    }\r/
 
 " Puts exactly one space between operator and operands.
 " Does not pick up all occurrences in some corner cases, but good enough.
