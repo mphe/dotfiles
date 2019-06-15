@@ -263,8 +263,14 @@ let g:airline_solarized_dark_text = 1
 let g:lightline = {
     \ 'colorscheme': 'custom_solarized',
     \ 'active': {
-    \   'left': [ [ 'mode', 'paste' ], [ 'fugitive', 'filename' ] ],
-    \   'right': [ [ 'syntastic', 'lineinfo' ], ['percent'], [ 'fileformat', 'fileencoding', 'filetype' ] ]
+    \   'left': [ [ 'mode', 'paste' ], [ 'filename' ] ],
+    \   'right': [
+    \       [ 'lineinfo' ],
+    \       [ 'percent' ],
+    \       [ 'fileformat', 'fileencoding', 'filetype' ],
+    \       [ 'ycmerror', 'syntastic' ],
+    \       [ 'ycmwarning' ],
+    \   ]
     \ },
     \ 'tab': {
     \   'active': ['tabnum'],
@@ -281,6 +287,8 @@ let g:lightline = {
     \   'buffers': 'lightline#bufferline#buffers',
     \ },
     \ 'component_function': {
+    \   'ycmerror': 'youcompleteme#GetErrorCount',
+    \   'ycmwarning': 'youcompleteme#GetWarningCount',
     \   'fugitive': 'LightLineFugitive',
     \   'filename': 'LightLineFilename',
     \   'fileformat': 'LightLineFileFormat',
@@ -288,6 +296,8 @@ let g:lightline = {
     \   'filetype': 'LightLineFileType'
     \ },
     \ 'component_visible_condition': {
+    \   'ycmerror': 'youcompleteme#GetErrorCount() > 0',
+    \   'ycmwarning': 'youcompleteme#GetWarningCount() > 0',
     \ },
     \ 'component_type': {
     \   'syntastic': 'error',
