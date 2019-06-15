@@ -52,7 +52,8 @@ end
 -- {{{ Variable definitions
 -- This is used later as the default terminal and editor to run.
 shell = "bash"
-terminal = "termite"
+terminal = "alacritty"
+-- terminal = "termite"
 terminal_cmd = terminal .. " -e "
 editor = os.getenv("EDITOR") or "vim"
 editor_cmd = terminal_cmd .. editor
