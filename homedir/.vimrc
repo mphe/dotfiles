@@ -69,6 +69,13 @@ set guioptions=aic
 
 set laststatus=2
 
+set pyxversion=3
+set fileencoding=utf-8
+
+set linebreak
+set breakindent
+" set breakindentopt=shift:4
+
 " -------------------------------------- General settings end }}}
 
 
@@ -233,6 +240,10 @@ filetype plugin indent on
 " -------------------------------------- Style config {{{
 source /home/marvin/.vim/themes/solarized.vim
 " source /home/marvin/.vim/themes/dark.vim
+
+" set the split char tmux uses
+set fillchars+=vert:│
+highlight VertSplit ctermbg=0
 
 " -------------------------------------- Style config end }}}
 
@@ -416,6 +427,10 @@ command! TB TagbarToggle
 nnoremap <F8> :TagbarOpen fjc<CR>
 nnoremap tt :TagbarOpen fjc<CR>
 
+" kinda fix tagbar cursor lag
+autocmd FileType tagbar setlocal nocursorline nocursorcolumn
+
+
 " ColorStepper Keys
 nmap <F6> <Plug>ColorstepPrev
 nmap <F7> <Plug>ColorstepNext
@@ -542,9 +557,10 @@ let g:LatexBox_complete_inlineMath = 1
 let g:LatexBox_custom_indent = 0
 let g:LatexBox_Folding = 1
 let g:LatexBox_fold_automatic = 0
-let g:LatexBox_quickfix = 2
+let g:LatexBox_quickfix = 4
 " let g:LatexBox_fold_sections=[ "part", "chapter", "section", "subsection", "subsubsection", "paragraph", "subparagraph" ]
 autocmd FileType tex nnoremap <F5> :Latexmk<CR>
+autocmd FileType tex setlocal wrap
 " let g:LatexBox_completion_close_braces = 0
 " let g:LatexBox_complete_inlineMath = 0
 
@@ -625,8 +641,18 @@ autocmd FileType markdown setlocal wrap
 " autocmd FileType markdown,md nnoremap <F5> :!firefox % &<CR><CR>
 
 " simplify preview window
-autocmd BufEnter * if &previewwindow | exec 'setlocal laststatus=0 | setlocal nobuflisted | setlocal nocursorline | setlocal nonumber | setlocal winheight='.&previewheight | endif
-autocmd BufDelete * if &previewwindow | exec 'setlocal laststatus=2' | endif
+function! SetPreviewVariables()
+    setlocal wrap 
+    setlocal breakindentopt=shift:4
+    setlocal laststatus=0 
+    setlocal nobuflisted 
+    setlocal nocursorline 
+    setlocal nonumber 
+    exec 'setlocal winheight='.&previewheight
+endfun
+
+autocmd BufEnter * if &previewwindow | call SetPreviewVariables() | endif
+autocmd BufWinLeave * if &previewwindow | set laststatus=2 | endif
 
 " Open the preview window only when accepting a completion candidate
 " Reduces lag when cycling through completions
@@ -635,7 +661,6 @@ autocmd BufDelete * if &previewwindow | exec 'setlocal laststatus=2' | endif
 "     \ inoremap <expr> <c-y> pumvisible() ? "\<c-p>\<c-r>=TogglePreview(1)\<CR>\<c-n>\<c-y>\<c-r>=TogglePreview(0)\<CR>" : "\<c-y>"|
 "     \ imap     <expr>  <CR> pumvisible() ? "\<c-p>\<c-r>=TogglePreview(1)\<CR>\<c-n>\<c-y>\<c-r>=TogglePreview(0)\<CR>" : "<Plug>delimitMateCR"|
 "     \ inoremap <expr> <c-l> pumvisible() ? "\<c-p>\<c-r>=TogglePreview(1)\<CR>\<c-n>\<c-r>=TogglePreview(0)\<CR>" : "\<c-l>"
-
 " -------------------------------------- Autocmds end }}}
 
 
