@@ -76,6 +76,8 @@ set linebreak
 set breakindent
 " set breakindentopt=shift:4
 
+set display+=lastline
+
 " -------------------------------------- General settings end }}}
 
 
