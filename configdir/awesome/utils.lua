@@ -10,13 +10,17 @@ local M = {}
 function M.screenshot(snum, dir)
     snum = snum or -1
     local path = (dir or "~/img") .. "/screenshot$(date +%Y%m%d%H%M%S).png"
-    local cmd = "maim "
+    local cmd = "maim -n 2 "
 
-    if snum == 0 then
-        cmd = cmd .. "-s "
-    elseif snum > 0 then
-        local g = screen[snum].geometry
-        cmd = cmd .. string.format("--geometry=%ix%i+%i+%i ", g.width, g.height, g.x, g.y)
+    if snum >= 0 then
+        cmd = cmd .. "--hidecursor "
+
+        if snum == 0 then
+            cmd = cmd .. "-s "
+        elseif snum > 0 then
+            local g = screen[snum].geometry
+            cmd = cmd .. string.format("--geometry=%ix%i+%i+%i ", g.width, g.height, g.x, g.y)
+        end
     end
     awful.spawn.with_shell(cmd .. path)
 end
