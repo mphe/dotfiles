@@ -11,6 +11,7 @@
 # fi
 
 alias ls='ls --color=always --group-directories-first'
+alias ll='ls -l'
 alias less='less -r'
 alias pacaur='pacaur --noedit'
 alias android-studio='JAVA_HOME=/usr/lib/jvm/java-8-jdk android-studio'
@@ -20,16 +21,17 @@ alias youtube-dl='youtube-dl -o "%(title)s.%(ext)s"'
 alias cmake-debug='cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_BUILD_TYPE=Debug'
 alias cmake-release='cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_BUILD_TYPE=Release'
 alias xclip='xclip -selection c'
-alias ll='ls -l'
-alias g++='g++ -fdiagnostics-color=auto -Wall -Wno-switch'
+alias g++='g++ -fdiagnostics-color=auto -Wall -Wno-switch -Wno-parentheses'
 alias gcc='gcc -fdiagnostics-color=auto -Wall -Wno-switch'
+alias gdbrun='gdb -ex run'
 alias mkdir='mkdir -p'
 alias cdir='switchdir'
-alias steam='steam -nofriendsui'
 alias make='make -j4'
 alias hibernate='sudo systemctl hibernate'
 alias fcut='fpaste.sh cut'
+alias fcopy='fpaste.sh copy'
 alias fpaste='fpaste.sh paste'
+alias rm='echo consider using trash command; trash'
 
 # thefuck (slow as fuck startup)
 # eval "$(thefuck --alias)"
