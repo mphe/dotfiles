@@ -6,3 +6,7 @@ terminus-font
 ranger
 atool
 alacritty
+samba
+pwgen
+albert
+awesome
