@@ -72,7 +72,7 @@ theme.taglist_squares_unsel = theme_assets.taglist_squares_unsel(
 -- menu_[bg|fg]_[normal|focus]
 -- menu_[border_color|border_width]
 theme.menu_submenu_icon = themes_path.."default/submenu.png"
-theme.menu_height = dpi(15)
+theme.menu_height = dpi(20)
 theme.menu_width  = dpi(100)
 
 -- You can add as many variables as
@@ -107,6 +107,7 @@ theme.titlebar_maximized_button_focus_inactive  = themes_path.."default/titlebar
 theme.titlebar_maximized_button_normal_active = themes_path.."default/titlebar/maximized_normal_active.png"
 theme.titlebar_maximized_button_focus_active  = themes_path.."default/titlebar/maximized_focus_active.png"
 
+theme.titlebar_bg_focus = theme.bg_normal
 
 local themedir = os.getenv("HOME") .. "/.config/awesome/themes/custom/"
 theme.wallpaper = os.getenv("HOME") .. "/.cache/awesome/wallpaper.png"

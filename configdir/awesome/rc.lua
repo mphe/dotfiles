@@ -687,76 +687,110 @@ awful.rules.rules = {
                      keys = clientkeys,
                      buttons = clientbuttons,
                      screen = awful.screen.preferred,
-                     placement = awful.placement.no_overlap+awful.placement.no_offscreen,
-                     size_hints_honor = false
+                     placement = awful.placement.no_overlap+awful.placement.no_offscreen+awful.placement.centered,
      }
     },
 
-    -- Floating clients.
+    -- Make all clients floating
     {
-        rule_any = {
-            instance = {
-                "DTA",  -- Firefox addon DownThemAll.
-                "copyq",  -- Includes session name in class.
-            },
-            class = {
-                "MPlayer",
-                "mpv",
-                "Plugin-container",
-                "Arandr",
-                "Gpick",
-                "Kruler",
-                "MessageWin",  -- kalarm.
-                "Sxiv",
-                "Wpa_gui",
-                "pinentry",
-                "veromix",
-                "xtightvncviewer",
-                "Nemo"
-            },
-            name = {
-                "Event Tester",  -- xev.
-            },
-            role = {
-                "AlarmWindow",  -- Thunderbird's calendar.
-                "pop-up",       -- e.g. Google Chrome's (detached) Developer Tools.
-            }
-        },
+        rule = {},
         properties = {
             floating = true,
-            placement = awful.placement.centered
+            -- placement = awful.placement.centered,
         }
     },
 
-    -- mpv/mplayer fullscreen border fix
+    -- Make non-floating
     {
         rule_any = {
             class = {
-                "MPlayer",
-                "mpv"
+                "Alacritty",
+                "Mate-terminal",
+                "XTerm",
+                "Termite",
+                "URxvt",
+                "Firefox",
+                "firefox",
+                -- "Navigator",
+                "TelegramDesktop",
+                "discord",
             }
         },
+        except_any = {
+            instance = "Prompt",
+            type = { "dialog" },
+        },
         properties = {
-            border_width = 0
+            floating = false,
+            -- placement = awful.placement.centered,
+            size_hints_honor = false,
         }
     },
 
-    -- Center floating clients
     {
-        rule = { },
+        rule_any = { type = { "desktop" } },
+        callback = function(c)
+                -- c.floating = true
+                local geo = screen[1].geometry
+                geo.x2 = geo.x + geo.width
+                geo.y2 = geo.y + geo.height
+                for s in screen do
+                    local geo2 = s.geometry
+                    geo.x = math.min(geo.x, geo2.x)
+                    geo.y = math.min(geo.y, geo2.y)
+                    geo.x2 = math.max(geo.x2, geo2.x + geo2.width)
+                    geo.y2 = math.max(geo.y2, geo2.y + geo2.height)
+                end
+                c:geometry{
+                    x = geo.x,
+                    y = geo.y + 0,
+                    width = geo.x2 - geo.x,
+                    height = geo.y2 - geo.y - 0
+                }
+            end,
         properties = {
-            placement = awful.placement.centered
+            maximized = true,
+            sticky = true,
+            floating = false,
+            placement = nil,
+            -- placement = awful.placement.top_left,
+            border_width = 0,
+            -- focus = awful.client.focus.filter,
+            raise = false,
+            keys = {},
+            buttons = {},
+            screen = nil,
+            -- size_hints_honor = false,
         }
-    }
+    },
+
+    {
+        rule_any = { class = { "Synapse", "albert" } },
+        properties = {
+            border_width = 0,
+        }
+    },
 
 
     -- Add titlebars to normal clients and dialogs
-    -- { rule_any = {type = { "normal", "dialog" }
-    -- { rule_any = {type = { "dialog" }
-    --   }, properties = { titlebars_enabled = true }
+    -- {
+    --     rule_any = {type = { "normal", "dialog" }},
+    --     properties = { titlebars_enabled = true }
     -- },
 }
 -- }}}
+
+
+local function checktitlebar(c)
+    if c.floating and not c.maximized and not c.requests_no_titlebar then
+        awful.titlebar.show(c)
+        awful.spawn("xprop -id " .. c.window .. " -f _COMPTON_SHADOW 32c -set _COMPTON_SHADOW 1")
+    else
+        awful.titlebar.hide(c)
+        awful.spawn("xprop -id " .. c.window .. " -f _COMPTON_SHADOW 32c -set _COMPTON_SHADOW 0")
+        -- awful.spawn("xprop -id " .. c.window .. " -remove _COMPTON_SHADOW")
+    end
+end
 
 -- {{{ Signals
 -- Signal function to execute when a new client appears.
@@ -771,7 +805,12 @@ client.connect_signal("manage", function (c)
         -- Prevent clients from being unreachable after screen count changes.
         awful.placement.no_offscreen(c)
     end
+
+    checktitlebar(c)
 end)
+
+-- Add titlebars to floating windows
+client.connect_signal("property::floating", checktitlebar)
 
 -- Add a titlebar if titlebars_enabled is set to true in the rules.
 client.connect_signal("request::titlebars", function(c)
@@ -804,10 +843,11 @@ client.connect_signal("request::titlebars", function(c)
             layout  = wibox.layout.flex.horizontal
         },
         { -- Right
-            awful.titlebar.widget.floatingbutton (c),
+            -- awful.titlebar.widget.floatingbutton (c),
+            awful.titlebar.widget.minimizebutton(c),
             awful.titlebar.widget.maximizedbutton(c),
-            awful.titlebar.widget.stickybutton   (c),
-            awful.titlebar.widget.ontopbutton    (c),
+            -- awful.titlebar.widget.stickybutton   (c),
+            -- awful.titlebar.widget.ontopbutton    (c),
             awful.titlebar.widget.closebutton    (c),
             layout = wibox.layout.fixed.horizontal()
         },
@@ -856,4 +896,64 @@ naughty.config.notify_callback = function(args)
     return args
 end
 
+
 -- }}}
+
+-- old rules backup
+    -- -- Floating clients.
+    -- {
+    --     rule_any = {
+    --         instance = {
+    --             "DTA",  -- Firefox addon DownThemAll.
+    --             "copyq",  -- Includes session name in class.
+    --         },
+    --         class = {
+    --             "MPlayer",
+    --             "mpv",
+    --             "Plugin-container",
+    --             "Arandr",
+    --             "Gpick",
+    --             "Kruler",
+    --             "MessageWin",  -- kalarm.
+    --             "Sxiv",
+    --             "Wpa_gui",
+    --             "pinentry",
+    --             "veromix",
+    --             "xtightvncviewer",
+    --             "Nemo",
+    --             "Synapse"
+    --         },
+    --         name = {
+    --             "Event Tester",  -- xev.
+    --         },
+    --         role = {
+    --             "AlarmWindow",  -- Thunderbird's calendar.
+    --             "pop-up",       -- e.g. Google Chrome's (detached) Developer Tools.
+    --         }
+    --     },
+    --     properties = {
+    --         floating = true,
+    --         placement = awful.placement.centered
+    --     }
+    -- },
+
+    -- -- mpv/mplayer fullscreen border fix
+    -- {
+    --     rule_any = {
+    --         class = {
+    --             "MPlayer",
+    --             "mpv"
+    --         }
+    --     },
+    --     properties = {
+    --         border_width = 0
+    --     }
+    -- },
+
+    -- -- Center floating clients
+    -- {
+    --     rule = { },
+    --     properties = {
+    --         placement = awful.placement.centered
+    --     }
+    -- },
