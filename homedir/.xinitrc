@@ -35,9 +35,13 @@ fi
 
 [[ -f ~/.xsession  ]] && source ~/.xsession
 
+# fix telegram not inputting accents
+export QT_IM_MODULE=xim
+
 compton -b
 anamnesis --start
 redshift &
-dxreminders &
+albert &
+# dxreminders &
 
 exec awesome
