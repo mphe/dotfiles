@@ -71,6 +71,7 @@ set laststatus=2
 
 set pyxversion=3
 set fileencoding=utf-8
+set encoding=utf-8
 
 set linebreak
 set breakindent
@@ -571,7 +572,7 @@ let g:tcommentLineC = {
             \ 'commentstring': '// %s',
             \ 'replacements': g:tcomment#replacements_c
             \ }
-call tcomment#DefineType('c', g:tcommentLineC)
+call tcomment#type#Define('c', g:tcommentLineC)
 
 " Godown
 autocmd FileType markdown,md nnoremap <F5> :GodownPreview<CR>
