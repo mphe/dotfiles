@@ -550,7 +550,7 @@ clientkeys = awful.util.table.join(
     awful.key({ modkey, "Control" }, "space", function(c)
             awful.client.floating.toggle(c)
             if awful.client.floating.get(c) and not (c.maximized_horizontal or c.maximized_vertical) then
-                awful.placement.centered(c, nil)
+                (awful.placement.no_offscreen+awful.placement.centered)(c, nil)
             end
             c:raise()
         end,
@@ -687,7 +687,25 @@ awful.rules.rules = {
                      keys = clientkeys,
                      buttons = clientbuttons,
                      screen = awful.screen.preferred,
-                     placement = awful.placement.no_overlap+awful.placement.no_offscreen+awful.placement.centered,
+                     -- size_hints_honor = false,
+                     -- placement = awful.placement.no_overlap+awful.placement.centered+awful.placement.no_offscreen,
+                     placement = function(c)
+                         local sw = c.screen.workarea.width
+                         local sh = c.screen.workarea.height
+                         local cw = c:geometry().width
+                         local ch = c:geometry().height
+
+                         if ch > sh then
+                             cw = cw * sh / ch
+                             c:geometry({ height = sh, width = cw })
+                         end
+                         if cw > sw then
+                             local fac = sh / ch
+                             c:geometry({ width = sw, height = ch * fac })
+                         end
+
+                         (awful.placement.no_offscreen+awful.placement.centered)(c, { honor_workarea = true })
+                     end,
      }
     },
 
@@ -696,7 +714,6 @@ awful.rules.rules = {
         rule = {},
         properties = {
             floating = true,
-            -- placement = awful.placement.centered,
         }
     },
 
@@ -725,6 +742,17 @@ awful.rules.rules = {
             -- placement = awful.placement.centered,
             size_hints_honor = false,
         }
+    },
+
+    -- Fix telegram media viewer fullscreen
+    {
+        rule = { class = "TelegramDesktop", name = "Media viewer" },
+        callback = function(c)
+            -- Telegram sets window to fullscreen but for some reason it does not work correctly.
+            -- Re-enabling fullscreen fixes it.
+            c.fullscreen = false
+            c.fullscreen = true
+        end
     },
 
     {
@@ -957,3 +985,20 @@ end
     --         placement = awful.placement.centered
     --     }
     -- },
+
+-- dragging_active = false
+--
+-- client.connect_signal("manage", function(c)
+--     if c.type == "dnd" then
+--         dragging_active = true
+--         utils.debugtable({ "start dnd" })
+--     end
+--     utils.debugtable({ c.type })
+-- end)
+--
+-- client.connect_signal("unmanage", function(c)
+--     if dragging_active and c.type == "dnd" then
+--         dragging_active = false
+--         utils.debugtable({ "stop dnd" })
+--     end
+-- end)
