@@ -2,6 +2,7 @@ vim
 python-pip
 termite
 cscope
+ctags
 terminus-font
 ranger
 atool
@@ -10,3 +11,16 @@ samba
 pwgen
 albert
 awesome
+ipython
+compton
+mpv
+flake8
+ufw
+gparted
+lshw
+ffmpeg
+zathura
+zathura-pdf-poppler
+texlive-core
+texlive-latexextra
+shellcheck
