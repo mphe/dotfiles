@@ -11,6 +11,9 @@ function TempWidget:create(args)
     args.critical = args.critical or 80
     args.critcolor = args.critcolor or "#FF0000"
     args.settings = function()
+        if not t then
+            return
+        end
         local t = coretemp_now
         if t >= args.critical then
             widget:set_markup(string.format('<span color="%s">%s°C</span>',
