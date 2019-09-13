@@ -1,4 +1,5 @@
 set completeopt+=preview
+" set noshowmode
 
 let s:compl_buffer = []
 let s:compl_index = -1
@@ -63,7 +64,9 @@ endfun
 
 function! s:OnCompleteDone()
     let item = v:completed_item
-    if get(item, 'kind', '') ==# 'f' && len(item.info) > 0
+    " echo get(item, 'kind', '')
+    let kind = get(item, 'kind', '')
+    if (kind ==# 'f' || kind ==# 'c') && len(item.info) > 0
         call s:PushCompletion(item.info)
     else
         call s:SetPreviewString(s:GetCompletionString())
