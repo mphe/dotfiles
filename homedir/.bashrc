@@ -132,6 +132,7 @@ export PATH="/home/marvin/bin:/home/marvin/scripts:$PATH"
 export PATH="/home/marvin/.gem/ruby/2.5.0/bin:$PATH"
 # export PYTHONPATH="$PYTHONPATH:/mnt/iomega/Python/lib"
 export PYTHONPATH="$PYTHONPATH"
+export EDITOR=vim
 
 # disable flow control when using vim
 vim () {
