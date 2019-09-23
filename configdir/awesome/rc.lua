@@ -812,9 +812,13 @@ awful.rules.rules = {
 local function checktitlebar(c)
     if c.floating and not c.maximized and not c.requests_no_titlebar then
         awful.titlebar.show(c)
-        awful.spawn("xprop -id " .. c.window .. " -f _COMPTON_SHADOW 32c -set _COMPTON_SHADOW 1")
     else
         awful.titlebar.hide(c)
+    end
+
+    if c.floating and not c.maximized then
+        awful.spawn("xprop -id " .. c.window .. " -f _COMPTON_SHADOW 32c -set _COMPTON_SHADOW 1")
+    else
         awful.spawn("xprop -id " .. c.window .. " -f _COMPTON_SHADOW 32c -set _COMPTON_SHADOW 0")
         -- awful.spawn("xprop -id " .. c.window .. " -remove _COMPTON_SHADOW")
     end
