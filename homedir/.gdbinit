@@ -1274,7 +1274,33 @@ python Dashboard.start()
 
 dashboard -layout !assembly expressions history !memory !registers source stack !threads
 dashboard source -style context 15
-dashboard -style syntax_highlighting 'manni'
+dashboard -style syntax_highlighting 'solarized-dark'
+dashboard -style style_low '1;2'
+
+# show on up, down, frame commands
+define hookpost-up
+  dashboard
+end
+
+define hookpost-down
+  dashboard
+end
+
+define hookpost-frame
+  dashboard
+end
+
+# quit automatically if process terminates successfully
+# python gdb.events.exited.connect(lambda x : gdb.execute("quit"))
+
+set $_exitcode = -999
+handle SIGTERM nostop print pass
+handle SIGPIPE nostop
+define hook-stop
+    if $_exitcode != -999
+        quit
+    end
+end
 
 
 # ------------------------------------------------------------------------------
