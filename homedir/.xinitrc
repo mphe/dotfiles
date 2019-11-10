@@ -42,6 +42,7 @@ compton -b
 anamnesis --start
 redshift &
 albert &
+nm-applet &
 # dxreminders &
 
 exec awesome
