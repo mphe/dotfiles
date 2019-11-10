@@ -134,3 +134,24 @@ endsnippet
 snippet sc "static_cast<>()" w
 static_cast<${1}>(${0})
 endsnippet
+
+snippet opbool "operator bool"
+explicit operator bool() const
+{
+	${0}
+}
+endsnippet
+
+snippet op* "operator*()"
+auto operator*() const -> ${1:T}&
+{
+	${0}
+}
+endsnippet
+
+snippet op-> "operator->()"
+auto operator->() const -> ${1:T}*
+{
+	${0}
+}
+endsnippet

@@ -145,15 +145,6 @@ function! ShowPreview()
     call feedkeys("i\<c-space>\<c-n>\<esc>")
 endfunction
 
-function! TogglePreview(on)
-    if a:on
-        setlocal completeopt+=preview
-    else
-        setlocal completeopt-=preview
-    endif
-    return ""
-endfunction
-
 command! ToggleLatexMath call ToggleLatexMath()
 
 " -------------------------------------- Functions end }}}
@@ -183,18 +174,7 @@ Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-repeat'
 Plugin 'tomtom/tcomment_vim'
 
-" ./install.py --clang-completer
 Plugin 'Valloric/YouCompleteMe'
-" Plugin 'oblitum/YouCompleteMe.oblitum'
-" Plugin 'oblitum/YouCompleteMe.merge'
-" Plugin 'neoclide/coc.nvim'
-
-" Plugin 'Shougo/deoplete.nvim'
-" Plugin 'roxma/nvim-yarp'
-" Plugin 'roxma/vim-hug-neovim-rpc'
-" Plugin 'zchee/deoplete-clang'
-" Plugin 'Shougo/neosnippet.vim'
-" Plugin 'Shougo/neosnippet-snippets'
 
 Plugin 'rdnetto/YCM-Generator'
 Plugin 'tmhedberg/SimpylFold'
@@ -253,27 +233,27 @@ highlight VertSplit ctermbg=0
 
 " -------------------------------------- Plugin configuration {{{
 " airline
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#left_sep = '▓░'
-let g:airline#extensions#tabline#left_alt_sep = ''
-let g:airline#extensions#tabline#right_sep = '░▓'
-let g:airline#extensions#tabline#right_alt_sep = ''
-let g:airline#extensions#tabline#fnamemod = ':.'
-let g:airline#extensions#tabline#show_close_button = 0
-let g:airline#extensions#tabline#show_tabs = 0
-let g:airline#extensions#tabline#show_tab_count = 1
-let g:airline#extensions#tabline#show_tab_type = 0
-let g:airline#extensions#tabline#buf_label_first = 0
-let g:airline#extensions#tabline#current_first = 0
-let g:airline_highlighting_cache = 1
-let g:airline_theme='solarized'
-let g:airline_left_sep='▓░'
-let g:airline_right_sep='░▓'
-let g:airline_detect_spell=0
-let g:airline_powerline_fonts = 1
-let g:airline#extensions#tagbar#enabled = 0
-let g:airline_skip_empty_sections = 1
-let g:airline_solarized_dark_text = 1
+" let g:airline#extensions#tabline#enabled = 1
+" let g:airline#extensions#tabline#left_sep = '▓░'
+" let g:airline#extensions#tabline#left_alt_sep = ''
+" let g:airline#extensions#tabline#right_sep = '░▓'
+" let g:airline#extensions#tabline#right_alt_sep = ''
+" let g:airline#extensions#tabline#fnamemod = ':.'
+" let g:airline#extensions#tabline#show_close_button = 0
+" let g:airline#extensions#tabline#show_tabs = 0
+" let g:airline#extensions#tabline#show_tab_count = 1
+" let g:airline#extensions#tabline#show_tab_type = 0
+" let g:airline#extensions#tabline#buf_label_first = 0
+" let g:airline#extensions#tabline#current_first = 0
+" let g:airline_highlighting_cache = 1
+" let g:airline_theme='solarized'
+" let g:airline_left_sep='▓░'
+" let g:airline_right_sep='░▓'
+" let g:airline_detect_spell=0
+" let g:airline_powerline_fonts = 1
+" let g:airline#extensions#tagbar#enabled = 0
+" let g:airline_skip_empty_sections = 1
+" let g:airline_solarized_dark_text = 1
 
 " lightline {{{
 let g:lightline = {
@@ -372,18 +352,12 @@ command! NT NERDTreeToggle
 " let NERDTreeWinPos = "right"
 
 " YCM
-" The preview window is disabled to prevent heavy laggs when cycling through
-" completion candidates.
-" Instead there are custom mappings for <c-y> and <c-l> to show the preview
-" for the current entry. They do both the same except that <c-y> also closes
-" the popup menu.
-
-autocmd FileType c,cpp
+autocmd FileType c,cpp,cs
     \ nnoremap <F5> :YcmForceCompileAndDiagnostics<CR><CR>|
-    \ inoremap <F5> <c-o>:YcmForceCompileAndDiagnostics<CR><CR>|
+    \ inoremap <F5> <c-o>:YcmForceCompileAndDiagnostics<CR><CR>
+autocmd FileType c,cpp,python,cs
     \ nnoremap <leader>gd :YcmCompleter GetDoc<CR>|
-    \ nnoremap <leader>fx :YcmCompleter FixIt<CR>
-autocmd FileType c,cpp,python
+    \ nnoremap <leader>fx :YcmCompleter FixIt<CR>|
     \ nnoremap <leader>jd :YcmCompleter GoToDefinition<CR>|
     \ nnoremap <leader>jD :YcmCompleter GoToDeclaration<CR>|
     \ nnoremap <leader>gt :YcmCompleter GetType<CR>|
@@ -393,7 +367,7 @@ autocmd FileType c,cpp,python
 let g:ycm_min_num_of_chars_for_completion = 1
 let g:ycm_server_keep_logfiles = 0
 " let g:ycm_server_log_level = 'debug'
-let g:ycm_global_ycm_extra_conf = '~/.vim/.ycm_extra_conf.py'
+" let g:ycm_global_ycm_extra_conf = '~/.vim/.ycm_extra_conf.py'
 let g:ycm_confirm_extra_conf = 0
 let g:ycm_autoclose_preview_window_after_completion = 0
 let g:ycm_autoclose_preview_window_after_insertion = 0
@@ -405,7 +379,7 @@ let g:ycm_complete_in_comments = 1
 
 " autocmd FileType tex let g:ycm_min_num_of_chars_for_completion = 5
 
-" Enable tab for completion (removed in oblitum's fork)
+" Enable tab for completion
 let g:ycm_key_list_select_completion = ['<TAB>', '<Down>']
 let g:ycm_key_list_previous_completion = ['<S-TAB>', '<Up>']
 
@@ -435,9 +409,9 @@ autocmd FileType tagbar setlocal nocursorline nocursorcolumn
 
 
 " ColorStepper Keys
-nmap <F6> <Plug>ColorstepPrev
-nmap <F7> <Plug>ColorstepNext
-nmap <S-F7> <Plug>ColorstepReload
+" nmap <S-F6> <Plug>ColorstepPrev
+" nmap <S-F7> <Plug>ColorstepNext
+" nmap <S-F7> <Plug>ColorstepReload
 
 " FSwitch
 nnoremap <leader>gf :FSHere<CR>
@@ -545,7 +519,7 @@ let g:ctrlp_show_hidden=1
 " let g:ctrlp_custom_ignore = '\.pyc'
 let g:ctrlp_open_multiple_files = 'ijr'
 let g:ctrlp_custom_ignore = {
-            \ 'dir':  '\v[\/]\.(git|hg|svn)$',
+            \ 'dir':  '\v[\/]\.(git|hg|svn|clangd)$',
             \ 'file': '\v\.(exe|so|dll|pyc|o|a)$'
             \ }
 " let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files . -c -o --exclude-standard && git submodule --quiet foreach --recursive "git ls-files . -c -o --exclude-standard"', 'find %s -type f']
@@ -610,12 +584,6 @@ let g:easy_align_delimiters = { '>': { 'pattern': '->' } }
 " let g:cpp_named_requirements_highlight = 1
 highlight cUserFunction ctermfg=13
 
-" deoplete
-" let g:deoplete#enable_at_startup = 1
-" call deoplete#custom#source('_', 'matchers', ['matcher_full_fuzzy'])
-" let g:neosnippet#enable_completed_snippet = 1
-
-
 " -------------------------------------- Plugin configuration end }}}
 
 
@@ -657,13 +625,6 @@ endfun
 autocmd BufEnter * if &previewwindow | call SetPreviewVariables() | endif
 autocmd BufWinLeave * if &previewwindow | set laststatus=2 | endif
 
-" Open the preview window only when accepting a completion candidate
-" Reduces lag when cycling through completions
-" ! Might not be necessary anymore !
-" autocmd FileType c,cpp,python,java
-"     \ inoremap <expr> <c-y> pumvisible() ? "\<c-p>\<c-r>=TogglePreview(1)\<CR>\<c-n>\<c-y>\<c-r>=TogglePreview(0)\<CR>" : "\<c-y>"|
-"     \ imap     <expr>  <CR> pumvisible() ? "\<c-p>\<c-r>=TogglePreview(1)\<CR>\<c-n>\<c-y>\<c-r>=TogglePreview(0)\<CR>" : "<Plug>delimitMateCR"|
-"     \ inoremap <expr> <c-l> pumvisible() ? "\<c-p>\<c-r>=TogglePreview(1)\<CR>\<c-n>\<c-r>=TogglePreview(0)\<CR>" : "\<c-l>"
 " -------------------------------------- Autocmds end }}}
 
 
@@ -787,12 +748,15 @@ map <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans
             \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
             \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
 
+nnoremap <F8> :labove<CR>
+nnoremap <F9> :lbelow<CR>
+
 " -------------------------------------- Key mappings end }}}
 
-source ~/.vim/completion_preview.vim
-
-" we need <c-r>= syntax because <expr> doesn't allow buffer modification
-inoremap <c-h> <c-r>=PrevCompletionString()<CR>
-inoremap <c-l> <c-r>=NextCompletionString()<CR>
-nnoremap <leader>pp :call PrevCompletionString()<CR>
-nnoremap <leader>pn :call NextCompletionString()<CR>
+" source ~/.vim/completion_preview.vim
+"
+" " we need <c-r>= syntax because <expr> doesn't allow buffer modification
+" inoremap <c-h> <c-r>=PrevCompletionString()<CR>
+" inoremap <c-l> <c-r>=NextCompletionString()<CR>
+" nnoremap <leader>pp :call PrevCompletionString()<CR>
+" nnoremap <leader>pn :call NextCompletionString()<CR>

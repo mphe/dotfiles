@@ -39,3 +39,5 @@ highlight Folded cterm=bold
 highlight SpellBad term=underline ctermfg=160 gui=undercurl guisp=Orange 
 
 highlight Normal ctermbg=none
+
+highlight PmenuSbar ctermfg=12 ctermbg=0
