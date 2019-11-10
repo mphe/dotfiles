@@ -139,6 +139,7 @@ mymainmenu = freedesktop.menu.build({
         { "Open file manager", filemgr, "/usr/share/icons/gnome/16x16/apps/system-file-manager.png" },
         { "Open browser", "firefox", "/usr/share/icons/hicolor/16x16/apps/firefox.png" },
         { "Open thunderbird", "thunderbird", "/usr/share/icons/hicolor/16x16/apps/thunderbird.png" },
+        { "Open system monitor", "mate-system-monitor" },
     }
 })
 mymainmenu.theme.width = 150
