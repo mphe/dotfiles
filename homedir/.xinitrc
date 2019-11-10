@@ -33,7 +33,7 @@ if [ -d /etc/X11/xinit/xinitrc.d ] ; then
  unset f
 fi
 
-[[ -f ~/.xsession  ]] && source ~/.xsession
+[[ -f ~/.xprofile  ]] && source ~/.xprofile
 
 # fix telegram not inputting accents
 export QT_IM_MODULE=xim
