@@ -120,10 +120,10 @@ function cal.register(mywidget, custom_current_day_format)
         awful.button({ }, 3, function()
             switchMonth(1)
         end),
-        awful.button({ }, 5, function()
+        awful.button({ }, 4, function()
             switchMonth(-1)
         end),
-        awful.button({ }, 4, function()
+        awful.button({ }, 5, function()
             switchMonth(1)
         end),
         awful.button({ 'Shift' }, 1, function()
@@ -132,10 +132,10 @@ function cal.register(mywidget, custom_current_day_format)
         awful.button({ 'Shift' }, 3, function()
             switchMonth(12)
         end),
-        awful.button({ 'Shift' }, 5, function()
+        awful.button({ 'Shift' }, 4, function()
             switchMonth(-12)
         end),
-        awful.button({ 'Shift' }, 4, function()
+        awful.button({ 'Shift' }, 5, function()
             switchMonth(12)
     end)))
 end

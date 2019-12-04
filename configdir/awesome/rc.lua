@@ -705,7 +705,7 @@ awful.rules.rules = {
                              c:geometry({ width = sw, height = ch * fac })
                          end
 
-                         (awful.placement.no_offscreen+awful.placement.centered)(c, { honor_workarea = true })
+                         (awful.placement.centered+awful.placement.no_offscreen)(c, { honor_workarea = true })
                      end,
      }
     },
@@ -844,6 +844,15 @@ end)
 
 -- Add titlebars to floating windows
 client.connect_signal("property::floating", checktitlebar)
+
+-- Hide titlebar when maximized
+-- Needs request::geometry because when property::maximized is called,
+-- the window was already transformed, not filling up the space freed by hiding titlebar.
+client.disconnect_signal("request::geometry", awful.ewmh.geometry)
+client.connect_signal("request::geometry", function(c, ...)
+    checktitlebar(c)
+    return awful.ewmh.geometry(c, ...)
+end)
 
 -- Add a titlebar if titlebars_enabled is set to true in the rules.
 client.connect_signal("request::titlebars", function(c)
