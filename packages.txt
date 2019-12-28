@@ -12,7 +12,7 @@ pwgen
 albert
 awesome
 ipython
-compton
+picom
 mpv
 flake8
 ufw
