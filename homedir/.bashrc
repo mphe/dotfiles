@@ -103,6 +103,7 @@ prompt_command() {
     local bold="\[$BOLD\]"
     local blue="\[$BLUE\]"
     local yellow="\[$YELLOW\]"
+    local green="\[$GREEN\]"
     local red="\[$RED\]"
     local white="\[$WHITE\]"
 
@@ -111,9 +112,22 @@ prompt_command() {
     local path="\w"
     [ ${#PWD} -gt $hw ] && path="...${PWD:$((-$hw + 20))}"
 
-    PS1="$reset[$white$bold\u$reset@$white$bold\h $reset$blue$path$yellow\$(git_prompt)$reset]"
+    PS1=""
+    PS1+="$reset[$white$bold\u$reset@$white$bold\h $reset$blue$path$yellow\$(git_prompt)$reset]"
     # PS1="$reset[$bold\u@\h $blue\w$yellow\$(git_prompt)$reset]"
-    
+
+    # Fix virtualenv prompt when using PROMPT_COMMAND
+    # https://stackoverflow.com/questions/14987013/why-is-virtualenv-not-setting-my-terminal-prompt
+    if [ -z "$VIRTUAL_ENV_DISABLE_PROMPT" ] ; then
+        if [ "`basename \"$VIRTUAL_ENV\"`" = "__" ] ; then
+            # special case for Aspen magic directories
+            # see http://www.zetadev.com/software/aspen/
+            PS1+=" $green[`basename \`dirname \"$VIRTUAL_ENV\"\``]$reset"
+        elif [ "$VIRTUAL_ENV" != "" ]; then
+            PS1+=" $green(`basename \"$VIRTUAL_ENV\"`)$reset"
+        fi
+    fi
+
     if [ $err -ne 0 ]; then
         PS1+="$red[$err]$reset"
     fi
