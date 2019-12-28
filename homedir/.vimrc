@@ -62,7 +62,7 @@ let g:sh_fold_enabled=7
 set previewheight=3
 
 " Disable preview window
-" set completeopt-=preview
+set completeopt-=preview
 
 " Gvim settings
 set guioptions=aic
@@ -213,6 +213,8 @@ Plugin 'Konfekt/FastFold'
 Plugin 'junegunn/vim-easy-align'
 Plugin 'osyo-manga/vim-over'
 Plugin 'bfrg/vim-cpp-modern'
+Plugin 'calviken/vim-gdscript3'
+Plugin 'Shougo/echodoc.vim'
 
 call vundle#end()
 filetype plugin indent on
@@ -422,7 +424,6 @@ let g:UltiSnipsExpandTrigger='<c-j>'
 let g:UltiSnipsJumpForwardTrigger='<c-j>'
 let g:UltiSnipsJumpBackwardTrigger='<c-k>'
 let g:ultisnips_java_brace_style='nl'
-let g:UltiSnipsUsePythonVersion = 2
 
 " vim-cscope
 let g:cscope_auto_update = 0
@@ -465,8 +466,8 @@ set statusline+=%*
 
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 0
-let g:syntastic_check_on_open = 0
-let g:syntastic_check_on_wq = 0
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 1
 let g:syntastic_quiet_messages = { 'type': 'style' }
 let g:syntastic_python_checkers = ['flake8']
 let g:syntastic_python_flake8_args = '--ignore=F403,F401'
@@ -477,7 +478,7 @@ let g:syntastic_warning_symbol = '!!'
 " let g:syntastic_java_javac_delete_output = 0
 let g:syntastic_mode_map = {
     \ 'mode': 'passive',
-    \ 'active_filetypes': ['lua'],
+    \ 'active_filetypes': ['lua', 'gdscript3'],
     \ 'passive_filetypes': [] }
 
 function! s:SynCheck()
@@ -493,7 +494,7 @@ endfunction
 command! SynCheck call s:SynCheck()
 command! SynReset call s:SynReset()
 
-autocmd FileType python,lua,vim,sh
+autocmd FileType python,lua,vim,sh,gdscript3
     \ nnoremap <F5> :SynCheck<CR> |
     \ inoremap <F5> <c-o>:SynCheck<CR> |
     \ nnoremap <leader>gd :Errors<CR>
@@ -583,6 +584,11 @@ let g:easy_align_delimiters = { '>': { 'pattern': '->' } }
 " let g:cpp_simple_highlight = 0
 " let g:cpp_named_requirements_highlight = 1
 highlight cUserFunction ctermfg=13
+
+" echodoc
+" autocmd FileType gdscript3 let g:echodoc#enable_at_startup = 1
+let g:echodoc#enable_at_startup = 1
+set noshowmode
 
 " -------------------------------------- Plugin configuration end }}}
 
