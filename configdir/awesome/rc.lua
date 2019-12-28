@@ -729,6 +729,7 @@ awful.rules.rules = {
                 "URxvt",
                 "Firefox",
                 "firefox",
+                "Chromium",
                 -- "Navigator",
                 "TelegramDesktop",
                 "discord",
