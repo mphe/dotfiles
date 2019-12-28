@@ -36,7 +36,8 @@ highlight CursorLine ctermbg=Black cterm=NONE
 highlight Folded cterm=bold
 
 " Syntastic Errors
-highlight SpellBad term=underline ctermfg=160 gui=undercurl guisp=Orange 
+highlight SpellBad term=underline ctermfg=1 gui=undercurl guisp=Orange 
+highlight SyntasticErrorLine ctermbg=52 ctermfg=7
 
 highlight Normal ctermbg=none
 
