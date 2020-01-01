@@ -38,6 +38,7 @@ fi
 # fix telegram not inputting accents
 export QT_IM_MODULE=xim
 
+lxpolkit &
 picom -b
 anamnesis --start
 redshift &

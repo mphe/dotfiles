@@ -24,3 +24,5 @@ zathura-pdf-poppler
 texlive-core
 texlive-latexextra
 shellcheck
+lxsession
+lxappearance
