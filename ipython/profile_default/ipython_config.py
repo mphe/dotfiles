@@ -308,7 +308,7 @@
 # c.TerminalInteractiveShell.confirm_exit = True
 
 # 
-# c.TerminalInteractiveShell.display_completions = 'multicolumn'
+c.TerminalInteractiveShell.display_completions = 'readlinelike'
 
 # DEPRECATED
 # c.TerminalInteractiveShell.display_completions_in_columns = None

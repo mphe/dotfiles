@@ -21,3 +21,4 @@ install_dir() {
 install_dir homedir "$userhome"
 install_dir configdir "$userhome/.config"
 install_dir ipython/profile_default "$userhome/.ipython/profile_default"
+install_dir ipython/startup "$userhome/.ipython/profile_default/startup"
