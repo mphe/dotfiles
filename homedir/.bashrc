@@ -189,3 +189,9 @@ preexec() {
 }
 
 trap preexec DEBUG
+
+# activate virtualenv
+# arg1: virtuelenv dir
+activate() {
+    source "$1/bin/activate"
+}
