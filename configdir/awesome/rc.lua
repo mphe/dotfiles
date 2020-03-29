@@ -673,7 +673,31 @@ end
 -- }}}
 
 clientbuttons = awful.util.table.join(
-    awful.button({ }, 1, function (c) client.focus = c; c:raise() end),
+    awful.button({ }, 1, function(c)
+        client.focus = c
+        c:raise()
+
+        -- Resize clients by dragging at bottom left/right corner
+        -- Radius is set in theme variable `client_corner_resize_radius`
+
+        if not c.floating then
+            return
+        end
+
+        -- Only use bottom left/right corner, because dragging titlebar is already mapped to move
+        local corners = {
+            { c.x + c.width, c.y + c.height },
+            { c.x, c.y + c.height },
+        }
+        local m = mouse.coords()
+
+        for _, pos in ipairs(corners) do
+            if math.sqrt((m.x - pos[1]) ^ 2 + (m.y - pos[2]) ^ 2) <= beautiful.client_corner_resize_radius then
+                awful.mouse.client.resize(c)
+                break
+            end
+        end
+    end),
     awful.button({ modkey }, 1, awful.mouse.client.move),
     awful.button({ modkey }, 3, awful.mouse.client.resize))
 

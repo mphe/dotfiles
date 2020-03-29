@@ -84,6 +84,9 @@ theme.titlebar_border_size = dpi(2)
 theme.titlebar_bg_focus = theme.bg_normal
 -- theme.titlebar_bg_normal = theme.bg_normal .. "CC"
 
+-- Radius from client corner that allows dragging to resize
+theme.client_corner_resize_radius = dpi(20)
+
 -- You can add as many variables as
 -- you wish and access them by using
 -- beautiful.variable in your rc.lua
