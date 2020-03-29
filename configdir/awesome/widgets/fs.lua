@@ -69,13 +69,21 @@ function FSWidget:create(args)
     self.lainwidget = lain.widget.fs(args)
     local box = self:init(self.lainwidget.widget, args.icon or icons.fs)
 
-    utils.registerPopupNotify(box, "Filesystem", function(w)
-        return self.popuptext or ""
-    end)
+    self:attach(box)
 end
 
 function FSWidget:update()
     self.lainwidget.update()
+end
+
+function FSWidget:attach(box)
+    box:buttons(awful.util.table.join(
+        awful.button({}, 1, function() self:update() end)
+    ))
+
+    utils.registerPopupNotify(box, "Filesystem", function(w)
+        return self.popuptext or ""
+    end)
 end
 
 return FSWidget

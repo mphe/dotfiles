@@ -3,13 +3,15 @@ local naughty = require("naughty")
 
 local M = {}
 
+IMAGE_DIR = "~/Bilder"
+
 -- Takes a screenshot of the given screen or the whole screen when
 -- passing -1 (default).
 -- snum: screen number or -1 for whole screen or 0 for interactive select.
--- dir: the output directory (defaults to ~/img).
+-- dir: the output directory (defaults to IMAGE_DIR).
 function M.screenshot(snum, dir)
     snum = snum or -1
-    local path = (dir or "~/img") .. "/screenshot$(date +%Y%m%d%H%M%S).png"
+    local path = (dir or IMAGE_DIR) .. "/screenshot$(date +%Y%m%d%H%M%S).png"
     local cmd = "maim -n 2 "
 
     if snum >= 0 then
@@ -28,10 +30,10 @@ end
 -- Takes a screenshot of the given screen or the whole screen when
 -- passing -1 (default).
 -- snum: screen number or -1 for whole screen or 0 for interactive select.
--- dir: the output directory (defaults to ~/img).
+-- dir: the output directory (defaults to IMAGE_DIR).
 function M.screenshot_import(snum, dir)
     snum = snum or -1
-    local path = (dir or "~/img") .. "/screenshot$(date +%Y%m%d%H%M%S).png"
+    local path = (dir or IMAGE_DIR) .. "/screenshot$(date +%Y%m%d%H%M%S).png"
     local cmd = "import "
 
     if snum < 0 then
@@ -119,12 +121,13 @@ function M.notify(text_, title_, timeout_)
         })
 end
 
-function M.debugtable(t)
+function M.debugtable(t, title)
+    title = title or "Debug"
     local text = ""
     for k,v in pairs(t) do
         text = text .. tostring(k) .. " = " .. tostring(v) .. "\n"
     end
-    M.notify(text, "Debug", 0)
+    M.notify(text, title, 0)
 end
 
 -- Move/Resize a client relative.

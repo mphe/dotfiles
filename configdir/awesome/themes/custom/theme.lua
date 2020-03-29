@@ -67,6 +67,9 @@ theme.taglist_squares_unsel = theme_assets.taglist_squares_unsel(
 -- notification_[bg|fg]
 -- notification_[width|height|margin]
 -- notification_[border_color|border_width|shape|opacity]
+theme.notification_max_width = dpi(455)
+-- theme.notification_max_height = dpi(75)
+theme.notification_icon_size = dpi(75)
 
 -- Variables set for theming the menu:
 -- menu_[bg|fg]_[normal|focus]
@@ -74,6 +77,12 @@ theme.taglist_squares_unsel = theme_assets.taglist_squares_unsel(
 theme.menu_submenu_icon = themes_path.."default/submenu.png"
 theme.menu_height = dpi(20)
 theme.menu_width  = dpi(100)
+
+theme.titlebar_size = dpi(25)
+theme.titlebar_margin = dpi(3)
+theme.titlebar_border_size = dpi(2)
+theme.titlebar_bg_focus = theme.bg_normal
+-- theme.titlebar_bg_normal = theme.bg_normal .. "CC"
 
 -- You can add as many variables as
 -- you wish and access them by using
@@ -106,8 +115,6 @@ theme.titlebar_maximized_button_normal_inactive = themes_path.."default/titlebar
 theme.titlebar_maximized_button_focus_inactive  = themes_path.."default/titlebar/maximized_focus_inactive.png"
 theme.titlebar_maximized_button_normal_active = themes_path.."default/titlebar/maximized_normal_active.png"
 theme.titlebar_maximized_button_focus_active  = themes_path.."default/titlebar/maximized_focus_active.png"
-
-theme.titlebar_bg_focus = theme.bg_normal
 
 local themedir = os.getenv("HOME") .. "/.config/awesome/themes/custom/"
 theme.wallpaper = os.getenv("HOME") .. "/.cache/awesome/wallpaper.png"

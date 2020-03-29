@@ -162,7 +162,7 @@ systraywidget:toggle() -- Hide the systray
 cpuwidget = widgets.cpu({ timeout = 3 })
 memwidget = widgets.mem({ timeout = 3 })
 volwidget = widgets.volume({ timeout = 5 })
-batwidget = widgets.bat({ timeout = 61, battery = "BAT1", ac = "ACAD" })
+batwidget = widgets.bat({ timeout = 61, battery = "BAT1", ac = "ACAD", n_perc = {5, 10} })
 tempwidget = widgets.temp({ timeout = 59, })
 mpdwidget = widgets.mpd({ timeout = 3, notify = "off" })
 brightwidget = widgets.brightness()
@@ -438,21 +438,21 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey, "Control" }, "j",
         function()
             awful.tag.incnmaster(-1, nil, true)
-            utils.notify({ title = 'Master', text = tostring(awful.tag.getnmaster()), timeout = 1  })
+            utils.notify(tostring(awful.tag.getnmaster()), "Master")
         end,
         { description = "decrease the number of master clients", group = "layout" }),
 
     awful.key({ modkey, "Control" }, "h",
         function()
             awful.tag.incncol(1, nil, true)
-            utils.notify({ title = 'Columns', text = tostring(awful.tag.getncol()), timeout = 1  })
+            utils.notify(tostring(awful.tag.getncol()), "Columns")
         end,
         { description = "increase the number of columns", group = "layout" }),
 
     awful.key({ modkey, "Control" }, "l",
         function()
             awful.tag.incncol(-1, nil, true)
-            utils.notify({ title = 'Columns', text = tostring(awful.tag.getncol()), timeout = 1  })
+            utils.notify(tostring(awful.tag.getncol()), "Columns")
         end,
         { description = "decrease the number of columns", group = "layout" }),
     -- }}}
@@ -466,7 +466,13 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey            }, "w", function() mymainmenu:show() end, { description = "show main menu", group = "awesome" }),
     awful.key({ modkey            }, "Return", function() awful.spawn(terminal) end, { description = "open a terminal", group = "launcher" }),
     awful.key({ modkey, "Control" }, "r", awesome.restart, { description = "reload awesome", group = "awesome" }),
-    awful.key({ modkey, "Shift"   }, "q", awesome.quit, { description = "quit awesome", group = "awesome" }),
+    awful.key({ modkey, "Shift"   }, "q", function()
+        if os.getenv("XDG_CURRENT_DESKTOP") == "LXDE" then
+            awful.spawn("lxsession-logout")
+        else
+            awesome.quit()
+        end
+    end, { description = "quit awesome", group = "awesome" }),
 
     awful.key({ modkey, "Shift" }, "j", function() awful.client.swap.global_bydirection("down") end,
         { description = "swap with client below", group = "client" }),
@@ -522,6 +528,7 @@ clientkeys = awful.util.table.join(
     awful.key({ "Mod1" }, "F4", function(c) c:kill() end),
     awful.key({ modkey }, "F4", function(c) c:kill() end),
     awful.key({ modkey }, "c",  function(c) c:kill() end),
+    awful.key({ modkey, "Shift" }, "c", function (c) c:kill() end, {description = "close", group = "client"}),
 
     awful.key({ modkey }, "f",
         function (c)
@@ -531,8 +538,6 @@ clientkeys = awful.util.table.join(
         { description = "toggle fullscreen", group = "client" }),
 
     awful.key({ modkey,           }, "s",      function (c) c.sticky = not c.sticky          end),
-    awful.key({ modkey, "Shift"   }, "c",      function (c) c:kill()                         end,
-              {description = "close", group = "client"}),
     awful.key({ modkey,           }, "o",      function (c) c:move_to_screen()               end,
               {description = "move to screen", group = "client"}),
     awful.key({ modkey,           }, "t",      function (c) c.ontop = not c.ontop            end,
@@ -688,9 +693,39 @@ awful.rules.rules = {
                      keys = clientkeys,
                      buttons = clientbuttons,
                      screen = awful.screen.preferred,
+                     floating = true,  -- Make all clients floating
                      -- size_hints_honor = false,
                      -- placement = awful.placement.no_overlap+awful.placement.centered+awful.placement.no_offscreen,
                      placement = function(c)
+                         -- except rules
+                         if c.class == "TelegramDesktop" and c.name == "Media viewer" then
+                             return
+                         end
+
+                         local placement_rule = awful.placement.centered+awful.placement.no_offscreen
+
+                         if c.motif_wm_hints then
+                             -- local hint = c.motif_wm_hints.functions 
+                             -- if hint then utils.debugtable(hint, "Functions") end
+                             -- hint = c.motif_wm_hints.decorations 
+                             -- if hint then utils.debugtable(hint, "Deco") end
+
+                             local hint = c.motif_wm_hints.functions 
+                             -- if not hint then
+                             --     hint = c.motif_wm_hints.decorations 
+                             -- end
+
+                             if hint then
+                                 local skip = hint.resize or hint.move or hint.maximize
+                                 skip = skip ~= hint.all
+
+                                 if skip then
+                                     placement_rule(c)
+                                     return
+                                 end
+                             end
+                         end
+
                          local sw = c.screen.workarea.width
                          local sh = c.screen.workarea.height
                          local cw = c:geometry().width
@@ -705,17 +740,9 @@ awful.rules.rules = {
                              c:geometry({ width = sw, height = ch * fac })
                          end
 
-                         (awful.placement.centered+awful.placement.no_offscreen)(c, { honor_workarea = true })
+                         placement_rule(c, { honor_workarea = true })
                      end,
-     }
-    },
-
-    -- Make all clients floating
-    {
-        rule = {},
-        properties = {
-            floating = true,
-        }
+                 }
     },
 
     -- Make non-floating
@@ -746,50 +773,40 @@ awful.rules.rules = {
         }
     },
 
-    -- Fix telegram media viewer fullscreen
-    {
-        rule = { class = "TelegramDesktop", name = "Media viewer" },
-        callback = function(c)
-            -- Telegram sets window to fullscreen but for some reason it does not work correctly.
-            -- Re-enabling fullscreen fixes it.
-            c.fullscreen = false
-            c.fullscreen = true
-        end
-    },
-
     {
         rule_any = { type = { "desktop" } },
-        callback = function(c)
-                -- c.floating = true
-                local geo = screen[1].geometry
-                geo.x2 = geo.x + geo.width
-                geo.y2 = geo.y + geo.height
-                for s in screen do
-                    local geo2 = s.geometry
-                    geo.x = math.min(geo.x, geo2.x)
-                    geo.y = math.min(geo.y, geo2.y)
-                    geo.x2 = math.max(geo.x2, geo2.x + geo2.width)
-                    geo.y2 = math.max(geo.y2, geo2.y + geo2.height)
-                end
-                c:geometry{
-                    x = geo.x,
-                    y = geo.y + 0,
-                    width = geo.x2 - geo.x,
-                    height = geo.y2 - geo.y - 0
-                }
-            end,
+        -- callback = function(c)
+        --         -- c.floating = true
+        --         local geo = screen[1].geometry
+        --         geo.x2 = geo.x + geo.width
+        --         geo.y2 = geo.y + geo.height
+        --         for s in screen do
+        --             local geo2 = s.geometry
+        --             geo.x = math.min(geo.x, geo2.x)
+        --             geo.y = math.min(geo.y, geo2.y)
+        --             geo.x2 = math.max(geo.x2, geo2.x + geo2.width)
+        --             geo.y2 = math.max(geo.y2, geo2.y + geo2.height)
+        --         end
+        --         c:geometry{
+        --             x = geo.x,
+        --             y = geo.y + 0,
+        --             width = geo.x2 - geo.x,
+        --             height = geo.y2 - geo.y - 0
+        --         }
+        --     end,
         properties = {
-            maximized = true,
+            -- maximized = true,
             sticky = true,
-            floating = false,
-            placement = nil,
-            -- placement = awful.placement.top_left,
+            -- floating = false,
+            -- placement = nil,
+            -- -- placement = awful.placement.top_left,
             border_width = 0,
+            skip_taskbar = true,
             -- focus = awful.client.focus.filter,
-            raise = false,
+            -- raise = false,
             keys = {},
-            buttons = {},
-            screen = nil,
+            -- buttons = {},
+            -- screen = nil,
             -- size_hints_honor = false,
         }
     },
@@ -799,14 +816,7 @@ awful.rules.rules = {
         properties = {
             border_width = 0,
         }
-    },
-
-
-    -- Add titlebars to normal clients and dialogs
-    -- {
-    --     rule_any = {type = { "normal", "dialog" }},
-    --     properties = { titlebars_enabled = true }
-    -- },
+    }
 }
 -- }}}
 
@@ -814,8 +824,14 @@ awful.rules.rules = {
 local function checktitlebar(c)
     if c.floating and not c.maximized and not c.requests_no_titlebar then
         awful.titlebar.show(c)
+        -- awful.titlebar.show(c, "left")
+        -- awful.titlebar.show(c, "right")
+        -- awful.titlebar.show(c, "bottom")
     else
         awful.titlebar.hide(c)
+        -- awful.titlebar.hide(c, "left")
+        -- awful.titlebar.hide(c, "right")
+        -- awful.titlebar.hide(c, "bottom")
     end
 
     if c.floating and not c.maximized then
@@ -825,6 +841,7 @@ local function checktitlebar(c)
         -- awful.spawn("xprop -id " .. c.window .. " -remove _COMPTON_SHADOW")
     end
 end
+
 
 -- {{{ Signals
 -- Signal function to execute when a new client appears.
@@ -855,6 +872,7 @@ client.connect_signal("request::geometry", function(c, ...)
     return awful.ewmh.geometry(c, ...)
 end)
 
+
 -- Add a titlebar if titlebars_enabled is set to true in the rules.
 client.connect_signal("request::titlebars", function(c)
     -- buttons for the titlebar
@@ -862,7 +880,15 @@ client.connect_signal("request::titlebars", function(c)
         awful.button({ }, 1, function()
             client.focus = c
             c:raise()
-            awful.mouse.client.move(c)
+
+            if double_click_event_handler() then
+                c.maximized = not c.maximized
+            else
+                awful.mouse.client.move(c)
+            end
+        end),
+        awful.button({ }, 2, function()
+            c:kill()
         end),
         awful.button({ }, 3, function()
             client.focus = c
@@ -871,11 +897,15 @@ client.connect_signal("request::titlebars", function(c)
         end)
     )
 
-    awful.titlebar(c) : setup {
+    awful.titlebar(c, { position = "top", size = beautiful.titlebar_size }) : setup {
         { -- Left
-            awful.titlebar.widget.iconwidget(c),
+            {
+                awful.titlebar.widget.iconwidget(c),
+                layout  = wibox.layout.fixed.horizontal
+            },
             buttons = buttons,
-            layout  = wibox.layout.fixed.horizontal
+            margins = beautiful.titlebar_margin,
+            widget = wibox.container.margin
         },
         { -- Middle
             { -- Title
@@ -886,16 +916,58 @@ client.connect_signal("request::titlebars", function(c)
             layout  = wibox.layout.flex.horizontal
         },
         { -- Right
-            awful.titlebar.widget.floatingbutton (c),
-            awful.titlebar.widget.minimizebutton(c),
-            awful.titlebar.widget.maximizedbutton(c),
-            -- awful.titlebar.widget.stickybutton   (c),
-            -- awful.titlebar.widget.ontopbutton    (c),
-            awful.titlebar.widget.closebutton    (c),
-            layout = wibox.layout.fixed.horizontal()
+            {
+                awful.titlebar.widget.floatingbutton (c),
+                awful.titlebar.widget.minimizebutton(c),
+                awful.titlebar.widget.maximizedbutton(c),
+                -- awful.titlebar.widget.stickybutton   (c),
+                -- awful.titlebar.widget.ontopbutton    (c),
+                awful.titlebar.widget.closebutton    (c),
+                layout = wibox.layout.fixed.horizontal()
+            },
+            margins = beautiful.titlebar_margin,
+            widget = wibox.container.margin
         },
         layout = wibox.layout.align.horizontal
     }
+    -- awful.titlebar(c, { position = "left", size = beautiful.titlebar_border_size }) : setup {
+    --     buttons = buttons,
+    --     layout = wibox.layout.align.vertical
+    -- }
+    -- awful.titlebar(c, { position = "right", size = beautiful.titlebar_border_size }) : setup {
+    --     buttons = buttons,
+    --     layout = wibox.layout.align.vertical
+    -- }
+    -- awful.titlebar(c, { position = "bottom", size = beautiful.titlebar_border_size}) : setup {
+    --     buttons = buttons,
+    --     layout = wibox.layout.align.horizontal
+    -- }
+
+    -- awful.titlebar(c, { position = "left", size = beautiful.titlebar_size }) : setup {
+    --     { -- Left
+    --         awful.titlebar.widget.closebutton    (c),
+    --         awful.titlebar.widget.maximizedbutton(c),
+    --         awful.titlebar.widget.minimizebutton(c),
+    --         awful.titlebar.widget.floatingbutton (c),
+    --         -- awful.titlebar.widget.stickybutton   (c),
+    --         -- awful.titlebar.widget.ontopbutton    (c),
+    --         layout = wibox.layout.fixed.vertical()
+    --     },
+    --     { -- Middle
+    --         -- { -- Title
+    --         --     align  = "center",
+    --         --     widget = awful.titlebar.widget.titlewidget(c)
+    --         -- },
+    --         buttons = buttons,
+    --         layout  = wibox.layout.flex.vertical
+    --     },
+    --     { -- Right
+    --         -- awful.titlebar.widget.iconwidget(c),
+    --         buttons = buttons,
+    --         layout  = wibox.layout.fixed.vertical
+    --     },
+    --     layout = wibox.layout.align.vertical
+    -- }
 end)
 
 -- Enable sloppy focus, so that focus follows mouse.
@@ -907,22 +979,34 @@ client.connect_signal("mouse::enter", function(c)
 end)
 
 tag.connect_signal("request::screen", function(t)
+    local targetscreen = nil
+    utils.debugtable(t.screen, "Screen removed")
+
+    -- Find suitable screen
     for s in screen do
-        if s ~= t.screen and
-           s.geometry.x == t.screen.geometry.x and
-           s.geometry.y == t.screen.geometry.y and
-           s.geometry.width == t.screen.geometry.width and
-           s.geometry.height == t.screen.geometry.height then
-            local t2 = awful.tag.find_by_name(s, t.name)
-            if t2 then
-                t:swap(t2)
-            else
-                t.screen = s
+        if s ~= t.screen then
+            -- targetscreen = s
+            if
+                    -- s.geometry.x == t.screen.geometry.x and
+                    -- s.geometry.y == t.screen.geometry.y and
+                    s.geometry.width == t.screen.geometry.width and
+                    s.geometry.height == t.screen.geometry.height then
+                targetscreen = s
+                utils.debugtable(s, "Screen found")
+                break
             end
-            if t.selected then
-                t:view_only()
-            end
-            return
+        end
+    end
+
+    if targetscreen ~= nil then
+        local t2 = awful.tag.find_by_name(targetscreen, t.name)
+        if t2 then
+            t:swap(t2)
+        else
+            t.screen = targetscreen
+        end
+        if t.selected then
+            t:view_only()
         end
     end
 end)
@@ -931,89 +1015,20 @@ client.connect_signal("focus", function(c) c.border_color = beautiful.border_foc
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 -- screen.connect_signal("list", function() awful.screen.focus(mouse.screen) end)
 
--- Ensure notifications with icons aren't larger than a certain size
-naughty.config.notify_callback = function(args)
-    if args.icon then
-        args.height = 75
+
+-- Double click titlebar
+-- https://www.reddit.com/r/awesomewm/comments/fesopj/double_clicking_titlebar/
+function double_click_event_handler(double_click_event)
+    if double_click_timer then
+        double_click_timer:stop()
+        double_click_timer = nil
+        return true
     end
-    return args
+
+    double_click_timer = gears.timer.start_new(0.20, function()
+        double_click_timer = nil
+        return false
+    end)
 end
 
-
 -- }}}
-
--- old rules backup
-    -- -- Floating clients.
-    -- {
-    --     rule_any = {
-    --         instance = {
-    --             "DTA",  -- Firefox addon DownThemAll.
-    --             "copyq",  -- Includes session name in class.
-    --         },
-    --         class = {
-    --             "MPlayer",
-    --             "mpv",
-    --             "Plugin-container",
-    --             "Arandr",
-    --             "Gpick",
-    --             "Kruler",
-    --             "MessageWin",  -- kalarm.
-    --             "Sxiv",
-    --             "Wpa_gui",
-    --             "pinentry",
-    --             "veromix",
-    --             "xtightvncviewer",
-    --             "Nemo",
-    --             "Synapse"
-    --         },
-    --         name = {
-    --             "Event Tester",  -- xev.
-    --         },
-    --         role = {
-    --             "AlarmWindow",  -- Thunderbird's calendar.
-    --             "pop-up",       -- e.g. Google Chrome's (detached) Developer Tools.
-    --         }
-    --     },
-    --     properties = {
-    --         floating = true,
-    --         placement = awful.placement.centered
-    --     }
-    -- },
-
-    -- -- mpv/mplayer fullscreen border fix
-    -- {
-    --     rule_any = {
-    --         class = {
-    --             "MPlayer",
-    --             "mpv"
-    --         }
-    --     },
-    --     properties = {
-    --         border_width = 0
-    --     }
-    -- },
-
-    -- -- Center floating clients
-    -- {
-    --     rule = { },
-    --     properties = {
-    --         placement = awful.placement.centered
-    --     }
-    -- },
-
--- dragging_active = false
---
--- client.connect_signal("manage", function(c)
---     if c.type == "dnd" then
---         dragging_active = true
---         utils.debugtable({ "start dnd" })
---     end
---     utils.debugtable({ c.type })
--- end)
---
--- client.connect_signal("unmanage", function(c)
---     if dragging_active and c.type == "dnd" then
---         dragging_active = false
---         utils.debugtable({ "stop dnd" })
---     end
--- end)
