@@ -1,5 +1,7 @@
-#!/bin/sh
+#!/bin/bash
 $HOME/.monicarc   #monitor calibration
+
+export LANG="de_DE.UTF-8"
 
 userresources=$HOME/.Xresources
 usermodmap=$HOME/.Xmodmap
@@ -33,17 +35,37 @@ if [ -d /etc/X11/xinit/xinitrc.d ] ; then
  unset f
 fi
 
-[[ -f ~/.xprofile  ]] && source ~/.xprofile
+# Launch DBus if needed
+if test -z "$DBUS_SESSION_BUS_ADDRESS"; then
+	if which dbus-launch >/dev/null; then
+		eval "$(dbus-launch --sh-syntax --exit-with-session)"
+	fi
+else
+	if which dbus-update-activation-environment >/dev/null; then
+		dbus-update-activation-environment --systemd --all
+	fi
+fi
 
 # fix telegram not inputting accents
-export QT_IM_MODULE=xim
+# export QT_IM_MODULE=xim
 
-lxpolkit &
+export XDG_CURRENT_DESKTOP="XFCE"
+
+eval $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets,ssh)
+export SSH_AUTH_SOCK
+
 picom -b
 anamnesis --start
 redshift &
 albert &
 nm-applet &
+udiskie &
 # dxreminders &
+lxpolkit &
+/home/marvin/bin/xfsettingsd --sm-client-disable
+xfdesktop --disable-wm-check --sm-client-disable &
+# ibus-daemon -d
+
+[[ -f ~/.xprofile  ]] && source ~/.xprofile
 
 exec awesome
