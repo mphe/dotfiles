@@ -1,11 +1,12 @@
 export ANDROID_HOME=/opt/android-sdk
-export MAIN=/mnt/iomega/Main
-export IOMEGA=/mnt/iomega
-export CPPLIB=/mnt/iomega/C++/lib
-export SHARED=~/Shared
-export EDITOR=vim
+export MAIN=/media/extdata/Main
+export EDITOR=nvim
 export GOPATH=~/golib
 export QT_QPA_PLATFORMTHEME="qt5ct"
+# fix telegram not inputting accents
+# export QT_IM_MODULE=xim
+export GTK2_RC_FILES="$HOME/.gtkrc-2.0"
+
 
 # force gtk2 for libreoffice
 # export SAL_USE_VCLPLUGIN=gtk

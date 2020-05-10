@@ -1267,6 +1267,7 @@ set print array off
 set print array-indexes on
 set python print-stack full
 set listsize 20
+set disassembly-flavor intel
 
 # Start ------------------------------------------------------------------------
 
@@ -1274,6 +1275,7 @@ python Dashboard.start()
 
 dashboard -layout !assembly expressions history !memory !registers source stack !threads
 dashboard source -style context 15
+dashboard assembly -style context 15
 dashboard -style syntax_highlighting 'solarized-dark'
 dashboard -style style_low '1;2'
 
@@ -1302,6 +1304,7 @@ define hook-stop
     end
 end
 
+add-auto-load-safe-path /media/extdata/Main/uni/SSS/ex1/.gdbinit
 
 # ------------------------------------------------------------------------------
 # Copyright (c) 2015-2016 Andrea Cardaci <cyrus.and@gmail.com>
@@ -1324,7 +1327,6 @@ end
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 # ------------------------------------------------------------------------------
-# vim: filetype=python
 # Local Variables:
 # mode: python
 # End:

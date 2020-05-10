@@ -16,7 +16,7 @@ function CPUWidget:create(args)
     end
 
     self.lainwidget = lain.widget.cpu(args)
-    local widget = wibox.container.constraint(self.lainwidget.widget, "exact", 24, nil)
+    local widget = wibox.container.constraint(self.lainwidget.widget, "exact", 26, nil)
     widget.widget.align = "right"
 
     local box = self:init(widget, args.icon or icons.cpu)

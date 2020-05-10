@@ -8,3 +8,4 @@ setxkbmap de
 xmodmap -e 'keysym Menu = Super_L'
 [[ -f ~/.Xresources  ]] && xrdb -merge -I$HOME ~/.Xresources
 ~/.screenlayout/normal.sh
+# xrandr --dpi 100

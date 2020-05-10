@@ -45,6 +45,7 @@ COLOR tty
 
 # Below, there should be one TERM entry for each termtype that is colorizable
 TERM ansi
+TERM alacritty
 TERM color_xterm
 TERM color-xterm
 TERM con132x25

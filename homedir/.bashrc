@@ -10,13 +10,11 @@
 #     exec tmux
 # fi
 
-alias ls='ls --color=always --group-directories-first'
+alias ls='ls -h --color=always --group-directories-first'
 alias ll='ls -l'
 alias less='less -r'
-# alias pacaur='pacaur'
-alias pacaur='yay'
-alias android-studio='JAVA_HOME=/usr/lib/jvm/java-8-jdk android-studio'
-alias idea.sh='JAVA_HOME=/usr/lib/jvm/java-8-openjdk idea.sh'
+alias pacaur='yay --sudoloop'
+alias yay='yay --sudoloop'
 alias ranger='python3 $(which ranger)'
 alias youtube-dl='youtube-dl -o "%(title)s.%(ext)s"'
 alias cmake-debug='cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_BUILD_TYPE=Debug'
@@ -27,19 +25,23 @@ alias gcc='gcc -fdiagnostics-color=auto -Wall -Wno-switch'
 alias gdbrun='gdb -ex run'
 alias mkdir='mkdir -p'
 alias cdir='switchdir'
-alias make='make -j4'
+alias make='make -j'
 alias hibernate='sudo systemctl hibernate'
 alias fcut='fpaste.sh cut'
 alias fcopy='fpaste.sh copy'
 alias fpaste='fpaste.sh paste'
-alias rm='echo consider using trash command; trash'
+alias rm='echo this is no longer aliased to trash; rm'
+alias virtualenv='virtualenv --system-site-packages'
+alias dd='dd status=progress'
+alias vimdiff='nvim -d'
+alias gst='git status'
+alias ssh='TERM=xterm ssh'
+alias objdump='objdump -M intel'
+alias httrack='httrack --disable-security-limits --max-rate=0'
 
 # thefuck (slow as fuck startup)
 # eval "$(thefuck --alias)"
 alias fuck='TF_CMD=$(TF_ALIAS=fuck PYTHONIOENCODING=utf-8 TF_SHELL_ALIASES=$(alias) thefuck $(fc -ln -1)) && eval $TF_CMD && history -s $TF_CMD'
-
-# Set git language to english (setting LANG doesn't work with thefuck)
-# alias git='LANG=en_US.UTF-8 git'
 
 # Enable checkwinsize so that bash will check the terminal size when
 # it regains control. (http://cnswww.cns.cwru.edu/~chet/bash/FAQ (E11))
@@ -113,23 +115,23 @@ prompt_command() {
     [ ${#PWD} -gt $hw ] && path="...${PWD:$((-$hw + 20))}"
 
     PS1=""
-    PS1+="$reset[$white$bold\u$reset@$white$bold\h $reset$blue$path$yellow\$(git_prompt)$reset]"
+    PS1+="${reset}[$white$bold\u$reset@$white$bold\h $reset$blue$path$yellow\$(git_prompt)$reset]"
     # PS1="$reset[$bold\u@\h $blue\w$yellow\$(git_prompt)$reset]"
 
     # Fix virtualenv prompt when using PROMPT_COMMAND
     # https://stackoverflow.com/questions/14987013/why-is-virtualenv-not-setting-my-terminal-prompt
     if [ -z "$VIRTUAL_ENV_DISABLE_PROMPT" ] ; then
-        if [ "`basename \"$VIRTUAL_ENV\"`" = "__" ] ; then
+        if [ "$(basename \"$VIRTUAL_ENV\")" = "__" ] ; then
             # special case for Aspen magic directories
             # see http://www.zetadev.com/software/aspen/
-            PS1+=" $green[`basename \`dirname \"$VIRTUAL_ENV\"\``]$reset"
+            PS1+=" ${green}[$(basename "$(dirname "$VIRTUAL_ENV")")]$reset"
         elif [ "$VIRTUAL_ENV" != "" ]; then
-            PS1+=" $green(`basename \"$VIRTUAL_ENV\"`)$reset"
+            PS1+=" $green($(basename "$VIRTUAL_ENV"))$reset"
         fi
     fi
 
     if [ $err -ne 0 ]; then
-        PS1+="$red[$err]$reset"
+        PS1+="${red}[$err]$reset"
     fi
 
     PS1+="$bold\$ $reset"
@@ -144,16 +146,17 @@ eval $(dircolors ~/.dir_colors/dircolors.ansi-dark)
 # env vars
 export LANG='en_US.UTF-8'
 export PATH="/home/marvin/bin:/home/marvin/scripts:$PATH"
-export PATH="/home/marvin/.gem/ruby/2.5.0/bin:$PATH"
+export PATH="/home/marvin/.gem/ruby/2.7.0/bin:$PATH"
+export PATH="/home/marvin/golib/bin:$PATH"
 # export PYTHONPATH="$PYTHONPATH:/mnt/iomega/Python/lib"
-export PYTHONPATH="$PYTHONPATH"
-export EDITOR=vim
+export EDITOR=nvim
+export OJSERVER=67.207.78.156
 
 # disable flow control when using vim
 vim () {
     local STTYOPTS="$(stty --save)"
     stty stop "" -ixoff
-    command vim "$@"
+    command nvim "$@"
     stty "$STTYOPTS"
 }
 
@@ -193,5 +196,13 @@ trap preexec DEBUG
 # activate virtualenv
 # arg1: virtuelenv dir
 activate() {
-    source "$1/bin/activate"
+    local dir="$1"
+    if [[ -z "$dir" ]]; then
+        if [[ -d "venv" ]]; then
+            dir="venv"
+        elif [[ -d "virtualenv" ]]; then
+            dir="virtualenv"
+        fi
+    fi
+    source "$dir/bin/activate"
 }

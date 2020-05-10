@@ -735,7 +735,7 @@ GtkComboBox .separator {
   .toolbar GtkSeparatorToolItem, .toolbar .separator, .toolbar .separator:insensitive {
     color: #4d4c4c;
     border-color: currentColor;
-    -GtkWidget-window-dragging: true; }
+    -GtkWidget-window-dragging: false; }
   .toolbar .menubar {
     -GtkToolbar-button-relief: normal; }
   .toolbar.inline-toolbar {
@@ -892,7 +892,7 @@ GtkComboBox .separator {
   .header-bar GtkSeparatorToolItem, .header-bar .separator, .header-bar .separator:insensitive {
     color: #1f1f1f;
     border-color: currentColor;
-    -GtkWidget-window-dragging: true; }
+    -GtkWidget-window-dragging: false; }
   .header-bar .menubar {
     -GtkToolbar-button-relief: normal; }
   .header-bar .button {
@@ -1310,7 +1310,7 @@ GtkComboBox .separator {
   .selection-mode.header-bar GtkSeparatorToolItem, .selection-mode.header-bar .separator, .selection-mode.header-bar .separator:insensitive, .selection-mode.toolbar GtkSeparatorToolItem, .selection-mode.toolbar .separator, .selection-mode.toolbar .separator:insensitive {
     color: #4b5461;
     border-color: currentColor;
-    -GtkWidget-window-dragging: true; }
+    -GtkWidget-window-dragging: false; }
   .selection-mode.header-bar .menubar, .selection-mode.toolbar .menubar {
     -GtkToolbar-button-relief: normal; }
   .selection-mode.header-bar .button, .selection-mode.toolbar .button {
@@ -2025,7 +2025,7 @@ GtkInfoBar {
  ! Menubar
 **********/
 .menubar {
-  -GtkWidget-window-dragging: true;
+  -GtkWidget-window-dragging: false;
   border: 0;
   background-color: #222222;
   background-image: none;

@@ -11,7 +11,13 @@ local themes_path = gfs.get_themes_dir()
 
 theme = {}
 
-theme.font          = "sans 8"
+-- theme.font          = "DejaVu Sans 8"
+-- theme.font          = "Ubuntu 8"
+-- theme.font          = "Cantarell 8"
+theme.font          = "Sans 8"
+-- theme.font          = "Terminus 8"
+-- theme.font          = "Signika 7"
+-- theme.font          = "Open Sans 7"
 
 theme.bg_normal     = "#222222"
 -- theme.bg_focus      = "#3a3a3a"
@@ -27,7 +33,7 @@ theme.fg_urgent     = "#ffffff"
 -- theme.fg_minimize     = "#999999"
 theme.fg_minimize   = "#ffffff"
 
-theme.useless_gap   = 2
+theme.useless_gap   = dpi(2)
 theme.border_width  = dpi(1)
 theme.border_normal = "#000000"
 theme.border_focus  = "#535d6c"

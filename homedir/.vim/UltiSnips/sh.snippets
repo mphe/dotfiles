@@ -1,7 +1,7 @@
 priority 0
 
 snippet cdhere "cd in this file's directory"
-cd \$(dirname $(readlink -f "\$0"))
+cd "$(dirname "$(readlink -f "\$0")")" || exit 1
 
 endsnippet
 

@@ -21,6 +21,7 @@ local systray = require("systray")
 local treetile = require("treetile")
 treetile.focusnew = true
 local freedesktop = require("freedesktop")
+local todo_widget = require("todo")
 
 -- }}}
 
@@ -162,13 +163,16 @@ systraywidget:toggle() -- Hide the systray
 cpuwidget = widgets.cpu({ timeout = 3 })
 memwidget = widgets.mem({ timeout = 3 })
 volwidget = widgets.volume({ timeout = 5 })
-batwidget = widgets.bat({ timeout = 61, battery = "BAT1", ac = "ACAD", n_perc = {5, 10} })
+batwidget = widgets.bat({ timeout = 61, battery = "BAT1", ac = "ACAD", n_perc = {5, 10}, full_notify = "off" })
 tempwidget = widgets.temp({ timeout = 59, })
 mpdwidget = widgets.mpd({ timeout = 3, notify = "off" })
 brightwidget = widgets.brightness()
 wiredwidget = widgets.wired({ autohide = true })
 wifiwidget = widgets.wifi({ autohide = true })
 fswidget = widgets.fs()
+minwidget = widgets.minimize()
+todowidget = todo_widget()
+-- todowidget = widgets.todo()
 
 mytextclock = wibox.widget.textclock()
 cal.register(mytextclock)
@@ -284,7 +288,10 @@ awful.screen.connect_for_each_screen(function(s)
             separator,
             wifiwidget:get_container(),
             wiredwidget:get_container(),
-            -- separator,
+            separator,
+            todowidget,
+            -- todowidget:get_container(),
+            separator,
             fswidget:get_container(),
             separator,
             brightwidget:get_container(),
@@ -301,6 +308,7 @@ awful.screen.connect_for_each_screen(function(s)
             separator,
             mytextclock,
             s.mylayoutbox,
+            minwidget
         },
     }
 
@@ -784,6 +792,7 @@ awful.rules.rules = {
                 -- "Navigator",
                 "TelegramDesktop",
                 "discord",
+                "Zathura"
             }
         },
         except_any = {
@@ -792,46 +801,20 @@ awful.rules.rules = {
         },
         properties = {
             floating = false,
-            -- placement = awful.placement.centered,
             size_hints_honor = false,
         }
     },
 
     {
         rule_any = { type = { "desktop" } },
-        -- callback = function(c)
-        --         -- c.floating = true
-        --         local geo = screen[1].geometry
-        --         geo.x2 = geo.x + geo.width
-        --         geo.y2 = geo.y + geo.height
-        --         for s in screen do
-        --             local geo2 = s.geometry
-        --             geo.x = math.min(geo.x, geo2.x)
-        --             geo.y = math.min(geo.y, geo2.y)
-        --             geo.x2 = math.max(geo.x2, geo2.x + geo2.width)
-        --             geo.y2 = math.max(geo.y2, geo2.y + geo2.height)
-        --         end
-        --         c:geometry{
-        --             x = geo.x,
-        --             y = geo.y + 0,
-        --             width = geo.x2 - geo.x,
-        --             height = geo.y2 - geo.y - 0
-        --         }
-        --     end,
+        callback = function(c)
+            c.screen = awful.screen.getbycoord(0, 0)
+            end,
         properties = {
-            -- maximized = true,
             sticky = true,
-            -- floating = false,
-            -- placement = nil,
-            -- -- placement = awful.placement.top_left,
             border_width = 0,
             skip_taskbar = true,
-            -- focus = awful.client.focus.filter,
-            -- raise = false,
             keys = {},
-            -- buttons = {},
-            -- screen = nil,
-            -- size_hints_honor = false,
         }
     },
 
@@ -858,7 +841,7 @@ local function checktitlebar(c)
         -- awful.titlebar.hide(c, "bottom")
     end
 
-    if c.floating and not c.maximized then
+    if c.floating and not c.maximized and not c.fullscreen then
         awful.spawn("xprop -id " .. c.window .. " -f _COMPTON_SHADOW 32c -set _COMPTON_SHADOW 1")
     else
         awful.spawn("xprop -id " .. c.window .. " -f _COMPTON_SHADOW 32c -set _COMPTON_SHADOW 0")
@@ -1004,7 +987,7 @@ end)
 
 tag.connect_signal("request::screen", function(t)
     local targetscreen = nil
-    utils.debugtable(t.screen, "Screen removed")
+    -- utils.debugtable(t.screen, "Screen removed")
 
     -- Find suitable screen
     for s in screen do
@@ -1016,7 +999,7 @@ tag.connect_signal("request::screen", function(t)
                     s.geometry.width == t.screen.geometry.width and
                     s.geometry.height == t.screen.geometry.height then
                 targetscreen = s
-                utils.debugtable(s, "Screen found")
+                -- utils.debugtable(s, "Screen found")
                 break
             end
         end

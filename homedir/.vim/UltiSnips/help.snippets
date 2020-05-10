@@ -1,0 +1,15 @@
+priority 0
+
+global !p
+def insert_title(snip, t):
+	# file_start = snip.fn.split('.')[0]
+	sec_name = t[1].strip("1234567890. ").lower().replace(' ', '-')
+	return ("*g:%s*" % (sec_name)).rjust(78-len(t[1])-2)
+	# return ("*%s-%s*" % (file_start, sec_name)).rjust(78-len(t[1])-2)
+endglobal
+
+snippet var "Variable entry" b
+g:${1:variable}`!p snip.rv = insert_title(snip, t)`
+
+$0
+endsnippet

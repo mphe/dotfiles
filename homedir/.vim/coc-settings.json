@@ -1,0 +1,90 @@
+{
+    // { 'error': "\uf05e  ", 'warning': "\uf071  ", 'info': "\uf05a  " }
+    "diagnostic.errorSign": ">>",
+    "diagnostic.warningSign": "!!",
+    "diagnostic.infoSign": "?",
+    "diagnostic.hintSign": "?",
+    "diagnostic.displayByAle": true,
+    "diagnostic.enableMessage": "always",
+    "diagnostic.messageTarget": "echo",
+    "diagnostic.locationlist": true,
+    "sh.enable": false,
+
+    // "coc.preferences.extensionUpdateCheck": "never",
+
+    "suggest.disableMenuShortcut": true,
+    "suggest.completionItemKindLabels": {
+        "constructor": " ",
+        "method": " ",
+        "function": " ",
+        "operator": " ",
+        "struct": " ",
+        "class": " ",
+        "interface": " ",
+        "enum": " ",
+        "enumMember": " ",
+        "variable": " ",
+        "value": " ",
+        "property": " ",
+        "field": " ",
+        "constant": " ",
+        "module": " ",
+        "file": " ",
+        // "text": "\ue612",
+        // "color": "\ue22b",
+        // "unit": "\uf475",
+        // "event": "\ufacd",
+        // "folder": "\uf114",
+        // "snippet": "\ue60b",
+        // "typeParameter": "\uf728",
+        // "keyword": "\uf1de",
+        // "reference": "\ufa46",
+        // "default": "\uf29c"
+    },
+
+    // "markdownlint.config": {
+    //     "default": true,
+    //     "line_length": false
+    // },
+
+    "python.formatting.provider": "black",
+    "python.linting.enabled": false,
+    "python.linting.flake8Enabled": true,
+    "python.linting.flake8Args": [ "--ignore=F403,F401,E201,E202,F841,E501,E221" ],
+    "python.linting.flake8CategorySeverity.E": "Information",
+    "python.linting.pylintEnabled": true,
+    "python.linting.pylintArgs": [ "--disable=C,too-few-public-methods,global-statement,useless-object-inheritance,try-except-raise,broad-except,too-many-branches,too-many-arguments" ],
+    "python.linting.pylintUseMinimalCheckers": false,
+
+    "languageserver": {
+        // "clangd": {
+        //     "command": "clangd",
+        //     "args": [ "--clang-tidy", "--clang-tidy-checks=modernize*", "--limit-results=1" ],
+        //     "rootPatterns": ["compile_flags.txt", "compile_commands.json"],
+        //     "filetypes": ["c", "cpp", "objc", "objcpp"]
+        // },
+        "ccls": {
+            "command": "ccls",
+            "filetypes": ["c", "cpp", "objc", "objcpp"],
+            "rootPatterns": [".ccls", "compile_commands.json", ".git/", ".hg/"],
+            "initializationOptions": {
+                "cache": { "directory": "/tmp/ccls" },
+                // "cache": { "directory": ".ccls-cache" },
+                // "client": { "snippetSupport": true },
+                "highlight": { "lsRanges" : true }
+            }
+        },
+        // "godot": {
+        //     "host": "127.0.0.1",
+        //     "filetypes": ["gd", "gdscript3"],
+        //     "port": 6008
+        // },
+        // "efm": {
+        //     "command": "efm-langserver",
+        //     "args": [],
+        //     // custom config path
+        //     // "args": ["-c", "/path/to/your/config.yaml"],
+        //     "filetypes": ["vim", "eruby", "markdown"]
+        // }
+    }
+}

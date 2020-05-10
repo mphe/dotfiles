@@ -39,7 +39,7 @@ style "murrine-default" {
 	GtkMenu::vertical-padding = 2
 
 	GtkMenuBar::internal-padding = 1
-	GtkMenuBar::window-dragging = 1
+	GtkMenuBar::window-dragging = 0
 
 	GtkMenuItem::arrow-scaling= 0.5
 

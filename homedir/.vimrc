@@ -4,8 +4,8 @@ autocmd!
 " -------------------------------------- General settings start {{{
 syntax enable
 set number
-set ruler
-set showcmd
+set noruler
+set noshowcmd
 
 " tab size = 4, spaces instead of tabs, and auto indent
 set shiftwidth=4
@@ -17,7 +17,8 @@ set cino+=j1
 
 " enable folding
 set foldmethod=syntax
-set nofoldenable
+" set nofoldenable
+" set foldlevel=1
 " Don't fold anything when opening a new buffer
 set foldlevelstart=99
 " Skip over closed folds with { }
@@ -37,6 +38,9 @@ let mapleader = ','
 
 " Don't wrap lines
 set nowrap
+
+" set breakindentopt=shift:4
+
 
 " Change buffers without writing changes to a file
 set hidden
@@ -62,10 +66,11 @@ let g:sh_fold_enabled=7
 set previewheight=3
 
 " Disable preview window
-set completeopt-=preview
+" set completeopt-=preview
 
 " Gvim settings
 set guioptions=aic
+set guicursor=
 
 set laststatus=2
 
@@ -78,6 +83,18 @@ set breakindent
 " set breakindentopt=shift:4
 
 set display+=lastline
+
+" - Auto insert comment leader on newline
+" - Remove comment leader when joining if it makes sense
+autocmd FileType * setlocal formatoptions+=croj
+
+set smartcase
+set ignorecase
+
+set colorcolumn=80
+
+" Enable doxygen tag highlighting
+let g:load_doxygen_syntax = 1
 
 " -------------------------------------- General settings end }}}
 
@@ -101,7 +118,7 @@ function! HowLong(command)
     let startTime = localtime()
     execute a:command
     let &more = more
-    echo localtime() - startTime 
+    echo localtime() - startTime
 endfunction
 
 command! -nargs=1 HowLong call HowLong(<q-args>)
@@ -117,7 +134,7 @@ function! ToggleLatexMath()
         inoremap * \cdot
         inoremap ( \left(
         inoremap ) \right)
-        let g:delimitMate_matchpairs = "[:],{:},<:>"
+        let g:delimitMate_matchpairs = '[:],{:},<:>'
         DelimitMateReload
         let g:surround_{char2nr(')')} = "\\left(\r\\right)"
         let g:surround_{char2nr('(')} = "\\left( \r \\right)"
@@ -129,7 +146,7 @@ function! ToggleLatexMath()
         iunmap *
         iunmap (
         iunmap )
-        let g:delimitMate_matchpairs = "(:),[:],{:},<:>"
+        let g:delimitMate_matchpairs = '(:),[:],{:},<:>'
         DelimitMateReload
         let g:surround_{char2nr(')')} = "(\r)"
         let g:surround_{char2nr('(')} = "( \r )"
@@ -150,76 +167,81 @@ command! ToggleLatexMath call ToggleLatexMath()
 " -------------------------------------- Functions end }}}
 
 
-" -------------------------------------- vundle {{{
-set nocompatible
-filetype off
-
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-
-Plugin 'VundleVim/Vundle.vim'
+" -------------------------------------- vim-plug {{{
+call plug#begin('~/.vim/plugged')
 
 " color schemes
-Plugin 'altercation/vim-colors-solarized'
-Plugin 'qualiabyte/vim-colorstepper'
+Plug 'icymind/NeoSolarized'
+Plug 'altercation/vim-colors-solarized'
+Plug 'lifepillar/vim-solarized8'
+Plug 'romainl/flattened'
+Plug 'qualiabyte/vim-colorstepper'
+Plug 'mhartington/oceanic-next'
 
-Plugin 'scrooloose/nerdtree'
-Plugin 'itchyny/lightline.vim'
-Plugin 'mengelbrecht/lightline-bufferline'
-" Plugin 'vim-airline/vim-airline'
-" Plugin 'vim-airline/vim-airline-themes'
-Plugin 'Lokaltog/vim-easymotion'
-Plugin 'tpope/vim-fugitive'
-Plugin 'tpope/vim-surround'
-Plugin 'tpope/vim-repeat'
-Plugin 'tomtom/tcomment_vim'
+Plug 'scrooloose/nerdtree'
+Plug 'itchyny/lightline.vim'
+Plug 'mengelbrecht/lightline-bufferline'
+Plug 'Lokaltog/vim-easymotion'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-repeat'
+" Plug 'tpope/vim-markdown'
+Plug 'tomtom/tcomment_vim'
 
-Plugin 'Valloric/YouCompleteMe'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
-Plugin 'rdnetto/YCM-Generator'
-Plugin 'tmhedberg/SimpylFold'
-Plugin 'Raimondi/delimitMate'
-Plugin 'airblade/vim-gitgutter'
-Plugin 'jeetsukumaran/vim-buffergator'
+Plug 'Raimondi/delimitMate'
+Plug 'airblade/vim-gitgutter'
+Plug 'jeetsukumaran/vim-buffergator'
 
-Plugin 'xolox/vim-misc'
-Plugin 'xolox/vim-lua-inspect'
-" Plugin 'xolox/vim-lua-ftplugin.git'
+Plug 'majutsushi/tagbar'
+Plug 'SirVer/ultisnips'
+Plug 'reconquest/vim-pythonx'
+Plug 'honza/vim-snippets'
+Plug 'kien/ctrlp.vim'
+Plug 'kshenoy/vim-signature'
+Plug 'dense-analysis/ale'
+Plug 'vimperator/vimperator.vim'
+Plug 'Shougo/vimproc.vim'
+Plug 'dhruvasagar/vim-table-mode'
+" Plug '~/dev/python/grayout.vim'
+" Plug 'mphe/grayout.vim'
+Plug 'LaTeX-Box-Team/LaTeX-Box'
+Plug 'kana/vim-textobj-indent'
+Plug 'kana/vim-textobj-user'
+Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
+Plug 'vim-scripts/ReplaceWithRegister'
+Plug 'derekwyatt/vim-fswitch'
+Plug 'derekwyatt/vim-protodef'
+" Plug 'tmhedberg/SimpylFold'
+Plug 'hynek/vim-python-pep8-indent'
+Plug 'vim-python/python-syntax'
+Plug 'withgod/vim-sourcepawn'
+Plug 'junegunn/vim-easy-align'
+Plug 'osyo-manga/vim-over'
+" Plug 'rafaeldelboni/vim-gdscript3'
+Plug 'calviken/vim-gdscript3'
+Plug 'gaving/vim-textobj-argument'
+Plug 'farmergreg/vim-lastplace'
+Plug 'romainl/vim-cool'
+Plug 'neoclide/jsonc.vim'
+Plug 'dominikduda/vim_current_word'
+" Plug 'bfrg/vim-cpp-modern'
+Plug 'jackguo380/vim-lsp-cxx-highlight'
+Plug 'lambdalisue/suda.vim'
+Plug 'tpope/vim-liquid'
+Plug 'embear/vim-localvimrc'
 
-" Plugin 'xolox/vim-easytags'
-Plugin 'majutsushi/tagbar'
-Plugin 'derekwyatt/vim-fswitch'
-Plugin 'SirVer/ultisnips'
-Plugin 'honza/vim-snippets'
-Plugin 'kien/ctrlp.vim'
-Plugin 'vim-scripts/cscope.vim'
-Plugin 'kshenoy/vim-signature'
-Plugin 'scrooloose/syntastic'
-Plugin 'richq/vim-cmake-completion'
-Plugin 'BohrShaw/vim-vimperator-syntax'
-Plugin 'Shougo/vimproc.vim'
-Plugin 'dhruvasagar/vim-table-mode'
-Plugin 'mphe/grayout.vim'
-Plugin 'LaTeX-Box-Team/LaTeX-Box'
-Plugin 'kana/vim-textobj-indent'
-Plugin 'kana/vim-textobj-user'
-Plugin 'davinche/godown-vim'
-Plugin 'vim-scripts/ReplaceWithRegister'
-Plugin 'derekwyatt/vim-protodef'
-Plugin 'hynek/vim-python-pep8-indent'
-Plugin 'withgod/vim-sourcepawn'
-Plugin 'Konfekt/FastFold'
-" Plugin 'zhimsel/vim-stay'
-Plugin 'junegunn/vim-easy-align'
-Plugin 'osyo-manga/vim-over'
-Plugin 'bfrg/vim-cpp-modern'
-Plugin 'calviken/vim-gdscript3'
-Plugin 'Shougo/echodoc.vim'
+Plug 'inkarkat/vim-ingo-library'
+Plug 'inkarkat/vim-EnhancedJumps'
 
-call vundle#end()
-filetype plugin indent on
+if !has('nvim')
+    Plug 'Konfekt/FastFold'
+endif
 
-" -------------------------------------- vundle end }}}
+call plug#end()
+
+" -------------------------------------- vim-plug end }}}
 
 
 " -------------------------------------- Style config {{{
@@ -228,119 +250,17 @@ source /home/marvin/.vim/themes/solarized.vim
 
 " set the split char tmux uses
 set fillchars+=vert:│
-highlight VertSplit ctermbg=0
+
+" Highlight trailing whitespace
+call matchadd('Error', '\s\+$')
 
 " -------------------------------------- Style config end }}}
 
 
 " -------------------------------------- Plugin configuration {{{
-" airline
-" let g:airline#extensions#tabline#enabled = 1
-" let g:airline#extensions#tabline#left_sep = '▓░'
-" let g:airline#extensions#tabline#left_alt_sep = ''
-" let g:airline#extensions#tabline#right_sep = '░▓'
-" let g:airline#extensions#tabline#right_alt_sep = ''
-" let g:airline#extensions#tabline#fnamemod = ':.'
-" let g:airline#extensions#tabline#show_close_button = 0
-" let g:airline#extensions#tabline#show_tabs = 0
-" let g:airline#extensions#tabline#show_tab_count = 1
-" let g:airline#extensions#tabline#show_tab_type = 0
-" let g:airline#extensions#tabline#buf_label_first = 0
-" let g:airline#extensions#tabline#current_first = 0
-" let g:airline_highlighting_cache = 1
-" let g:airline_theme='solarized'
-" let g:airline_left_sep='▓░'
-" let g:airline_right_sep='░▓'
-" let g:airline_detect_spell=0
-" let g:airline_powerline_fonts = 1
-" let g:airline#extensions#tagbar#enabled = 0
-" let g:airline_skip_empty_sections = 1
-" let g:airline_solarized_dark_text = 1
 
-" lightline {{{
-let g:lightline = {
-    \ 'colorscheme': 'custom_solarized',
-    \ 'active': {
-    \   'left': [ [ 'mode', 'paste' ], [ 'filename' ] ],
-    \   'right': [
-    \       [ 'lineinfo' ],
-    \       [ 'percent' ],
-    \       [ 'fileformat', 'fileencoding', 'filetype' ],
-    \       [ 'ycmerror', 'syntastic' ],
-    \       [ 'ycmwarning' ],
-    \   ]
-    \ },
-    \ 'tab': {
-    \   'active': ['tabnum'],
-    \   'inactive': ['tabnum']
-    \ },
-    \ 'tabline': {
-    \   'left': [ ['buffers'] ],
-    \   'right': [ ['tabs'] ]
-    \ },
-    \ 'component': {
-    \ },
-    \ 'component_expand': {
-    \   'syntastic': 'SyntasticStatuslineFlag',
-    \   'buffers': 'lightline#bufferline#buffers',
-    \ },
-    \ 'component_function': {
-    \   'ycmerror': 'youcompleteme#GetErrorCount',
-    \   'ycmwarning': 'youcompleteme#GetWarningCount',
-    \   'fugitive': 'LightLineFugitive',
-    \   'filename': 'LightLineFilename',
-    \   'fileformat': 'LightLineFileFormat',
-    \   'fileencoding': 'LightLineFileEnc',
-    \   'filetype': 'LightLineFileType'
-    \ },
-    \ 'component_visible_condition': {
-    \   'ycmerror': 'youcompleteme#GetErrorCount() > 0',
-    \   'ycmwarning': 'youcompleteme#GetWarningCount() > 0',
-    \ },
-    \ 'component_type': {
-    \   'syntastic': 'error',
-    \   'buffers': 'tabsel',
-    \ },
-    \ 'separator': { 'left': '▓░', 'right': '░▓' },
-    \ 'subseparator': { 'left': '|', 'right': '|' },
-    \ 'tabline_subseparator': { 'left': '', 'right': '' },
-    \ 'tabline_separator':  { 'left': '▓░', 'right': '░▓' },
-    \ }
-    " \ 'separator': { 'left': '█▓░', 'right': '░▓█' },
-
-function! LightLineFileFormat()
-    return winwidth(0) > 85 ? &fileformat : ''
-endfunction
-
-function! LightLineFileEnc()
-    return !strlen(SyntasticStatuslineFlag()) && winwidth(0) > 80 ? strlen(&fenc) ? &fenc : &enc : ''
-endfunction
-
-function! LightLineFileType()
-    return !strlen(SyntasticStatuslineFlag()) && winwidth(0) > 80 ? strlen(&filetype) ? &filetype : 'unknown' : ''
-endfunction
-
-function! LightLineFilename()
-    " return (expand('%:t') != '' ? expand('%:t') : '[No Name]') .
-    return (expand('%') != '' ? expand('%') : '[No Name]') .
-        \ (&modified != '' ? '[+]' : '') .
-        \ (&readonly != '' ? ' ⭤' : '')
-endfunction
-
-function! LightLineFugitive()
-    if exists('*fugitive#head') && strlen(fugitive#head())
-        return '⎇  '.fugitive#head()
-    endif
-    return ''
-endfunction
-" lightline end }}}
-
-" lightline-bufferline
-set showtabline=2
-let g:lightline#bufferline#unnamed = '[No Name]'
-let g:lightline#bufferline#modified = '[+]'
-let g:lightline#bufferline#read_only = ' ⭤'
-let g:lightline#bufferline#filename_modifier = ':t'
+" lightline
+source ~/.vim/lightline_cfg.vim
 
 " easymotion
 let g:EasyMotion_smartcase = 1
@@ -348,24 +268,15 @@ map / <Plug>(easymotion-sn)
 omap / <Plug>(easymotion-tn)
 map n <Plug>(easymotion-next)
 map N <Plug>(easymotion-prev)
+nnoremap <leader>n n
+nnoremap <leader>N N
 
 " NERDTree shortcut
 command! NT NERDTreeToggle
 " let NERDTreeWinPos = "right"
 
 " YCM
-autocmd FileType c,cpp,cs
-    \ nnoremap <F5> :YcmForceCompileAndDiagnostics<CR><CR>|
-    \ inoremap <F5> <c-o>:YcmForceCompileAndDiagnostics<CR><CR>
-autocmd FileType c,cpp,python,cs
-    \ nnoremap <leader>gd :YcmCompleter GetDoc<CR>|
-    \ nnoremap <leader>fx :YcmCompleter FixIt<CR>|
-    \ nnoremap <leader>jd :YcmCompleter GoToDefinition<CR>|
-    \ nnoremap <leader>jD :YcmCompleter GoToDeclaration<CR>|
-    \ nnoremap <leader>gt :YcmCompleter GetType<CR>|
-    \ nnoremap <leader>gp :YcmCompleter GetParent<CR>|
-    \ nnoremap <leader>gi :call ShowPreview()<CR>
-
+" let g:ycm_use_clangd = 0
 let g:ycm_min_num_of_chars_for_completion = 1
 let g:ycm_server_keep_logfiles = 0
 " let g:ycm_server_log_level = 'debug'
@@ -387,8 +298,8 @@ let g:ycm_key_list_previous_completion = ['<S-TAB>', '<Up>']
 
 " SimpylFold
 let g:SimpylFold_fold_docstring = 1
-autocmd BufWinEnter *.py setlocal foldexpr=SimpylFold(v:lnum) foldmethod=expr
-autocmd BufWinLeave *.py setlocal foldexpr< foldmethod<
+" autocmd BufWinEnter *.py setlocal foldexpr=SimpylFold(v:lnum) foldmethod=expr
+" autocmd BufWinLeave *.py setlocal foldexpr< foldmethod<
 
 " delimitMate
 let delimitMate_expand_cr = 1
@@ -425,109 +336,70 @@ let g:UltiSnipsJumpForwardTrigger='<c-j>'
 let g:UltiSnipsJumpBackwardTrigger='<c-k>'
 let g:ultisnips_java_brace_style='nl'
 
-" vim-cscope
-let g:cscope_auto_update = 0
-autocmd BufWritePost *.c,*.h,*.cpp,*.hpp call cscope#updateDB()
 
-autocmd FileType c,cpp
-    \ nnoremap <leader>fa :call cscope#findInteractive(expand('<cword>'))<CR>|
-    " s: Find this C symbol
-    \ nnoremap  <leader>fs :call cscope#find('s', expand('<cword>'))<CR>|
-    " g: Find this definition
-    \ nnoremap  <leader>fg :call cscope#find('g', expand('<cword>'))<CR>|
-    " d: Find functions called by this function
-    \ nnoremap  <leader>fd :call cscope#find('d', expand('<cword>'))<CR>|
-    " c: Find functions calling this function
-    \ nnoremap  <leader>fc :call cscope#find('c', expand('<cword>'))<CR>|
-    " t: Find this text string
-    \ nnoremap  <leader>ft :call cscope#find('t', expand('<cword>'))<CR>|
-    " e: Find this egrep pattern
-    \ nnoremap  <leader>fe :call cscope#find('e', expand('<cword>'))<CR>|
-    " f: Find this file
-    \ nnoremap  <leader>ff :call cscope#find('f', expand('<cword>'))<CR>|
-    " i: Find files #including this file
-    \ nnoremap  <leader>fi :call cscope#find('i', expand('<cword>'))<CR>
+" ale
+" let g:ale_enabled = 0
 
-" lua inspect
-let g:lua_inspect_events = ''
-let g:lua_inspect_mappings = 0
+" let g:ale_linters = {
+"     \ 'cpp': [],
+"     \ 'c': [] }
 
-" vim-javacomplete2
-" autocmd FileType java set omnifunc=javacomplete#Complete
-"
-" if filereadable("AndroidManifest.xml")
-"     let g:JavaComplete_SourcesPath = "target/generated-sources/r"
-" endif
+let g:ale_linters = {
+    \ 'cpp': [ 'clangtidy' ],
+    \ 'c': [ 'clangtidy' ],
+    \ 'java': [],
+    \ }
+let g:ale_fixers = {
+    \ 'cpp': [ 'clangtidy' ],
+    \ 'c': [ 'clangtidy' ],
+    \ 'java': [],
+    \ }
 
-" syntastic
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
+let g:ale_cpp_clangtidy_checks = [ 'modernize-use-override' ]
+let g:ale_c_clangtidy_checks = [ 'modernize-use-override' ]
+" let g:ale_exclude_highlights = [ '.*clang-diagnostic-.*' ]
 
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 0
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 1
-let g:syntastic_quiet_messages = { 'type': 'style' }
-let g:syntastic_python_checkers = ['flake8']
-let g:syntastic_python_flake8_args = '--ignore=F403,F401'
-let g:syntastic_vim_checkers = ['vint']
-let g:syntastic_warning_symbol = '!!'
-" let g:syntastic_aggregate_errors = 1
-" let g:syntastic_java_javac_config_file_enabled = 1
-" let g:syntastic_java_javac_delete_output = 0
-let g:syntastic_mode_map = {
-    \ 'mode': 'passive',
-    \ 'active_filetypes': ['lua', 'gdscript3'],
-    \ 'passive_filetypes': [] }
+let g:ale_linters_ignore = {
+            \ 'python': [ 'mypy' ],
+            \ }
+let g:ale_type_map = {
+            \ 'flake8': {'ES': 'I', 'WS': 'I'},
+            \ 'mypy':   {'ES': 'I', 'WS': 'I'},
+            \ 'pylint': {'ES': 'I', 'WS': 'I'},
+            \ 'vint':   {'ES': 'I', 'WS': 'I'},
+            \ }
+let g:ale_python_flake8_options = '--ignore=F403,F401,E201,E202,F841,E501,E221,E241,E722,F405'
+let g:ale_python_pylint_options = '--disable=C,too-few-public-methods,global-statement,useless-object-inheritance,try-except-raise,broad-except,too-many-branches,too-many-arguments,protected-access'
+let g:ale_nasm_nasm_options = '-f elf64'
 
-function! s:SynCheck()
-    SyntasticCheck
-    call lightline#update()
-endfunction
+" let g:ale_lint_on_enter = 1
+" let g:ale_lint_on_filetype_changed = 1
+" let g:ale_lint_on_text_changed = 1
+let g:ale_lint_on_insert_leave = 1
+let g:ale_lint_on_save = 1
 
-function! s:SynReset()
-    SyntasticReset
-    call lightline#update()
-endfunction
+let g:ale_sign_warning = '!!'
+let g:ale_sign_info = '?'
+" let g:ale_sign_error = "\uf05e  "
+" let g:ale_sign_warning = "\uf071  "
+" let g:ale_sign_info = "\uf05a  "
 
-command! SynCheck call s:SynCheck()
-command! SynReset call s:SynReset()
-
-autocmd FileType python,lua,vim,sh,gdscript3
-    \ nnoremap <F5> :SynCheck<CR> |
-    \ inoremap <F5> <c-o>:SynCheck<CR> |
-    \ nnoremap <leader>gd :Errors<CR>
 
 " eclim
 let g:EclimCompletionMethod = 'omnifunc'
 autocmd FileType java
-    \ nnoremap <F5> :Validate<CR> |
-    \ inoremap <F5> <c-o>:Validate<CR> |
     \ nnoremap <leader>fx :JavaCorrect<CR>|
     \ nnoremap <leader>fi :JavaImport<CR>
-
-" vim-template
-let g:username = 'Marvin Ewald'
-let g:email = 'marvin.e@protonmail.ch'
-let g:templates_no_autocmd = 1
-let g:templates_directory = [ $HOME.'/.vim/templates', $HOME.'/.vim/bundle/vim-template/templates' ]
-" autocmd BufNewFile *.h,*.hpp Template *.h
-" autocmd BufNewFile *.c,*.cpp Template *.c
 
 " CtrlP
 let g:ctrlp_show_hidden=1
 " let g:ctrlp_custom_ignore = '\.pyc'
 let g:ctrlp_open_multiple_files = 'ijr'
 let g:ctrlp_custom_ignore = {
-            \ 'dir':  '\v[\/]\.(git|hg|svn|clangd)$',
+            \ 'dir':  '\v[\/]\.(git|hg|svn|clangd|ccls-cache|tmp)$',
             \ 'file': '\v\.(exe|so|dll|pyc|o|a)$'
             \ }
 " let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files . -c -o --exclude-standard && git submodule --quiet foreach --recursive "git ls-files . -c -o --exclude-standard"', 'find %s -type f']
-
-" grayout.vim
-let g:grayout_confirm = 0
-let g:grayout_cmd_line = 'clang -x c++ -w -P -nostdinc -nostdinc++ -E -'
 
 " latex box
 let g:LatexBox_viewer = 'zathura'
@@ -537,8 +409,6 @@ let g:LatexBox_Folding = 1
 let g:LatexBox_fold_automatic = 0
 let g:LatexBox_quickfix = 4
 " let g:LatexBox_fold_sections=[ "part", "chapter", "section", "subsection", "subsubsection", "paragraph", "subparagraph" ]
-autocmd FileType tex nnoremap <F5> :Latexmk<CR>
-autocmd FileType tex setlocal wrap
 " let g:LatexBox_completion_close_braces = 0
 " let g:LatexBox_complete_inlineMath = 0
 
@@ -548,9 +418,6 @@ let g:tcommentLineC = {
             \ 'replacements': g:tcomment#replacements_c
             \ }
 call tcomment#type#Define('c', g:tcommentLineC)
-
-" Godown
-autocmd FileType markdown,md nnoremap <F5> :GodownPreview<CR>
 
 " protodef
 let g:disable_protodef_sorting = 1
@@ -583,12 +450,45 @@ let g:easy_align_delimiters = { '>': { 'pattern': '->' } }
 " let g:cpp_no_function_highlight = 0
 " let g:cpp_simple_highlight = 0
 " let g:cpp_named_requirements_highlight = 1
-highlight cUserFunction ctermfg=13
 
 " echodoc
 " autocmd FileType gdscript3 let g:echodoc#enable_at_startup = 1
 let g:echodoc#enable_at_startup = 1
 set noshowmode
+
+" python syntax
+let g:python_highlight_all = 1
+
+" vim-cool
+let g:CoolTotalMatches = 0
+
+" current word
+let g:vim_current_word#highlight_delay = 1500
+
+" markdown preview
+let g:mkdp_auto_close = 0
+
+" vim-lsp-cxx
+" let g:lsp_cxx_hl_log_file = 'lspcxxlog.txt'
+" let g:lsp_cxx_hl_verbose_log = 1
+
+" chromatica
+let g:chromatica#enable_at_startup = 1
+let g:chromatica#responsive_mode = 1
+
+
+" suda.vim
+command! SudoWrite w suda://%
+
+" enhanced jumps
+let g:EnhancedJumps_no_mappings = 1
+let g:EnhancedJumps_CaptureJumpMessages = 0
+map <c-o> <Plug>EnhancedJumpsLocalOlder
+map <c-i> <Plug>EnhancedJumpsLocalNewer
+
+" grayout.vim
+" let g:grayout_debug_logfile = 0
+" autocmd CursorHold,CursorHoldI * if &ft == 'c' || &ft == 'cpp' || &ft == 'objc' | exec 'GrayoutUpdate' | endif
 
 " -------------------------------------- Plugin configuration end }}}
 
@@ -608,28 +508,12 @@ set noshowmode
 " autocmd BufWritePre * :retab
 
 " filetype specific foldmethods
-autocmd FileType cmake setlocal foldmethod=marker
-autocmd FileType vim setlocal foldmethod=marker
-autocmd FileType lua setlocal foldmethod=marker
-autocmd FileType sourcepawn setlocal commentstring=//\ %s
-autocmd FileType markdown setlocal wrap
+autocmd FileType cmake,vim,lua setlocal foldmethod=marker
+autocmd FileType sourcepawn,json,jsonc  setlocal commentstring=//\ %s
+autocmd FileType text,markdown,tex setlocal wrap
 
-" Markdown preview (requires 'Markdown Viewer' addon)
-" autocmd FileType markdown,md nnoremap <F5> :!firefox % &<CR><CR>
-
-" simplify preview window
-function! SetPreviewVariables()
-    setlocal wrap 
-    setlocal breakindentopt=shift:4
-    setlocal laststatus=0 
-    setlocal nobuflisted 
-    setlocal nocursorline 
-    setlocal nonumber 
-    exec 'setlocal winheight='.&previewheight
-endfun
-
-autocmd BufEnter * if &previewwindow | call SetPreviewVariables() | endif
-autocmd BufWinLeave * if &previewwindow | set laststatus=2 | endif
+" autoclose location list after jump
+autocmd FileType qf nmap <buffer> <cr> <cr>:lcl<cr>
 
 " -------------------------------------- Autocmds end }}}
 
@@ -686,8 +570,8 @@ nnoremap <leader>s :%s/\<<C-r><C-w>\>//g<Left><Left>
 " visually select the text just pasted
 nnoremap gz `[v`]
 
-" write file with root permissions
-command! SudoWrite w !sudo tee %
+" write file with root permissions (does not work in neovim, use suda.vim instead)
+" command! SudoWrite w !sudo tee %
 
 command! PabsFormat %s/:/\r    {\r\r    } \/\/
 
@@ -704,18 +588,19 @@ command! -range=% ToSource silent <line1>,<line2>s/\s*=.*\(,\|)\)/\1/ge |
             \ silent <line1>,<line2>s/\( override\| final\)//ge |
             \ silent <line1>,<line2>s/;/\r    {\r        \/\/ TODO\r    }\r/ge |
 
-command! -nargs=? -range=% ToSourceAuto exec '<line1>,<line2>normal ==' |
+command! -nargs=? -range=% ToSourceAuto silent exec '<line1>,<line2>ToSourceAutoName ' . expand('%:t:r')
+
+command! -nargs=? -range=% ToSourceAutoName exec '<line1>,<line2>normal ==' |
             \ silent exec '<line1>,<line2>StripExtraSpaces' |
             \ silent <line1>,<line2>s/\(virtual \|static \|constexpr \|explicit \)//ge |
             \ silent <line1>,<line2>s/\( override\| final\)//ge |
             \ silent <line1>,<line2>s/\s*=.*\(,\|)\)/\1/ge |
-            \ silent <line1>,<line2>s/auto \(.\{-}\)\s*->\s*\(.\{-}\)\s*;/auto <args>::\1 -> \2\r    {\r        \/\/ TODO\r    }\r/
+            \ silent <line1>,<line2>s/auto \(.\{-}\)\s*->\s*\(.\{-}\)\s*;/auto <args>::\1 -> \2\r    {\r        \/\/ TODO\r    }\r/ |
+            \ normal =``
 
-" Puts exactly one space between operator and operands.
-" Does not pick up all occurrences in some corner cases, but good enough.
-" If this breaks some day, try something like this:
-" s/\[(\w\+\)]\{-}\s*\(||\|&&\|%\|+\|-\|\*\|\/\)\s*\(\w\+\)/\1 \2 \3/g
-command! -range=% OpSpacing <line1>,<line2>s/\(\w\+\)\{-}\s*\(||\|&&\|%\|+\|-\|\*\|\/\)\s*\(\w\+\)/\1 \2 \3/g
+" Surrounds operators by one space.
+" It does not fix multiple spaces around operators.
+command! -range=% OpSpacing <line1>,<line2>s/\>\v(\=|\+|\-|\=\=|\>|\<|\*|\/|\&\&|\|\||\%)\m\</ \1 /g
 
 command! ID exe "normal a0x". system("uuidgen | sed 's/-.*//'")
 command! Fname echo expand('%:p')
@@ -754,15 +639,85 @@ map <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans
             \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
             \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
 
-nnoremap <F8> :labove<CR>
-nnoremap <F9> :lbelow<CR>
+autocmd FileType *
+    \ nmap <silent> <F8> <Plug>(ale_previous_wrap_error)|
+    \ nmap <silent> <F9> <Plug>(ale_next_wrap_error)
+
+autocmd FileType c,cpp
+    \ nnoremap <F8> :labove<CR>|
+    \ nnoremap <F9> :lbelow<CR>
+
+" F5
+function! F5Refresh()
+    if &filetype == 'java'
+        Validate
+    elseif &filetype == 'tex'
+        Latexmk
+    elseif &filetype == 'markdown' || &filetype == 'md'
+        MarkdownPreview
+        " GodownPreview
+    elseif &filetype == 'c' || &filetype == 'cpp' || &filetype == 'cs'
+        if exists(':GrayoutUpdate')
+            GrayoutUpdate
+        endif
+        LspCxxHighlight
+        ALELint
+    else
+        ALELint
+    endif
+endfun
+
+nnoremap <silent> <F5> :call F5Refresh()<CR>
+inoremap <silent> <F5> <c-o>:call F5Refresh()<CR>
+
+nnoremap <leader>d :ALEDetail<CR>
+
 
 " -------------------------------------- Key mappings end }}}
 
+command! ClangTidy call RunClangTidy()
+
+function RunClangTidy()
+    let l:checks = join(ale#Var(bufnr('%'), 'cpp_clangtidy_checks'), ',')
+    " echo '!clang-tidy ' . shellescape(expand("%:p")) . ' --fix --fix-errors --checks=' . shellescape(l:checks)
+    exec '!clang-tidy ' . shellescape(expand("%:p")) . ' --fix --fix-errors --checks=' . shellescape(l:checks)
+    normal <esc>
+    e
+    ALELint
+endfun
+
+
+" indent folds
+" https://old.reddit.com/r/vim/comments/fwjpi4/here_is_how_to_retain_indent_level_on_folds/
+let indent_level = indent(v:foldstart)
+let indent = repeat(' ',indent_level)
+
+" Modified from http://dhruvasagar.com/2013/03/28/vim-better-foldtext
+function! NeatFoldText()
+    let indent_level = indent(v:foldstart)
+    let indent = repeat(' ',indent_level)
+    let line = ' ' . substitute(getline(v:foldstart), '^\s*"\?\s*\|\s*"\?\s*{{' . '{\d*\s*', '', 'g') . ' '
+    let lines_count = v:foldend - v:foldstart + 1
+    let lines_count_text = '-' . printf('%10s', lines_count . ' lines') . ' '
+    let foldchar = matchstr(&fillchars, 'fold:\zs.')
+    let foldtextstart = strpart('+' . repeat(foldchar, v:foldlevel*2) . line, 0, (winwidth(0)*2)/3)
+    let foldtextend = lines_count_text . repeat(foldchar, 8)
+    let foldtextlength = strlen(substitute(foldtextstart . foldtextend, '.', 'x', 'g')) + &foldcolumn
+    return indent . foldtextstart . repeat(foldchar, winwidth(0)-foldtextlength) . foldtextend
+endfunction
+set foldtext=NeatFoldText()
+
+function! ProfileStart()
+    profile start profile.log
+    profile func *
+    profile file *
+endfunction
+
+function! ProfileStop()
+    profile pause
+    echo 'Quit vim now'
+    " noautocmd qall!
+endfunction
+
 " source ~/.vim/completion_preview.vim
-"
-" " we need <c-r>= syntax because <expr> doesn't allow buffer modification
-" inoremap <c-h> <c-r>=PrevCompletionString()<CR>
-" inoremap <c-l> <c-r>=NextCompletionString()<CR>
-" nnoremap <leader>pp :call PrevCompletionString()<CR>
-" nnoremap <leader>pn :call NextCompletionString()<CR>
+source ~/.vim/coc.vim

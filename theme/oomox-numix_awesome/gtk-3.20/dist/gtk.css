@@ -1098,7 +1098,7 @@ headerbar, .titlebar:not(headerbar) {
   headerbar separator, .titlebar:not(headerbar) separator, headerbar separator:disabled, .titlebar:not(headerbar) separator:disabled {
     color: #141414;
     border-color: currentColor;
-    -GtkWidget-window-dragging: true; }
+    -GtkWidget-window-dragging: false; }
   headerbar:backdrop, .titlebar:backdrop:not(headerbar) {
     background-color: #eeeeee;
     background-image: none;
@@ -1511,7 +1511,7 @@ toolbar {
   toolbar separator, toolbar separator:disabled {
     color: #8f8f8f;
     border-color: currentColor;
-    -GtkWidget-window-dragging: true; }
+    -GtkWidget-window-dragging: false; }
   toolbar.inline-toolbar {
     padding: 1px;
     border-width: 0 1px 1px;
@@ -2554,7 +2554,7 @@ headerbar.selection-mode,
   .titlebar:not(headerbar).selection-mode separator:disabled {
     color: #323841;
     border-color: currentColor;
-    -GtkWidget-window-dragging: true; }
+    -GtkWidget-window-dragging: false; }
   headerbar.selection-mode button,
   .titlebar:not(headerbar).selection-mode button {
     background-color: #535d6c;
@@ -3858,7 +3858,7 @@ entry, menuitem entry, popover.background entry, .osd entry,
  ! Menubar
 **********/
 menubar, .menubar {
-  -GtkWidget-window-dragging: true;
+  -GtkWidget-window-dragging: false;
   padding: 0;
   border: 0;
   background-color: #222222;
@@ -8289,7 +8289,7 @@ paned.titlebar {
     .nemo-window toolbar separator, .nemo-window toolbar separator:disabled {
       color: #d6d6d6;
       border-color: currentColor;
-      -GtkWidget-window-dragging: true; }
+      -GtkWidget-window-dragging: false; }
     .nemo-window toolbar.primary-toolbar button.image-button {
       padding: 0 8px; }
     .nemo-window toolbar combobox, .nemo-window toolbar button {

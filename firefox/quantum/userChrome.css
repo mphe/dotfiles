@@ -2,13 +2,17 @@
     --tabsize: 22px;
     --tabwidth: 130px;
     --navbarsize: 26px;
+    --urlbarsize: 20px;
     --tabbar-offset: 0px;
     --tabtext-offset: 4px;
+    --buttonsize: 24px;
     --color-bg: #222222;
     --color-gray: #444444;
     --color-fg: #aaaaaa;
     --color-active: #535D6C;
     --color-fg-active: #ffffff;
+    --color-urlbar-bg: #333333;
+    --color-urlbar-fg: #bbbbbb;
 }
 
 /* Main colors */
@@ -30,9 +34,9 @@
 
 /* for some reason the background refuses to have the correct color */
 /* fix: don't move */
-.tabbrowser-tabs {
+/* .tabbrowser-tabs { */
     /* margin-left: 5px !important; */
-}
+/* } */
 
 .tabbrowser-arrowscrollbox  {
     min-height: var(--tabsize) !important;
@@ -108,81 +112,74 @@ toolbarbutton#alltabs-button,
     min-height: var(--navbarsize) !important;     /* navbar height */
     margin-top: 0px !important;
     border: none !important;
-}
-
-
-#nav-bar {
     padding: 0 !important;
 }
 
-#urlbar {
+#urlbar-background {
     border: none !important;
-    background: #333333 !important;
-    color: #bbbbbb !important;
+    border-radius: 0 !important;
+    background: var(--color-urlbar-bg) !important;
+    color: var(--color-urlbar-fg) !important;
+    margin-top: calc((var(--navbarsize) - var(--urlbarsize)) / 2) !important;
+    max-height: var(--urlbarsize) !important;
+    min-height: var(--urlbarsize) !important;
+}
+
+#urlbar[breakout][breakout-extend] {
+    background: var(--color-urlbar-bg) !important;
+    color: var(--color-urlbar-fg) !important;
+}
+
+#urlbar {
     font-size: 11px !important;
 }
 
 
-.autocomplete-textbox.urlbar-input.textbox-input.uri-element-right-align:focus {
-    background: var(--color-gray) !important;
-}
+/* .autocomplete-textbox.urlbar-input.textbox-input.uri-element-right-align:focus { */
+/*     background: var(--color-gray) !important; */
+/* } */
 
 #identity-box:hover {
     background: var(--color-bg) !important;
 }
 
-/* urlbar autocomplete popup {{{ */
-#PopupAutoCompleteRichResult {
-    background: var(--color-bg) !important;
-    border-color: var(--color-active) !important;
-}
-
-.autocomplete-richlistitem {
-    color: var(--color-fg) !important;
-}
-
-.autocomplete-richlistitem .ac-url, .autocomplete-richlistitem .ac-separator {
-    color: var(--color-gray) !important;
-}
-
-.autocomplete-richlistitem:hover {
-    color: var(--color-fg-active) !important;
-    background: var(--color-active) !important;
-}
-
-.autocomplete-richlistitem:hover .ac-url, .autocomplete-richlistitem .ac-separator {
-    color: var(--color-fg) !important;
-}
-
-/* }}} */
-
 /* }}} */
 
 
 /* make some buttons scale properly */
-.toolbarbutton-1 {
-    padding-top: 0px !important;
-    padding-bottom: 0px !important;
+#navbar toolbarbutton, #navbar .toolbarbutton-1, #navbar .toolbarbutton-badge-stack {
+    /* padding-top: 0px !important; */
+    /* padding-bottom: 0px !important; */
+    /* margin-top: -2px !important; */
+    /* margin-top: 2px !important; */
+    /* margin-bottom: 2px !important; */
+    max-height: var(--buttonsize) !important;
+}
+
+#downloads-button {
+    min-height: var(--buttonsize) !important;
+    max-height: var(--buttonsize) !important;
 }
 
 /* fix button alignment */
-#forward-button .toolbarbutton-icon,
-#back-button .toolbarbutton-icon,
-#reload-button .toolbarbutton-icon,
-#stop-reload-button .toolbarbutton-icon,
-#bookmarks-menu-button .toolbarbutton-icon,
-#home-button .toolbarbutton-icon,
-#nav-bar-overflow-button .toolbarbutton-icon {
-    /* margin-top: -2px !important; */
-    margin-bottom: 2px !important;
-}
+/* #downloads-button .toolbarbutton-icon, */
+/* #forward-button .toolbarbutton-icon, */
+/* #back-button .toolbarbutton-icon, */
+/* #reload-button .toolbarbutton-icon, */
+/* #stop-reload-button .toolbarbutton-icon, */
+/* #bookmarks-menu-button .toolbarbutton-icon, */
+/* #home-button .toolbarbutton-icon, */
+/* #nav-bar-overflow-button .toolbarbutton-icon { */
+/*     /* margin-top: -2px !important; */ */
+/*     margin-bottom: 2px !important; */
+/* } */
 
 /* fix new tab button */
-#new-tab-button, #new-tab-button > .toolbarbutton-icon {
-    /* margin-bottom: 5px !important; */
-    min-height: var(--tabsize) !important;
-    max-height: var(--tabsize) !important;
-}
+/* #new-tab-button, #new-tab-button > .toolbarbutton-icon { */
+/*     /* margin-bottom: 5px !important; */ */
+/*     min-height: var(--tabsize) !important; */
+/*     max-height: var(--tabsize) !important; */
+/* } */
 
 
 /* disable urlbar buttons */
