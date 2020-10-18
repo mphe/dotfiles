@@ -5,7 +5,6 @@ xset r rate 300 30 # key repeat rate
 xset dpms 1800 1800 1800 # set dpms timeout to 30 minutes
 xset s off # disable screensaver
 setxkbmap de
-xmodmap -e 'keysym Menu = Super_L'
-[[ -f ~/.Xresources  ]] && xrdb -merge -I$HOME ~/.Xresources
+[ -f ~/.Xmodmap  ] && xmodmap ~.Xmodmap
+[ -f ~/.Xresources  ] && xrdb -merge -I$HOME ~/.Xresources
 ~/.screenlayout/normal.sh
-# xrandr --dpi 100

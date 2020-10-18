@@ -1,7 +1,7 @@
 " ------------------ General
 set t_Co=256
 set background=dark
-set guifont="xos4 Terminus"
+set guifont="Terminus"
 
 " ------------------ Solarized
 " let g:solarized_termtrans = 1

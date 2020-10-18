@@ -1,6 +1,4 @@
 #!/bin/bash
-$HOME/.monicarc   #monitor calibration
-
 export LANG="de_DE.UTF-8"
 
 userresources=$HOME/.Xresources
@@ -29,10 +27,10 @@ fi
 # start some nice programs
 
 if [ -d /etc/X11/xinit/xinitrc.d ] ; then
- for f in /etc/X11/xinit/xinitrc.d/?*.sh ; do
-  [ -x "$f" ] && . "$f"
- done
- unset f
+    for f in /etc/X11/xinit/xinitrc.d/?*.sh ; do
+        [ -x "$f" ] && . "$f"
+    done
+    unset f
 fi
 
 # Launch DBus if needed
@@ -55,17 +53,22 @@ eval $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets,ssh)
 export SSH_AUTH_SOCK
 
 picom -b
-anamnesis --start
-redshift &
+# anamnesis --start
+parcellite &
+redshift-gtk &
 albert &
 nm-applet &
 udiskie &
 # dxreminders &
 lxpolkit &
-/home/marvin/bin/xfsettingsd --sm-client-disable
+# /home/marvin/bin/xfsettingsd --sm-client-disable
+/usr/bin/xfsettingsd --sm-client-disable
 xfdesktop --disable-wm-check --sm-client-disable &
 # ibus-daemon -d
 
 [[ -f ~/.xprofile  ]] && source ~/.xprofile
 
-exec awesome
+[[ -f ~/.cache/awesome/stdout ]] && mv ~/.cache/awesome/stdout ~/.cache/awesome/stdout.old
+[[ -f ~/.cache/awesome/stderr ]] && mv ~/.cache/awesome/stderr ~/.cache/awesome/stderr.old
+
+exec awesome > ~/.cache/awesome/stdout 2> ~/.cache/awesome/stderr

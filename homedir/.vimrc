@@ -69,7 +69,7 @@ set previewheight=3
 " set completeopt-=preview
 
 " Gvim settings
-set guioptions=aic
+" set guioptions=aic
 set guicursor=
 
 set laststatus=2
@@ -88,8 +88,8 @@ set display+=lastline
 " - Remove comment leader when joining if it makes sense
 autocmd FileType * setlocal formatoptions+=croj
 
-set smartcase
-set ignorecase
+" set smartcase
+" set ignorecase
 
 set colorcolumn=80
 
@@ -189,6 +189,8 @@ Plug 'tpope/vim-repeat'
 Plug 'tomtom/tcomment_vim'
 
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'OmniSharp/omnisharp-vim'
+Plug 'Shougo/echodoc.vim'
 
 Plug 'Raimondi/delimitMate'
 Plug 'airblade/vim-gitgutter'
@@ -213,13 +215,12 @@ Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
 Plug 'vim-scripts/ReplaceWithRegister'
 Plug 'derekwyatt/vim-fswitch'
 Plug 'derekwyatt/vim-protodef'
-" Plug 'tmhedberg/SimpylFold'
+Plug 'tmhedberg/SimpylFold'
 Plug 'hynek/vim-python-pep8-indent'
 Plug 'vim-python/python-syntax'
 Plug 'withgod/vim-sourcepawn'
 Plug 'junegunn/vim-easy-align'
 Plug 'osyo-manga/vim-over'
-" Plug 'rafaeldelboni/vim-gdscript3'
 Plug 'calviken/vim-gdscript3'
 Plug 'gaving/vim-textobj-argument'
 Plug 'farmergreg/vim-lastplace'
@@ -231,6 +232,10 @@ Plug 'jackguo380/vim-lsp-cxx-highlight'
 Plug 'lambdalisue/suda.vim'
 Plug 'tpope/vim-liquid'
 Plug 'embear/vim-localvimrc'
+Plug 'amadeus/vim-convert-color-to'
+Plug 'mingchaoyan/vim-shaderlab'
+Plug 'wsdjeg/FlyGrep.vim'
+Plug 'tikhomirov/vim-glsl'
 
 Plug 'inkarkat/vim-ingo-library'
 Plug 'inkarkat/vim-EnhancedJumps'
@@ -348,6 +353,8 @@ let g:ale_linters = {
     \ 'cpp': [ 'clangtidy' ],
     \ 'c': [ 'clangtidy' ],
     \ 'java': [],
+    \ 'gdscript3': [],
+    \ 'cs': [ 'OmniSharp' ],
     \ }
 let g:ale_fixers = {
     \ 'cpp': [ 'clangtidy' ],
@@ -355,22 +362,30 @@ let g:ale_fixers = {
     \ 'java': [],
     \ }
 
+let g:ale_cs_csc_options = ' /warn:4 /langversion:7.2'
+
 let g:ale_cpp_clangtidy_checks = [ 'modernize-use-override' ]
 let g:ale_c_clangtidy_checks = [ 'modernize-use-override' ]
 " let g:ale_exclude_highlights = [ '.*clang-diagnostic-.*' ]
 
-let g:ale_linters_ignore = {
-            \ 'python': [ 'mypy' ],
-            \ }
 let g:ale_type_map = {
             \ 'flake8': {'ES': 'I', 'WS': 'I'},
             \ 'mypy':   {'ES': 'I', 'WS': 'I'},
             \ 'pylint': {'ES': 'I', 'WS': 'I'},
             \ 'vint':   {'ES': 'I', 'WS': 'I'},
+            \ 'luacheck': {'ES': 'I', 'WS': 'I'},
             \ }
+
 let g:ale_python_flake8_options = '--ignore=F403,F401,E201,E202,F841,E501,E221,E241,E722,F405'
 let g:ale_python_pylint_options = '--disable=C,too-few-public-methods,global-statement,useless-object-inheritance,try-except-raise,broad-except,too-many-branches,too-many-arguments,protected-access'
+" let g:ale_python_mypy_options = '--show-error-context --show-column-numbers --no-strict-optional --ignore-missing-imports --check-untyped-defs --allow-untyped-globals --follow-imports=silent'
+let g:ale_python_mypy_options = '--namespace-packages --show-error-context --show-column-numbers --no-strict-optional --ignore-missing-imports --check-untyped-defs --allow-untyped-globals'
+let g:ale_python_mypy_ignore_invalid_syntax = 1
+let g:ale_python_mypy_show_notes = 0
+
 let g:ale_nasm_nasm_options = '-f elf64'
+
+let g:ale_lua_luacheck_options = ''
 
 " let g:ale_lint_on_enter = 1
 " let g:ale_lint_on_filetype_changed = 1
@@ -378,6 +393,7 @@ let g:ale_nasm_nasm_options = '-f elf64'
 let g:ale_lint_on_insert_leave = 1
 let g:ale_lint_on_save = 1
 
+let g:ale_echo_msg_format = '[ale][%linter%] %code: %%s'
 let g:ale_sign_warning = '!!'
 let g:ale_sign_info = '?'
 " let g:ale_sign_error = "\uf05e  "
@@ -490,6 +506,26 @@ map <c-i> <Plug>EnhancedJumpsLocalNewer
 " let g:grayout_debug_logfile = 0
 " autocmd CursorHold,CursorHoldI * if &ft == 'c' || &ft == 'cpp' || &ft == 'objc' | exec 'GrayoutUpdate' | endif
 
+" omnisharp-vim
+let g:OmniSharp_server_stdio = 1
+let g:OmniSharp_server_use_mono = 0
+let g:OmniSharp_highlight_groups = {
+    \ 'ClassName': 'Type',
+    \ 'StructName': 'Type',
+    \ 'EnumName': 'Type',
+    \ 'FieldName': 'Normal',
+    \ 'PropertyName': 'Normal',
+    \ 'ParameterName': 'Normal',
+    \ 'LocalName': 'Normal',
+    \ 'ConstantName': 'Constant',
+    \ 'NamespaceName': 'LspCxxHlGroupNamespace',
+    \ }
+
+" echodoc
+
+let g:echodoc#enable_at_startup = 1
+let g:echodoc#type = 'floating'
+
 " -------------------------------------- Plugin configuration end }}}
 
 
@@ -509,11 +545,16 @@ map <c-i> <Plug>EnhancedJumpsLocalNewer
 
 " filetype specific foldmethods
 autocmd FileType cmake,vim,lua setlocal foldmethod=marker
-autocmd FileType sourcepawn,json,jsonc  setlocal commentstring=//\ %s
-autocmd FileType text,markdown,tex setlocal wrap
+autocmd FileType sourcepawn,json,jsonc setlocal commentstring=//\ %s
+autocmd FileType text,markdown,tex,unknown setlocal wrap
 
 " autoclose location list after jump
 autocmd FileType qf nmap <buffer> <cr> <cr>:lcl<cr>
+
+
+" Set filetype by extension
+autocmd BufRead,BufNewFile *.fsh set filetype=glsl
+autocmd BufRead,BufNewFile *.vsh set filetype=glsl
 
 " -------------------------------------- Autocmds end }}}
 
@@ -721,3 +762,4 @@ endfunction
 
 " source ~/.vim/completion_preview.vim
 source ~/.vim/coc.vim
+source ~/.vim/omnisharp.vim

@@ -26,3 +26,13 @@ question() {
 }
 
 endsnippet
+
+snippet trap_cleanup "trap exit"
+trap cleanup 0               # EXIT
+trap "cleanup; exit 1" 2     # INT
+trap "cleanup; exit 1" 1 15  # HUP TERM
+
+cleanup() {
+	:
+}
+endsnippet

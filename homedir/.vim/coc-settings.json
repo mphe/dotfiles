@@ -7,11 +7,13 @@
     "diagnostic.displayByAle": true,
     "diagnostic.enableMessage": "always",
     "diagnostic.messageTarget": "echo",
-    "diagnostic.locationlist": true,
+    "diagnostic.refreshOnInsertMode": true,
+    // "diagnostic.locationlist": true,
     "sh.enable": false,
-
+    "coc.preferences.colorSupport": true,
+    "coc.source.around.firstMatch": false,
+    "coc.source.buffer.firstMatch": false,
     // "coc.preferences.extensionUpdateCheck": "never",
-
     "suggest.disableMenuShortcut": true,
     "suggest.completionItemKindLabels": {
         "constructor": " ",
@@ -42,11 +44,14 @@
         // "default": "\uf29c"
     },
 
+    "highlight.colors.enable": false,
+
     // "markdownlint.config": {
     //     "default": true,
     //     "line_length": false
     // },
 
+    "python.jediEnabled": true,
     "python.formatting.provider": "black",
     "python.linting.enabled": false,
     "python.linting.flake8Enabled": true,
@@ -55,6 +60,7 @@
     "python.linting.pylintEnabled": true,
     "python.linting.pylintArgs": [ "--disable=C,too-few-public-methods,global-statement,useless-object-inheritance,try-except-raise,broad-except,too-many-branches,too-many-arguments" ],
     "python.linting.pylintUseMinimalCheckers": false,
+    "python.linting.mypyEnabled": true,
 
     "languageserver": {
         // "clangd": {
@@ -74,11 +80,11 @@
                 "highlight": { "lsRanges" : true }
             }
         },
-        // "godot": {
-        //     "host": "127.0.0.1",
-        //     "filetypes": ["gd", "gdscript3"],
-        //     "port": 6008
-        // },
+        "godot": {
+            "host": "127.0.0.1",
+            "filetypes": ["gd", "gdscript3"],
+            "port": 6008
+        }
         // "efm": {
         //     "command": "efm-langserver",
         //     "args": [],

@@ -156,3 +156,27 @@ def timeit(method):
 		return result
 	return timed
 endsnippet
+
+snippet oscheck "Check operating system type"
+if sys.platform in ("linux", "linux2"):
+	pass  # linux
+elif sys.platform == "darwin":
+	pass  # OS X
+elif sys.platform == "win32":
+	pass  # Windows...
+endsnippet
+
+snippet profile "cProfile decorator"
+def profile(method):
+	import cProfile
+
+	def profiled(*args, **kwargs):
+		cp = cProfile.Profile()
+		cp.enable()
+		res = method(*args, **kwargs)
+		cp.disable()
+		cp.print_stats()
+		return res
+	return profiled
+
+endsnippet

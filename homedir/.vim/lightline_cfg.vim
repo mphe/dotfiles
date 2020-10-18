@@ -46,7 +46,7 @@ let g:lightline.colorscheme = 'custom_solarized'
 " let g:lightline.subseparator = { 'left': '', 'right': '' }
 let g:lightline.tabline_subseparator = { 'left': '', 'right': '' }
 let g:lightline.tabline_separator =  { 'left': '', 'right': '' }
-" " let g:lightline.tabline_separator =  { 'left': '', 'right': '' }
+" let g:lightline.tabline_separator =  { 'left': '', 'right': '' }
 
 " \ 'separator': { 'left': '█', 'right': '█' },
 " \ 'subseparator': { 'left': '|', 'right': '|' },

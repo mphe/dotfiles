@@ -1,5 +1,5 @@
 :root {
-    --tabsize: 22px;
+    --tabsize: 24px;
     --tabwidth: 130px;
     --navbarsize: 26px;
     --urlbarsize: 20px;
@@ -25,11 +25,11 @@
 
 
 /* Tabs {{{ */
-#TabsToolbar {
+#TabsToolbar, #tabbrowser-tabs, .tabbrowser-tab, #tabbrowser-tabs > .tabbrowser-arrowscrollbox {
     min-height: var(--tabsize) !important;
     max-height: var(--tabsize) !important;
-    margin-bottom: 1px !important;
-    border: none !important;
+    /* margin-bottom: 1px !important; */
+    /* border: none !important; */
 }
 
 /* for some reason the background refuses to have the correct color */
@@ -38,28 +38,16 @@
     /* margin-left: 5px !important; */
 /* } */
 
-.tabbrowser-arrowscrollbox  {
-    min-height: var(--tabsize) !important;
-    max-height: var(--tabsize) !important;
-}
-
-.tabbrowser-tabs:not([drag=detach]) > .tabbrowser-tab:not([pinned])[fadein] {
-    min-width: var(--tabwidth) !important;    /* tab width */
-    max-width: 100% !important;
-}
-
-/* hide alltabs button and tab scroll arrows */
-toolbarbutton#alltabs-button,
-.scrollbutton-up[orient="horizontal"],
-.scrollbutton-down[orient="horizontal"] {
-    display: none !important;
-}
+/* .tabbrowser-tabs:not([drag=detach]) > .tabbrowser-tab:not([pinned])[fadein] { */
+/*     min-width: var(--tabwidth) !important;    /* tab width */ */
+/*     max-width: 100% !important; */
+/* } */
 
 
 /* tab icon/throbber placement */
 .tabbrowser-tab:not([pinned]) .tab-icon-image,
 .tab-throbber[fadein], .tab-throbber[layer], .tab-throbber[busy], .tab-throbber[progress] {
-    margin-left: 6px !important;
+    /* margin-left: 6px !important; */
     margin-top: -1px !important;
 }
 
@@ -103,9 +91,9 @@ toolbarbutton#alltabs-button,
 /* navbar {{{ */
 
 /* hide zoom indicator */
-#urlbar-zoom-button {
-    display: none !important;
-}
+/* #urlbar-zoom-button { */
+/*     display: none !important; */
+/* } */
 
 #urlbar-container, #nav-bar {
     max-height: var(--navbarsize) !important;     /* navbar height */
@@ -128,10 +116,13 @@ toolbarbutton#alltabs-button,
 #urlbar[breakout][breakout-extend] {
     background: var(--color-urlbar-bg) !important;
     color: var(--color-urlbar-fg) !important;
+    border: 1px solid var(--color-active) !important;
 }
 
 #urlbar {
     font-size: 11px !important;
+    border: none !important;
+    border-radius: 0 !important;
 }
 
 
@@ -161,37 +152,25 @@ toolbarbutton#alltabs-button,
     max-height: var(--buttonsize) !important;
 }
 
-/* fix button alignment */
-/* #downloads-button .toolbarbutton-icon, */
-/* #forward-button .toolbarbutton-icon, */
-/* #back-button .toolbarbutton-icon, */
-/* #reload-button .toolbarbutton-icon, */
-/* #stop-reload-button .toolbarbutton-icon, */
-/* #bookmarks-menu-button .toolbarbutton-icon, */
-/* #home-button .toolbarbutton-icon, */
-/* #nav-bar-overflow-button .toolbarbutton-icon { */
-/*     /* margin-top: -2px !important; */ */
-/*     margin-bottom: 2px !important; */
-/* } */
-
-/* fix new tab button */
-/* #new-tab-button, #new-tab-button > .toolbarbutton-icon { */
-/*     /* margin-bottom: 5px !important; */ */
-/*     min-height: var(--tabsize) !important; */
-/*     max-height: var(--tabsize) !important; */
-/* } */
-
 
 /* disable urlbar buttons */
-#page-action-buttons {
-    visibility: collapse !important;
-}
+/* #page-action-buttons { */
+/*     visibility: collapse !important; */
+/* } */
 
 /* fix dropmarker size */
-.autocomplete-history-dropmarker.urlbar-history-dropmarker {
-    padding: 0 !important;
-    margin: 0 !important;
+/* .autocomplete-history-dropmarker.urlbar-history-dropmarker { */
+/*     padding: 0 !important; */
+/*     margin: 0 !important; */
+/* } */
+
+/* hide alltabs button and tab scroll arrows */
+/* the position of this rule in the file actually matters for some reason */
+/* #alltabs-button, #tabbrowser-arrowscrollbox::part(scrollbutton-up), #tabbrowser-arrowscrollbox::part(scrollbutton-down) { */
+#alltabs-button, #scrollbutton-up, #scrollbutton-down {
+    display: none !important;
 }
+
 
 
 /* vim: foldmethod=marker

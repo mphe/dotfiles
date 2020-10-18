@@ -109,7 +109,8 @@ font:
     #   - (macOS) Menlo
     #   - (Linux) monospace
     #   - (Windows) Consolas
-    family: xos4 Terminus
+    # family: xos4 Terminus
+    family: Terminus
     # family: Terminus
     # family: Hack Nerd Font Mono
     # family: TerminessTTF Nerd Font Mono

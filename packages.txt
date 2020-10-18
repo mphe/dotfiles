@@ -30,6 +30,9 @@ terminus-font-otb
 gnome-keyring
 keepassxc
 systemd-boot-pacman-hook
+parcellite
+gtk3-nocsd-git
+redshift-gtk-git
 
 neovim
 python-pynvim
@@ -37,7 +40,6 @@ nodejs
 
 xorg-xprop
 xfce4-settings
-xfce4-appfinder
 xfce4-dev-tools
 xfdesktop
 
@@ -49,3 +51,7 @@ python-rope
 shellcheck
 vint
 
+intel-ucode
+libva-intel-driver
+libva1-intel-driver
+vulkan-intel

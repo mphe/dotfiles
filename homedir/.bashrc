@@ -13,8 +13,8 @@
 alias ls='ls -h --color=always --group-directories-first'
 alias ll='ls -l'
 alias less='less -r'
-alias pacaur='yay --sudoloop'
-alias yay='yay --sudoloop'
+alias pacaur='yay --sudoloop --devel'
+alias yay='yay --sudoloop --devel'
 alias ranger='python3 $(which ranger)'
 alias youtube-dl='youtube-dl -o "%(title)s.%(ext)s"'
 alias cmake-debug='cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_BUILD_TYPE=Debug'
@@ -35,9 +35,15 @@ alias virtualenv='virtualenv --system-site-packages'
 alias dd='dd status=progress'
 alias vimdiff='nvim -d'
 alias gst='git status'
+alias gcheckout='git checkout'
 alias ssh='TERM=xterm ssh'
 alias objdump='objdump -M intel'
 alias httrack='httrack --disable-security-limits --max-rate=0'
+alias grep='grep --exclude-dir=.git --color'
+alias open='xdg-open'
+# alias audacity='env PULSE_LATENCY_MSEC=60 audacity'
+alias audacity='pasuspender -- audacity'
+
 
 # thefuck (slow as fuck startup)
 # eval "$(thefuck --alias)"
@@ -151,6 +157,11 @@ export PATH="/home/marvin/golib/bin:$PATH"
 # export PYTHONPATH="$PYTHONPATH:/mnt/iomega/Python/lib"
 export EDITOR=nvim
 export OJSERVER=67.207.78.156
+
+# Needed for Unity development with vim using coc-omnisharp
+# / at the end seems to be important
+export FrameworkPathOverride=/lib/mono/4.7.1-api/
+
 
 # disable flow control when using vim
 vim () {
