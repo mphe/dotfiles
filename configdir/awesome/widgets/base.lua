@@ -30,10 +30,14 @@ function BaseWidget:update()
 end
 
 -- widget and/or icon can be nil.
-function BaseWidget:init(widget, icon)
+function BaseWidget:init(widget, icon, force_size)
     self._container = wibox.layout.fixed.horizontal()
     if icon then
-        self._container:add(wibox.widget.imagebox(icon))
+        local imgbox = wibox.widget.imagebox(icon)
+        -- imgbox.forced_width = force_size
+        -- imgbox.forced_height = force_size
+        -- imgbox.resize = true
+        self._container:add(imgbox)
     end
     if widget then
         self._container:add(widget)

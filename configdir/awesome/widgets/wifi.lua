@@ -1,9 +1,22 @@
 local awful = require("awful")
+local gears = require("gears")
 local utils = require("utils")
+-- local beautiful = require("beautiful")
+-- local icons_module = require("icons")
 local icons = require("icons")
 local BaseWidget = require("widgets.base").BaseWidget
 
 local WifiWidget = BaseWidget.derive()
+
+-- local icons = {
+--     wifi_na = icons_module.wifi_na,
+--     wifi = {
+--         beautiful.lookup_icon("status/network-wireless-signal-weak"),
+--         beautiful.lookup_icon("status/network-wireless-signal-ok"),
+--         beautiful.lookup_icon("status/network-wireless-signal-good"),
+--         beautiful.lookup_icon("status/network-wireless-signal-excellent"),
+--     },
+-- }
 
 function WifiWidget:update()
     self.connected = utils.read_number("/sys/class/net/" .. self.interface .. "/carrier") == 1
@@ -36,7 +49,7 @@ function WifiWidget:update()
 end
 
 function WifiWidget:create(args)
-    local args = args or {}
+    args = args or {}
 
     self.autohide = args.autohide
     self.interface = args.interface or "wlp3s0b1"
@@ -50,7 +63,7 @@ function WifiWidget:create(args)
     local box = self:init(nil, icons.wifi_na)
     self:attach(box)
 
-    self.timer = timer({ timeout = args.timeout or 30 })
+    self.timer = gears.timer({ timeout = args.timeout or 30 })
     self.timer:connect_signal("timeout", function() self:update() end)
     self.timer:start()
     self:update()

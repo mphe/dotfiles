@@ -35,6 +35,11 @@ function BatWidget:create(args)
             return string.format("Time remaining:\t%s\nWear Level:\t%s%%",
                 self.data.time, self.data.wear_perc)
         end)
+
+    box:buttons(awful.util.table.join(
+        awful.button({}, 1, function() self:update() end)
+    ))
+
 end
 
 function BatWidget:updateIcon(force)

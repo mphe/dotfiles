@@ -56,7 +56,7 @@ function todo_widget:update_counter(todos)
         end
     end
 
-    todo_widget.widget:set_text("\u{f46c}  " .. todo_count)
+    todo_widget.widget:set_text(" \u{f46c}  " .. todo_count)
     -- todo_widget.widget:set_text(todo_count)
 end
 
@@ -65,7 +65,7 @@ local popup = awful.popup{
     ontop = true,
     visible = false,
     -- shape = gears.shape.rounded_rect,
-    border_width = 1,
+    border_width = beautiful.border_width,
     border_color = beautiful.bg_focus,
     maximum_width = 400,
     offset = { y = 5 },
@@ -75,8 +75,7 @@ local popup = awful.popup{
 local add_button = wibox.widget {
     {
         {
-            -- image = '/usr/share/icons/Arc/actions/symbolic/list-add-symbolic.svg',
-            image = '/home/marvin/.icons/oomox-numix_awesome_icons/symbolic/actions/list-add-symbolic.svg',
+            image = beautiful.lookup_icon("actions/list-add"),
             resize = false,
             widget = wibox.widget.imagebox
         },
@@ -191,7 +190,7 @@ local function worker(args)
                 {
                     {
                         -- image = '/usr/share/icons/Arc/actions/symbolic/window-close-symbolic.svg',
-                        image = '/home/marvin/.icons/oomox-numix_awesome_icons/symbolic/actions/window-close-symbolic.svg',
+                        image = beautiful.lookup_icon("actions/window-close"),
                         resize = false,
                         widget = wibox.widget.imagebox
                     },
@@ -216,7 +215,6 @@ local function worker(args)
                 {
                     {
                         {
-                            
                             checkbox,
                             valign = 'center',
                             layout = wibox.container.place,

@@ -4,7 +4,6 @@ local lain = require("lain")
 local wibox = require("wibox")
 local icons = require("icons")
 local BaseWidget = require("widgets.base").BaseWidget
-local utils = require("utils")
 
 local CPUWidget = BaseWidget.derive()
 

@@ -9,7 +9,7 @@ local BaseWidget = require("widgets.base").BaseWidget
 
 local FSWidget = BaseWidget.derive()
 
-function print_info(name, data)
+local function print_info(name, data)
     local units = string.upper(data.units)
     local percentage = tostring(data.percentage) .. "%"
     local color = "#535D6C"

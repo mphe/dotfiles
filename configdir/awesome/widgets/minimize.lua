@@ -1,37 +1,56 @@
 local awful = require("awful")
 local wibox = require("wibox")
+local gears = require("gears")
 local utils = require("utils")
 local BaseWidget = require("widgets.base").BaseWidget
 
 local MinimizeWidget = BaseWidget.derive()
 
 function MinimizeWidget:create(args)
-    local args = args or {}
-
-    -- self.widget = wibox.widget.textbox()
-    -- self.widget:set_text(" ")
+    args = args or {}
 
     self.minimized = false
     self.clients = {}
-    self.widget = wibox.container.constraint(wibox.widget.textbox(), "exact", 2, nil)
+    self.hover_timeout = args.hover_timeout or 1.5
+    self.widget = wibox.container.constraint(nil, "exact", 2, nil)
     local box = self:init(self.widget)
-    self:attach(self.widget)
 
-    -- self.timer = timer({ timeout = 1 })
-    -- self.timer:connect_signal("timeout", function() self:timeout() end)
+    box:buttons(awful.util.table.join(
+        awful.button({}, 1, function()
+            self:toggle()
+        end)
+    ))
+
+    -- Mouse Hover events are not triggered during drag and drop.
+    -- box:connect_signal('mouse::enter', function()
+    --     self.timer = gears.timer.start_new(self.hover_timeout, function()
+    --         self:toggle()
+    --     end)
+    -- end)
+
+    -- box:connect_signal('mouse::leave', function()
+    --     self:_stop_timer()
+    -- end)
 
     -- self.timer:start()
 end
 
-function MinimizeWidget:timeout()
+function MinimizeWidget:_stop_timer()
+    if self.timer then
+        self.timer:stop()
+        self.timer = nil
+    end
 end
 
 function MinimizeWidget:toggle()
     if self.minimized then
         for _, c in ipairs(self.clients) do
-            c.minimized = false
+            if c.valid then
+                c.minimized = false
+            end
         end
         self.clients = {}
+        utils.notify("Restored")
     else
         for _, c in ipairs(mouse.screen.clients) do
             if c.type ~= "desktop" and not c.minimized then
@@ -39,17 +58,11 @@ function MinimizeWidget:toggle()
                 table.insert(self.clients, c)
             end
         end
+        utils.notify("Minimized")
     end
 
     self.minimized = not self.minimized;
-end
-
-function MinimizeWidget:attach(box)
-    box:buttons(awful.util.table.join(
-        awful.button({}, 1, function()
-            self:toggle()
-        end)
-    ))
+    self:_stop_timer()
 end
 
 return MinimizeWidget

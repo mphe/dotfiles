@@ -1,4 +1,5 @@
 local awful = require("awful")
+local gears = require("gears")
 local utils = require("utils")
 local icons = require("icons")
 local BaseWidget = require("widgets.base").BaseWidget
@@ -24,7 +25,7 @@ function WiredWidget:update()
 end
 
 function WiredWidget:create(args)
-    local args = args or {}
+    args = args or {}
 
     self.autohide = args.autohide
     self.interface = args.interface or "enp2s0f0"
@@ -36,7 +37,7 @@ function WiredWidget:create(args)
     self:attach(box)
     self:updateIcon()
 
-    self.timer = timer({ timeout = args.timeout or 30 })
+    self.timer = gears.timer({ timeout = args.timeout or 30 })
     self.timer:connect_signal("timeout", function() self:update() end)
     self.timer:start()
     self:update()

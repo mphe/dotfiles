@@ -1,49 +1,45 @@
 local awful = require("awful")
 local naughty = require("naughty")
+local menubar = require("menubar")
 
 local M = {}
 
-IMAGE_DIR = "~/Bilder"
+local next = next
 
--- Takes a screenshot of the given screen or the whole screen when
--- passing -1 (default).
--- snum: screen number or -1 for whole screen or 0 for interactive select.
--- dir: the output directory (defaults to IMAGE_DIR).
-function M.screenshot(snum, dir)
-    snum = snum or -1
-    local path = (dir or IMAGE_DIR) .. "/screenshot$(date +%Y%m%d%H%M%S).png"
-    local cmd = "maim -n 2 "
-
-    if snum >= 0 then
-        cmd = cmd .. "--hidecursor "
-
-        if snum == 0 then
-            cmd = cmd .. "-s "
-        elseif snum > 0 then
-            local g = screen[snum].geometry
-            cmd = cmd .. string.format("--geometry=%ix%i+%i+%i ", g.width, g.height, g.x, g.y)
-        end
-    end
-    awful.spawn.with_shell(cmd .. path)
+function M.table_empty(t)
+    return next(t) == nil
 end
 
--- Takes a screenshot of the given screen or the whole screen when
--- passing -1 (default).
--- snum: screen number or -1 for whole screen or 0 for interactive select.
--- dir: the output directory (defaults to IMAGE_DIR).
-function M.screenshot_import(snum, dir)
-    snum = snum or -1
-    local path = (dir or IMAGE_DIR) .. "/screenshot$(date +%Y%m%d%H%M%S).png"
-    local cmd = "import "
-
-    if snum < 0 then
-        cmd = "import -window root "
-    elseif snum > 0 then
-        local g = screen[snum].geometry
-        cmd = string.format("import -window root -crop %ix%i+%i+%i +repage ",
-            g.width, g.height, g.x, g.y)
+-- I hate lua
+function M.table_length(t)
+    local count = 0
+    for _ in pairs(t) do
+        count = count + 1
     end
-    awful.spawn.with_shell(cmd .. path)
+    return count
+end
+
+function M.firstkey(t)
+    for k, v in pairs(t) do -- luacheck: ignore
+        return k, v
+    end
+    return nil
+end
+
+function M.get_screen_id(s)
+    return tostring(s.geometry.width) .. "x" .. tostring(s.geometry.height) .. "x" .. tostring(M.firstkey(s.outputs))
+end
+
+function M.table_join(t, keychar, linechar)
+    keychar = keychar or ": "
+    linechar = linechar or "\n"
+    local lines = {}
+
+    for k, v in pairs(t) do
+        table.insert(lines, string.format("%s%s%s", k, keychar, v))
+    end
+
+    return table.concat(lines, linechar)
 end
 
 function M.file_exists(fname)
@@ -78,13 +74,13 @@ function M.async(cmd, callback)
     end)
 end
 
-function M.async_lines(cmd, callback)
-    awful.spawn.with_line_callback(cmd, { stdout = function(line) callback(line) end })
+function M.async_lines(cmd, callback, exit)
+    awful.spawn.with_line_callback(cmd, { stdout = callback, exit = exit })
 end
 
 -- Open a terminal and run a command inside
-function M.run_term(cmd)
-    awful.spawn.spawn(string.format(terminal_cmd_format, cmd))
+function M.run_term(cmd, rules)
+    awful.spawn.spawn(string.format(terminal_cmd_format, cmd), rules)
 end
 
 -- Run the process if it isn't already running, otherwise kill it.
@@ -115,8 +111,8 @@ end
 -- Wrapper for naughty.notify
 function M.notify(text_, title_, timeout_)
     return naughty.notify({
-            text = text_,
-            title = title_ or "",
+            text = text_ or "",
+            title = title_,
             timeout = timeout_ or 1
         })
 end
@@ -143,6 +139,11 @@ function M.moveresize(x, y, w, h, c)
             awful.client.incwfact(h * 0.05, c)
         end
     end
+end
+
+function M.menu_entry(title, program, icon_name)
+    icon_name = icon_name or program
+    return { title, program, menubar.utils.lookup_icon(icon_name) }
 end
 
 return M

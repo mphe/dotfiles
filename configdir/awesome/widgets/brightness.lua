@@ -1,5 +1,6 @@
 local awful = require("awful")
 local wibox = require("wibox")
+local gears = require("gears")
 local utils = require("utils")
 local icons = require("icons")
 local BaseWidget = require("widgets.base").BaseWidget
@@ -11,7 +12,7 @@ function BrightWidget:update()
 end
 
 function BrightWidget:create(args)
-    local args = args or {}
+    args = args or {}
 
     self.widget = wibox.widget.textbox()
     self.device = "/sys/class/backlight/" .. (args.device or "intel_backlight") .. "/brightness"
@@ -21,7 +22,7 @@ function BrightWidget:create(args)
     local box = self:init(self.widget, args.icon or icons.brightness)
     self:attach(box)
 
-    self.timer = timer({ timeout = args.timeout or 11 })
+    self.timer = gears.timer({ timeout = args.timeout or 11 })
     self.timer:connect_signal("timeout", function() self:update() end)
     self.timer:start()
     self:update()

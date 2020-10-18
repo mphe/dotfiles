@@ -2,22 +2,53 @@
 -- Default awesome theme --
 ---------------------------
 
+local gears = require("gears")
 local theme_assets = require("beautiful.theme_assets")
 local xresources = require("beautiful.xresources")
 local dpi = xresources.apply_dpi
-
 local gfs = require("gears.filesystem")
 local themes_path = gfs.get_themes_dir()
+local menubar = require("menubar")
+-- local gtk = require("beautiful.gtk")
 
-theme = {}
 
--- theme.font          = "DejaVu Sans 8"
--- theme.font          = "Ubuntu 8"
--- theme.font          = "Cantarell 8"
+local theme = {}
+
+
+function theme.lookup_icon(name, color)
+    color = color or theme.fg_normal
+    local path = menubar.utils.lookup_icon(name)
+    if path then
+        return path
+    end
+
+    local function try(icondir)
+        icondir = string.format("%s/%s/symbolic/", icondir, theme.icon_theme)
+        if gears.filesystem.is_dir(icondir) then
+            local fname = icondir .. name .. "-symbolic.svg"
+            if gears.filesystem.file_readable(fname) then
+                return fname
+            end
+        end
+        return nil
+    end
+
+    local image = try(string.format("%s/.icons", os.getenv("HOME")))
+        or try("/usr/share/icons")
+        or try("/usr/share/icons/hicolor")
+
+    if image then
+        image = gears.color.recolor_image(image, color)
+    end
+
+    return image
+end
+
+-- Define the icon theme for application icons. If not set then the icons
+-- from /usr/share/icons and /usr/share/icons/hicolor will be used.
+theme.icon_theme = "oomox-numix_awesome_icons"
+
 theme.font          = "Sans 8"
--- theme.font          = "Terminus 8"
--- theme.font          = "Signika 7"
--- theme.font          = "Open Sans 7"
 
 theme.bg_normal     = "#222222"
 -- theme.bg_focus      = "#3a3a3a"
@@ -39,6 +70,31 @@ theme.border_normal = "#000000"
 theme.border_focus  = "#535d6c"
 theme.border_marked = "#91231c"
 theme.fullscreen_hide_border = true
+
+-- theme.gtk = gtk.get_theme_variables()
+-- theme.bg_normal     = theme.gtk.bg_color
+-- theme.fg_normal     = theme.gtk.fg_color
+--
+-- theme.wibar_bg      = theme.gtk.menubar_bg_color
+-- theme.wibar_fg      = theme.gtk.menubar_fg_color
+--
+-- theme.bg_focus      = theme.gtk.selected_bg_color
+-- theme.fg_focus      = theme.gtk.selected_fg_color
+--
+-- theme.bg_urgent     = theme.gtk.error_bg_color
+-- theme.fg_urgent     = theme.gtk.error_fg_color
+--
+-- theme.bg_minimize   = mix(theme.wibar_fg, theme.wibar_bg, 0.3)
+-- theme.fg_minimize   = mix(theme.wibar_fg, theme.wibar_bg, 0.9)
+--
+-- theme.bg_systray    = theme.wibar_bg
+--
+-- theme.border_normal = theme.gtk.wm_border_unfocused_color
+-- theme.border_focus  = theme.gtk.wm_border_focused_color
+-- theme.border_marked = theme.gtk.success_color
+--
+-- theme.border_width  = dpi(theme.gtk.button_border_width or 1)
+-- theme.border_radius = theme.gtk.button_border_radius
 
 -- theme.taglist_bg_focus = "#555555"
 
@@ -101,9 +157,13 @@ theme.client_corner_resize_radius = dpi(20)
 -- Define the image to load
 theme.titlebar_close_button_normal = themes_path.."default/titlebar/close_normal.png"
 theme.titlebar_close_button_focus  = themes_path.."default/titlebar/close_focus.png"
+-- theme.titlebar_close_button_normal = lookup_icon("actions/window-close")
+-- theme.titlebar_close_button_focus = lookup_icon("actions/window-close")
 
 theme.titlebar_minimize_button_normal = themes_path.."default/titlebar/minimize_normal.png"
 theme.titlebar_minimize_button_focus  = themes_path.."default/titlebar/minimize_focus.png"
+-- theme.titlebar_minimize_button_normal = lookup_icon("actions/window-minimize")
+-- theme.titlebar_minimize_button_focus  = lookup_icon("actions/window-minimize")
 
 theme.titlebar_ontop_button_normal_inactive = themes_path.."default/titlebar/ontop_normal_inactive.png"
 theme.titlebar_ontop_button_focus_inactive  = themes_path.."default/titlebar/ontop_focus_inactive.png"
@@ -159,10 +219,7 @@ theme.layout_centerwork    = vaindir .. "centerworkw.png"
 --     theme.menu_height, theme.bg_focus, theme.fg_focus
 -- )
 
--- Define the icon theme for application icons. If not set then the icons
--- from /usr/share/icons and /usr/share/icons/hicolor will be used.
-theme.icon_theme = "mate"
+-- theme = theme_assets.recolor_titlebar(theme, theme.fg_normal, "normal")
+-- theme = theme_assets.recolor_titlebar(theme, theme.fg_focus, "focus")
 
 return theme
-
--- vim: filetype=lua:expandtab:shiftwidth=4:tabstop=8:softtabstop=4:textwidth=80
