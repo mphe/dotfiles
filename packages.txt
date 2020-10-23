@@ -33,12 +33,21 @@ systemd-boot-pacman-hook
 parcellite
 gtk3-nocsd-git
 redshift-gtk-git
+apache
+youtube-dl
+network-manager-applet
+lxsession-gtk3
+arandr
 
 neovim
 python-pynvim
 nodejs
 
 xorg-xprop
+xorg-xset
+xorg-setxkbmap
+xorg-xrdb
+xorg-xmodmap
 xfce4-settings
 xfce4-dev-tools
 xfdesktop
