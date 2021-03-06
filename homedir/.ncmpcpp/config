@@ -2,21 +2,26 @@ mpd_music_dir = "~/music"
 mpd_host = localhost
 mpd_port = 6600
 
-visualizer_fifo_path = /dev/shm/mpd.fifo
+visualizer_data_source = /dev/shm/mpd.fifo
 visualizer_output_name = "my_fifo"
 visualizer_in_stereo = yes
-visualizer_sync_interval = 30
+visualizer_autoscale = yes
+visualizer_spectrum_smooth_look = yes
+visualizer_type = spectrum
+
+#visualizer_color = "blue"
+visualizer_color = blue, 32, 25, black
+
+#visualizer_sample_multipler = 1
+#visualizer_look = ●▮
 
 # spectrum/wave
-visualizer_type = wave_filled
+# visualizer_type = wave_filled
 
 # classic/alternative
 user_interface = alternative
 
 mouse_support = no
-
-#visualizer_sample_multipler = 1
-#visualizer_look = ●▮
 
 colors_enabled = "yes"
 song_status_format = "$0{$8%t$9} on {$5%b$9} by {$3%a}"
@@ -33,8 +38,6 @@ current_item_prefix = "$(default)$r"
 current_item_suffix = "$/r$(end)"
 
 main_window_color = "default"
-#visualizer_color = "blue"
-visualizer_color = blue, 32, 25, 26, black
 color1 = "white"
 
 autocenter_mode = yes
