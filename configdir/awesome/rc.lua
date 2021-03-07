@@ -14,28 +14,22 @@ local beautiful = require("beautiful")
 -- Notification library
 local naughty = require("naughty")
 local menubar = require("menubar")
-local hotkeys_popup = require("awful.hotkeys_popup").widget
 -- Enable VIM help for hotkeys widget when client with matching name is opened:
 require("awful.hotkeys_popup.keys.vim")
 local utils = require("utils")
-local icons = require("icons")
 local cal = require("cal")
 local widgets = require("widgets")
 local systray = require("systray")
 local treetile = require("treetile")
 treetile.focusnew = true
-local freedesktop = require("freedesktop")
 local screenshot = require("screenshot")
+local globals = require("globals")
+-- }}}
 
 -- keep the linter happy regarding awesome globals
-local mouse = mouse
-local awesome = awesome
-local client = client
-local screen = screen
-local tag = tag
-local root = root
+-- luacheck: globals mouse awesome client screen tag root
 
--- }}}
+
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -63,32 +57,33 @@ end
 -- }}}
 
 -- {{{ Variable definitions
--- This is used later as the default terminal and editor to run.
--- Keep them global because they're used in utils module.
-local terminal = "alacritty"
-terminal_cmd = terminal .. " -e "
-terminal_cmd_format = terminal_cmd .. "%s"
-shell = "bash"
--- terminal_cmd_format = terminal_cmd .. "\"%s\""
-local editor = os.getenv("EDITOR") or "vim"
-local filemgr = "nemo"
+local modkey = globals.modkey
 local home = os.getenv("HOME")
 local configdir = home .. "/.config/awesome"
 local scrot_tool = screenshot.screenshot_custom
 screenshot.image_dir = "~/Schreibtisch"
+-- }}}
+
+-- Init beautiful {{{
+-- awful.screen.set_auto_dpi_enabled(true) -- doesn't seem to work
+beautiful.init(configdir .. "/themes/custom/theme.lua")
+
+local icons = require("icons")  -- must be initialized after beautiful
+
+-- Screen specific dpi and wibar heights
+local wibar_size_per_screen = {}
+
+if screen[2] then
+    screen[2].dpi = 102
+    wibar_size_per_screen[2] = beautiful.dpi(26, screen[2])
+end
+-- }}}
 
 local layoutconfig = nil
 -- Config file for temporary/frequently changing layouts (untracked by git)
 if utils.file_exists(configdir .. "/layoutconfig.lua") then
     layoutconfig = require("layoutconfig")
 end
-
--- Default modkey.
-local modkey = "Mod4"
-
--- Themes define colours, icons, font and wallpapers.
-beautiful.init(configdir .. "/themes/custom/theme.lua")
--- utils.debugtable(beautiful.gtk.get_theme_variables())
 
 -- Table of layouts to cover with awful.layout.inc, order matters.
 awful.layout.layouts = {
@@ -110,7 +105,6 @@ awful.layout.layouts = {
     awful.layout.suit.corner.se,
     treetile
 }
--- }}}
 
 -- {{{ Helper functions
 local function client_menu_toggle_fn()
@@ -127,52 +121,13 @@ local function client_menu_toggle_fn()
 end
 -- }}}
 
--- {{{ Menu
--- Create a launcher widget and a main menu
-local myawesomemenu = {
-   { "hotkeys", function() return false, hotkeys_popup.show_help end},
-   { "manual", function() utils.run_term("man awesome") end },
-   { "edit config", function() utils.run_term(editor .. " " .. awesome.conffile) end },
-   { "restart", awesome.restart },
-   { "quit", function() awesome.quit() end}
-}
-
-local systemmenu = {
-    utils.menu_entry("Lock", home .. "/scripts/lockscreen.sh", "system-lock-screen"),
-    utils.menu_entry("Poweroff", "systemctl poweroff", "system-shutdown"),
-    utils.menu_entry("Reboot", "systemctl reboot", "system-reboot"),
-    utils.menu_entry("Suspend", "systemctl suspend", "system-suspend"),
-    utils.menu_entry("Hibernate", "systemctl hibernate", "system-hibernate"),
-}
-
-local mymainmenu = freedesktop.menu.build({
-    sub_menu = "Applications",
-    before = {
-        { "Awesome", myawesomemenu, beautiful.awesome_icon },
-        { "System", systemmenu },
-    },
-    after = {
-        utils.menu_entry("Terminal", terminal, "terminal"),
-        utils.menu_entry("File Manager", filemgr),
-        utils.menu_entry("Firefox", "firefox"),
-        utils.menu_entry("Thunderbird", "thunderbird"),
-        utils.menu_entry("System Monitor", "xfce4-taskmanager", "utilities-system-monitor"),
-        utils.menu_entry("Kill Process", home .."/scripts/killprompt.sh"),
-        utils.menu_entry("Screenshot", "xfce4-screenshooter", "accessories-screenshot"),
-        { "Restart desktop", function() awful.spawn.with_shell("killall xfdesktop && xfdesktop --disable-wm-check") end },  -- luacheck: ignore
-    }
-})
-mymainmenu.theme.width = 150
-
-local mylauncher = awful.widget.launcher({
-    image = icons.arch,
-    menu = mymainmenu
-})
+local mymainmenu = require("menu")
 
 -- Menubar configuration
-menubar.utils.terminal = terminal -- Set the terminal for applications that require it
--- }}}
+menubar.utils.terminal = globals.terminal -- Set the terminal for applications that require it
 
+
+-- Widgets {{{
 -- Create a wibox for each screen and add it {{{
 local taglist_buttons = awful.util.table.join(
     awful.button({ }, 1, function(t) t:view_only() end),
@@ -219,25 +174,29 @@ local tasklist_buttons = awful.util.table.join(
 )
 -- }}}
 
--- Widgets {{{
+local mylauncher = awful.widget.launcher({
+    image = icons.endeavouros,
+    menu = mymainmenu
+})
+
 -- Include here because it requires beautiful theme to be initialized
 local todo_widget = require("todo")
 
-local separator = wibox.widget.textbox()
-separator:set_text("  ")
+local separator = wibox.widget.textbox("  ")
+local small_separator = wibox.widget.textbox(" ")
 
 local systraywidget = systray()
 systraywidget:toggle() -- Hide the systray
 local cpuwidget = widgets.cpu({ timeout = 3 })
 local memwidget = widgets.mem({ timeout = 3 })
-local volwidget = widgets.volume({ timeout = 5 })
-local batwidget = widgets.bat({ timeout = 61, battery = "BAT1", ac = "ACAD", n_perc = {5, 10}, full_notify = "off" })
-local tempwidget = widgets.temp({ timeout = 59, })
+local volwidget = widgets.volume({ timeout = 500 })
+local batwidget = widgets.bat({ timeout = 61, battery = "BAT0", ac = "AC", n_perc = {5, 10}, full_notify = "off", notify = "off" })
+local tempwidget = widgets.temp({ timeout = 59, tempfile = "/sys/devices/virtual/thermal/thermal_zone6/temp"})
 local mpdwidget = widgets.mpd({ timeout = 3, notify = "off" })
 local brightwidget = widgets.brightness()
 local wiredwidget = widgets.wired({ autohide = true })
-local wifiwidget = widgets.wifi({ autohide = true })
-local fswidget = widgets.fs()
+local wifiwidget = widgets.wifi({ autohide = false, interface = "wlan0" })
+local fswidget = widgets.fs({ blacklist = { "/dev", "/dev/shm", "/run", "/boot/efi", "/run/user/1000", "/sys/fs/cgroup", } })
 local minwidget = widgets.minimize()
 local todowidget = todo_widget()
 local vpnwidget = widgets.nordvpn()
@@ -253,9 +212,8 @@ cal.register(mytextclock)
 
 -- Setup screens {{{
 local function set_wallpaper(s)
-    -- Wallpaper
-    if beautiful.wallpaper then
-        local wallpaper = beautiful.wallpaper
+    local wallpaper = beautiful.wallpaper
+    if wallpaper and utils.file_exists(wallpaper) then
         -- If wallpaper is a function, call it with the screen
         if type(wallpaper) == "function" then
             wallpaper = wallpaper(s)
@@ -329,7 +287,7 @@ awful.screen.connect_for_each_screen(function(s)
     s.mytasklist = awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags, tasklist_buttons)
 
     -- Create the wibox
-    s.mywibox = awful.wibar({ position = "top", screen = s })
+    s.mywibox = awful.wibar({ position = "top", screen = s, height = wibar_size_per_screen[s.index] })
 
     -- Add widgets to the wibox
     s.mywibox:setup {
@@ -337,6 +295,7 @@ awful.screen.connect_for_each_screen(function(s)
         { -- Left widgets
             layout = wibox.layout.fixed.horizontal,
             mylauncher,
+            small_separator,
             s.mytaglist,
             s.mypromptbox,
         },
@@ -349,13 +308,10 @@ awful.screen.connect_for_each_screen(function(s)
             mpdwidget:get_container(),
             separator,
             todowidget,
-            -- todowidget:get_container(),
             separator,
             vpnwidget:get_container(),
-            -- separator,
             wifiwidget:get_container(),
             wiredwidget:get_container(),
-            -- separator,
             fswidget:get_container(),
             separator,
             brightwidget:get_container(),
@@ -371,7 +327,6 @@ awful.screen.connect_for_each_screen(function(s)
             cpuwidget:get_container(),
             separator,
             mytextclock,
-            -- mytextclock:get_container(),
             s.mylayoutbox,
             minwidget:get_container()
         },
@@ -415,7 +370,7 @@ root.buttons(awful.util.table.join(
 
 -- {{{ Key bindings
 local function switch_focus(dir)
-    awful.client.focus.global_bydirection(dir)
+    awful.client.focus.global_bydirection(dir, nil, true)
     if client.focus then client.focus:raise() end
 end
 
@@ -446,27 +401,27 @@ local globalkeys = awful.util.table.join(
     awful.key({ }, "XF86MonBrightnessUp", function() brightwidget:incBrightness(5) end,
               { description = "increase brightness", group = "media" }),
 
-    awful.key({}, "XF86AudioRaiseVolume", function() volwidget:changeVolume("1dB+") end,
+    awful.key({}, "XF86AudioRaiseVolume", function() volwidget:incVolume() end,
               { description = "raise volume", group = "media" }),
 
-    awful.key({}, "XF86AudioLowerVolume", function() volwidget:changeVolume("1dB-") end,
+    awful.key({}, "XF86AudioLowerVolume", function() volwidget:decVolume() end,
               { description = "lower volume", group = "media" }),
 
     awful.key({}, "XF86AudioMute", function() volwidget:toggleMute() end,
               { description = "mute", group = "media" }),
 
     awful.key({}, "XF86AudioStop", function()
-            utils.async("mpc --wait stop", function(out) mpdwidget:update() end)
+            utils.async("mpc --wait stop", function(_) mpdwidget:update() end)
         end,
         { description = "stop", group = "media" }),
 
     awful.key({}, "XF86AudioNext", function()
-            utils.async("mpc --wait next", function(out) mpdwidget:update() end)
+            utils.async("mpc --wait next", function(_) mpdwidget:update() end)
         end,
         { description = "next", group = "media" }),
 
     awful.key({}, "XF86AudioPrev", function()
-            utils.async("mpc --wait prev", function(out) mpdwidget:update() end)
+            utils.async("mpc --wait prev", function(_) mpdwidget:update() end)
         end,
         { description = "previous", group = "media" }),
 
@@ -483,7 +438,7 @@ local globalkeys = awful.util.table.join(
               { description = "selection", group = "screenshot" }),
 
     -- Open file explorer
-    awful.key({ modkey }, "e", function() awful.spawn(filemgr) end,
+    awful.key({ modkey }, "e", function() awful.spawn(globals.filemgr) end,
               { description = "open file explorer", group = "launcher" }),
     awful.key({ modkey , "Shift" }, "e", function() awful.spawn.with_shell("urxvt -e python3 $(which ranger)") end,
               { description = "open ranger in urxvt", group = "launcher" }),
@@ -559,7 +514,7 @@ local globalkeys = awful.util.table.join(
     awful.key({ modkey }, "w", function() mymainmenu:show() end,
               { description = "show main menu", group = "awesome" }),
 
-    awful.key({ modkey }, "Return", function() awful.spawn(terminal) end,
+    awful.key({ modkey }, "Return", function() awful.spawn(globals.terminal) end,
               { description = "open a terminal", group = "launcher" }),
 
     awful.key({ modkey, "Control" }, "r", awesome.restart,
@@ -618,93 +573,6 @@ local globalkeys = awful.util.table.join(
     -- Toggle systray visibility
     awful.key({ modkey, "Control" }, "s", function() systraywidget:toggle() end,
               { description = "toggle systray visibility", group = "media" })
-)
--- }}}
-
--- Client keys {{{
-local clientkeys = awful.util.table.join(
-    -- Remap close shortcut
-    awful.key({ "Mod1" }, "F4", function(c) c:kill() end),
-    awful.key({ modkey }, "F4", function(c) c:kill() end),
-    awful.key({ modkey }, "c",  function(c) c:kill() end),
-    awful.key({ modkey, "Shift" }, "c", function (c) c:kill() end, {description = "close", group = "client"}),
-
-    awful.key({ modkey }, "f",
-        function (c)
-            c.fullscreen = not c.fullscreen
-            c:raise()
-        end,
-        { description = "toggle fullscreen", group = "client" }),
-
-    awful.key({ modkey,           }, "s",      function (c) c.sticky = not c.sticky          end),
-    awful.key({ modkey,           }, "o",      function (c) c:move_to_screen()               end,
-              {description = "move to screen", group = "client"}),
-    awful.key({ modkey,           }, "t",      function (c) c.ontop = not c.ontop            end,
-              {description = "toggle keep on top", group = "client"}),
-
-    awful.key({ modkey, "Control" }, "Return",
-              function(c)
-                  local o = awful.client.focus.history.get(mouse.screen, 1)
-                  if o then
-                      c:swap(o)
-                      awful.client.focus.history.previous()
-                  end
-              end,
-              {description = "switch with previously focused client", group = "client"}),
-
-    awful.key({ modkey, "Control" }, "space", function(c)
-            c.floating = not c.floating
-            if c.floating and not (c.maximized_horizontal or c.maximized_vertical) then
-                (awful.placement.no_offscreen+awful.placement.centered)(c, nil)
-            end
-            c:raise()
-        end,
-        { description = "toggle floating", group = "client" }),
-
-    awful.key({ modkey,           }, "n",
-        function (c)
-            -- The client currently has the input focus, so it cannot be
-            -- minimized, since minimized clients can't have the focus.
-            c.minimized = true
-        end ,
-        {description = "minimize", group = "client"}),
-
-    awful.key({ modkey,           }, "m",
-        function (c)
-            c.maximized = not c.maximized
-            c:raise()
-        end ,
-        {description = "maximize", group = "client"}),
-
-    awful.key({ modkey, "Mod1" }, "m", function(c)
-            c.maximized_vertical   = not c.maximized_vertical
-            c:raise()
-        end,
-        { description = "maximize vertical", group = "client" }),
-
-    awful.key({ modkey, "Mod1" }, "n", function(c)
-            c.maximized_horizontal = not c.maximized_horizontal
-            c:raise()
-        end,
-        { description = "maximize horizontal", group = "client" }),
-
-    awful.key({ modkey, "Mod1" }, "l", function(c) utils.moveresize(0, 0, 1, 0, c) end,
-              { description = "Decrease width", group = "client" }),
-    awful.key({ modkey, "Mod1" }, "h", function(c) utils.moveresize(0, 0, -1, 0, c) end,
-              { description = "Increase width", group = "client" }),
-    awful.key({ modkey, "Mod1" }, "j", function(c) utils.moveresize(0, 0, 0, 1, c) end,
-              { description = "Increase height", group = "client" }),
-    awful.key({ modkey, "Mod1" }, "k", function(c) utils.moveresize(0, 0, 0, -1, c) end,
-              { description = "Decrease height", group = "client" }),
-
-    awful.key({ modkey, "Mod1", "Shift" }, "l", function(c) utils.moveresize(15, 0, 0, 0, c) end,
-              { description = "Move left", group = "client" }),
-    awful.key({ modkey, "Mod1", "Shift" }, "h", function(c) utils.moveresize(-15, 0, 0, 0, c) end,
-              { description = "Move right", group = "client" }),
-    awful.key({ modkey, "Mod1", "Shift" }, "j", function(c) utils.moveresize(0, 15, 0, 0, c) end,
-              { description = "Move down", group = "client" }),
-    awful.key({ modkey, "Mod1", "Shift" }, "k", function(c) utils.moveresize(0, -15, 0, 0, c) end,
-              { description = "Move up", group = "client" })
 )
 -- }}}
 
@@ -769,160 +637,14 @@ for i = 1, 9 do
 end
 -- }}}
 
-local clientbuttons = awful.util.table.join(
-    awful.button({ }, 1, function(c)
-        client.focus = c
-        c:raise()
-
-        -- Resize clients by dragging at bottom left/right corner
-        -- Radius is set in theme variable `client_corner_resize_radius`
-
-        if not c.floating then
-            return
-        end
-
-        -- Only use bottom left/right corner, because dragging titlebar is already mapped to move
-        local corners = {
-            { c.x + c.width, c.y + c.height },
-            { c.x, c.y + c.height },
-        }
-        local m = mouse.coords()
-
-        for _, pos in ipairs(corners) do
-            if math.sqrt((m.x - pos[1]) ^ 2 + (m.y - pos[2]) ^ 2) <= beautiful.client_corner_resize_radius then
-                awful.mouse.client.resize(c)
-                break
-            end
-        end
-    end),
-    awful.button({ modkey }, 1, awful.mouse.client.move),
-    awful.button({ modkey }, 3, awful.mouse.client.resize))
-
 -- Set keys
 root.keys(globalkeys)
 -- }}}
 
--- Rules {{{
--- Rules to apply to new clients (through the "manage" signal).
-awful.rules.rules = {
-    -- All clients will match this rule. {{{
-    { rule = { },
-      properties = { border_width = beautiful.border_width,
-                     border_color = beautiful.border_normal,
-                     focus = awful.client.focus.filter,
-                     raise = true,
-                     keys = clientkeys,
-                     buttons = clientbuttons,
-                     screen = awful.screen.preferred,
-                     floating = true,  -- Make all clients floating
-                     -- size_hints_honor = false,
-                     -- placement = awful.placement.no_overlap+awful.placement.centered+awful.placement.no_offscreen,
-                     placement = function(c)
-                         -- except rules
-                         if c.class == "TelegramDesktop" and c.name == "Media viewer" then
-                             return
-                         end
+-- Apply rules
+require("rules")
 
-                         local placement_rule = awful.placement.centered+awful.placement.no_offscreen
-
-                         if c.motif_wm_hints then
-                             -- local hint = c.motif_wm_hints.functions
-                             -- if hint then utils.debugtable(hint, "Functions") end
-                             -- hint = c.motif_wm_hints.decorations
-                             -- if hint then utils.debugtable(hint, "Deco") end
-
-                             local hint = c.motif_wm_hints.functions
-                             -- if not hint then
-                             --     hint = c.motif_wm_hints.decorations
-                             -- end
-
-                             if hint then
-                                 local skip = hint.resize or hint.move or hint.maximize
-                                 skip = skip ~= hint.all
-
-                                 if skip then
-                                     placement_rule(c)
-                                     return
-                                 end
-                             end
-                         end
-
-                         local sw = c.screen.workarea.width
-                         local sh = c.screen.workarea.height
-                         local cw = c:geometry().width
-                         local ch = c:geometry().height
-
-                         if ch > sh then
-                             cw = cw * sh / ch
-                             c:geometry({ height = sh, width = cw })
-                         end
-                         if cw > sw then
-                             local fac = sh / ch
-                             c:geometry({ width = sw, height = ch * fac })
-                         end
-
-                         placement_rule(c, { honor_workarea = true })
-                     end,
-                 }
-    }, -- }}}
-
-    -- Make non-floating {{{
-    {
-        rule_any = {
-            class = {
-                "Alacritty",
-                "Mate-terminal",
-                "XTerm",
-                "Termite",
-                "URxvt",
-                -- "Firefox",
-                -- "firefox",
-                "Chromium",
-                -- "Navigator",
-                "TelegramDesktop",
-                "discord",
-                "Zathura",
-            },
-            instance = {
-                "Unity",
-                "Navigator", -- firefox
-            }
-        },
-        except_any = {
-            instance = "Prompt",
-            type = { "dialog" },
-            name = { "Unity Package Manager", "Starting Unity..." },
-        },
-        properties = {
-            floating = false,
-            size_hints_honor = false,
-        }
-    }, -- }}}
-
-    -- Desktop {{{
-    {
-        rule_any = { type = { "desktop" } },
-        callback = function(c)
-            c.screen = awful.screen.getbycoord(0, 0)
-            end,
-        properties = {
-            sticky = true,
-            border_width = 0,
-            skip_taskbar = true,
-            keys = {},
-        }
-    }, -- }}}
-
-    {
-        rule_any = { class = { "Synapse", "albert" } },
-        properties = {
-            border_width = 0,
-        }
-    }
-}
--- }}}
-
-
+-- {{{ Signals
 local function checktitlebar(c)
     if c.floating and not c.maximized and not c.requests_no_titlebar then
         awful.titlebar.show(c)
@@ -938,7 +660,6 @@ local function checktitlebar(c)
 end
 
 
--- {{{ Signals
 -- Signal function to execute when a new client appears.
 client.connect_signal("manage", function (c)
     -- Set the windows at the slave,
@@ -951,6 +672,8 @@ client.connect_signal("manage", function (c)
         -- Prevent clients from being unreachable after screen count changes.
         awful.placement.no_offscreen(c)
     end
+
+    -- c.shape = gears.shape.rounded_rect
 
     checktitlebar(c)
 end)
@@ -1014,7 +737,7 @@ client.connect_signal("request::titlebars", function(c)
         { -- Left
             {
                 awful.titlebar.widget.iconwidget(c),
-                layout  = wibox.layout.fixed.horizontal
+                layout = wibox.layout.fixed.horizontal
             },
             buttons = buttons,
             margins = beautiful.titlebar_margin,
@@ -1053,6 +776,16 @@ client.connect_signal("mouse::enter", function(c)
     end
 end)
 
+client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
+client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
+
+-- Prevent xpad from minimizing
+client.connect_signal("property::minimized", function(c)
+    if c.class == "xpad" then
+        c.minimized = false
+    end
+end)
+
 -- tag.connect_signal("request::screen", function(t)
 --     local targetscreen = nil
 --     -- utils.debugtable(t.screen, "Screen removed")
@@ -1085,7 +818,4 @@ end)
 --         end
 --     end
 -- end)
-
-client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
-client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 -- }}}

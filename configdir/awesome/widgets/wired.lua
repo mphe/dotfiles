@@ -28,7 +28,7 @@ function WiredWidget:create(args)
     args = args or {}
 
     self.autohide = args.autohide
-    self.interface = args.interface or "enp2s0f0"
+    self.interface = args.interface or "eth0"
     self.connected = false
     self.mac = utils.read("/sys/class/net/" .. self.interface .. "/address", "N/A")
     self.ip = "N/A"

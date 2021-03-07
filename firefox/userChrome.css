@@ -1,6 +1,10 @@
 :root {
-    --tabsize: 24px;
-    --tabwidth: 130px;
+    --fontsize: 12px;
+    /* --fontsize: 16px; */
+    /* --tabsize: 24px; */
+    --tabsize: 27px;
+    /* --tabwidth: 130px; */
+    --tabwidth: 150px;
     --navbarsize: 26px;
     --urlbarsize: 20px;
     --tabbar-offset: 0px;
@@ -23,25 +27,16 @@
     box-shadow: none !important;
 }
 
+/* font */
+.tabbrowser-tab .tab-text, #urlbar {
+    font-size: var(--fontsize) !important;
+}
 
 /* Tabs {{{ */
 #TabsToolbar, #tabbrowser-tabs, .tabbrowser-tab, #tabbrowser-tabs > .tabbrowser-arrowscrollbox {
     min-height: var(--tabsize) !important;
     max-height: var(--tabsize) !important;
-    /* margin-bottom: 1px !important; */
-    /* border: none !important; */
 }
-
-/* for some reason the background refuses to have the correct color */
-/* fix: don't move */
-/* .tabbrowser-tabs { */
-    /* margin-left: 5px !important; */
-/* } */
-
-/* .tabbrowser-tabs:not([drag=detach]) > .tabbrowser-tab:not([pinned])[fadein] { */
-/*     min-width: var(--tabwidth) !important;    /* tab width */ */
-/*     max-width: 100% !important; */
-/* } */
 
 
 /* tab icon/throbber placement */
@@ -81,7 +76,6 @@
 
 .tabbrowser-tab .tab-text {
     margin-left: var(--tabtext-offset) !important;
-    font-size: 11px !important;
 }
 
 /* }}} */
@@ -90,14 +84,9 @@
 
 /* navbar {{{ */
 
-/* hide zoom indicator */
-/* #urlbar-zoom-button { */
-/*     display: none !important; */
-/* } */
-
 #urlbar-container, #nav-bar {
-    max-height: var(--navbarsize) !important;     /* navbar height */
-    min-height: var(--navbarsize) !important;     /* navbar height */
+    /* max-height: var(--navbarsize) !important;     /* navbar height */ */
+    /* min-height: var(--navbarsize) !important;     /* navbar height */ */
     margin-top: 0px !important;
     border: none !important;
     padding: 0 !important;
@@ -108,9 +97,9 @@
     border-radius: 0 !important;
     background: var(--color-urlbar-bg) !important;
     color: var(--color-urlbar-fg) !important;
-    margin-top: calc((var(--navbarsize) - var(--urlbarsize)) / 2) !important;
-    max-height: var(--urlbarsize) !important;
-    min-height: var(--urlbarsize) !important;
+    /* margin-top: calc((var(--navbarsize) - var(--urlbarsize)) / 2) !important; */
+    /* max-height: var(--urlbarsize) !important; */
+    /* min-height: var(--urlbarsize) !important; */
 }
 
 #urlbar[breakout][breakout-extend] {
@@ -120,15 +109,9 @@
 }
 
 #urlbar {
-    font-size: 11px !important;
     border: none !important;
     border-radius: 0 !important;
 }
-
-
-/* .autocomplete-textbox.urlbar-input.textbox-input.uri-element-right-align:focus { */
-/*     background: var(--color-gray) !important; */
-/* } */
 
 #identity-box:hover {
     background: var(--color-bg) !important;
@@ -138,31 +121,15 @@
 
 
 /* make some buttons scale properly */
-#navbar toolbarbutton, #navbar .toolbarbutton-1, #navbar .toolbarbutton-badge-stack {
-    /* padding-top: 0px !important; */
-    /* padding-bottom: 0px !important; */
-    /* margin-top: -2px !important; */
-    /* margin-top: 2px !important; */
-    /* margin-bottom: 2px !important; */
-    max-height: var(--buttonsize) !important;
-}
-
-#downloads-button {
-    min-height: var(--buttonsize) !important;
-    max-height: var(--buttonsize) !important;
-}
-
-
-/* disable urlbar buttons */
-/* #page-action-buttons { */
-/*     visibility: collapse !important; */
+/* #navbar toolbarbutton, #navbar .toolbarbutton-1, #navbar .toolbarbutton-badge-stack { */
+/*     max-height: var(--buttonsize) !important; */
+/* } */
+/*  */
+/* #downloads-button { */
+/*     min-height: var(--buttonsize) !important; */
+/*     max-height: var(--buttonsize) !important; */
 /* } */
 
-/* fix dropmarker size */
-/* .autocomplete-history-dropmarker.urlbar-history-dropmarker { */
-/*     padding: 0 !important; */
-/*     margin: 0 !important; */
-/* } */
 
 /* hide alltabs button and tab scroll arrows */
 /* the position of this rule in the file actually matters for some reason */

@@ -4,6 +4,7 @@ local lain = require("lain")
 local wibox = require("wibox")
 local icons = require("icons")
 local BaseWidget = require("widgets.base").BaseWidget
+local beautiful = require("beautiful")
 
 local MPDWidget = BaseWidget.derive()
 
@@ -17,7 +18,7 @@ local mpdmenu = awful.menu({
         { "Toggle repeat", "mpc repeat" },
         { "Toggle single", "mpc single" },
     },
-    theme = { width = 120 }
+    theme = { width = beautiful.dpi(120) }
 })
 
 -- Strips the path part from the filename
@@ -39,6 +40,7 @@ end
 function MPDWidget:create(args)
     args = args or {}
     args.settings = function() self:updateText() end
+    self.autohide = args.autohide or true
 
     self.lainwidget = lain.widget.mpd(args)
     local widget = wibox.container.constraint(self.lainwidget.widget, "max", 125, nil)
@@ -46,6 +48,7 @@ function MPDWidget:create(args)
 
     local box = self:init(widget, args.icon or icons.mpd)
     self:attach(box)
+    self:update()
 end
 
 function MPDWidget:update()
@@ -54,18 +57,23 @@ end
 
 function MPDWidget:updateText()
     self.data = mpd_now
-    if mpd_now.state == "stop" then
+    self:get_container():set_visible(true)
+
+    if self.data.state == "stop" then
         widget:set_text("")
-    elseif mpd_now.title == "N/A" then
+        if self.autohide then
+            self:get_container():set_visible(false)
+        end
+    elseif self.data.title == "N/A" then
         widget:set_text(getFilename(self.data.file))
     else
-        widget:set_text(mpd_now.title)
+        widget:set_text(self.data.title)
     end
 end
 
 function MPDWidget:attach(box)
     box:buttons(awful.util.table.join(
-        awful.button({}, 1, function() utils.toggle_run_term("ncmpcpp -s visualizer") end),
+        awful.button({}, 1, function() utils.toggle_run_term("ncmpcpp") end),
         awful.button({}, 3, function() mpdmenu:toggle() end),
         awful.button({}, 4, function() awful.spawn("mpc volume +2") end),
         awful.button({}, 5, function() awful.spawn("mpc volume -2") end)

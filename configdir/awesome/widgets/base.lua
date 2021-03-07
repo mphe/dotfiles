@@ -1,4 +1,5 @@
 local wibox = require("wibox")
+local beautiful = require("beautiful")
 
 local M = {}
 
@@ -30,24 +31,34 @@ function BaseWidget:update()
 end
 
 -- widget and/or icon can be nil.
-function BaseWidget:init(widget, icon, force_size)
+function BaseWidget:init(widget, icon, margin)
+    margin = margin or beautiful.wibar_icon_margin
     self._container = wibox.layout.fixed.horizontal()
+
     if icon then
-        local imgbox = wibox.widget.imagebox(icon)
+        self._imgbox = wibox.widget.imagebox(icon)
         -- imgbox.forced_width = force_size
         -- imgbox.forced_height = force_size
-        -- imgbox.resize = true
-        self._container:add(imgbox)
+        -- imgbox.resize = false
+
+        if margin ~= 0 then
+            local imgcontainer = wibox.container.margin(self._imgbox, margin, margin, margin, margin)
+            self._container:add(imgcontainer)
+        else
+            self._container:add(self._imgbox)
+        end
     end
+
     if widget then
         self._container:add(widget)
     end
+
     return self._container
 end
 
 function BaseWidget:set_icon(icon)
-    if self._container then
-        self._container:get_children()[1].image = icon
+    if self._imgbox then
+        self._imgbox.image = icon
     end
 end
 

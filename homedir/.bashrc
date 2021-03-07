@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 #
 # ~/.bashrc
 #
@@ -13,7 +14,7 @@
 alias ls='ls -h --color=always --group-directories-first'
 alias ll='ls -l'
 alias less='less -r'
-alias pacaur='yay --sudoloop --devel'
+alias pacaur='yay'  # aliases work recursively
 alias yay='yay --sudoloop --devel'
 alias ranger='python3 $(which ranger)'
 alias youtube-dl='youtube-dl -o "%(title)s.%(ext)s"'
@@ -25,10 +26,11 @@ alias gcc='gcc -fdiagnostics-color=auto -Wall -Wno-switch'
 alias gdbrun='gdb -ex run'
 alias mkdir='mkdir -p'
 alias cdir='switchdir'
-alias make='make -j'
+alias make='make -j 6'
 alias hibernate='sudo systemctl hibernate'
 alias fcut='fpaste.sh cut'
 alias fcopy='fpaste.sh copy'
+alias flink='fpaste.sh link'
 alias fpaste='fpaste.sh paste'
 alias rm='echo this is no longer aliased to trash; rm'
 alias virtualenv='virtualenv --system-site-packages'
@@ -42,7 +44,11 @@ alias httrack='httrack --disable-security-limits --max-rate=0'
 alias grep='grep --exclude-dir=.git --color'
 alias open='xdg-open'
 # alias audacity='env PULSE_LATENCY_MSEC=60 audacity'
-alias audacity='pasuspender -- audacity'
+# alias audacity='pasuspender -- audacity'
+alias awconfig='vim ~/.config/awesome/rc.lua'
+alias awrules='vim ~/.config/awesome/rules.lua'
+alias awtheme='vim ~/.config/awesome/themes/custom/theme.lua'
+alias r=ranger-cd
 
 
 # thefuck (slow as fuck startup)
@@ -127,7 +133,7 @@ prompt_command() {
     # Fix virtualenv prompt when using PROMPT_COMMAND
     # https://stackoverflow.com/questions/14987013/why-is-virtualenv-not-setting-my-terminal-prompt
     if [ -z "$VIRTUAL_ENV_DISABLE_PROMPT" ] ; then
-        if [ "$(basename \"$VIRTUAL_ENV\")" = "__" ] ; then
+        if [ "$(basename "$VIRTUAL_ENV")" = "__" ] ; then
             # special case for Aspen magic directories
             # see http://www.zetadev.com/software/aspen/
             PS1+=" ${green}[$(basename "$(dirname "$VIRTUAL_ENV")")]$reset"
@@ -145,8 +151,14 @@ prompt_command() {
 
 
 # solarized dircolor (ls, usw)
-eval $(dircolors ~/.dir_colors/dircolors.ansi-dark)
+eval "$(dircolors ~/.dir_colors/dircolors.ansi-dark)"
 # eval $(dircolors ~/.dir_colors/dircolors_alt)
+
+# This must come after setting dircolors, otherwise colors will be wrong.
+# .inputrc is apparently executed before .bashrc, so this needs to be here.
+bind 'set colored-stats On'
+bind 'set colored-completion-prefix On'
+bind 'set menu-complete-display-prefix On'
 
 
 # env vars
@@ -189,7 +201,7 @@ switchdir() {
     fi
     local dir="$(pwd | rev | sed -e "s/$src\//$dest\//" | rev)"
     mkdir -p "$dir"
-    cd "$dir"
+    cd "$dir" || return 1
 }
 
 
@@ -199,7 +211,11 @@ set_title() {
 }
 
 preexec() {
-    [[ "$BASH_COMMAND" == "prompt_command" ]] && set_title $PWD || set_title $BASH_COMMAND
+    if [[ "$BASH_COMMAND" == "prompt_command" ]]; then
+        set_title "$PWD"
+    else
+        set_title "$BASH_COMMAND"
+    fi
 }
 
 trap preexec DEBUG
@@ -216,4 +232,21 @@ activate() {
         fi
     fi
     source "$dir/bin/activate"
+}
+
+# https://unix.stackexchange.com/questions/342064/ranger-cd-into-a-folder-and-invoke-shell
+function ranger-cd {
+    local IFS=$'\t\n'
+    local tempfile="$(mktemp -t tmp.XXXXXX)"
+    local ranger_cmd=(
+        command
+        ranger
+        --cmd="map Q chain shell echo %d > "$tempfile"; quitall"
+    )
+
+    "${ranger_cmd[@]}" "$@"
+    if [[ -f "$tempfile" ]] && [[ "$(cat -- "$tempfile")" != "$(echo -n `pwd`)" ]]; then
+        cd -- "$(cat "$tempfile")" || return
+    fi
+    command rm -f -- "$tempfile" 2>/dev/null
 }

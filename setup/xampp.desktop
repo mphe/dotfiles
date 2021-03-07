@@ -1,0 +1,12 @@
+[Desktop Entry]
+Encoding=UTF-8
+Version=1.0
+Name=XAMPP Control Panel
+Comment=XAMPP control panel
+Exec=pkexec --user root /opt/lampp/manager-linux-x64.run
+StartupWMClass=XAMPP
+Icon=xampp
+Terminal=false
+Type=Application
+Categories=Database;Network;RemoteAccess;WebDevelopment;
+

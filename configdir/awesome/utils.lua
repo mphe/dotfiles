@@ -1,6 +1,7 @@
 local awful = require("awful")
 local naughty = require("naughty")
 local menubar = require("menubar")
+local globals = require("globals")
 
 local M = {}
 
@@ -80,17 +81,18 @@ end
 
 -- Open a terminal and run a command inside
 function M.run_term(cmd, rules)
-    awful.spawn.spawn(string.format(terminal_cmd_format, cmd), rules)
+    awful.spawn.spawn(string.format(globals.terminal_cmd_format, cmd), rules)
 end
 
 -- Run the process if it isn't already running, otherwise kill it.
 function M.toggle_run(cmd)
-    awful.spawn.with_shell("pkill -u $USER -fnx \"" .. cmd .. "\" || " .. cmd)
+    awful.spawn.with_shell(string.format("pkill -u $USER -fnx \"%s\" || %s", cmd, cmd))
 end
 
 -- Same as above but open a terminal
 function M.toggle_run_term(cmd)
-    awful.spawn.with_shell("pkill -u $USER -fnx \"" .. terminal_cmd .. cmd .. "\" || " .. string.format(terminal_cmd_format, cmd))
+    awful.spawn.with_shell(string.format("pkill -u $USER -fnx \"%s%s\" || %s",
+        globals.terminal_cmd, cmd, string.format(globals.terminal_cmd_format, cmd)))
 end
 
 -- Add mouse enter/leave signal to a widget.
@@ -145,5 +147,66 @@ function M.menu_entry(title, program, icon_name)
     icon_name = icon_name or program
     return { title, program, menubar.utils.lookup_icon(icon_name) }
 end
+
+
+function M.do_placement(c)
+    -- except rules
+    if (c.class == "TelegramDesktop" and c.name == "Media viewer")
+        or c.class == "Unity"
+        or c.class == "jetbrains-studio"
+        or c.class == "xpad" then
+        return
+    end
+
+    local placement_rule = awful.placement.centered+awful.placement.no_offscreen
+
+    if c.motif_wm_hints then
+        -- local hint = c.motif_wm_hints.functions
+        -- if hint then utils.debugtable(hint, "Functions") end
+        -- hint = c.motif_wm_hints.decorations
+        -- if hint then utils.debugtable(hint, "Deco") end
+
+        local hint = c.motif_wm_hints.functions
+        -- if not hint then
+        --     hint = c.motif_wm_hints.decorations
+        -- end
+
+        if hint then
+            local skip = hint.resize or hint.move or hint.maximize
+            skip = skip ~= hint.all
+
+            if skip then
+                placement_rule(c)
+                return
+            end
+        end
+    end
+
+    local sw = c.screen.workarea.width
+    local sh = c.screen.workarea.height
+    local cw = c:geometry().width
+    local ch = c:geometry().height
+
+    if ch > sh then
+        cw = cw * sh / ch
+        c:geometry({ height = sh, width = cw })
+    end
+    if cw > sw then
+        local fac = sh / ch
+        c:geometry({ width = sw, height = ch * fac })
+    end
+
+    placement_rule(c, { honor_workarea = true })
+end
+
+
+function M.Set(list)
+    local set = {}
+    for _, l in ipairs(list) do
+        set[l] = true
+    end
+    return set
+end
+
 
 return M

@@ -9,31 +9,37 @@ local BatWidget = BaseWidget.derive()
 function BatWidget:create(args)
     args = args or {}
     args.settings = function()
-        widget:set_markup(bat_now.perc .. "%")
+        -- luacheck: globals bat_now widget
+        if bat_now.ac_status == 1 then
+            widget:set_markup(bat_now.perc .. "%")
+        else
+            local hours, minutes = string.match(bat_now.time, "(%d+):(%d+)")
+            widget:set_markup(string.format("%s%% (%d:%02dh)", bat_now.perc, hours, minutes))
+        end
+
         self.data = bat_now
         self:updateIcon()
 
-        -- Calculate wear level
+        -- Calculate remaining capacity
         -- TODO: Consider adding this in lain and create a pull request
-        local batpath = "/sys/class/power_supply/" .. (args.battery or "BAT1")
+        local batpath = "/sys/class/power_supply/" .. (args.battery or "BAT0")
         local charge_full = utils.read_number(batpath .. "/charge_full", 0)
         local charge_full_design = utils.read_number(batpath .. "/charge_full_design", nil)
 
         if not charge_full_design or charge_full_design == 0 then
-            self.data.wear_perc = "N/A"
+            self.data.capacity_perc = "N/A"
         else
-            self.data.wear_perc = math.floor((charge_full / charge_full_design) * 100)
+            self.data.capacity_perc = math.floor((charge_full / charge_full_design) * 100)
         end
     end
 
-    self.oldstatus = 1
     self.lainwidget = lain.widget.bat(args)
     local box = self:init(self.lainwidget.widget, args.icon or icons.ac)
-    self:updateIcon(true)
+    self:updateIcon()
 
     utils.registerPopupNotify(box, "Battery", function(w)
-            return string.format("Time remaining:\t%s\nWear Level:\t%s%%",
-                self.data.time, self.data.wear_perc)
+            return string.format("Time remaining:\t%s\nCapacity:\t%s%%",
+                self.data.time, self.data.capacity_perc)
         end)
 
     box:buttons(awful.util.table.join(
@@ -42,16 +48,14 @@ function BatWidget:create(args)
 
 end
 
-function BatWidget:updateIcon(force)
-    force = force or false
-    if not force and self.data.ac_status == self.oldstatus then
-        return
-    elseif self.data.ac_status == 1 then
-        self:set_icon(icons.ac)
+function BatWidget:updateIcon()
+    local perc_nearest = tostring((math.floor((self.data.perc + 5) / 10) * 10))
+
+    if self.data.ac_status == 1 then
+        self:set_icon(icons["ac_" .. perc_nearest])
     else
-        self:set_icon(icons.bat)
+        self:set_icon(icons["bat_" .. perc_nearest])
     end
-    self.oldstatus = self.data.ac_status
 end
 
 function BatWidget:update()

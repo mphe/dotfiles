@@ -1,0 +1,10 @@
+/* xfdesktop */
+XfdesktopIconView.view {
+	/* -XfdesktopIconView-label-alpha:0; */
+	/* -XfdesktopIconView-selected-label-alpha:0; */
+	/* -XfdesktopIconView-ellipsize-icon-labels:0; */
+	/* -XfdesktopIconView-tooltip-size:128; */
+	-XfdesktopIconView-cell-spacing:0;
+	-XfdesktopIconView-cell-padding:0;
+	-XfdesktopIconView-cell-text-width-proportion:2.3;
+}

@@ -1,5 +1,4 @@
 local awful = require("awful")
-local wibox = require("wibox")
 local utils = require("utils")
 local icons = require("icons")
 local lain = require("lain")
@@ -27,7 +26,7 @@ local function print_info(name, data)
         string.rep("█", barsize - barused)
     )
 
-    return string.format("\n<b>%s</b>\n\t%s %s\n\tFree:\t\t%.2f %s\n\tUsed:\t%.2f %s\n\tSize:\t\t%.2f %s\n",
+    return string.format("\n<b>%s</b>\n\t%s %s\n\tFree:\t\t%.2f %s\n\tUsed:       \t%.2f %s\n\tSize:\t\t%.2f %s\n",
         name,
         barstring, percentage,
         data.free, units,
@@ -40,7 +39,9 @@ function FSWidget:generate_popup_string()
     local s = ""
 
     for k in pairs(self.data) do
-        table.insert(keys, k)
+        if self.blacklist[k] == nil then
+            table.insert(keys, k)
+        end
     end
 
     table.sort(keys)
@@ -58,12 +59,14 @@ function FSWidget:create(args)
     args.notification_preset = args.notification_preset or naughty.config.defaults
     args.partition           = args.partition or "/"
     args.showpopup           = "off"
+    args.blacklist           = args.blacklist or {}
     args.settings            = function()
         self.data = fs_now
         widget:set_markup(fs_now["/"].percentage .. "%")
         self.popuptext = self:generate_popup_string()
     end
 
+    self.blacklist = utils.Set(args.blacklist)
     self.partition = args.partition
     self.popuptext = ""
     self.lainwidget = lain.widget.fs(args)

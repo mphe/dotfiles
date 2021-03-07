@@ -17,6 +17,10 @@ set shortmess+=c
 " always show signcolumns
 " set signcolumn=yes
 
+let g:coc_global_extensions = [ 'coc-snippets', 'coc-highlight', 'coc-actions',
+            \ 'coc-vimlsp', 'coc-sh', 'coc-python', 'coc-lua',
+            \ 'coc-json', 'coc-html', 'coc-css' ]
+
 " Use tab for trigger completion with characters ahead and navigate.
 " Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
 inoremap <silent><expr> <TAB>
@@ -210,3 +214,5 @@ function FloatScrollMultiple(down)
     call FloatScroll(a:down)
     return FloatScroll(a:down)
 endfun
+
+command! CocOutput CocCommand workspace.showOutput

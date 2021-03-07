@@ -39,7 +39,7 @@ program_options:
     # [string|list] Set command to be executed on any device event.
     # This is specified like `password_prompt`.
 
-# device_config:
+device_config:
 
   # List of device option rules. Each item can match any combination of device
   # attributes. Additionally, it defines the resulting action (see below).
@@ -64,6 +64,8 @@ program_options:
 
 # mount_options:              # [deprecated] do not use
 # ignore_device:              # [deprecated] do not use
+ - id_type: crypto_LUKS
+   ignore: true
 
 # notifications:
 #   # Customize which notifications are shown for how long. Possible

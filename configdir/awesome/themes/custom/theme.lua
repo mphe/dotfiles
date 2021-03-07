@@ -5,37 +5,43 @@
 local gears = require("gears")
 local theme_assets = require("beautiful.theme_assets")
 local xresources = require("beautiful.xresources")
-local dpi = xresources.apply_dpi
+local real_dpi = xresources.apply_dpi
 local gfs = require("gears.filesystem")
 local themes_path = gfs.get_themes_dir()
 local menubar = require("menubar")
 -- local gtk = require("beautiful.gtk")
 
+local DPI_SCALE = 0.8
+
+local dpi = function(value, ...)
+    return real_dpi(value * DPI_SCALE, ...)
+end
 
 local theme = {}
+theme.dpi = dpi  -- Expose dpi function for other scripts
 
 
 function theme.lookup_icon(name, color)
     color = color or theme.fg_normal
-    local path = menubar.utils.lookup_icon(name)
-    if path then
-        return path
-    end
+    local image = menubar.utils.lookup_icon(name)
 
-    local function try(icondir)
-        icondir = string.format("%s/%s/symbolic/", icondir, theme.icon_theme)
-        if gears.filesystem.is_dir(icondir) then
+    if not image then
+        local function try(icondir)
+            icondir = string.format("%s/%s/symbolic/", icondir, theme.icon_theme)
             local fname = icondir .. name .. "-symbolic.svg"
-            if gears.filesystem.file_readable(fname) then
-                return fname
+            if gears.filesystem.is_dir(icondir) then
+                if gears.filesystem.file_readable(fname) then
+                    return fname
+                end
             end
+            print("Error: Icon " .. fname .. " not found")
+            return nil
         end
-        return nil
-    end
 
-    local image = try(string.format("%s/.icons", os.getenv("HOME")))
-        or try("/usr/share/icons")
-        or try("/usr/share/icons/hicolor")
+        image = try(string.format("%s/.icons", os.getenv("HOME")))
+            or try("/usr/share/icons")
+            or try("/usr/share/icons/hicolor")
+    end
 
     if image then
         image = gears.color.recolor_image(image, color)
@@ -48,20 +54,18 @@ end
 -- from /usr/share/icons and /usr/share/icons/hicolor will be used.
 theme.icon_theme = "oomox-numix_awesome_icons"
 
-theme.font          = "Sans 8"
+theme.font          = "Sans 7"
+-- theme.font          = "Open Sans 7"
 
 theme.bg_normal     = "#222222"
--- theme.bg_focus      = "#3a3a3a"
 theme.bg_focus      = "#535d6c"
 theme.bg_urgent     = "#ff0000"
--- theme.bg_minimize   = "#333333"
 theme.bg_minimize   = "#444444"
 theme.bg_systray    = theme.bg_normal
 
 theme.fg_normal     = "#aaaaaa"
 theme.fg_focus      = "#ffffff"
 theme.fg_urgent     = "#ffffff"
--- theme.fg_minimize     = "#999999"
 theme.fg_minimize   = "#ffffff"
 
 theme.useless_gap   = dpi(2)
@@ -124,6 +128,10 @@ theme.taglist_squares_unsel = theme_assets.taglist_squares_unsel(
     taglist_square_size, theme.fg_normal
 )
 
+theme.wibar_icon_margin = dpi(4)
+-- theme.wibar_height = dpi(26)
+
+
 -- Variables set for theming notifications:
 -- notification_font
 -- notification_[bg|fg]
@@ -139,6 +147,7 @@ theme.notification_icon_size = dpi(75)
 theme.menu_submenu_icon = themes_path.."default/submenu.png"
 theme.menu_height = dpi(20)
 theme.menu_width  = dpi(100)
+theme.main_menu_width = dpi(150)
 
 theme.titlebar_size = dpi(25)
 theme.titlebar_margin = dpi(3)
@@ -205,14 +214,6 @@ theme.layout_cornernw = layoutdir .. "cornernw.png"
 theme.layout_cornerne = layoutdir .. "cornerne.png"
 theme.layout_cornersw = layoutdir .. "cornersw.png"
 theme.layout_cornerse = layoutdir .. "cornerse.png"
-
--- vain stuff
-local vaindir = layoutdir .. "vain/"
-theme.layout_termfair      = vaindir .. "termfairw.png"
-theme.layout_browse        = vaindir .. "browsew.png"
-theme.layout_cascade       = vaindir .. "cascadew.png"
-theme.layout_cascadebrowse = vaindir .. "cascadebrowsew.png"
-theme.layout_centerwork    = vaindir .. "centerworkw.png"
 
 -- Generate Awesome icon:
 -- theme.awesome_icon = theme_assets.awesome_icon(

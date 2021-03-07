@@ -1,13 +1,18 @@
 {
     // { 'error': "\uf05e  ", 'warning': "\uf071  ", 'info': "\uf05a  " }
-    "diagnostic.errorSign": ">>",
-    "diagnostic.warningSign": "!!",
-    "diagnostic.infoSign": "?",
-    "diagnostic.hintSign": "?",
+    // "codeLens.enable": true,
+    "diagnostic.enableSign": true,
+    // "diagnostic.errorSign": ">>",
+    // "diagnostic.warningSign": "!!",
+    "diagnostic.errorSign": " ",
+    "diagnostic.warningSign": " ",
+    "diagnostic.infoSign": " ",
+    "diagnostic.hintSign": " ",
     "diagnostic.displayByAle": true,
     "diagnostic.enableMessage": "always",
     "diagnostic.messageTarget": "echo",
     "diagnostic.refreshOnInsertMode": true,
+    "diagnostic.locationlistUpdate": true,
     // "diagnostic.locationlist": true,
     "sh.enable": false,
     "coc.preferences.colorSupport": true,
@@ -31,7 +36,7 @@
         "field": " ",
         "constant": " ",
         "module": " ",
-        "file": " ",
+        "file": " "
         // "text": "\ue612",
         // "color": "\ue22b",
         // "unit": "\uf475",
@@ -45,11 +50,17 @@
     },
 
     "highlight.colors.enable": false,
+    "lua.version": "5.3",
 
-    // "markdownlint.config": {
-    //     "default": true,
-    //     "line_length": false
-    // },
+    "markdownlint.config": {
+        "default": true,
+        "line_length": false,
+        "emphasis": false,
+        "blank_lines": false,
+        "header-increment": false,
+        "single-title": false,
+        "no-inline-html": false
+    },
 
     "python.jediEnabled": true,
     "python.formatting.provider": "black",
@@ -61,6 +72,16 @@
     "python.linting.pylintArgs": [ "--disable=C,too-few-public-methods,global-statement,useless-object-inheritance,try-except-raise,broad-except,too-many-branches,too-many-arguments" ],
     "python.linting.pylintUseMinimalCheckers": false,
     "python.linting.mypyEnabled": true,
+
+    "latex.lint.onSave": true,
+    "latex.lint.onChange": false,
+    "latex.forwardSearch.executable": "zathura",
+    "latex.forwardSearch.args": [ "--synctex-forward", "%l:1:%f", "%p" ],
+    "latex.build.onSave": true,
+    "latex.build.args": [ "-pdf", "-interaction=nonstopmode", "-synctex=1", "-pvc", "%f" ],
+
+    // "cSpell.enabled": false,
+    // "cSpell.enabledLanguageIds": [ "tex" ],
 
     "languageserver": {
         // "clangd": {
@@ -85,12 +106,5 @@
             "filetypes": ["gd", "gdscript3"],
             "port": 6008
         }
-        // "efm": {
-        //     "command": "efm-langserver",
-        //     "args": [],
-        //     // custom config path
-        //     // "args": ["-c", "/path/to/your/config.yaml"],
-        //     "filetypes": ["vim", "eruby", "markdown"]
-        // }
     }
 }

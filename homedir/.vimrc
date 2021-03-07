@@ -13,7 +13,7 @@ set tabstop=4
 set expandtab
 set smarttab
 set autoindent
-set cino+=j1
+set cinoptions+=j1
 
 " enable folding
 set foldmethod=syntax
@@ -39,8 +39,11 @@ let mapleader = ','
 " Don't wrap lines
 set nowrap
 
-" set breakindentopt=shift:4
-
+" set breakindentopt=shift:2
+" set showbreak=↳\ |
+" set showbreak=⇥\ |
+" set showbreak=⭲\ |
+set cpoptions+=n " remove background from line number column on wrapped lines
 
 " Change buffers without writing changes to a file
 set hidden
@@ -55,7 +58,7 @@ set nrformats+=alpha
 set noshowmode
 
 " Disable visual and audio bell
-set vb t_vb=
+set visualbell t_vb=
 set novisualbell
 
 set viewoptions=cursor,folds,slash,unix
@@ -84,18 +87,28 @@ set breakindent
 
 set display+=lastline
 
-" - Auto insert comment leader on newline
-" - Remove comment leader when joining if it makes sense
-autocmd FileType * setlocal formatoptions+=croj
-
 " set smartcase
 " set ignorecase
 
 set colorcolumn=80
 
+set mouse=a
+
 " Enable doxygen tag highlighting
 let g:load_doxygen_syntax = 1
 
+" Prevent lag when inserting new lines in python files due to indent scripts
+let g:pyindent_searchpair_timeout = 10
+let g:python_pep8_indent_searchpair_timeout = 10
+
+
+" ALE configs that need to be set before ALE is loaded
+let g:ale_lint_on_enter = 1
+let g:ale_lint_on_filetype_changed = 1
+let g:ale_lint_on_text_changed = 1
+let g:ale_lint_on_save = 1
+let g:ale_lint_on_insert_leave = 0
+let g:ale_lint_delay = 2000
 " -------------------------------------- General settings end }}}
 
 
@@ -107,7 +120,7 @@ cnoreabbrev git Git
 " -------------------------------------- Aliases end }}}
 
 
-" -------------------------------------- Functions {{{
+" -------------------------------------- Functions and Commands {{{
 
 " Function for time measurement
 function! HowLong(command)
@@ -123,46 +136,31 @@ endfunction
 
 command! -nargs=1 HowLong call HowLong(<q-args>)
 
-function! ToggleLatexMath()
-    if ! exists('s:latex_math_mode')
-        let s:latex_math_mode = 1
-    else
-        let s:latex_math_mode = !s:latex_math_mode
-    endif
 
-    if s:latex_math_mode
-        inoremap * \cdot
-        inoremap ( \left(
-        inoremap ) \right)
-        let g:delimitMate_matchpairs = '[:],{:},<:>'
-        DelimitMateReload
-        let g:surround_{char2nr(')')} = "\\left(\r\\right)"
-        let g:surround_{char2nr('(')} = "\\left( \r \\right)"
-        let g:surround_{char2nr(']')} = "\\left[\r\\right]"
-        let g:surround_{char2nr('[')} = "\\left[ \r \\right]"
-        let g:surround_{char2nr('}')} = "\\left{\r\\right}"
-        let g:surround_{char2nr('{')} = "\\left{ \r \\right}"
-    else
-        iunmap *
-        iunmap (
-        iunmap )
-        let g:delimitMate_matchpairs = '(:),[:],{:},<:>'
-        DelimitMateReload
-        let g:surround_{char2nr(')')} = "(\r)"
-        let g:surround_{char2nr('(')} = "( \r )"
-        let g:surround_{char2nr(']')} = "[\r]"
-        let g:surround_{char2nr('[')} = "[ \r ]"
-        let g:surround_{char2nr('}')} = "{\r}"
-        let g:surround_{char2nr('{')} = "{ \r }"
-    endif
-    return ''
+function RunClangTidy()
+    let l:checks = join(ale#Var(bufnr('%'), 'cpp_clangtidy_checks'), ',')
+    exec '!clang-tidy ' . shellescape(expand('%:p')) . ' --fix --fix-errors --checks=' . shellescape(l:checks)
+    normal <esc>
+    e
+    ALELint
+endfun
+
+command! ClangTidy call RunClangTidy()
+
+function! ProfileStart()
+    profile start profile.log
+    profile func *
+    profile file *
 endfunction
 
-function! ShowPreview()
-    call feedkeys("i\<c-space>\<c-n>\<esc>")
+function! ProfileStop()
+    profile pause
+    echo 'Quit vim now'
+    " noautocmd qall!
 endfunction
 
-command! ToggleLatexMath call ToggleLatexMath()
+" change directory to current file
+command! Cdhere cd %:h
 
 " -------------------------------------- Functions end }}}
 
@@ -190,7 +188,7 @@ Plug 'tomtom/tcomment_vim'
 
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'OmniSharp/omnisharp-vim'
-Plug 'Shougo/echodoc.vim'
+" Plug 'Shougo/echodoc.vim'
 
 Plug 'Raimondi/delimitMate'
 Plug 'airblade/vim-gitgutter'
@@ -208,7 +206,8 @@ Plug 'Shougo/vimproc.vim'
 Plug 'dhruvasagar/vim-table-mode'
 " Plug '~/dev/python/grayout.vim'
 " Plug 'mphe/grayout.vim'
-Plug 'LaTeX-Box-Team/LaTeX-Box'
+" Plug 'LaTeX-Box-Team/LaTeX-Box'
+Plug 'lervag/vimtex'
 Plug 'kana/vim-textobj-indent'
 Plug 'kana/vim-textobj-user'
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
@@ -216,7 +215,7 @@ Plug 'vim-scripts/ReplaceWithRegister'
 Plug 'derekwyatt/vim-fswitch'
 Plug 'derekwyatt/vim-protodef'
 Plug 'tmhedberg/SimpylFold'
-Plug 'hynek/vim-python-pep8-indent'
+Plug 'Vimjas/vim-python-pep8-indent'
 Plug 'vim-python/python-syntax'
 Plug 'withgod/vim-sourcepawn'
 Plug 'junegunn/vim-easy-align'
@@ -236,6 +235,11 @@ Plug 'amadeus/vim-convert-color-to'
 Plug 'mingchaoyan/vim-shaderlab'
 Plug 'wsdjeg/FlyGrep.vim'
 Plug 'tikhomirov/vim-glsl'
+" Plug 'beyondmarc/glsl.vim'
+" Plug 'petrbroz/vim-glsl'
+Plug 'captbaritone/better-indent-support-for-php-with-html'
+Plug 'mattn/emmet-vim'
+Plug 'kosayoda/nvim-lightbulb'
 
 Plug 'inkarkat/vim-ingo-library'
 Plug 'inkarkat/vim-EnhancedJumps'
@@ -341,19 +345,18 @@ let g:UltiSnipsJumpForwardTrigger='<c-j>'
 let g:UltiSnipsJumpBackwardTrigger='<c-k>'
 let g:ultisnips_java_brace_style='nl'
 
+command! UltiSnipReload call UltiSnips#RefreshSnippets()
 
 " ale
-" let g:ale_enabled = 0
-
-" let g:ale_linters = {
-"     \ 'cpp': [],
-"     \ 'c': [] }
+let g:ale_disable_lsp = 1
 
 let g:ale_linters = {
     \ 'cpp': [ 'clangtidy' ],
     \ 'c': [ 'clangtidy' ],
     \ 'java': [],
     \ 'gdscript3': [],
+    \ 'tex': [],
+    \ 'css': [],
     \ 'cs': [ 'OmniSharp' ],
     \ }
 let g:ale_fixers = {
@@ -361,6 +364,8 @@ let g:ale_fixers = {
     \ 'c': [ 'clangtidy' ],
     \ 'java': [],
     \ }
+
+let g:ale_linters_ignore = [ 'lacheck' ]
 
 let g:ale_cs_csc_options = ' /warn:4 /langversion:7.2'
 
@@ -377,9 +382,8 @@ let g:ale_type_map = {
             \ }
 
 let g:ale_python_flake8_options = '--ignore=F403,F401,E201,E202,F841,E501,E221,E241,E722,F405'
-let g:ale_python_pylint_options = '--disable=C,too-few-public-methods,global-statement,useless-object-inheritance,try-except-raise,broad-except,too-many-branches,too-many-arguments,protected-access'
-" let g:ale_python_mypy_options = '--show-error-context --show-column-numbers --no-strict-optional --ignore-missing-imports --check-untyped-defs --allow-untyped-globals --follow-imports=silent'
-let g:ale_python_mypy_options = '--namespace-packages --show-error-context --show-column-numbers --no-strict-optional --ignore-missing-imports --check-untyped-defs --allow-untyped-globals'
+let g:ale_python_pylint_options = '-j 4 --ignored-modules=scapy,numpy,matplotlib,pyplot --disable=C,syntax-error,too-few-public-methods,global-statement,useless-object-inheritance,try-except-raise,broad-except,too-many-branches,too-many-arguments,protected-access'
+let g:ale_python_mypy_options = '--namespace-packages --show-error-codes --show-error-context --show-column-numbers --no-strict-optional --ignore-missing-imports --check-untyped-defs --allow-untyped-globals'
 let g:ale_python_mypy_ignore_invalid_syntax = 1
 let g:ale_python_mypy_show_notes = 0
 
@@ -390,12 +394,15 @@ let g:ale_lua_luacheck_options = ''
 " let g:ale_lint_on_enter = 1
 " let g:ale_lint_on_filetype_changed = 1
 " let g:ale_lint_on_text_changed = 1
-let g:ale_lint_on_insert_leave = 1
-let g:ale_lint_on_save = 1
+" let g:ale_lint_on_insert_leave = 1
+" let g:ale_lint_on_save = 1
 
 let g:ale_echo_msg_format = '[ale][%linter%] %code: %%s'
-let g:ale_sign_warning = '!!'
-let g:ale_sign_info = '?'
+let g:ale_sign_warning = ' '
+let g:ale_sign_info = ' '
+let g:ale_sign_error = ' '
+" let g:ale_sign_warning = '!!'
+" let g:ale_sign_info = '?'
 " let g:ale_sign_error = "\uf05e  "
 " let g:ale_sign_warning = "\uf071  "
 " let g:ale_sign_info = "\uf05a  "
@@ -417,6 +424,16 @@ let g:ctrlp_custom_ignore = {
             \ }
 " let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files . -c -o --exclude-standard && git submodule --quiet foreach --recursive "git ls-files . -c -o --exclude-standard"', 'find %s -type f']
 
+" vimtex
+let g:vimtex_view_method = 'zathura'
+let g:vimtex_compiler_enabled = 0
+let g:vimtex_complete_enabled = 0
+let g:vimtex_delim_timeout = 10
+let g:vimtex_delim_insert_timeout = 10
+let g:vimtex_fold_enabled = 0
+let g:vimtex_imaps_enabled = 0
+let g:vimtex_mappings_enabled = 0
+
 " latex box
 let g:LatexBox_viewer = 'zathura'
 let g:LatexBox_complete_inlineMath = 1
@@ -424,9 +441,55 @@ let g:LatexBox_custom_indent = 0
 let g:LatexBox_Folding = 1
 let g:LatexBox_fold_automatic = 0
 let g:LatexBox_quickfix = 4
-" let g:LatexBox_fold_sections=[ "part", "chapter", "section", "subsection", "subsubsection", "paragraph", "subparagraph" ]
-" let g:LatexBox_completion_close_braces = 0
-" let g:LatexBox_complete_inlineMath = 0
+let g:LatexBox_fold_sections=[ 'part', 'chapter', 'section', 'subsection', 'subsubsection', 'paragraph', 'subparagraph' ]
+let g:LatexBox_completion_close_braces = 0
+let g:LatexBox_complete_inlineMath = 0
+
+command! LatexPreview silent exec '!zathura ' . expand('%:p:r') . '.pdf' . '&'
+command! LatexJump CocCommand latex.ForwardSearch
+
+let g:tex_flavor = 'latex'
+
+" Remaps some keys for easier latex math input, e.g. * -> \cdot.
+inoremap <expr> <F4> ToggleLatexMath()
+
+function! ToggleLatexMath()
+    if ! exists('s:latex_math_mode')
+        let s:latex_math_mode = 1
+    else
+        let s:latex_math_mode = !s:latex_math_mode
+    endif
+
+    if s:latex_math_mode
+        inoremap * \cdot
+        inoremap ( \left(
+        inoremap ) \right)
+        let g:delimitMate_matchpairs = '[:],{:},<:>'
+        DelimitMateReload
+        let g:surround_{char2nr(')')} = "\\left(\r\\right)"
+        let g:surround_{char2nr('(')} = "\\left( \r \\right)"
+        let g:surround_{char2nr(']')} = "\\left[\r\\right]"
+        let g:surround_{char2nr('[')} = "\\left[ \r \\right]"
+        let g:surround_{char2nr('}')} = "\\left{\r\\right}"
+        let g:surround_{char2nr('{')} = "\\left{ \r \\right}"
+    else
+        iunmap *
+        iunmap (
+        iunmap )
+        let g:delimitMate_matchpairs = '(:),[:],{:},<:>'
+        DelimitMateReload
+        let g:surround_{char2nr(')')} = "(\r)"
+        let g:surround_{char2nr('(')} = "( \r )"
+        let g:surround_{char2nr(']')} = "[\r]"
+        let g:surround_{char2nr('[')} = "[ \r ]"
+        let g:surround_{char2nr('}')} = "{\r}"
+        let g:surround_{char2nr('{')} = "{ \r }"
+    endif
+    return ''
+endfunction
+
+command! ToggleLatexMath call ToggleLatexMath()
+
 
 " tcomment
 let g:tcommentLineC = {
@@ -434,6 +497,7 @@ let g:tcommentLineC = {
             \ 'replacements': g:tcomment#replacements_c
             \ }
 call tcomment#type#Define('c', g:tcommentLineC)
+call tcomment#type#Define('glsl', g:tcommentLineC)
 
 " protodef
 let g:disable_protodef_sorting = 1
@@ -503,7 +567,7 @@ map <c-o> <Plug>EnhancedJumpsLocalOlder
 map <c-i> <Plug>EnhancedJumpsLocalNewer
 
 " grayout.vim
-" let g:grayout_debug_logfile = 0
+let g:grayout_debug_logfile = 1
 " autocmd CursorHold,CursorHoldI * if &ft == 'c' || &ft == 'cpp' || &ft == 'objc' | exec 'GrayoutUpdate' | endif
 
 " omnisharp-vim
@@ -530,7 +594,8 @@ let g:echodoc#type = 'floating'
 
 
 " -------------------------------------- Autocmds {{{
-
+augroup vimrc_autocmds
+au!
 " Don't screw up folds when inserting text that might affect them,
 " until leaving insert mode.
 " autocmd InsertEnter * if !exists('w:last_fdm') | let w:last_fdm=&foldmethod | setlocal foldmethod=manual | endif
@@ -540,22 +605,26 @@ let g:echodoc#type = 'floating'
 " autocmd BufWinLeave * if !&diff && strlen(expand('%')) && &ft != 'gitcommit' | mkview | endif
 " autocmd BufRead * if !&diff && strlen(expand('%')) && &ft != 'gitcommit' | silent! loadview | endif
 
-" automatically :retab on save
-" autocmd BufWritePre * :retab
-
-" filetype specific foldmethods
+" filetype specific settings
 autocmd FileType cmake,vim,lua setlocal foldmethod=marker
 autocmd FileType sourcepawn,json,jsonc setlocal commentstring=//\ %s
 autocmd FileType text,markdown,tex,unknown setlocal wrap
+autocmd FileType markdown setlocal shiftwidth=2 | setlocal tabstop=2
+
+" cursorline in php or html files often severe massive lags
+autocmd FileType * setlocal cursorline
+autocmd FileType php,html,tex setlocal nocursorline
 
 " autoclose location list after jump
 autocmd FileType qf nmap <buffer> <cr> <cr>:lcl<cr>
 
+autocmd FileType * setlocal formatoptions+=croj
 
 " Set filetype by extension
 autocmd BufRead,BufNewFile *.fsh set filetype=glsl
 autocmd BufRead,BufNewFile *.vsh set filetype=glsl
 
+augroup END
 " -------------------------------------- Autocmds end }}}
 
 
@@ -587,10 +656,10 @@ vnoremap < <gv
 imap <F2> <c-_><c-_>
 
 " better j and k
-nnoremap j gj
-nnoremap k gk
-xnoremap j gj
-xnoremap k gk
+nmap j gj
+nmap k gk
+xmap j gj
+xmap k gk
 
 " Easy split navigation
 nnoremap <s-tab> <c-w><c-w>
@@ -669,9 +738,6 @@ set langmap=ö{,ä},Ö[,Ä]
 " Repeat last ex command
 nnoremap ; @:
 
-" Remaps some keys for easier latex math input, e.g. * -> \cdot.
-inoremap <expr> <F4> ToggleLatexMath()
-
 " Find next character when using f/F or t/T
 nnoremap <space> ;
 vnoremap <space> ;
@@ -690,14 +756,18 @@ autocmd FileType c,cpp
 
 " F5
 function! F5Refresh()
-    if &filetype == 'java'
+    if &filetype ==# 'java'
         Validate
-    elseif &filetype == 'tex'
-        Latexmk
-    elseif &filetype == 'markdown' || &filetype == 'md'
+    elseif &filetype ==# 'tex'
+        if exists(':Latexmk')
+            Latexmk
+        elseif exists(':CocCommand')
+            CocCommand latex.Build
+        endif
+    elseif &filetype ==# 'markdown' || &filetype ==# 'md'
         MarkdownPreview
         " GodownPreview
-    elseif &filetype == 'c' || &filetype == 'cpp' || &filetype == 'cs'
+    elseif &filetype ==# 'c' || &filetype ==# 'cpp' || &filetype ==# 'cs'
         if exists(':GrayoutUpdate')
             GrayoutUpdate
         endif
@@ -716,18 +786,8 @@ nnoremap <leader>d :ALEDetail<CR>
 
 " -------------------------------------- Key mappings end }}}
 
-command! ClangTidy call RunClangTidy()
 
-function RunClangTidy()
-    let l:checks = join(ale#Var(bufnr('%'), 'cpp_clangtidy_checks'), ',')
-    " echo '!clang-tidy ' . shellescape(expand("%:p")) . ' --fix --fix-errors --checks=' . shellescape(l:checks)
-    exec '!clang-tidy ' . shellescape(expand("%:p")) . ' --fix --fix-errors --checks=' . shellescape(l:checks)
-    normal <esc>
-    e
-    ALELint
-endfun
-
-
+" better fold text {{{
 " indent folds
 " https://old.reddit.com/r/vim/comments/fwjpi4/here_is_how_to_retain_indent_level_on_folds/
 let indent_level = indent(v:foldstart)
@@ -747,19 +807,20 @@ function! NeatFoldText()
     return indent . foldtextstart . repeat(foldchar, winwidth(0)-foldtextlength) . foldtextend
 endfunction
 set foldtext=NeatFoldText()
-
-function! ProfileStart()
-    profile start profile.log
-    profile func *
-    profile file *
-endfunction
-
-function! ProfileStop()
-    profile pause
-    echo 'Quit vim now'
-    " noautocmd qall!
-endfunction
+" better fold text }}}
 
 " source ~/.vim/completion_preview.vim
 source ~/.vim/coc.vim
 source ~/.vim/omnisharp.vim
+
+function! CheckSize()
+    let size = getfsize(@%)
+    if size > 10000000 " 10 MB
+        echo 'Warning: The file is larger than 10MB -> Disabling ALE and Syntax'
+        let b:ale_enabled = 0
+        " syntax clear
+        setlocal syntax=off
+    endif
+endfun
+
+au BufEnter * :call CheckSize()

@@ -1,9 +1,13 @@
 $include /etc/inputrc
+
+# This must come after setting dircolors, otherwise colors will be wrong.
+# .inputrc is apparently executed before .bashrc, so this needs to be in .bashrc.
+# set colored-stats On
+# set colored-completion-prefix On
+# set menu-complete-display-prefix On
+
 set completion-ignore-case On
-set completion-prefix-display-length 2
-
 set show-all-if-ambiguous on
-
 set mark-symlinked-directories on
 set bell-style none
 

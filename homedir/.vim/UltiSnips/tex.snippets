@@ -12,50 +12,43 @@ snippet fig "Figure environment" b
 endsnippet
 
 snippet part "Part" wm
-\part{${1:part name}}
-\label{prt:${2:${1/(\w+)|\W+/(?1:\L$0\E:_)/ga}}}
+\part{${1:part name}}\label{prt:${2:${1/(\w+)|\W+/(?1:\L$0\E:_)/ga}}}
 
 ${0}
 endsnippet
 
 snippet cha "Chapter" wm
-\chapter{${1:chapter name}}
-\label{cha:${2:${1/\\\w+\{(.*?)\}|\\(.)|(\w+)|([^\w\\]+)/(?4:_:\L$1$2$3\E)/ga}}}
+\chapter{${1:chapter name}}\label{cha:${2:${1/\\\w+\{(.*?)\}|\\(.)|(\w+)|([^\w\\]+)/(?4:_:\L$1$2$3\E)/ga}}}
 
 ${0}
 endsnippet
 
 snippet sec "Section" wm
-\section{${1:section name}}
-\label{sec:${2:${1/\\\w+\{(.*?)\}|\\(.)|(\w+)|([^\w\\]+)/(?4:_:\L$1$2$3\E)/ga}}}
+\section{${1:section name}}\label{sec:${2:${1/\\\w+\{(.*?)\}|\\(.)|(\w+)|([^\w\\]+)/(?4:_:\L$1$2$3\E)/ga}}}
 
 ${0}
 endsnippet
 
 snippet sub "Subsection" wm
-\subsection{${1:subsection name}}
-\label{sub:${2:${1/\\\w+\{(.*?)\}|\\(.)|(\w+)|([^\w\\]+)/(?4:_:\L$1$2$3\E)/ga}}}
+\subsection{${1:subsection name}}\label{sub:${2:${1/\\\w+\{(.*?)\}|\\(.)|(\w+)|([^\w\\]+)/(?4:_:\L$1$2$3\E)/ga}}}
 
 ${0}
 endsnippet
 
 snippet ssub "Subsubsection" wm
-\subsubsection{${1:subsubsection name}}
-\label{ssub:${2:${1/\\\w+\{(.*?)\}|\\(.)|(\w+)|([^\w\\]+)/(?4:_:\L$1$2$3\E)/ga}}}
+\subsubsection{${1:subsubsection name}}\label{ssub:${2:${1/\\\w+\{(.*?)\}|\\(.)|(\w+)|([^\w\\]+)/(?4:_:\L$1$2$3\E)/ga}}}
 
 ${0}
 endsnippet
 
 snippet par "Paragraph" wm
-\paragraph{${1:paragraph name}}
-\label{par:${2:${1/\\\w+\{(.*?)\}|\\(.)|(\w+)|([^\w\\]+)/(?4:_:\L$1$2$3\E)/ga}}}
+\paragraph{${1:paragraph name}}\label{par:${2:${1/\\\w+\{(.*?)\}|\\(.)|(\w+)|([^\w\\]+)/(?4:_:\L$1$2$3\E)/ga}}}
 
 ${0}
 endsnippet
 
 snippet subp "Subparagraph" wm
-\subparagraph{${1:subparagraph name}}
-\label{par:${2:${1/\\\w+\{(.*?)\}|\\(.)|(\w+)|([^\w\\]+)/(?4:_:\L$1$2$3\E)/ga}}}
+\subparagraph{${1:subparagraph name}}\label{par:${2:${1/\\\w+\{(.*?)\}|\\(.)|(\w+)|([^\w\\]+)/(?4:_:\L$1$2$3\E)/ga}}}
 
 ${0}
 endsnippet
@@ -225,6 +218,20 @@ endsnippet
 
 snippet figure
 ${1:Figure}~\ref{fig:${2}}
+endsnippet
+
+snippet ilc
+\inlinecode{${1}}
+endsnippet
+
+snippet cbl
+\begin{lstlisting}[label=lst:$1,caption={$2}]
+${0}
+\end{lstlisting}
+endsnippet
+
+snippet tabref
+Table~\ref{tab:$1}
 endsnippet
 
 # vim:ft=snippets:

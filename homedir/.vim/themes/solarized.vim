@@ -146,6 +146,8 @@ augroup SyntaxFix
 autocmd FileType c,cpp call s:CSyntaxFixes()
 augroup END
 
+hi texStatement ctermbg=NONE guibg=NONE
+
 " base03  = #002b36
 " base02  = #073642
 " base01  = #586e75
