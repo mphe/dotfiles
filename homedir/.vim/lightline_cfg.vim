@@ -12,6 +12,7 @@ let g:lightline#bufferline#unnamed = '[No Name]'
 let g:lightline#bufferline#modified = '[+]'
 let g:lightline#bufferline#read_only = ' ⭤'
 let g:lightline#bufferline#filename_modifier = ':t'
+let g:lightline#bufferline#clickable = 1
 
 " lightline ale
 let g:lightline#ale#indicator_infos = s:info_symbol
@@ -26,13 +27,15 @@ let g:lightline.colorscheme = 'custom_solarized'
 
 " let g:lightline.separator = { 'left': "\u258c", 'right': "\u2590" }
 " let g:lightline.separator = { 'left': "\u2599", 'right': "\u259f" }
-" let g:lightline.separator = { 'left': ' ', 'right': '█' }
+
 let g:lightline.separator = { 'left': '', 'right': '' }
-let g:lightline.subseparator = { 'left': '', 'right': '' }
-" let g:lightline.subseparator = { 'left': '', 'right': '' }
-let g:lightline.tabline_subseparator = { 'left': '', 'right': '' }
+" let g:lightline.subseparator = { 'left': '', 'right': '' }
+" let g:lightline.tabline_subseparator = { 'left': '', 'right': '' }
 let g:lightline.tabline_separator =  { 'left': '', 'right': '' }
-" let g:lightline.tabline_subseparator = { 'left': '', 'right': '' }
+
+" let g:lightline.separator = { 'left': ' ', 'right': '█' }
+let g:lightline.subseparator = { 'left': '', 'right': '' }
+let g:lightline.tabline_subseparator = { 'left': '', 'right': '' }
 " let g:lightline.tabline_separator =  { 'left': '', 'right': '' }
 
 " requires powerline font
@@ -65,12 +68,10 @@ let g:lightline.active = {
     \     [ 'lineinfo' ],
     \     [ 'fileformat', 'fileencoding', 'filetype' ],
     \     [ 'linter_infos', 'linter_warnings', 'linter_errors', 'linter_checking' ],
+    \     [ 'current_function' ],
     \ ]
     \ }
 
-    " \     [  ],
-    " \     [ 'filetype' ],
-    " \ 'right': [ [ 'lineinfo' ] ]
 let g:lightline.inactive = {
     \ 'left': [ [ 'filename' ] ],
     \ 'right': []
@@ -89,13 +90,10 @@ let g:lightline.tabline = {
 let g:lightline.component = {
     \ 'lineinfo': '%3l:%-2v / %L',
     \ 'maxlines': '%L',
+    \ 'current_function': '%{get(b:,"coc_current_function","")}',
     \ }
 
-" \ 'linter_checking': 'lightline#ale#checking',
-" \ 'linter_ok': 'lightline#ale#ok',
-" \ 'linter_infos': 'lightline#ale#infos',
-" \ 'linter_warnings': 'lightline#ale#warnings',
-" \ 'linter_errors': 'lightline#ale#errors',
+
 let g:lightline.component_expand = {
     \ 'linter_infos': 'LightlineDiagnosticsInfo',
     \ 'linter_warnings': 'LightlineDiagnosticsWarning',
@@ -123,6 +121,9 @@ let g:lightline.component_type = {
     \ 'linter_checking': 'info',
     \ 'buffers': 'tabsel',
     \ }
+
+" Required to make bufferline clickable
+let g:lightline.component_raw = {'buffers': 1}
 
 " \ 'linter_checking': 'info',
 " \ 'linter_ok': 'info',

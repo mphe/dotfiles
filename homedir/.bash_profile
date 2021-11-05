@@ -8,7 +8,7 @@ export QT_QPA_PLATFORMTHEME="qt5ct"
 # export QT_IM_MODULE=xim
 export GTK2_RC_FILES="$HOME/.gtkrc-2.0"
 
-eval "$(pyenv init -)"
+source .profile
 
 
 # force gtk2 for libreoffice

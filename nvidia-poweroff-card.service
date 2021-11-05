@@ -1,0 +1,8 @@
+[Unit]
+Description=Poweroff NVIDIA card
+
+[Service]
+ExecStart=/home/marvin/scripts/nvswitch.sh off
+
+[Install]
+WantedBy=multi-user.target

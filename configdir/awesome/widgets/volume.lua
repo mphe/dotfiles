@@ -73,3 +73,6 @@ function VolWidget:toggleMute()
 end
 
 return VolWidget
+
+-- TODO: popup indicator
+-- https://github.com/1jss/awesome-lighter/tree/main/awesome/components

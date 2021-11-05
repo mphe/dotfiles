@@ -2,6 +2,7 @@ local awful = require("awful")
 local naughty = require("naughty")
 local menubar = require("menubar")
 local globals = require("globals")
+local beautiful = require("beautiful")
 
 local M = {}
 
@@ -145,7 +146,7 @@ end
 
 function M.menu_entry(title, program, icon_name)
     icon_name = icon_name or program
-    return { title, program, menubar.utils.lookup_icon(icon_name) }
+    return { title, program, beautiful.lookup_icon(icon_name) }
 end
 
 

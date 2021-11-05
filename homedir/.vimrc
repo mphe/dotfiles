@@ -1,6 +1,12 @@
 " Clean autocmds
 autocmd!
 
+let s:use_treesitter = 0
+
+if !has('nvim')
+    let s:use_treesitter = 0
+endif
+
 " -------------------------------------- General settings start {{{
 syntax enable
 set number
@@ -188,7 +194,7 @@ Plug 'tomtom/tcomment_vim'
 
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'OmniSharp/omnisharp-vim'
-" Plug 'Shougo/echodoc.vim'
+Plug 'Shougo/echodoc.vim'
 
 Plug 'Raimondi/delimitMate'
 Plug 'airblade/vim-gitgutter'
@@ -220,7 +226,7 @@ Plug 'vim-python/python-syntax'
 Plug 'withgod/vim-sourcepawn'
 Plug 'junegunn/vim-easy-align'
 Plug 'osyo-manga/vim-over'
-Plug 'calviken/vim-gdscript3'
+Plug 'Rubonnek/vim-gdscript3'
 Plug 'gaving/vim-textobj-argument'
 Plug 'farmergreg/vim-lastplace'
 Plug 'romainl/vim-cool'
@@ -243,9 +249,21 @@ Plug 'kosayoda/nvim-lightbulb'
 
 Plug 'inkarkat/vim-ingo-library'
 Plug 'inkarkat/vim-EnhancedJumps'
+Plug 'MattesGroeger/vim-bookmarks'
+" Plug 'Jorengarenar/vim-syntaxMarkerFold'
+
+" Auto detect indent
+Plug 'tpope/vim-sleuth'
+
+" IntelliJ <-> Neovim bridge
+Plug 'beeender/Comrade'
 
 if !has('nvim')
     Plug 'Konfekt/FastFold'
+endif
+
+if s:use_treesitter
+    Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
 endif
 
 call plug#end()
@@ -326,8 +344,26 @@ command! TB TagbarToggle
 nnoremap <F8> :TagbarOpen fjc<CR>
 nnoremap tt :TagbarOpen fjc<CR>
 
-" kinda fix tagbar cursor lag
-autocmd FileType tagbar setlocal nocursorline nocursorcolumn
+augroup au_tagbar
+    au!
+    " kinda fix tagbar cursor lag
+    autocmd FileType tagbar setlocal nocursorline nocursorcolumn
+augroup END
+
+let g:tagbar_type_gdscript3 = {
+			\ 'ctagstype' :'gdscript3',
+			\ 'kinds': [
+                            \ 'c:constants',
+                            \ 'p:preloads',
+                            \ 'e:exports',
+                            \ 'o:onready',
+                            \ 'v:variables',
+                            \ 's:signals',
+                            \ 'f:functions',
+                            \ 't:static functions',
+                        \ ]
+                        \ }
+let g:tagbar_type_gdscript3.deffile = expand('~/.vim/ctags/gdscript3.ctags')
 
 
 " ColorStepper Keys
@@ -365,7 +401,9 @@ let g:ale_fixers = {
     \ 'java': [],
     \ }
 
-let g:ale_linters_ignore = [ 'lacheck' ]
+let g:ale_pattern_options = {'\.tex$': {'ale_enabled': 0}}
+
+let g:ale_linters_ignore = [ 'lacheck', 'pyright' ]
 
 let g:ale_cs_csc_options = ' /warn:4 /langversion:7.2'
 
@@ -382,10 +420,16 @@ let g:ale_type_map = {
             \ }
 
 let g:ale_python_flake8_options = '--ignore=F403,F401,E201,E202,F841,E501,E221,E241,E722,F405'
-let g:ale_python_pylint_options = '-j 4 --ignored-modules=scapy,numpy,matplotlib,pyplot --disable=C,syntax-error,too-few-public-methods,global-statement,useless-object-inheritance,try-except-raise,broad-except,too-many-branches,too-many-arguments,protected-access'
-let g:ale_python_mypy_options = '--namespace-packages --show-error-codes --show-error-context --show-column-numbers --no-strict-optional --ignore-missing-imports --check-untyped-defs --allow-untyped-globals'
+let g:ale_python_pylint_options = '-j 4 --ignored-modules=scapy,numpy,matplotlib,pyplot --disable=C,syntax-error,too-few-public-methods,global-statement,useless-object-inheritance,try-except-raise,broad-except,too-many-branches,too-many-arguments,protected-access,chained-comparison'
+let g:ale_python_mypy_options = '--install-types --non-interactive --namespace-packages --show-error-codes --show-error-context --show-column-numbers --no-strict-optional --ignore-missing-imports --check-untyped-defs --allow-untyped-globals'
 let g:ale_python_mypy_ignore_invalid_syntax = 1
 let g:ale_python_mypy_show_notes = 0
+
+let b:ale_python_pyright_config = {
+\ 'pyright': {
+\   'disableLanguageServices': v:true,
+\ },
+\}
 
 let g:ale_nasm_nasm_options = '-f elf64'
 
@@ -533,10 +577,14 @@ let g:easy_align_delimiters = { '>': { 'pattern': '->' } }
 
 " echodoc
 " autocmd FileType gdscript3 let g:echodoc#enable_at_startup = 1
-let g:echodoc#enable_at_startup = 1
+let g:echodoc#enable_at_startup = 0
 set noshowmode
 
-" python syntax
+augroup au_omnisharp_hints
+    autocmd FileType cs EchoDocEnable
+augroup end
+
+" python-syntax
 let g:python_highlight_all = 1
 
 " vim-cool
@@ -568,6 +616,7 @@ map <c-i> <Plug>EnhancedJumpsLocalNewer
 
 " grayout.vim
 let g:grayout_debug_logfile = 1
+" autocmd BufReadPost,BufWritePost * if &ft == 'c' || &ft == 'cpp' || &ft == 'objc' | exec 'GrayoutUpdate' | endif
 " autocmd CursorHold,CursorHoldI * if &ft == 'c' || &ft == 'cpp' || &ft == 'objc' | exec 'GrayoutUpdate' | endif
 
 " omnisharp-vim
@@ -586,9 +635,61 @@ let g:OmniSharp_highlight_groups = {
     \ }
 
 " echodoc
-
-let g:echodoc#enable_at_startup = 1
+let g:echodoc#enable_at_startup = 0
 let g:echodoc#type = 'floating'
+
+
+" Comrade
+let g:comrade_key_fix = '<leader>fx'
+
+" vim-bookmarks
+let g:bookmark_no_default_key_mappings = 1
+let g:bookmark_save_per_working_dir = 1
+let g:bookmark_auto_save = 1
+nmap mm <Plug>BookmarkToggle
+
+" lightline-bufferline
+" Additional config in .vim/lightline_cfg.vim
+nmap <Leader>1 <Plug>lightline#bufferline#go(1)
+nmap <Leader>2 <Plug>lightline#bufferline#go(2)
+nmap <Leader>3 <Plug>lightline#bufferline#go(3)
+nmap <Leader>4 <Plug>lightline#bufferline#go(4)
+nmap <Leader>5 <Plug>lightline#bufferline#go(5)
+nmap <Leader>6 <Plug>lightline#bufferline#go(6)
+nmap <Leader>7 <Plug>lightline#bufferline#go(7)
+nmap <Leader>8 <Plug>lightline#bufferline#go(8)
+nmap <Leader>9 <Plug>lightline#bufferline#go(9)
+nmap <Leader>0 <Plug>lightline#bufferline#go(10)
+
+" treesitter
+" https://github.com/nvim-treesitter/nvim-treesitter
+if s:use_treesitter
+    set foldmethod=expr
+    set foldexpr=nvim_treesitter#foldexpr()
+
+    lua <<EOF
+    require'nvim-treesitter.configs'.setup {
+        ensure_installed = "all", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
+        ignore_install = {}, -- List of parsers to ignore installing
+        highlight = {
+            enable = true,
+            disable = { "json" },  -- list of language that will be disabled
+            custom_captures = {
+                -- Highlight the @foo.bar capture group with the "Identifier" highlight group.
+                -- ["foo.bar"] = "Identifier",
+            },
+            -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
+            -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
+            -- Using this option may slow down your editor, and you may see some duplicate highlights.
+            -- Instead of true it can also be a list of languages
+            additional_vim_regex_highlighting = false,
+        },
+        indent = {
+            enable = true
+        }
+    }
+EOF
+endif
 
 " -------------------------------------- Plugin configuration end }}}
 
@@ -606,10 +707,11 @@ au!
 " autocmd BufRead * if !&diff && strlen(expand('%')) && &ft != 'gitcommit' | silent! loadview | endif
 
 " filetype specific settings
-autocmd FileType cmake,vim,lua setlocal foldmethod=marker
+" autocmd FileType cmake,vim,lua setlocal foldmethod=marker
 autocmd FileType sourcepawn,json,jsonc setlocal commentstring=//\ %s
 autocmd FileType text,markdown,tex,unknown setlocal wrap
 autocmd FileType markdown setlocal shiftwidth=2 | setlocal tabstop=2
+autocmd FileType scala setlocal previewheight=5
 
 " cursorline in php or html files often severe massive lags
 autocmd FileType * setlocal cursorline
@@ -623,6 +725,14 @@ autocmd FileType * setlocal formatoptions+=croj
 " Set filetype by extension
 autocmd BufRead,BufNewFile *.fsh set filetype=glsl
 autocmd BufRead,BufNewFile *.vsh set filetype=glsl
+
+autocmd FileType *
+    \ nmap <silent> <F8> <Plug>(ale_previous_wrap_error)|
+    \ nmap <silent> <F9> <Plug>(ale_next_wrap_error)
+
+autocmd FileType c,cpp
+    \ nnoremap <F8> :labove<CR>|
+    \ nnoremap <F9> :lbelow<CR>
 
 augroup END
 " -------------------------------------- Autocmds end }}}
@@ -658,8 +768,10 @@ imap <F2> <c-_><c-_>
 " better j and k
 nmap j gj
 nmap k gk
+" nmap $ g$
 xmap j gj
 xmap k gk
+" xmap $ g$
 
 " Easy split navigation
 nnoremap <s-tab> <c-w><c-w>
@@ -746,14 +858,6 @@ map <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans
             \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
             \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
 
-autocmd FileType *
-    \ nmap <silent> <F8> <Plug>(ale_previous_wrap_error)|
-    \ nmap <silent> <F9> <Plug>(ale_next_wrap_error)
-
-autocmd FileType c,cpp
-    \ nnoremap <F8> :labove<CR>|
-    \ nnoremap <F9> :lbelow<CR>
-
 " F5
 function! F5Refresh()
     if &filetype ==# 'java'
@@ -763,6 +867,7 @@ function! F5Refresh()
             Latexmk
         elseif exists(':CocCommand')
             CocCommand latex.Build
+            LatexJump
         endif
     elseif &filetype ==# 'markdown' || &filetype ==# 'md'
         MarkdownPreview

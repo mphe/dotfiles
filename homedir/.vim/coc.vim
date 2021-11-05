@@ -17,9 +17,20 @@ set shortmess+=c
 " always show signcolumns
 " set signcolumn=yes
 
-let g:coc_global_extensions = [ 'coc-snippets', 'coc-highlight', 'coc-actions',
-            \ 'coc-vimlsp', 'coc-sh', 'coc-python', 'coc-lua',
-            \ 'coc-json', 'coc-html', 'coc-css' ]
+command CocSetup CocInstall
+    \ coc-snippets
+    \ coc-highlight
+    \ coc-actions
+    \ coc-vimlsp
+    \ coc-sh
+    \ coc-lua
+    \ coc-json
+    \ coc-html
+    \ coc-css
+    \ coc-jedi
+    " \ coc-python
+    " \ 'coc-comrade'
+    " \ 'coc-metals'
 
 " Use tab for trigger completion with characters ahead and navigate.
 " Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
@@ -29,10 +40,18 @@ inoremap <silent><expr> <TAB>
       \ coc#refresh()
 inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
+" inoremap <silent><expr> <TAB>
+"       \ pumvisible() ? coc#_select_confirm() :
+"       \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
+"       \ <SID>check_back_space() ? "\<TAB>" :
+"       \ coc#refresh()
+
 function! s:check_back_space() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
+
+let g:coc_snippet_next = '<tab>'
 
 " Use <c-space> to trigger completion.
 inoremap <silent><expr> <c-space> coc#refresh()
@@ -126,6 +145,7 @@ command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organize
 " nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>
 " Show commands
 nnoremap <silent> <leader>c  :<C-u>CocList commands<cr>
+nnoremap <silent> <leader>cc  :<C-u>CocList commands<cr>
 " Find symbol of current document
 " nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
 " Search workspace symbols
@@ -146,73 +166,74 @@ nmap <silent> <leader>a :<C-u>set operatorfunc=<SID>cocActionsOpenFromSelected<C
 
 nmap <leader>gd <Plug>(coc-diagnostic-info)
 nmap <leader>L <Plug>(coc-openlink)
+nnoremap <leader>cd :CocDiagnostics<CR>
 
 nnoremap <leader>gi :call CocActionAsync('showSignatureHelp')<esc>
 
-inoremap <silent> <expr> <c-e> coc#util#has_float() ? ToggleExpandFloat(0) : "\<c-e>"
-nnoremap <silent> <expr> <c-e> coc#util#has_float() ? ToggleExpandFloat(1) : "\<c-e>"
+command! CocOutput CocCommand workspace.showOutput
 
-inoremap <silent> <expr> <c-f> coc#util#has_float() ? FloatScrollMultiple(1) : "\<c-f>"
-inoremap <silent> <expr> <c-b> coc#util#has_float() ? FloatScrollMultiple(0) :  "\<c-b>"
-nnoremap <expr> <C-f> coc#util#has_float() ? coc#util#float_scroll(1) : "\<C-f>"
-nnoremap <expr> <C-b> coc#util#has_float() ? coc#util#float_scroll(0) : "\<C-b>"
+" inoremap <silent> <expr> <c-e> coc#util#has_float() ? ToggleExpandFloat(0) : "\<c-e>"
+" nnoremap <silent> <expr> <c-e> coc#util#has_float() ? ToggleExpandFloat(1) : "\<c-e>"
+
+" inoremap <silent> <expr> <c-f> coc#util#has_float() ? FloatScrollMultiple(1) : "\<c-f>"
+" inoremap <silent> <expr> <c-b> coc#util#has_float() ? FloatScrollMultiple(0) :  "\<c-b>"
+" nnoremap <expr> <C-f> coc#util#has_float() ? coc#util#float_scroll(1) : "\<C-f>"
+" nnoremap <expr> <C-b> coc#util#has_float() ? coc#util#float_scroll(0) : "\<C-b>"
 
 
 " TODO: include word wrap
-function! ToggleExpandFloat(normal) abort
-    let retval = a:normal ? "\<esc>" : ''
-    let float = coc#util#get_float()
-    if !float | return '' | endif
-    let buf = nvim_win_get_buf(float)
-
-    let buf_height = nvim_buf_line_count(buf)
-    let win_height = nvim_win_get_height(float)
-    let b:last_expand_height = get(b:, 'last_expand_height', win_height)
-
-    if buf_height == win_height && b:last_expand_height < win_height
-        call nvim_win_set_height(float, b:last_expand_height)
-        return retval
-    endif
-
-    if buf_height <= win_height | return '' | endif
-    let b:last_expand_height = win_height
-    call nvim_win_set_height(float, buf_height)
-    return retval
-endfun
-
-" https://gitter.im/neoclide/coc.nvim?at=5e013bebc0c8ef301b01ff69
-function! FloatScroll(forward) abort
-    let float = coc#util#get_float()
-    if !float | return '' | endif
-    let buf = nvim_win_get_buf(float)
-    let buf_height = nvim_buf_line_count(buf)
-    let win_height = nvim_win_get_height(float)
-    if buf_height < win_height | return '' | endif
-    let pos = nvim_win_get_cursor(float)
-    if a:forward
-        if pos[0] == 1
-            let pos[0] += 3 * win_height / 4
-        elseif pos[0] + win_height / 2 + 1 < buf_height
-            let pos[0] += win_height / 2 + 1
-        else
-            let pos[0] = buf_height
-        endif
-    else
-        if pos[0] == buf_height
-            let pos[0] -= 3 * win_height / 4
-        elseif pos[0] - win_height / 2 + 1  > 1
-            let pos[0] -= win_height / 2 + 1
-        else
-            let pos[0] = 1
-        endif
-    endif
-    call nvim_win_set_cursor(float, pos)
-    return ''
-endfunction
-
-function FloatScrollMultiple(down)
-    call FloatScroll(a:down)
-    return FloatScroll(a:down)
-endfun
-
-command! CocOutput CocCommand workspace.showOutput
+" function! ToggleExpandFloat(normal) abort
+"     let retval = a:normal ? "\<esc>" : ''
+"     let float = coc#util#get_float()
+"     if !float | return '' | endif
+"     let buf = nvim_win_get_buf(float)
+"
+"     let buf_height = nvim_buf_line_count(buf)
+"     let win_height = nvim_win_get_height(float)
+"     let b:last_expand_height = get(b:, 'last_expand_height', win_height)
+"
+"     if buf_height == win_height && b:last_expand_height < win_height
+"         call nvim_win_set_height(float, b:last_expand_height)
+"         return retval
+"     endif
+"
+"     if buf_height <= win_height | return '' | endif
+"     let b:last_expand_height = win_height
+"     call nvim_win_set_height(float, buf_height)
+"     return retval
+" endfun
+"
+" " https://gitter.im/neoclide/coc.nvim?at=5e013bebc0c8ef301b01ff69
+" function! FloatScroll(forward) abort
+"     let float = coc#util#get_float()
+"     if !float | return '' | endif
+"     let buf = nvim_win_get_buf(float)
+"     let buf_height = nvim_buf_line_count(buf)
+"     let win_height = nvim_win_get_height(float)
+"     if buf_height < win_height | return '' | endif
+"     let pos = nvim_win_get_cursor(float)
+"     if a:forward
+"         if pos[0] == 1
+"             let pos[0] += 3 * win_height / 4
+"         elseif pos[0] + win_height / 2 + 1 < buf_height
+"             let pos[0] += win_height / 2 + 1
+"         else
+"             let pos[0] = buf_height
+"         endif
+"     else
+"         if pos[0] == buf_height
+"             let pos[0] -= 3 * win_height / 4
+"         elseif pos[0] - win_height / 2 + 1  > 1
+"             let pos[0] -= win_height / 2 + 1
+"         else
+"             let pos[0] = 1
+"         endif
+"     endif
+"     call nvim_win_set_cursor(float, pos)
+"     return ''
+" endfunction
+"
+" function FloatScrollMultiple(down)
+"     call FloatScroll(a:down)
+"     return FloatScroll(a:down)
+" endfun

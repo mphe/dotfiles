@@ -5,25 +5,25 @@ local icons      = {
     awesome      = "/usr/share/awesome/icons/awesome16.png",
     arch         = icondir .. "arch.png",
     endeavouros  = icondir .. "endeavouros.png",
-    cpu          = beautiful.lookup_icon(icondir .. "cpu2.svg"),
+    cpu          = beautiful.lookup_icon_colored(icondir .. "cpu2.svg"),
     -- cpu          = icondir .. "cpu.png",
     mem          = icondir .. "mem.png",
-    ac           = beautiful.lookup_icon("devices/ac-adapter"),
-    bat          = beautiful.lookup_icon("devices/battery"),
-    mpd          = beautiful.lookup_icon("status/mpi"),
-    temp         = beautiful.lookup_icon("status/sensors-temperature"),
-    temp_crit    = beautiful.lookup_icon("status/sensors-temperature", "#ff0000"),
-    muted        = beautiful.lookup_icon("status/audio-volume-muted"),
-    fs           = beautiful.lookup_icon("devices/drive-harddisk"),
-    -- fs            = beautiful.lookup_icon("devices/drive-multidisk"),
-    net_wired    = beautiful.lookup_icon("status/network-wired"),
-    net_wired_na = beautiful.lookup_icon("status/network-wired-disconnected"),
-    wifi_na      = beautiful.lookup_icon("status/network-wireless-disconnected"),
+    ac           = beautiful.lookup_icon_colored("devices/ac-adapter"),
+    bat          = beautiful.lookup_icon_colored("devices/battery"),
+    mpd          = beautiful.lookup_icon_colored("status/mpi"),
+    temp         = beautiful.lookup_icon_colored("status/sensors-temperature"),
+    temp_crit    = beautiful.lookup_icon_colored("status/sensors-temperature", "#ff0000"),
+    muted        = beautiful.lookup_icon_colored("status/audio-volume-muted"),
+    fs           = beautiful.lookup_icon_colored("devices/drive-harddisk"),
+    -- fs            = beautiful.lookup_icon_colored("devices/drive-multidisk"),
+    net_wired    = beautiful.lookup_icon_colored("status/network-wired"),
+    net_wired_na = beautiful.lookup_icon_colored("status/network-wired-disconnected"),
+    wifi_na      = beautiful.lookup_icon_colored("status/network-wireless-disconnected"),
     wifi         = {
-        beautiful.lookup_icon("status/network-wireless-signal-weak"),
-        beautiful.lookup_icon("status/network-wireless-signal-ok"),
-        beautiful.lookup_icon("status/network-wireless-signal-good"),
-        beautiful.lookup_icon("status/network-wireless-signal-excellent"),
+        beautiful.lookup_icon_colored("status/network-wireless-signal-weak"),
+        beautiful.lookup_icon_colored("status/network-wireless-signal-ok"),
+        beautiful.lookup_icon_colored("status/network-wireless-signal-good"),
+        beautiful.lookup_icon_colored("status/network-wireless-signal-excellent"),
     },
 }
 
@@ -32,7 +32,7 @@ local function generate(basename, file_strformat, levels)
     file_strformat = file_strformat or basename .. "-%s"  -- %s replaced with each entry in `levels`
     for _, level in ipairs(levels) do
         local fname = string.format(file_strformat, level)
-        local icon = beautiful.lookup_icon(fname)
+        local icon = beautiful.lookup_icon_colored(fname)
 
         if icon then
             local key = string.format("%s_%s", basename, level)
@@ -52,7 +52,7 @@ generate("bat", "status/battery-level-%s", { "0", "10", "20", "30", "40", "50", 
 generate("ac", "status/battery-level-%s-charging", { "0", "10", "20", "30", "40", "50", "60", "70", "80", "90", })
 
 -- Filename battery-level-100-charged instead of battery-level-100-charging
-icons["ac_100"] = beautiful.lookup_icon("status/battery-level-100-charged")
+icons["ac_100"] = beautiful.lookup_icon_colored("status/battery-level-100-charged")
 
 -- Returns the corresponding X-{low,medium,high} icon
 function icons.get_3level(iconname, value)

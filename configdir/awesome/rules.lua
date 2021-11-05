@@ -126,4 +126,10 @@ awful.rules.rules = {
             buttons = {}
         }
     },
+
+    -- Maximized clients
+    {
+        rule_any = { class = { "Aseprite", }, },
+        properties = { maximized = true, }
+    }
 }

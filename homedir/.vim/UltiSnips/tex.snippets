@@ -220,18 +220,45 @@ snippet figure
 ${1:Figure}~\ref{fig:${2}}
 endsnippet
 
-snippet ilc
+snippet ilc "" wm
 \inlinecode{${1}}
 endsnippet
 
-snippet cbl
+snippet cbl "" wm
 \begin{lstlisting}[label=lst:$1,caption={$2}]
 ${0}
 \end{lstlisting}
 endsnippet
 
-snippet tabref
+snippet tabref "" wm
 Table~\ref{tab:$1}
+endsnippet
+
+snippet cite "" wm
+\cite{$1}
+endsnippet
+
+snippet listing_setup
+\usepackage{listings}
+
+\definecolor{mygreen}{rgb}{0,0.6,0}
+
+\lstset{
+	caption=\relax,
+	numbers=left,
+	captionpos=b,
+	frame=single,
+	basicstyle=\footnotesize\ttfamily,
+	commentstyle=\color{mygreen},
+	keywordstyle=\color{blue},
+	stringstyle=\color{orange},
+	extendedchars=true,
+	keepspaces=true,
+	showtabs=false,
+	tabsize=2,
+	breaklines=true,
+	showstringspaces=false
+}
 endsnippet
 
 # vim:ft=snippets:

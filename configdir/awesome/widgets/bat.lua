@@ -20,17 +20,7 @@ function BatWidget:create(args)
         self.data = bat_now
         self:updateIcon()
 
-        -- Calculate remaining capacity
-        -- TODO: Consider adding this in lain and create a pull request
-        local batpath = "/sys/class/power_supply/" .. (args.battery or "BAT0")
-        local charge_full = utils.read_number(batpath .. "/charge_full", 0)
-        local charge_full_design = utils.read_number(batpath .. "/charge_full_design", nil)
-
-        if not charge_full_design or charge_full_design == 0 then
-            self.data.capacity_perc = "N/A"
-        else
-            self.data.capacity_perc = math.floor((charge_full / charge_full_design) * 100)
-        end
+        self.data.capacity_perc = bat_now.capacity
     end
 
     self.lainwidget = lain.widget.bat(args)

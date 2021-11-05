@@ -56,6 +56,7 @@ function MPDWidget:update()
 end
 
 function MPDWidget:updateText()
+    -- luacheck: globals mpd_now widget
     self.data = mpd_now
     self:get_container():set_visible(true)
 
@@ -64,10 +65,17 @@ function MPDWidget:updateText()
         if self.autohide then
             self:get_container():set_visible(false)
         end
-    elseif self.data.title == "N/A" then
-        widget:set_text(getFilename(self.data.file))
     else
-        widget:set_text(self.data.title)
+        local title
+
+        if self.data.title ~= "N/A" then
+            title = self.data.title
+        elseif self.data.name ~= "N/A" then
+            title = self.data.name
+        else
+            title = getFilename(self.data.file)
+        end
+        widget:set_text(title)
     end
 end
 
@@ -81,6 +89,7 @@ function MPDWidget:attach(box)
 
     utils.registerPopupNotify(box, "MPD", function(w)
         return "Title:\t\t" .. self.data.title ..
+        "\nName:\t" .. self.data.name ..
         "\nAlbum:\t" .. self.data.album ..
         "\nArtist:\t" .. self.data.artist ..
         "\nGenre:\t" .. self.data.genre ..

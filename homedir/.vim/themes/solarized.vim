@@ -7,7 +7,7 @@ set guifont="Terminus"
 " let g:solarized_termtrans = 1
 " let g:solarized_hitrail = 1
 
-if &term == 'xterm-termite'
+if &term ==? 'xterm-termite'
     let g:solarized_termcolors=256
 endif
 
@@ -63,6 +63,7 @@ highlight link CocHintFloat CocInfoFloat
 highlight CocUnderline cterm=underline gui=underline
 highlight CocErrorLine ctermbg=52 guibg=#5F0000
 highlight link CocErrorHighlight Error
+highlight CocCodeLens guibg=#073642 guifg=#6C71C4
 
 " ale
 highlight link ALEError CocErrorHighlight
@@ -140,10 +141,29 @@ function! s:CSyntaxFixes()
     " . l:commentassertahead)
     " call matchadd('Function', l:commentassert . '~.\{-}(\@=')
     " . l:commentassertahead)
+    hi doxygenBrief ctermfg=10 guifg=#586e75 gui=italic cterm=italic
+    hi link doxygenStart doxygenBrief
+    hi link doxygenComment doxygenBrief
+    hi link doxygenContinueComment doxygenBrief
+endfun
+
+function! s:ScalaSyntaxFixes()
+    highlight! link scalaSquareBracketsBrackets Normal
+    highlight! link scalaInstanceDeclaration Type
+    highlight! link scalaCapitalWord Type
+    highlight! link scalaCapitalWord Function
+    highlight! link scalaKeywordModifier Keyword
+    highlight! CocErrorLine ctermbg=NONE guibg=NONE
+    highlight! ALEWarning cterm=NONE gui=NONE
+
+    " Add this line at the start of the python syntax file
+    syn match scalaFunctionCall "\zs\(\k\w*\)*\s*\ze("
+    highlight link scalaFunctionCall Function
 endfun
 
 augroup SyntaxFix
 autocmd FileType c,cpp call s:CSyntaxFixes()
+autocmd FileType scala call s:ScalaSyntaxFixes()
 augroup END
 
 hi texStatement ctermbg=NONE guibg=NONE

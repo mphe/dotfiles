@@ -1,3 +1,6 @@
+-- Ignore line too long warnings
+-- luacheck: ignore 631
+
 -- If LuaRocks is installed, make sure that packages installed through it are
 -- found (e.g. lgi). If LuaRocks is not installed, do nothing.
 pcall(require, "luarocks.loader")
@@ -70,13 +73,6 @@ beautiful.init(configdir .. "/themes/custom/theme.lua")
 
 local icons = require("icons")  -- must be initialized after beautiful
 
--- Screen specific dpi and wibar heights
-local wibar_size_per_screen = {}
-
-if screen[2] then
-    screen[2].dpi = 102
-    wibar_size_per_screen[2] = beautiful.dpi(26, screen[2])
-end
 -- }}}
 
 local layoutconfig = nil
@@ -106,21 +102,7 @@ awful.layout.layouts = {
     treetile
 }
 
--- {{{ Helper functions
-local function client_menu_toggle_fn()
-    local instance = nil
-
-    return function ()
-        if instance and instance.wibox.visible then
-            instance:hide()
-            instance = nil
-        else
-            instance = awful.menu.clients({ theme = { width = 250 } })
-        end
-    end
-end
--- }}}
-
+local default_layout = awful.layout.layouts[2]
 local mymainmenu = require("menu")
 
 -- Menubar configuration
@@ -148,6 +130,19 @@ local taglist_buttons = awful.util.table.join(
 -- }}}
 
 -- task list {{{
+local function client_menu_toggle_fn()
+    local instance = nil
+
+    return function ()
+        if instance and instance.wibox.visible then
+            instance:hide()
+            instance = nil
+        else
+            instance = awful.menu.clients({ theme = { width = 250 } })
+        end
+    end
+end
+
 local tasklist_buttons = awful.util.table.join(
      awful.button({ }, 1, function(c)
          -- local abovec = awful.client.next(-1, c, true)
@@ -226,6 +221,28 @@ end
 screen.connect_signal("property::geometry", set_wallpaper)
 
 awful.screen.connect_for_each_screen(function(s)
+    -- DPI stuff {{{
+
+    -- Auto dpi calculation
+    -- local _, size_mm = utils.firstkey(s.outputs)
+    -- local dpi = math.floor(0.5 + s.geometry.width / (size_mm.mm_width / 25.4))
+    -- s.dpi = dpi
+    -- local wibar_size = beautiful.dpi(beautiful.wibar_height, s)
+
+    -- if s.outputs.name then
+    --     -- screen[1].dpi = 142
+    --     -- screen[1].dpi = 120
+    --     wibar_size_per_screen[1] = beautiful.dpi(26, screen[2])
+    -- end
+
+    -- if screen[2] then
+    --     -- screen[2].dpi = 102
+    --     screen[2].dpi = 96
+    --     wibar_size_per_screen[2] = beautiful.dpi(26, screen[2])
+    -- end
+
+    -- }}}
+
     -- Wallpaper
     set_wallpaper(s)
 
@@ -233,39 +250,33 @@ awful.screen.connect_for_each_screen(function(s)
     -- https://stackoverflow.com/questions/42056795/awesomewm-how-to-prevent-migration-of-clients-when-screen-disconnected
     -- Check if existing tags belong to this new screen that's being added
     local restored = {}
-    local all_tags = root.tags()
-    for _, t in pairs(all_tags) do
-        if utils.get_screen_id(s) == t.screen_id then
+    local screen_id = utils.get_screen_id(s)
+
+    for _, t in pairs(root.tags()) do
+        if screen_id == t.screen_id then
             t.screen = s
-            table.insert(restored, t)
+            t.index = tonumber(t.name)
+            restored[t.name] = t
         end
     end
 
     -- Create tags 1-9 but skip tags that were already restored
     for i = 1,9 do
-        local istr = tostring(i)
-        if not restored[istr] then
-            local t = awful.tag.add(istr, {
+        local tagname = tostring(i)
+        if not restored[tagname] then
+            local t = awful.tag.add(tagname, {
                 screen = s,
-                layout = awful.layout.layouts[2]
+                layout = default_layout,
+                index = i
             })
-            t.screen_id = utils.get_screen_id(s)
+            t.screen_id = screen_id
+            t.primary = s == screen.primary
         end
-
-        -- Each screen has its own tag table.
-        -- awful.tag({ "1", "2", "3", "4", "5", "6", "7", "8", "9" }, s, awful.layout.layouts[2])
-
-        -- Assign the tag to this screen, to restore as the screen disconnects/connects
-        -- for _, t in pairs(s.tags) do
-        --     t.screen_id = utils.get_screen_id(s)
-        -- end
     end
 
     -- On restored screen, select a tag
-    -- if not utils.table_empty(restored) then
     local _, v = utils.firstkey(s.tags)
     v.selected = true
-    -- end
     -- }}}
 
     -- Create a promptbox for each screen
@@ -287,7 +298,8 @@ awful.screen.connect_for_each_screen(function(s)
     s.mytasklist = awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags, tasklist_buttons)
 
     -- Create the wibox
-    s.mywibox = awful.wibar({ position = "top", screen = s, height = wibar_size_per_screen[s.index] })
+    -- s.mywibox = awful.wibar({ position = "top", screen = s, height = wibar_size_per_screen[s.index] })
+    s.mywibox = awful.wibar({ position = "top", screen = s, height = wibar_size })
 
     -- Add widgets to the wibox
     s.mywibox:setup {
@@ -577,6 +589,63 @@ local globalkeys = awful.util.table.join(
 -- }}}
 
 -- Tag keys {{{
+-- A utility function to cycle through tags based on a requested tag index.
+-- Selects the next tag with the same name as the requested tag, starting from
+-- the current tag.
+-- Useful, since we're carrying tags over to another screen, when the original
+-- screen gets disconnected, resulting in multiple tags with the same name on
+-- the same screen.
+local function cycle_tag_index(index)
+    local current = awful.screen.focused().selected_tag
+    local tags = awful.screen.focused().tags
+    local target = tags[index]
+
+    if not target or not current then
+        return index
+    end
+
+    -- Find index of current tag
+    local idx = nil
+    for i, t in ipairs(tags) do
+        if t == current then
+            idx = i
+            break
+        end
+    end
+
+    if not idx then
+        return index
+    end
+
+    -- Find next tag with that name
+    while true do
+        idx = idx + 1
+
+        -- Reached starting index again
+        if idx == current.index then
+            break
+        end
+
+        local t = tags[idx]
+
+        -- Wrap around end of list
+        if not t then
+            idx = 1
+            t = tags[idx]
+
+            if not t then
+                break
+            end
+        end
+
+        if t.name == target.name then
+            return idx
+        end
+    end
+
+    return index
+end
+
 -- Bind all key numbers to tags.
 -- Be careful: we use keycodes to make it work on any keyboard layout.
 -- This should map on the top row of your keyboard, usually 1 to 9.
@@ -585,7 +654,7 @@ for i = 1, 9 do
         -- View tag only.
         awful.key({ modkey }, "#" .. i + 9,
                   function ()
-                        local t = awful.screen.focused().tags[i]
+                        local t = awful.screen.focused().tags[cycle_tag_index(i)]
                         if t then
                            t:view_only()
                         end
@@ -604,7 +673,7 @@ for i = 1, 9 do
         awful.key({ modkey, "Shift" }, "#" .. i + 9,
                   function ()
                       if client.focus then
-                          local t = client.focus.screen.tags[i]
+                          local t = client.focus.screen.tags[cycle_tag_index(i)]
                           if t then
                               client.focus:move_to_tag(t)
                           end
@@ -615,7 +684,7 @@ for i = 1, 9 do
         awful.key({ modkey, "Control", "Shift" }, "#" .. i + 9,
                   function ()
                       if client.focus then
-                          local t = client.focus.screen.tags[i]
+                          local t = client.focus.screen.tags[cycle_tag_index(i)]
                           if t then
                               client.focus:toggle_tag(t)
                           end
@@ -764,7 +833,10 @@ client.connect_signal("request::titlebars", function(c)
             margins = beautiful.titlebar_margin,
             widget = wibox.container.margin
         },
-        layout = wibox.layout.align.horizontal
+        -- shape = function(cr, width, height)
+        --     gears.shape.rounded_rect(cr, width, height, 5)
+        -- end,
+        layout = wibox.layout.align.horizontal,
     }
 end)
 

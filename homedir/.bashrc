@@ -28,10 +28,11 @@ alias mkdir='mkdir -p'
 alias cdir='switchdir'
 alias make='make -j 6'
 alias hibernate='sudo systemctl hibernate'
-alias fcut='fpaste.sh cut'
+alias fmark='fpaste.sh mark'
+alias fmove='fpaste.sh move'
 alias fcopy='fpaste.sh copy'
 alias flink='fpaste.sh link'
-alias fpaste='fpaste.sh paste'
+alias flist='fpaste.sh list'
 alias rm='echo this is no longer aliased to trash; rm'
 alias virtualenv='virtualenv --system-site-packages'
 alias dd='dd status=progress bs=4M'
@@ -43,12 +44,13 @@ alias objdump='objdump -M intel'
 alias httrack='httrack --disable-security-limits --max-rate=0'
 alias grep='grep --exclude-dir=.git --color'
 alias open='xdg-open'
-# alias audacity='env PULSE_LATENCY_MSEC=60 audacity'
+alias audacity='env PULSE_LATENCY_MSEC=60 audacity'
 # alias audacity='pasuspender -- audacity'
 alias awconfig='vim ~/.config/awesome/rc.lua'
 alias awrules='vim ~/.config/awesome/rules.lua'
 alias awtheme='vim ~/.config/awesome/themes/custom/theme.lua'
 alias r=ranger-cd
+alias pylint='pylint --output-format colorized'
 
 
 # thefuck (slow as fuck startup)
@@ -160,6 +162,8 @@ bind 'set colored-stats On'
 bind 'set colored-completion-prefix On'
 bind 'set menu-complete-display-prefix On'
 
+# pyenv
+eval "$(pyenv init -)"
 
 # env vars
 export LANG='en_US.UTF-8'
@@ -168,7 +172,6 @@ export PATH="/home/marvin/.gem/ruby/2.7.0/bin:$PATH"
 export PATH="/home/marvin/golib/bin:$PATH"
 # export PYTHONPATH="$PYTHONPATH:/mnt/iomega/Python/lib"
 export EDITOR=nvim
-export OJSERVER=67.207.78.156
 
 # Needed for Unity development with vim using coc-omnisharp
 # / at the end seems to be important

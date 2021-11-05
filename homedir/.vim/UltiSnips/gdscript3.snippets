@@ -1,9 +1,62 @@
 priority 0
 
 snippet ignore "Ignore warning" m
-# warning-ignore: $1
+warning-ignore: $1
 endsnippet
 
 snippet ignore_return "Ignore return-value-discarded warning" m
-# warning-ignore: return_value_discarded
+warning-ignore: return_value_discarded
+endsnippet
+
+snippet connect "Connect a signal" mw
+connect("$1", self, "_$1")  # warning-ignore: return_value_discarded
+
+
+func _$1($2) -> void:
+	pass
+endsnippet
+
+
+snippet state_machine "Finite state machine template"
+enum States {
+	StateA,
+	StateB,
+	StateC,
+}
+
+var _state: int = States.StateA
+
+
+func _transition() -> int:
+	match _state:
+		States.StateA:
+			pass
+		States.StateB:
+			pass
+		States.StateC:
+			pass
+	return _state
+
+
+func _exec():
+	match _state:
+		States.StateA:
+			pass
+		States.StateB:
+			pass
+		States.StateC:
+			pass
+
+
+func _process(delta: float) -> void:
+	_state = _transition()
+	_exec()
+endsnippet
+
+
+snippet setter "Property Setter" m
+setget _set_$1
+
+func _set_$1(value$2):
+	$1 = value
 endsnippet

@@ -73,6 +73,7 @@ $0
 endsnippet
 
 snippet argparse "argparse setup"
+import argparse
 parser = argparse.ArgumentParser(description="description")
 parser.add_argument("-a", "--argument", help="argument help")
 parser.add_argument("-v", "--verbose", action="store_true", help="Verbose output")
@@ -80,7 +81,15 @@ args = parser.parse_args()
 endsnippet
 
 snippet logging "logging setup"
-logging.basicConfig(level=logging.DEBUG, format="%(levelname)s: %(message)s")
+logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
+endsnippet
+
+snippet logging_file "logging setup"
+logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s",
+					filename="log.txt", filemode="a")
+handler = logging.StreamHandler(sys.stdout)
+handler.setLevel(logging.INFO)
+logging.root.addHandler(handler)
 endsnippet
 
 snippet logging_fancy "fancy logging setup"
@@ -117,8 +126,8 @@ endsnippet
 
 # post_jump "px.snippets.expand(snip)"
 snippet cl "class with init" m
-class ${1:ClassName}(${2:object}):
-	def __init__(self$3):`!p
+class ${1:ClassName}:
+	def __init__(self$2):`!p
 args = get_args(t[3])
 for arg in args:
 	snip += "        self._%s = %s" % (arg, arg)`
@@ -179,4 +188,8 @@ def profile(method):
 		return res
 	return profiled
 
+endsnippet
+
+snippet mypy_ignore "Inline ignore comment"
+type: ignore[${1:${VISUAL:code}}]
 endsnippet

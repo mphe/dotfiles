@@ -1,6 +1,6 @@
 {
     // { 'error': "\uf05e  ", 'warning': "\uf071  ", 'info': "\uf05a  " }
-    // "codeLens.enable": true,
+    "codeLens.enable": true,
     "diagnostic.enableSign": true,
     // "diagnostic.errorSign": ">>",
     // "diagnostic.warningSign": "!!",
@@ -11,6 +11,7 @@
     "diagnostic.displayByAle": true,
     "diagnostic.enableMessage": "always",
     "diagnostic.messageTarget": "echo",
+    "diagnostic.checkCurrentLine": true,
     "diagnostic.refreshOnInsertMode": true,
     "diagnostic.locationlistUpdate": true,
     // "diagnostic.locationlist": true,
@@ -18,6 +19,7 @@
     "coc.preferences.colorSupport": true,
     "coc.source.around.firstMatch": false,
     "coc.source.buffer.firstMatch": false,
+    "coc.preferences.currentFunctionSymbolAutoUpdate": true,
     // "coc.preferences.extensionUpdateCheck": "never",
     "suggest.disableMenuShortcut": true,
     "suggest.completionItemKindLabels": {
@@ -50,7 +52,6 @@
     },
 
     "highlight.colors.enable": false,
-    "lua.version": "5.3",
 
     "markdownlint.config": {
         "default": true,
@@ -62,23 +63,22 @@
         "no-inline-html": false
     },
 
-    "python.jediEnabled": true,
-    "python.formatting.provider": "black",
-    "python.linting.enabled": false,
-    "python.linting.flake8Enabled": true,
-    "python.linting.flake8Args": [ "--ignore=F403,F401,E201,E202,F841,E501,E221" ],
-    "python.linting.flake8CategorySeverity.E": "Information",
-    "python.linting.pylintEnabled": true,
-    "python.linting.pylintArgs": [ "--disable=C,too-few-public-methods,global-statement,useless-object-inheritance,try-except-raise,broad-except,too-many-branches,too-many-arguments" ],
-    "python.linting.pylintUseMinimalCheckers": false,
-    "python.linting.mypyEnabled": true,
+    "Lua.diagnostics.enable": false,
 
-    "latex.lint.onSave": true,
-    "latex.lint.onChange": false,
-    "latex.forwardSearch.executable": "zathura",
-    "latex.forwardSearch.args": [ "--synctex-forward", "%l:1:%f", "%p" ],
-    "latex.build.onSave": true,
-    "latex.build.args": [ "-pdf", "-interaction=nonstopmode", "-synctex=1", "-pvc", "%f" ],
+    "pyright.enable": true,
+    "pyright.server": "/home/marvin/git/pyright/packages/pyright/langserver.index.js",
+    "pyright.disableCompletion": true,
+    "jedi.enable": true,
+    "jedi.completion.resolveEagerly": true,
+    "jedi.executable.command": "/usr/bin/jedi-language-server",
+    "jedi.jediSettings.autoImportModules": [ "numpy", "pandas", "bs4" ],
+
+    // "latex.lint.onSave": true,
+    // "latex.lint.onChange": false,
+    // "latex.forwardSearch.executable": "zathura",
+    // "latex.forwardSearch.args": [ "--synctex-forward", "%l:1:%f", "%p" ],
+    // "latex.build.onSave": true,
+    // "latex.build.args": [ "-pdf", "-interaction=nonstopmode", "-synctex=1", "-pvc", "%f" ],
 
     // "cSpell.enabled": false,
     // "cSpell.enabledLanguageIds": [ "tex" ],
@@ -107,4 +107,33 @@
             "port": 6008
         }
     }
+
+    // "diagnostic-languageserver.enable": false,
+    // "diagnostic-languageserver.filetypes": {
+    //     "cpp": [ "clangtidy" ],
+    //     "c": [ "clangtidy" ],
+    //     "java": [],
+    //     "gdscript3": [],
+    //     "tex": [],
+    //     "css": [],
+    //     "cs": [ "OmniSharp" ],
+    //     "vim": "vint",
+    //     "email": "languagetool",
+    //     "markdown": [ "write-good", "markdownlint" ],
+    //     "sh": "shellcheck",
+    //     "elixir": ["mix_credo", "mix_credo_compile"],
+    //     "eelixir": ["mix_credo", "mix_credo_compile"],
+    //     "php": ["phpstan", "psalm"],
+    //     "yaml": [ "yamllint" ],
+    //     "cmake": [ "cmake-lint", "cmakelint" ],
+    //     "systemd": "systemd-analyze",
+    //     "python": [ "flake8", "mypy", "pylint" ],
+    //     "lua":  "luacheck"
+    // },
+    // "diagnostic-languageserver.mergeConfig": true,
+    // "diagnostic-languageserver.linters": {
+    //     "flake8": { "args": [ "--ignore=F403,F401,E201,E202,F841,E501,E221,E241,E722,F405" ] },
+    //     "mypy": { "args": ["--install-types", "--non-interactive", "--namespace-packages", "--show-error-codes", "--show-error-context", "--show-column-numbers", "--no-strict-optional", "--ignore-missing-imports", "--check-untyped-defs", "--allow-untyped-globals"] },
+    //     "pylint": { "args": [ "-j", "4", "--ignored-modules=scapy,numpy,matplotlib,pyplot", "--disable=C,syntax-error,too-few-public-methods,global-statement,useless-object-inheritance,try-except-raise,broad-except,too-many-branches,too-many-arguments,protected-access,chained-comparison" ] }
+    // }
 }

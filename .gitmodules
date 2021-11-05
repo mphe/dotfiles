@@ -7,3 +7,6 @@
 [submodule "configdir/awesome/freedesktop"]
 	path = configdir/awesome/freedesktop
 	url = https://github.com/lcpz/awesome-freedesktop.git
+[submodule "telegram-desktop-nemo-action"]
+	path = telegram-desktop-nemo-action
+	url = https://github.com/AJAYK-01/telegram-desktop-nemo-action

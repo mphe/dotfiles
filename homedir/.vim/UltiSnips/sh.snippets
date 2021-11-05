@@ -36,3 +36,33 @@ cleanup() {
 	:
 }
 endsnippet
+
+snippet shellcheck_ignore
+shellcheck disable=$1
+endsnippet
+
+snippet main "main function" b
+main() {
+	${1:${VISUAL::}}
+}
+
+main "$@"
+endsnippet
+
+snippet parse_args "parse arguments"
+while [[ \$# -gt 0 ]]; do
+	case "\$1" in
+		-h|--help )
+			echo "help"
+			exit
+			;;
+		--flag )
+			FLAG=true
+			;;
+		* )
+			POSITIONAL="\$1"
+			;;
+	esac
+	shift
+done
+endsnippet

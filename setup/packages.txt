@@ -42,6 +42,7 @@ cmake
 ninja
 clang
 gdb
+ccache
 imagemagick
 pkgfile
 light
@@ -64,6 +65,10 @@ thefuck
 downgrade
 myip
 rsync
+
+libreoffice-fresh-de
+hunspell
+hunspell-de
 
 neovim
 python-pynvim
