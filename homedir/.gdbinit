@@ -1295,16 +1295,18 @@ end
 # quit automatically if process terminates successfully
 # python gdb.events.exited.connect(lambda x : gdb.execute("quit"))
 
-set $_exitcode = -999
-handle SIGTERM nostop print pass
-handle SIGPIPE nostop
-define hook-stop
-    if $_exitcode != -999
-        quit
-    end
-end
+# set $_exitcode = -999
+# handle SIGTERM nostop print pass
+# handle SIGPIPE nostop
+# define hook-stop
+#     if $_exitcode != -999
+#         quit
+#     end
+# end
 
-add-auto-load-safe-path /media/extdata/Main/uni/SSS/ex1/.gdbinit
+# add-auto-load-safe-path /media/extdata/Main/uni/SSS/ex1/.gdbinit
+
+set listsize 40
 
 # ------------------------------------------------------------------------------
 # Copyright (c) 2015-2016 Andrea Cardaci <cyrus.and@gmail.com>

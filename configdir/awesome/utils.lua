@@ -210,4 +210,8 @@ function M.Set(list)
 end
 
 
+function M.StripANSI(str)
+    return str:gsub("[\27\155][][()#;?%d]*[A-PRZcf-ntqry=><~]", ""):gsub("[^%C\n\t]", "")
+end
+
 return M

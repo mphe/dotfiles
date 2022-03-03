@@ -427,7 +427,7 @@ setup_apache() {
         certbot renew --dry-run
     fi
 
-    if question "Add firewall rule"; then
+    if question "Add firewall rule for Apache"; then
         ufw allow "Apache Full"
     fi
 

@@ -33,8 +33,7 @@ alias fmove='fpaste.sh move'
 alias fcopy='fpaste.sh copy'
 alias flink='fpaste.sh link'
 alias flist='fpaste.sh list'
-alias rm='echo this is no longer aliased to trash; rm'
-alias virtualenv='virtualenv --system-site-packages'
+# alias virtualenv='virtualenv --system-site-packages'
 alias dd='dd status=progress bs=4M'
 alias vimdiff='nvim -d'
 alias gst='git status'
@@ -52,6 +51,21 @@ alias awtheme='vim ~/.config/awesome/themes/custom/theme.lua'
 alias r=ranger-cd
 alias pylint='pylint --output-format colorized'
 
+
+# Automatically run ls after cd
+cd() {
+    command cd "$@" || return $?
+    ls
+}
+
+mkcd() {
+    # shellcheck disable=SC2164
+    mkdir -p "$@" && cd "$1"
+}
+
+function wtfis() {
+    curl "https://cheat.sh/$1"
+}
 
 # thefuck (slow as fuck startup)
 # eval "$(thefuck --alias)"
@@ -164,13 +178,14 @@ bind 'set menu-complete-display-prefix On'
 
 # pyenv
 eval "$(pyenv init -)"
+# eval "$(pyenv virtualenv-init -)"
 
 # env vars
 export LANG='en_US.UTF-8'
 export PATH="/home/marvin/bin:/home/marvin/scripts:$PATH"
 export PATH="/home/marvin/.gem/ruby/2.7.0/bin:$PATH"
+export PATH="/home/marvin/.local/bin:$PATH"
 export PATH="/home/marvin/golib/bin:$PATH"
-# export PYTHONPATH="$PYTHONPATH:/mnt/iomega/Python/lib"
 export EDITOR=nvim
 
 # Needed for Unity development with vim using coc-omnisharp

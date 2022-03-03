@@ -64,23 +64,37 @@ end
 
 local function create_palette(palette, fallback)
     local out = {}
+    for k, v in pairs(fallback) do
+        out[k] = v
+    end
     for k, v in pairs(palette) do
-        out[k] = v or fallback[k]
+        out[k] = v
     end
     return out
 end
 
 local awesome_palette = {
-    red = "#ff0000",
-    accent = "#535d6c",
-    bg = "#222222"
+    red         = "#ff0000",
+    accent      = "#535d6c",
+    urgent      = "#ff0000",
+    bg          = "#222222",
+    bg_lighter  = "#444444",
+    bg_lightest = "#444444",
+    fg          = "#aaaaaa",
+    fg_minimize = "#ffffff",
 }
+awesome_palette.bg_minimize = awesome_palette.bg_lightest
+awesome_palette.bg_focus = awesome_palette.accent
 
 local arc_palette = {
-    red = "#cc575d",
-    accent = "#5294e2",
-    bg = "#2F343F"
+    urgent      = "#5294e2",
+    bg          = "#2F343F",
+    bg_lighter  = "#383C4A",
+    bg_lightest = "#404552",
+    fg          = "#AFB8C6",
+    fg_minimize = "#C8CED5",
 }
+arc_palette.bg_minimize = arc_palette.bg_lightest
 
 local palette = create_palette(arc_palette, awesome_palette)
 
@@ -90,21 +104,18 @@ local palette = create_palette(arc_palette, awesome_palette)
 theme.icon_theme = "oomox-numix_awesome_icons"
 -- theme.icon_theme = "Paper"
 
--- theme.font          = "Sans 7"
 theme.font          = "Sans 8"
--- theme.font          = "Open Sans 7"
 
-theme.bg_normal     = "#222222"
--- theme.bg_normal     = "#2F343F"
-theme.bg_focus      = "#535d6c"
-theme.bg_urgent     = "#ff0000"
-theme.bg_minimize   = "#444444"
+theme.bg_normal     = palette.bg
+theme.bg_focus      = palette.bg_focus
+theme.bg_urgent     = palette.urgent
+theme.bg_minimize   = palette.bg_minimize
 theme.bg_systray    = theme.bg_normal
 
-theme.fg_normal     = "#aaaaaa"
+theme.fg_normal     = palette.fg
 theme.fg_focus      = "#ffffff"
 theme.fg_urgent     = "#ffffff"
-theme.fg_minimize   = "#ffffff"
+theme.fg_minimize   = palette.fg_minimize
 
 theme.useless_gap   = dpi(2)
 theme.border_width  = dpi(1)

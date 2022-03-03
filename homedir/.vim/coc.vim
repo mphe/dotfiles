@@ -17,6 +17,8 @@ set shortmess+=c
 " always show signcolumns
 " set signcolumn=yes
 
+let g:coc_default_semantic_highlight_groups = 1
+
 command CocSetup CocInstall
     \ coc-snippets
     \ coc-highlight

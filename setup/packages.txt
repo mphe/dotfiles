@@ -87,6 +87,7 @@ xfdesktop
 libxfce4ui-nocsd
 tumbler
 unrar
+xiccd
 
 luacheck
 luarocks

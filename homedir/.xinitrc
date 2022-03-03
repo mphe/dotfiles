@@ -24,13 +24,13 @@ fi
 
 # Launch DBus if needed
 if test -z "$DBUS_SESSION_BUS_ADDRESS"; then
-	if which dbus-launch >/dev/null; then
-		eval "$(dbus-launch --sh-syntax --exit-with-session)"
-	fi
+    if which dbus-launch >/dev/null; then
+        eval "$(dbus-launch --sh-syntax --exit-with-session)"
+    fi
 else
-	if which dbus-update-activation-environment >/dev/null; then
-		dbus-update-activation-environment --systemd --all
-	fi
+    if which dbus-update-activation-environment >/dev/null; then
+        dbus-update-activation-environment --systemd --all
+    fi
 fi
 
 # fix telegram not inputting accents
@@ -49,10 +49,12 @@ nm-applet &
 udiskie &
 lxpolkit &
 xfsettingsd --sm-client-disable &
-xfdesktop --disable-wm-check --sm-client-disable &
+# xfdesktop --disable-wm-check --sm-client-disable &
+xfdesktop --disable-wm-check &
 xfce4-power-manager &
-xpad &
-~/git/xssstart/xssstart bash ~/git/xssstart/picom.sh &
+~/Dokumente/picom-flicker-workaround/run.sh &
+xiccd &
+# xpad &
 # ibus-daemon -d
 
 [[ -f ~/.cache/awesome/stdout ]] && mv ~/.cache/awesome/stdout ~/.cache/awesome/stdout.old

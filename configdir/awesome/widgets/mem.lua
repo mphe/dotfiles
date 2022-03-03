@@ -17,10 +17,12 @@ function MemWidget:create(args)
     end
 
     self.lainwidget = lain.widget.mem(args)
-    -- local box = self:init(self.lainwidget.widget, args.icon or icons.mem, 0)
     local box = self:init(self.lainwidget.widget)
-    -- box:insert(1, wibox.widget.textbox("  \u{f2db}  "))
-    box:insert(1, wibox.widget.textbox("  \u{f538}  " ))
+    -- For some reason, spaces after the unicode symbol are swallowed, so we put the separating space here
+    box:insert(1, wibox.widget.textbox("  "))
+    box:insert(1, wibox.widget.textbox("\u{f2db}"))
+    box:insert(1, wibox.widget.textbox(" "))
+    -- box:insert(1, wibox.widget.textbox("  \u{f538}" ))
     self:attach(box)
 end
 

@@ -10,9 +10,7 @@ export GTK2_RC_FILES="$HOME/.gtkrc-2.0"
 
 source .profile
 
-
-# force gtk2 for libreoffice
-# export SAL_USE_VCLPLUGIN=gtk
+eval "$(/home/marvin/scripts/nvswitch.sh env_off)"
 
 if [ "$(tty)" = "/dev/tty1" ]; then
     startx

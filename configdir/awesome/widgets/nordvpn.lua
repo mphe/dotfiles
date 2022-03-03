@@ -25,6 +25,10 @@ function NordVPNWidget:create(args)
     self.widget = wibox.widget.textbox()
     local box = self:init(self.widget)
 
+    -- For some reason, spaces after the unicode symbol are swallowed, so we put the separating space here
+    box:insert(2, wibox.widget.textbox(" "))
+    box:insert(1, wibox.widget.textbox(" "))
+
     local menu = awful.menu({
         items = {
             { "Reconnect", function() self:reconnect() end },
@@ -105,9 +109,9 @@ function NordVPNWidget:update(after_cb)
         end,
         output_done = function(reason, code)  -- luacheck: ignore
             if self:is_connected() then
-                self.widget:set_text(" \u{f023} ")
+                self.widget:set_text("\u{f023}")
             else
-                self.widget:set_text(" \u{f3c1} ")
+                self.widget:set_text("\u{f3c1}")
             end
 
             if after_cb then

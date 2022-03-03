@@ -195,6 +195,7 @@ local fswidget = widgets.fs({ blacklist = { "/dev", "/dev/shm", "/run", "/boot/e
 local minwidget = widgets.minimize()
 local todowidget = todo_widget()
 local vpnwidget = widgets.nordvpn()
+local nvwidget = widgets.nvidia({ nvswitch_path = "/home/marvin/scripts/nvswitch.sh" })
 -- todowidget = widgets.todo()
 
 -- local mytextclock = widgets.cal()
@@ -320,6 +321,7 @@ awful.screen.connect_for_each_screen(function(s)
             mpdwidget:get_container(),
             separator,
             todowidget,
+            nvwidget:get_container(),
             separator,
             vpnwidget:get_container(),
             wifiwidget:get_container(),

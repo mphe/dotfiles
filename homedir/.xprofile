@@ -7,5 +7,5 @@ xset s off # disable screensaver
 setxkbmap de
 [ -f ~/.Xmodmap  ] && xmodmap ~.Xmodmap
 [ -f ~/.Xresources  ] && xrdb -merge -I$HOME ~/.Xresources
-~/.screenlayout/normal.sh
+# ~/.screenlayout/normal.sh
 # xrandr --dpi 142

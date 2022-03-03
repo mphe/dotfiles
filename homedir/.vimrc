@@ -2,6 +2,7 @@
 autocmd!
 
 let s:use_treesitter = 0
+let s:use_vim_omnisharp = 1
 
 if !has('nvim')
     let s:use_treesitter = 0
@@ -121,7 +122,6 @@ let g:ale_lint_delay = 2000
 " -------------------------------------- Aliases {{{
 " Treat E as e command
 cnoreabbrev E e
-cnoreabbrev git Git
 
 " -------------------------------------- Aliases end }}}
 
@@ -193,7 +193,6 @@ Plug 'tpope/vim-repeat'
 Plug 'tomtom/tcomment_vim'
 
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'OmniSharp/omnisharp-vim'
 Plug 'Shougo/echodoc.vim'
 
 Plug 'Raimondi/delimitMate'
@@ -258,12 +257,28 @@ Plug 'tpope/vim-sleuth'
 " IntelliJ <-> Neovim bridge
 Plug 'beeender/Comrade'
 
-if !has('nvim')
+" Scrollbar with diagnostics and search markers
+" Plug 'petertriho/nvim-scrollbar'
+Plug 'tbung/nvim-scrollbar', { 'branch': 'feat-handler-registry' }
+
+
+" Interact with jupyter from neovim
+Plug 'tzachar/magma-nvim', { 'do': ':UpdateRemotePlugins' }
+
+" Open a scratch buffer to quickly evaluate code
+Plug 'shift-d/scratch.nvim'
+
+if has('nvim')
+    Plug 'rcarriga/nvim-notify'
+    if s:use_treesitter
+        Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
+    endif
+else
     Plug 'Konfekt/FastFold'
 endif
 
-if s:use_treesitter
-    Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
+if s:use_vim_omnisharp
+    Plug 'OmniSharp/omnisharp-vim'
 endif
 
 call plug#end()
@@ -285,6 +300,11 @@ call matchadd('Error', '\s\+$')
 
 
 " -------------------------------------- Plugin configuration {{{
+
+" localvimrc
+let g:localvimrc_reverse = 1
+let g:localvimrc_blacklist = [ expand('~/.vimrc'), resolve(expand('~/.vimrc')) ]
+let g:localvimrc_name = [ '.lvimrc', '.vimrc' ]
 
 " lightline
 source ~/.vim/lightline_cfg.vim
@@ -341,7 +361,6 @@ let g:easytags_include_members = 1
 
 " tagbar
 command! TB TagbarToggle
-nnoremap <F8> :TagbarOpen fjc<CR>
 nnoremap tt :TagbarOpen fjc<CR>
 
 augroup au_tagbar
@@ -385,6 +404,8 @@ command! UltiSnipReload call UltiSnips#RefreshSnippets()
 
 " ale
 let g:ale_disable_lsp = 1
+let g:ale_virtualtext_cursor = 1
+let g:ale_virtualtext_prefix = ' ◾'
 
 let g:ale_linters = {
     \ 'cpp': [ 'clangtidy' ],
@@ -403,7 +424,7 @@ let g:ale_fixers = {
 
 let g:ale_pattern_options = {'\.tex$': {'ale_enabled': 0}}
 
-let g:ale_linters_ignore = [ 'lacheck', 'pyright' ]
+let g:ale_linters_ignore = [ 'lacheck', 'pyright', ]
 
 let g:ale_cs_csc_options = ' /warn:4 /langversion:7.2'
 
@@ -419,8 +440,9 @@ let g:ale_type_map = {
             \ 'luacheck': {'ES': 'I', 'WS': 'I'},
             \ }
 
+" let g:ale_python_auto_pipenv = 1
 let g:ale_python_flake8_options = '--ignore=F403,F401,E201,E202,F841,E501,E221,E241,E722,F405'
-let g:ale_python_pylint_options = '-j 4 --ignored-modules=scapy,numpy,matplotlib,pyplot --disable=C,syntax-error,too-few-public-methods,global-statement,useless-object-inheritance,try-except-raise,broad-except,too-many-branches,too-many-arguments,protected-access,chained-comparison'
+let g:ale_python_pylint_options = '-j 4 --ignored-modules=pyglet,scapy,numpy,matplotlib,pyplot --disable=C,syntax-error,too-few-public-methods,global-statement,useless-object-inheritance,try-except-raise,broad-except,too-many-branches,too-many-arguments,protected-access,chained-comparison,too-many-instance-attributes,unspecified-encoding'
 let g:ale_python_mypy_options = '--install-types --non-interactive --namespace-packages --show-error-codes --show-error-context --show-column-numbers --no-strict-optional --ignore-missing-imports --check-untyped-defs --allow-untyped-globals'
 let g:ale_python_mypy_ignore_invalid_syntax = 1
 let g:ale_python_mypy_show_notes = 0
@@ -558,6 +580,8 @@ command! -nargs=? Implement call s:Implement(<f-args>)
 
 " fugitive
 command! Gst Gtabedit :
+cnoreabbrev git Git
+cnoreabbrev Gcommit Git commit
 
 " vim-sourcepawn
 au FileType sourcepawn setlocal makeprg=/home/marvin/servers/steamcmd/tf2/tf/addons/sourcemod/scripting/spcomp\ %
@@ -579,10 +603,6 @@ let g:easy_align_delimiters = { '>': { 'pattern': '->' } }
 " autocmd FileType gdscript3 let g:echodoc#enable_at_startup = 1
 let g:echodoc#enable_at_startup = 0
 set noshowmode
-
-augroup au_omnisharp_hints
-    autocmd FileType cs EchoDocEnable
-augroup end
 
 " python-syntax
 let g:python_highlight_all = 1
@@ -620,19 +640,29 @@ let g:grayout_debug_logfile = 1
 " autocmd CursorHold,CursorHoldI * if &ft == 'c' || &ft == 'cpp' || &ft == 'objc' | exec 'GrayoutUpdate' | endif
 
 " omnisharp-vim
-let g:OmniSharp_server_stdio = 1
-let g:OmniSharp_server_use_mono = 0
-let g:OmniSharp_highlight_groups = {
-    \ 'ClassName': 'Type',
-    \ 'StructName': 'Type',
-    \ 'EnumName': 'Type',
-    \ 'FieldName': 'Normal',
-    \ 'PropertyName': 'Normal',
-    \ 'ParameterName': 'Normal',
-    \ 'LocalName': 'Normal',
-    \ 'ConstantName': 'Constant',
-    \ 'NamespaceName': 'LspCxxHlGroupNamespace',
-    \ }
+if s:use_vim_omnisharp
+    let g:OmniSharp_server_stdio = 1
+    " let g:OmniSharp_server_use_mono = 0
+    let g:OmniSharp_server_use_mono = 1
+    let g:OmniSharp_highlight_groups = {
+        \ 'ClassName': 'Type',
+        \ 'StructName': 'Type',
+        \ 'EnumName': 'Type',
+        \ 'FieldName': 'Normal',
+        \ 'PropertyName': 'Normal',
+        \ 'ParameterName': 'Normal',
+        \ 'LocalName': 'Normal',
+        \ 'ConstantName': 'Constant',
+        \ 'NamespaceName': 'LspCxxHlGroupNamespace',
+        \ }
+    source ~/.vim/omnisharp.vim
+
+    augroup au_omnisharp_hints
+        autocmd FileType cs EchoDocEnable
+        autocmd BufWritePost *.cs OmniSharpHighlight
+    augroup end
+
+endif
 
 " echodoc
 let g:echodoc#enable_at_startup = 0
@@ -691,6 +721,133 @@ if s:use_treesitter
 EOF
 endif
 
+
+" nvim-scrollbar
+lua << EOF
+require("scrollbar").setup({
+    handle = {
+        text = " ",
+        highlight = "Pmenu",
+    },
+    -- marks = {
+    --     Search = { text = { "-", "=" }, priority = 0, highlight = "orange" },
+    --     Error = { text = { "-", "=" }, priority = 1, highlight = "red" },
+    --     Warn = { text = { "-", "=" }, priority = 2, highlight = "CocWarningSign" },
+    --     Info = { text = { "-", "=" }, priority = 3, highlight = "CocInfoSign" },
+    --     Hint = { text = { "-", "=" }, priority = 4, color = "green" },
+    --     Misc = { text = { "-", "=" }, priority = 5, color = "purple" },
+    -- },
+    excluded_filetypes = {
+        "",
+        "prompt",
+        "TelescopePrompt",
+    },
+    autocmd = {
+        render = {
+            "BufWinEnter",
+            "TabEnter",
+            "TermEnter",
+            "WinEnter",
+            "CmdwinLeave",
+            "TextChanged",
+            "VimResized",
+            "WinScrolled",
+            "InsertLeave",
+        },
+    },
+    handlers = {
+        diagnostic = true,
+        search = false,
+    },
+})
+
+local mark_type_map = {
+    I = "Info",
+    W = "Warn",
+    E = "Error",
+}
+
+function ll_handler(bufnr)
+    local winnr = vim.fn.get(vim.fn.win_findbuf(bufnr), 0, -1)
+    if winnr == -1 then
+        return {}
+    end
+
+    local ll = vim.fn.getloclist(winnr)
+    local marks = {}
+
+    for _, entry in pairs(ll) do
+        table.insert(marks, { line = entry.lnum, type = mark_type_map[entry.type]})
+    end
+    return marks
+end
+
+require("scrollbar.handlers").register("locationlist", ll_handler)
+EOF
+
+fun! Qf_test()
+    lua ll_handler(vim.fn.bufnr())
+    lua require('scrollbar.handlers').show();require('scrollbar').render()
+endfun
+
+" augroup scrollbar_loclist
+"     autocmd!
+"     autocmd User ALELintPost,ALEFixPost,CocDiagnosticChange call Qf_test()
+"
+"     " quickfix
+"     autocmd QuickFixCmdPost [^l]* call Qf_test()
+"     " location
+"     autocmd QuickFixCmdPost l* call Qf_test()
+"     autocmd Filetype qf call Qf_test()
+" augroup END
+
+
+" magma-nvim
+nnoremap <silent><expr> <leader>r  :MagmaEvaluateOperator<CR>
+nnoremap <silent>       <leader>rr :MagmaEvaluateLine<CR>
+xnoremap <silent>       <leader>r  :<C-u>MagmaEvaluateVisual<CR>
+nnoremap <silent>       <leader>rc :MagmaReevaluateCell<CR>
+nnoremap <silent>       <leader>rd :MagmaDelete<CR>
+nnoremap <silent>       <leader>ro :MagmaShowOutput<CR>
+nnoremap <silent>       <leader>rq :noautocmd MagmaEnterOutput<CR>
+
+let g:magma_automatically_open_output = v:false
+let g:magma_wrap_output = v:false
+
+
+" nvim-notify
+if has('nvim')
+    lua << EOF
+    require("notify").setup({
+    stages = "slide",   -- Animation style (see below for details)
+    -- stages = "fade_in_slide_out",
+    on_open = nil,      -- Function called when a new window is opened, use for changing win settings/config
+    on_close = nil,     -- Function called when a window is closed
+    render = "default", -- Render function for notifications. See notify-render()
+    timeout = 5000,     -- Default timeout for notifications
+    max_width = nil,    -- Max number of columns for messages
+    max_height = nil,   -- Max number of lines for a message
+    minimum_width = 50, -- Minimum width for notification windows
+
+    -- For stages that change opacity this is treated as the highlight behind the window
+    -- Set this to either a highlight group, an RGB hex value e.g. "#000000" or a function returning an RGB code for dynamic values
+    background_colour = "Normal",
+
+    -- Icons for the different levels
+    icons = {
+        ERROR = " ",
+        WARN = " ",
+        INFO = "",
+        DEBUG = "",
+        TRACE = "✎",
+        },
+    })
+
+    -- Use plugin for all notifications
+    vim.notify = require("notify")
+EOF
+endif
+
 " -------------------------------------- Plugin configuration end }}}
 
 
@@ -707,7 +864,7 @@ au!
 " autocmd BufRead * if !&diff && strlen(expand('%')) && &ft != 'gitcommit' | silent! loadview | endif
 
 " filetype specific settings
-" autocmd FileType cmake,vim,lua setlocal foldmethod=marker
+autocmd FileType cmake,vim,lua setlocal foldmethod=marker
 autocmd FileType sourcepawn,json,jsonc setlocal commentstring=//\ %s
 autocmd FileType text,markdown,tex,unknown setlocal wrap
 autocmd FileType markdown setlocal shiftwidth=2 | setlocal tabstop=2
@@ -730,9 +887,9 @@ autocmd FileType *
     \ nmap <silent> <F8> <Plug>(ale_previous_wrap_error)|
     \ nmap <silent> <F9> <Plug>(ale_next_wrap_error)
 
-autocmd FileType c,cpp
-    \ nnoremap <F8> :labove<CR>|
-    \ nnoremap <F9> :lbelow<CR>
+" autocmd FileType *
+"     \ nnoremap <F8> :labove<CR>|
+"     \ nnoremap <F9> :lbelow<CR>
 
 augroup END
 " -------------------------------------- Autocmds end }}}
@@ -872,12 +1029,16 @@ function! F5Refresh()
     elseif &filetype ==# 'markdown' || &filetype ==# 'md'
         MarkdownPreview
         " GodownPreview
-    elseif &filetype ==# 'c' || &filetype ==# 'cpp' || &filetype ==# 'cs'
+    elseif &filetype ==# 'c' || &filetype ==# 'cpp'
         if exists(':GrayoutUpdate')
             GrayoutUpdate
         endif
         LspCxxHighlight
         ALELint
+    elseif &filetype ==# 'cs'
+        if s:use_vim_omnisharp
+            OmniSharpHighlight
+        endif
     else
         ALELint
     endif
@@ -888,6 +1049,8 @@ inoremap <silent> <F5> <c-o>:call F5Refresh()<CR>
 
 nnoremap <leader>d :ALEDetail<CR>
 
+nnoremap <F8> :labove<CR>
+nnoremap <F9> :lbelow<CR>
 
 " -------------------------------------- Key mappings end }}}
 
@@ -916,7 +1079,6 @@ set foldtext=NeatFoldText()
 
 " source ~/.vim/completion_preview.vim
 source ~/.vim/coc.vim
-source ~/.vim/omnisharp.vim
 
 function! CheckSize()
     let size = getfsize(@%)
@@ -929,3 +1091,5 @@ function! CheckSize()
 endfun
 
 au BufEnter * :call CheckSize()
+
+

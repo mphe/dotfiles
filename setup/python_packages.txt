@@ -1,1 +1,6 @@
 pdbpp
+notify_send_py
+cairosvg
+pnglatex
+plotly
+kaleido

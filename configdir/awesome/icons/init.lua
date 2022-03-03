@@ -25,6 +25,8 @@ local icons      = {
         beautiful.lookup_icon_colored("status/network-wireless-signal-good"),
         beautiful.lookup_icon_colored("status/network-wireless-signal-excellent"),
     },
+    nvidia = beautiful.lookup_icon_colored("status/nvidia-card"),
+    nvidia_green = beautiful.lookup_icon_colored("status/nvidia-card", "#00aa00"),
 }
 
 -- Adds entries <basename>_<level> to `icons` table with icon paths according to strformat.

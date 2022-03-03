@@ -72,6 +72,10 @@ highlight link ALEErrorSign CocErrorSign
 highlight link ALEWarningSign CocWarningSign
 highlight link ALEInfoSign CocInfoSign
 
+highlight link ALEVirtualTextError ALEErrorSign
+highlight link ALEVirtualTextWarning ALEWarningSign
+highlight link ALEVirtualTextInfo ALEInfoSign
+
 " ycm
 highlight link YcmWarningSign CocWarningSign
 highlight link YcmErrorSign CocErrorSign
@@ -133,14 +137,33 @@ hi link LspCxxHlSymParameterString Constant
 " hi link AutoType Type
 " hi link Namespace cUserFunction
 
+hi link CocSemNamespace LspCxxHlGroupNamespace
+hi link CocSemType Type
+hi link CocSemClass LspCxxHlSymClass
+hi link CocSemEnum LspCxxHlSymEnum
+hi link CocSemInterface Type
+hi link CocSemStruct LspCxxHlSymStruct
+hi link CocSemTypeParameter LspCxxHlSymTypeParameter
+hi link CocSemParameter Normal
+hi link CocSemVariable LspCxxHlGroupMemberVariable
+hi link CocSemProperty LspCxxHlGroupMemberVariable
+hi link CocSemEnumMember LspCxxHlGroupEnumConstant
+hi link CocSemEvent Identifier
+hi link CocSemFunction LspCxxHlSymFunction
+hi link CocSemMethod LspCxxHlSymClassMethod
+hi link CocSemMacro Macro
+hi link CocSemKeyword Keyword
+hi link CocSemModifier StorageClass
+hi link CocSemComment Comment
+hi link CocSemString String
+hi link CocSemNumber Number
+hi link CocSemRegexp Normal
+hi link CocSemOperator Operator
+
 " https://vi.stackexchange.com/questions/16813/avoid-highlighting-defined-by-matchadd-in-comments
 function! s:CSyntaxFixes()
-    let l:commentassert = '\(\/\/.*\|\/\*.*\)\@<!'
-    " let l:commentassertahead = '\(.*\*\/\)\@=!'
-    call matchadd('cString', l:commentassert . '".\{-}"')
-    " . l:commentassertahead)
-    " call matchadd('Function', l:commentassert . '~.\{-}(\@=')
-    " . l:commentassertahead)
+    " let l:commentassert = '\(\/\/.*\|\/\*.*\)\@<!'
+    " call matchadd('cString', l:commentassert . '".\{-}"')
     hi doxygenBrief ctermfg=10 guifg=#586e75 gui=italic cterm=italic
     hi link doxygenStart doxygenBrief
     hi link doxygenComment doxygenBrief
