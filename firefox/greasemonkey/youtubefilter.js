@@ -6,15 +6,16 @@
 // ==/UserScript==
 
 blacklist = {
-    "The Escapist": /(.*\| (Post-3MR Stream|Today We Play|The Escapist Show|Slightly Civil War|Stream Archive|Livestream|The Big Picture|Escape to the Movies|Post-ZP Stream|The Joy of Gaming).*|Every .... Zero Punctuation with.*|Yahtzee and Kess play a thing|Today We Try.*)/,
+    "The Escapist": /(.*\| (Slightly Post-War.*|Post-3MR Stream|Today We Play|The Escapist Show|Slightly Civil War|Stream Archive|Livestream|The Big Picture|Escape to the Movies|Post-ZP Stream|The Joy of Gaming).*|Every .... Zero Punctuation with.*|Yahtzee and Kess play a thing|Today We Try.*)/,
     "tinseltown": /.*\| Tinseltalk/,
     "Robert Hofmann": /(Neu auf (Amazon Prime|Netflix).*|.* - (Kopfkino|FILM NEWS)|.*Verlosung$|^Q\s*&\s*A.*)/,
-    "Cinema 4D by Maxon": /(3D Motion Show .*|.*NAB.*|.* The 3D and Motion Design Show)/,
+    //"Maxon": /(3D Motion Show .*|.*NAB.*|.*The 3D and Motion Design Show.*)/,
 }
 
 whitelist = {
     "tagesschau": /^tagesschau.*/,
     "gTV_DE": /.*FIRSTS.*/,
+    "ZDFheute Nachrichten": /.*Inside PolitiX.*/,
 }
 
 
@@ -23,6 +24,7 @@ const callback = function(mutationsList, observer) {
         for (var node of mutation.addedNodes)
             filtervids(node)
 };
+
 
 function filtervids(root)
 {
@@ -40,9 +42,22 @@ function filtervids(root)
     }
 }
 
-const observer = new MutationObserver(callback);
-var contents = document.getElementsByTagName("ytd-section-list-renderer")[0].querySelector("[id=contents]")
-observer.observe(contents, { attributes: false, childList: true, subtree: false });
 
-filtervids(document)
+function main(contents)
+{
+    const observer = new MutationObserver(callback);
+    observer.observe(contents, { attributes: false, childList: true, subtree: true });
+    filtervids(document)
+}
 
+
+// Wait until contents node exists, then run main()
+var checkExist = setInterval(function() {
+    // var contents = document.getElementsByTagName("ytd-section-list-renderer")[0].querySelector("[id=contents]")
+    var contents = document.getElementById("contents")
+    if (contents)
+    {
+        main(contents)
+        clearInterval(checkExist);
+    }
+}, 100); // check every 100ms

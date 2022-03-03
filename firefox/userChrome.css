@@ -2,7 +2,8 @@
     --fontsize: 12px;
     /* --fontsize: 16px; */
     /* --tabsize: 24px; */
-    --tabsize: 27px;
+    /* --tabsize: 27px; */
+    --tabsize: 29px;
     --tabwidth: 150px;
     --color-bg: #222222;
     --color-gray: #444444;
@@ -16,9 +17,8 @@
 /* Main colors */
 #main-window, #browser-bottombox, #urlbar, #nav-bar, #TabsToolbar, #navigator-toolbox, #toolbar-menubar,
 #browser-panel, #tab-view-deck, #tabbrowser-tabs, .tabbrowser-arrowscrollbox {
-    background: var(--color-bg) !important;
+    /* background: var(--color-bg) !important; */
     color: var(--color-fg) !important;
-    box-shadow: none !important;
 }
 
 /* font */
@@ -39,27 +39,27 @@
 }
 
 .tab-background {
-    background: var(--color-bg) !important;
-    border-radius: 0 !important;
+    /* background: var(--color-bg) !important; */
     margin: 0 !important;
 }
 
-.tabbrowser-tab:hover .tab-background {
-    background: var(--color-gray) !important;
-}
+/* .tabbrowser-tab:hover .tab-background { */
+/*     background: var(--color-gray) !important; */
+/* } */
 
-.tabbrowser-tab:hover {
-    color: var(--color-fg-active) !important;
-}
+/* .tabbrowser-tab:hover { */
+/*     color: var(--color-fg-active) !important; */
+/* } */
 
-.tabbrowser-tab[selected=true] .tab-background {
-    background: var(--color-active) !important;
-    color: var(--color-fg-active) !important;
-}
+/* .tabbrowser-tab[selected=true] .tab-background { */
+/*     background: var(--color-active) !important; */
+/*     color: var(--color-fg-active) !important; */
+/* } */
 
-/* hide alltabs button and tab scroll arrows */
+/* hide alltabs button */
 /* the position of this rule in the file actually matters for some reason */
-#alltabs-button, #scrollbutton-up, #scrollbutton-down {
+#alltabs-button
+{
     display: none !important;
 }
 
@@ -71,26 +71,24 @@
 
 #urlbar-background {
     border: none !important;
-    border-radius: 0 !important;
-    background: var(--color-urlbar-bg) !important;
-    color: var(--color-urlbar-fg) !important;
+    /* background: var(--color-urlbar-bg) !important; */
+    /* color: var(--color-urlbar-fg) !important; */
 }
 
 #urlbar[breakout][breakout-extend] {
-    background: var(--color-urlbar-bg) !important;
+    /* background: var(--color-urlbar-bg) !important; */
     color: var(--color-urlbar-fg) !important;
     border: 1px solid var(--color-active) !important;
 }
 
 #urlbar {
     border: none !important;
-    border-radius: 0 !important;
-    --urlbar-box-bgcolor: #222222 !important;
+    /* --urlbar-box-bgcolor: var(--color-bg) !important; */
 }
 
-#identity-box:hover {
-    background: var(--color-bg) !important;
-}
+/* #identity-box:hover { */
+/*     background: var(--color-bg) !important; */
+/* } */
 
 /* }}} */
 
