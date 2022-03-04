@@ -258,8 +258,7 @@ Plug 'tpope/vim-sleuth'
 Plug 'beeender/Comrade'
 
 " Scrollbar with diagnostics and search markers
-" Plug 'petertriho/nvim-scrollbar'
-Plug 'tbung/nvim-scrollbar', { 'branch': 'feat-handler-registry' }
+Plug 'petertriho/nvim-scrollbar'
 
 
 " Interact with jupyter from neovim
