@@ -2,6 +2,15 @@
     // { 'error': "\uf05e  ", 'warning': "\uf071  ", 'info': "\uf05a  " }
     "codeLens.enable": true,
     "diagnostic.enableSign": true,
+    // "suggest.floatConfig": {
+    //     "border": true
+    // },
+    // "signature.floatConfig": {
+    //     "border": true
+    // },
+    // "hover.floatConfig": {
+    //     "border": true
+    // },
     // "diagnostic.errorSign": ">>",
     // "diagnostic.warningSign": "!!",
     "diagnostic.errorSign": " ",
@@ -14,13 +23,15 @@
     "diagnostic.checkCurrentLine": true,
     "diagnostic.refreshOnInsertMode": true,
     "diagnostic.locationlistUpdate": true,
-    // "diagnostic.locationlist": true,
+    "diagnostic.virtualText": true,
+    "diagnostic.virtualTextPrefix": " ◾",
     "sh.enable": false,
     "semanticTokens.filetypes": [ "*" ],
     "coc.preferences.currentFunctionSymbolAutoUpdate": true,
     "coc.source.around.firstMatch": false,
     "coc.source.buffer.firstMatch": false,
     // "coc.preferences.extensionUpdateCheck": "never",
+    "suggest.noselect": true,
     "suggest.disableMenuShortcut": true,
     "suggest.completionItemKindLabels": {
         "constructor": " ",
@@ -55,6 +66,8 @@
 
     "highlight.colors.enable": false,
 
+    "typescript.preferences.quoteStyle": "double",
+
     "markdownlint.config": {
         "default": true,
         "line_length": false,
@@ -62,7 +75,8 @@
         "blank_lines": false,
         "header-increment": false,
         "single-title": false,
-        "no-inline-html": false
+        "no-inline-html": false,
+        "commands-show-output": false
     },
 
     "Lua.diagnostics.enable": false,
@@ -105,6 +119,12 @@
             "filetypes": ["gd", "gdscript3"],
             "port": 6008
         }
+        // "glsl": {
+        //     "filetypes": [ "glsl" ],
+        //     "command": "glslls",
+        //     "args": [ "--stdin" ],
+        //     "settings": {}
+        // }
     }
 
     // "diagnostic-languageserver.enable": false,

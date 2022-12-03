@@ -3,6 +3,54 @@ set t_Co=256
 set background=dark
 set guifont="Terminus"
 
+
+" base03  = #002b36
+" base02  = #073642
+" base01  = #586e75
+" base00  = #657b83
+" base0   = #839496
+" base1   = #93a1a1
+" base2   = #eee8d5
+" base3   = #fdf6e3
+" yellow  = #b58900
+" orange  = #cb4b16
+" red     = #dc322f
+" magenta = #d33682
+" violet  = #6c71c4
+" blue    = #268bd2
+" cyan    = #2aa198
+" green   = #859900
+" blue3   = #094655
+" pum fg  = #C6C6C6
+
+let s:base03  = '#002b36'
+let s:base02  = '#073642'
+let s:base01  = '#586e75'
+let s:base00  = '#657b83'
+let s:base0   = '#839496'
+let s:base1   = '#93a1a1'
+let s:base2   = '#eee8d5'
+let s:base3   = '#fdf6e3'
+let s:yellow  = '#b58900'
+let s:orange  = '#cb4b16'
+let s:red     = '#dc322f'
+let s:magenta = '#d33682'
+let s:violet  = '#6c71c4'
+let s:blue    = '#268bd2'
+let s:cyan    = '#2aa198'
+let s:green   = '#859900'
+let s:blue3   = '#094655'
+
+let s:pum_fg  = '#C6C6C6'
+let s:pum_bg = s:blue3
+
+let s:normal_fg = s:base0
+let s:normal_bg = s:base02
+
+function s:hl(group, colordict)
+    exec 'highlight ' . a:group . ' ' . join(values(map(copy(a:colordict), 'v:key . "=" .. v:val')), ' ')
+endfunction
+
 " ------------------ Solarized
 " let g:solarized_termtrans = 1
 " let g:solarized_hitrail = 1
@@ -12,19 +60,10 @@ if &term ==? 'xterm-termite'
 endif
 
 if has('nvim')
-"     let g:neosolarized_contrast = 'normal'
-"     let g:neosolarized_visibility = 'normal'
-"     let g:neosolarized_bold = 1
-"     let g:neosolarized_underline = 1
-"     let g:neosolarized_italic = 1
-
     set termguicolors
-    " colorscheme NeoSolarized
     colorscheme flattened_dark
 else
-    " colorscheme solarized8_flat
     colorscheme solarized
-    " colorscheme flattened_dark
 endif
 
 " Search highlight color
@@ -49,6 +88,7 @@ highlight PmenuSbar  ctermfg=12 ctermbg=0
 highlight Pmenu      cterm=NONE ctermbg=17 ctermfg=251 gui=NONE guibg=#094655 guifg=#C6C6C6
 highlight VertSplit  ctermbg=0 guibg=#073642
 highlight Comment cterm=NONE gui=NONE
+highlight! link QuickFixLine CursorLine
 
 " coc
 highlight CocErrorSign   cterm=bold ctermbg=black ctermfg=9   gui=bold guibg=#073642 guifg=#cb4b16
@@ -59,11 +99,23 @@ highlight CocErrorFloat   cterm=NONE ctermbg=black ctermfg=9   gui=NONE guibg=#0
 highlight CocWarningFloat cterm=NONE ctermbg=black ctermfg=130 gui=NONE guibg=#094655 guifg=#b58900
 highlight CocInfoFloat    cterm=NONE ctermbg=black ctermfg=11  gui=NONE guibg=#094655
 highlight link CocHintFloat CocInfoFloat
+" highlight link NormalFloat CursorLine
+highlight link CocFadeOut Comment
+
+" fix completion menu colors
+hi link CocMenuSel PmenuSel
+hi link CocFloating Pmenu
 
 highlight CocUnderline cterm=underline gui=underline
 highlight CocErrorLine ctermbg=52 guibg=#5F0000
 highlight link CocErrorHighlight Error
 highlight CocCodeLens guibg=#073642 guifg=#6C71C4
+highlight! link CocInlayHint CocCodeLens
+
+highlight link DiagnosticVirtualTextError CocErrorSign
+highlight link DiagnosticVirtualTextWarn CocWarningSign
+highlight link DiagnosticVirtualTextInfo CocInfoSign
+highlight link DiagnosticVirtualTextHint CocHintSign
 
 " ale
 highlight link ALEError CocErrorHighlight
@@ -184,28 +236,46 @@ function! s:ScalaSyntaxFixes()
     highlight link scalaFunctionCall Function
 endfun
 
+function! s:StyleOverrides()
+    call ApplyBarBar()
+endfun
+
 augroup SyntaxFix
 autocmd FileType c,cpp call s:CSyntaxFixes()
 autocmd FileType scala call s:ScalaSyntaxFixes()
+autocmd VimEnter * call s:StyleOverrides()
 augroup END
 
 hi texStatement ctermbg=NONE guibg=NONE
 
-" base03  = #002b36
-" base02  = #073642
-" base01  = #586e75
-" base00  = #657b83
-" base0   = #839496
-" base1   = #93a1a1
-" base2   = #eee8d5
-" base3   = #fdf6e3
-" yellow  = #b58900
-" orange  = #cb4b16
-" red     = #dc322f
-" magenta = #d33682
-" violet  = #6c71c4
-" blue    = #268bd2
-" cyan    = #2aa198
-" green   = #859900
-" blue3   = #094655
-" pum fg  = #C6C6C6
+
+function ApplyBarBar()
+    " Meaning of terms:
+    "
+    " format: "Buffer" + status + part
+    "
+    " status:
+    "     *Current: current buffer
+    "     *Visible: visible but not current buffer
+    "    *Inactive: invisible but not current buffer
+    "
+    " part:
+    "        *Icon: filetype icon
+    "       *Index: buffer index
+    "         *Mod: when modified
+    "        *Sign: the separator between buffers
+    "      *Target: letter in buffer-picking mode
+    "
+    " BufferTabpages: tabpage indicator
+    " BufferTabpageFill: filler after the buffer section
+    " BufferOffset: offset section, created with set_offset()
+    highlight! link BufferDefaultCurrent Pmenu
+    highlight! BufferDefaultCurrentMod guibg=#094655
+    call s:hl('BufferDefaultCurrentSign', { 'guibg': s:blue3, 'guifg': s:blue })
+    highlight! link BufferDefaultInactiveSign LineNr
+    highlight! link BufferDefaultInactive LineNr
+    call s:hl('BufferDefaultVisible', { 'guibg': s:normal_bg, 'guifg': s:normal_fg })
+    call s:hl('BufferDefaultVisibleSign', { 'guibg': s:normal_bg, 'guifg': s:normal_fg })
+    call s:hl('BufferDefaultVisibleMod', { 'guibg': s:normal_bg })
+    highlight! link BufferDefaultTabpageFill Comment
+endfun

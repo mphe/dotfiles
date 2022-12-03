@@ -39,7 +39,8 @@ snippet init "def __init__" b
 def __init__(self$1):`!p
 args = get_args(t[1])
 for arg in args:
-	snip += "    self._%s = %s" % (arg, arg)`
+	val = str(arg).split(":", 1)[0]
+	snip += "    self._%s = %s" % (arg, val)`
 ${0}
 endsnippet
 
@@ -47,7 +48,7 @@ snippet main "main" b
 import sys
 
 
-def main():
+def main() -> int:
 	${0}
 	return 0
 
@@ -75,6 +76,7 @@ endsnippet
 snippet argparse "argparse setup"
 import argparse
 parser = argparse.ArgumentParser(description="description")
+parser.add_argument("argument", help="argument help")
 parser.add_argument("-a", "--argument", help="argument help")
 parser.add_argument("-v", "--verbose", action="store_true", help="Verbose output")
 args = parser.parse_args()
@@ -157,11 +159,7 @@ def timeit(method):
 		ts = time.time()
 		result = method(*args, **kw)
 		te = time.time()
-		if 'log_time' in kw:
-			name = kw.get('log_name', method.__name__.upper())
-			kw['log_time'][name] = int((te - ts) * 1000)
-		else:
-			print('%r  %2.2f ms' % (method.__name__, (te - ts) * 1000))
+		print('%r  %2.2f ms' % (method.__name__, (te - ts) * 1000))
 		return result
 	return timed
 endsnippet
@@ -192,4 +190,16 @@ endsnippet
 
 snippet mypy_ignore "Inline ignore comment"
 type: ignore[${1:${VISUAL:code}}]
+endsnippet
+
+snippet np "import numpy as np"
+import numpy as np
+endsnippet
+
+snippet plt "from matplotlib import pyplot as plt"
+from matplotlib import pyplot as plt
+endsnippet
+
+snippet pd "import pandas as pd"
+import pandas as pd
 endsnippet

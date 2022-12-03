@@ -10,7 +10,7 @@ program_options:
   menu:             nested    # ["flat" | "nested"] Set the
                             # systray menu behaviour.
 
-  automount:        true   # [bool] Enable automatic mounting.
+  automount:        false   # [bool] Enable automatic mounting.
 
   notify:           true    # [bool] Enable notifications.
 
@@ -66,6 +66,9 @@ device_config:
 # ignore_device:              # [deprecated] do not use
  - id_type: crypto_LUKS
    ignore: true
+
+ - id_uuid: b850345b-81b2-49b2-a80f-f03a124dfb22
+   automount: true
 
 # notifications:
 #   # Customize which notifications are shown for how long. Possible

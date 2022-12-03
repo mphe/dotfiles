@@ -22,7 +22,8 @@ function CPUWidget:create(args)
     -- local box = self:init(widget, args.icon or icons.cpu, 0)
     local box = self:init(widget, args.icon or icons.cpu)
     -- local box = self:init(widget)
-    -- box:insert(1, wibox.widget.textbox("  \u{f2db}  "))
+    -- box:insert(1, wibox.widget.textbox("  \u{f2db}  "))  -- font awesome
+    -- box:insert(1, wibox.widget.textbox("  \u{f85a}  "))  -- nerd fonts
     self:attach(box)
 end
 

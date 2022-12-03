@@ -55,22 +55,30 @@ let s:green = [ '#859900', s:cuicolors.green[s:cuiindex] ]
 
 " [ foreground, background, style ]
 let s:p = {'normal': {}, 'inactive': {}, 'insert': {}, 'replace': {}, 'visual': {}, 'tabline': {}}
-let s:p.normal.left = [ [ s:base03, s:base0, 'bold' ], [ s:violet, s:base02 ], [ s:base00, s:base03 ] ]
-let s:p.normal.middle = [ [ s:base1, s:base03 ] ]
-" let s:p.normal.right = [ [ s:base0, s:base02 ], [ s:base02, s:base01 ], [ s:base01, s:base02 ], [ s:base0, s:base03, 'bold' ], [ s:yellow, s:base03, 'bold' ], [ s:orange, s:base03, 'bold' ] ]
+
+let s:fname_color = [ s:violet, s:base02 ]
+
+"                       mode                           filename                ?
+let s:p.normal.left = [ [ s:base03, s:base0, 'bold' ], s:fname_color, [ s:base00, s:base03 ] ]
+let s:p.insert.left = [ [ s:blue, s:base02 ], s:fname_color ]
+let s:p.replace.left = [ [ s:base3, s:red ], s:fname_color ]
+let s:p.visual.left = [ [ s:base3, s:magenta ], s:fname_color ]
+
+let s:p.inactive.left = [ s:fname_color ]
+
 let s:p.normal.right = [ [ s:base0, s:base02 ], [ s:base01, s:base02 ], [ s:base01, s:base02 ], [ s:base0, s:base03, 'bold' ], [ s:yellow, s:base03, 'bold' ], [ s:orange, s:base03, 'bold' ] ]
-let s:p.insert.left = [ [ s:blue, s:base02 ], [ s:violet, s:base02 ] ]
-let s:p.insert.middle = [ [ s:base1, s:base03 ] ]
-let s:p.inactive.left = [ [ s:base0, s:base02 ], [ s:base00, s:base02 ] ]
-let s:p.inactive.middle = [ [ s:base0, s:base02 ] ]
-let s:p.inactive.right = [ [ s:base02, s:base01 ], [ s:base01, s:base02 ] ]
-let s:p.replace.left = [ [ s:base3, s:red ], [ s:base3, s:base01 ] ]
-let s:p.visual.left = [ [ s:base3, s:magenta ], [ s:base1, s:base02 ] ]
+" let s:p.inactive.right = s:p.normal.right
+" let s:p.inactive.right = [ [ s:base02, s:base01 ], [ s:base01, s:base02 ] ]
+
+let s:p.normal.middle = [ [ s:base1, s:base03 ] ]
+" let s:p.insert.middle = [ [ s:base1, s:base03 ] ]
+" let s:p.inactive.middle = [ [ s:base0, s:base02 ] ]
+
 let s:p.tabline.left = [ [ s:base0, s:base02 ] ]
 let s:p.tabline.tabsel = [ [ s:base03, s:base0 ] ]
-" let s:p.tabline.tabsel = [ [ s:base00, s:base03 ] ]
 let s:p.tabline.middle = [ [ s:base03, s:base02 ] ]
 let s:p.tabline.right =[ [ s:base01, s:base02 ] ]
+
 let s:p.normal.error = [ [ s:orange, s:base02, 'bold'] ]
 let s:p.normal.warning = [ [ s:yellow, s:base02, 'bold' ] ]
 let s:p.normal.info = [ [ s:base0, s:base02, 'bold' ] ]

@@ -56,7 +56,8 @@ function todo_widget:update_counter(todos)
         end
     end
 
-    todo_widget.widget:set_text(" \u{f46c}  " .. todo_count)
+    -- todo_widget.widget:set_text(" \u{f46c}  " .. todo_count)  -- font awesome
+    todo_widget.widget:set_text(" \u{f64b}  " .. todo_count)  -- nerd fonts
     -- todo_widget.widget:set_text(todo_count)
 end
 

@@ -1,0 +1,51 @@
+diff --git ale_linters/python/pylint.vim ale_linters/python/pylint.vim
+index 44eea246..9b2e9225 100644
+--- ale_linters/python/pylint.vim
++++ ale_linters/python/pylint.vim
+@@ -1,6 +1,7 @@
+ " Author: keith <k@keith.so>
+ " Description: pylint for python files
+ 
++call ale#Set('python_pylint_only_on_save', 0)
+ call ale#Set('python_pylint_executable', 'pylint')
+ call ale#Set('python_pylint_options', '')
+ call ale#Set('python_pylint_use_global', get(g:, 'ale_use_global_executables', 0))
+@@ -40,7 +41,7 @@ function! ale_linters#python#pylint#GetCommand(buffer, version) abort
+     \   . ale#Escape(l:executable) . l:exec_args
+     \   . ale#Pad(ale#Var(a:buffer, 'python_pylint_options'))
+     \   . ' --output-format text --msg-template="{path}:{line}:{column}: {msg_id} ({symbol}) {msg}" --reports n'
+-    \   .  (ale#semver#GTE(a:version, [2, 4, 0]) ? ' --from-stdin' : '')
++    \   .  (!ale#Var(a:buffer, 'python_pylint_only_on_save') && ale#semver#GTE(a:version, [2, 4, 0]) ? ' --from-stdin' : '')
+     \   . ' %s'
+ endfunction
+ 
+@@ -102,7 +103,7 @@ call ale#linter#Define('python', {
+ \       buffer,
+ \       ale#Var(buffer, 'python_pylint_executable'),
+ \       '%e --version',
+-\       {buffer, version -> !ale#semver#GTE(version, [2, 4, 0])},
++\       {buffer, version -> ale#Var(buffer, 'python_pylint_only_on_save') || !ale#semver#GTE(version, [2, 4, 0])},
+ \   )},
+ \   'command': {buffer -> ale#semver#RunWithVersionCheck(
+ \       buffer,
+diff --git autoload/ale/handlers/gcc.vim autoload/ale/handlers/gcc.vim
+index 0b37c98a..527d944a 100644
+--- autoload/ale/handlers/gcc.vim
++++ autoload/ale/handlers/gcc.vim
+@@ -143,10 +143,15 @@ function! ale#handlers#gcc#HandleGCCFormat(buffer, lines) abort
+             continue
+         endif
+ 
++        let l:text = s:RemoveUnicodeQuotes(l:match[5])
++        if l:text =~# '.*\[clang-diagnostic-.*\].*$'
++            continue
++        endif
++
+         let l:item = {
+         \   'lnum': str2nr(l:match[2]),
+         \   'type': (l:match[4] is# 'error' || l:match[4] is# 'fatal error') ? 'E' : 'W',
+-        \   'text': s:RemoveUnicodeQuotes(l:match[5]),
++        \   'text': l:text,
+         \}
+ 
+         if !empty(l:match[3])

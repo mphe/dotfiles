@@ -29,5 +29,6 @@ fi
 question "Setup samba" && ./setup-samba.sh
 question "Setup ssh" &&./setup-ssh.sh
 question "Setup xampp" &&./setup-xampp.sh
+question "Minimize hibernation image size" && sudo cp ./hibernation_image_size.conf /etc/tmpfiles.d/
 
 return 0

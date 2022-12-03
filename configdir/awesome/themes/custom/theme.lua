@@ -104,7 +104,7 @@ local palette = create_palette(arc_palette, awesome_palette)
 theme.icon_theme = "oomox-numix_awesome_icons"
 -- theme.icon_theme = "Paper"
 
-theme.font          = "Sans 8"
+theme.font          = "DejavuSans 8"
 
 theme.bg_normal     = palette.bg
 theme.bg_focus      = palette.bg_focus

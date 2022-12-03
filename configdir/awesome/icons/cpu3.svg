@@ -11,7 +11,7 @@
    viewBox="0 0 512 512"
    style="width: 256px; height: 256px; opacity: 1;"
    xml:space="preserve"
-   sodipodi:docname="cpu.svg"
+   sodipodi:docname="cpu3.svg"
    inkscape:version="1.2 (dc2aedaf03, 2022-05-15)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
@@ -28,7 +28,7 @@
    inkscape:deskcolor="#d1d1d1"
    showgrid="false"
    inkscape:zoom="1.5859375"
-   inkscape:cx="256"
+   inkscape:cx="153.53695"
    inkscape:cy="256"
    inkscape:window-width="1918"
    inkscape:window-height="1058"
@@ -124,12 +124,13 @@
    style="fill: rgb(75, 75, 75);"
    id="path34" />
 	<rect
-   x="78.629"
-   y="78.629"
+   x="96.3666"
+   y="96.366646"
    class="st0"
-   width="354.752"
-   height="354.753"
-   style="fill: rgb(75, 75, 75);"
-   id="rect36" />
+   width="319.27682"
+   height="319.27768"
+   style="fill:#4b4b4b;stroke-width:0.9"
+   id="rect36"
+   ry="0" />
 </g>
 </svg>

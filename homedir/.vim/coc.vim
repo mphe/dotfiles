@@ -21,7 +21,6 @@ let g:coc_default_semantic_highlight_groups = 1
 
 command CocSetup CocInstall
     \ coc-snippets
-    \ coc-highlight
     \ coc-actions
     \ coc-vimlsp
     \ coc-sh
@@ -30,39 +29,54 @@ command CocSetup CocInstall
     \ coc-html
     \ coc-css
     \ coc-jedi
+    \ coc-clangd
     " \ coc-python
     " \ 'coc-comrade'
     " \ 'coc-metals'
 
 " Use tab for trigger completion with characters ahead and navigate.
-" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
+" NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
+" other plugin before putting this into your config.
 inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#pum#visible() ? coc#pum#next(1):
+      \ CheckBackspace() ? "\<Tab>" :
       \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
 
-" inoremap <silent><expr> <TAB>
-"       \ pumvisible() ? coc#_select_confirm() :
-"       \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
-"       \ <SID>check_back_space() ? "\<TAB>" :
-"       \ coc#refresh()
 
-function! s:check_back_space() abort
+function! CheckBackspace() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 
-let g:coc_snippet_next = '<tab>'
+
+" snippets {{{
+" " Use <C-j> for select text for visual placeholder of snippet.
+" vmap <C-j> <Plug>(coc-snippets-select)
+"
+" " Use <C-j> for jump to next placeholder, it's default of coc.nvim
+" let g:coc_snippet_next = '<c-j>'
+"
+" " Use <C-k> for jump to previous placeholder, it's default of coc.nvim
+" let g:coc_snippet_prev = '<c-k>'
+"
+" " Use <C-j> for both expand and jump (make expand higher priority.)
+" imap <C-j> <Plug>(coc-snippets-expand-jump)
+
+" snippets }}}
 
 " Use <c-space> to trigger completion.
-inoremap <silent><expr> <c-space> coc#refresh()
+if has('nvim')
+  inoremap <silent><expr> <c-space> coc#refresh()
+else
+  inoremap <silent><expr> <c-@> coc#refresh()
+endif
 
-" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
-" Coc only does snippet and additional edit on confirm.
-" inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-" Or use `complete_info` if your vim support it, like:
-" inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+" Make <CR> to accept selected completion item or notify coc.nvim to format
+" <C-g>u breaks current undo, please make your own choice.
+inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
+                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+
 
 " Use `[g` and `]g` to navigate diagnostics
 nmap <silent> [g <Plug>(coc-diagnostic-prev)
@@ -79,14 +93,14 @@ nmap <silent> <leader>jD <Plug>(coc-implementation)
 " nmap <silent> gy <Plug>(coc-type-definition)
 " nmap <silent> gr <Plug>(coc-references)
 
-" Use K to show documentation in preview window
-nnoremap <silent> K :call <SID>show_documentation()<CR>
+" Use K to show documentation in preview window.
+nnoremap <silent> K :call ShowDocumentation()<CR>
 
-function! s:show_documentation()
-  if (index(['vim','help'], &filetype) >= 0)
-    execute 'h '.expand('<cword>')
+function! ShowDocumentation()
+  if CocAction('hasProvider', 'hover')
+    call CocActionAsync('doHover')
   else
-    call CocAction('doHover')
+    call feedkeys('K', 'in')
   endif
 endfunction
 
@@ -108,25 +122,45 @@ augroup mygroup
   autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
 augroup end
 
-" Remap for do codeAction of selected region, ex: `<leader>aap` for current paragraph
-" xmap <leader>a  <Plug>(coc-codeaction-selected)
-" nmap <leader>a  <Plug>(coc-codeaction-selected)
+" Applying codeAction to the selected region.
+" Example: `<leader>aap` for current paragraph
+xmap <leader>a  <Plug>(coc-codeaction-selected)
+nmap <leader>a  <Plug>(coc-codeaction-selected)
 
 " Remap for do codeAction of current line
 nmap <leader>ac  <Plug>(coc-codeaction)
+vmap <leader>ac  :CocAction<CR>
 " Fix autofix problem of current line
 nmap <leader>fx  <Plug>(coc-fix-current)
 
-" Create mappings for function text object, requires document symbols feature of languageserver.
-xmap if <Plug>(coc-funcobj-i)
-xmap af <Plug>(coc-funcobj-a)
-omap if <Plug>(coc-funcobj-i)
-omap af <Plug>(coc-funcobj-a)
+" Run the Code Lens action on the current line.
+nmap <leader>cl  <Plug>(coc-codelens-action)
 
-" Use <TAB> for select selections ranges, needs server support, like: coc-tsserver, coc-python
-" <tab> == <c-i>
-" nmap <silent> <TAB> <Plug>(coc-range-select)
-" xmap <silent> <TAB> <Plug>(coc-range-select)
+" Map function and class text objects
+" NOTE: Requires 'textDocument.documentSymbol' support from the language server.
+xmap if <Plug>(coc-funcobj-i)
+omap if <Plug>(coc-funcobj-i)
+xmap af <Plug>(coc-funcobj-a)
+omap af <Plug>(coc-funcobj-a)
+xmap ic <Plug>(coc-classobj-i)
+omap ic <Plug>(coc-classobj-i)
+xmap ac <Plug>(coc-classobj-a)
+omap ac <Plug>(coc-classobj-a)
+
+" Remap <C-f> and <C-b> for scroll float windows/popups.
+if has('nvim-0.4.0') || has('patch-8.2.0750')
+  nnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
+  nnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
+  inoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(1)\<cr>" : "\<Right>"
+  inoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(0)\<cr>" : "\<Left>"
+  vnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
+  vnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
+endif
+
+" Use CTRL-S for selections ranges.
+" Requires 'textDocument/selectionRange' support of language server.
+" nmap <silent> <C-s> <Plug>(coc-range-select)
+" xmap <silent> <C-s> <Plug>(coc-range-select)
 
 " Use `:Format` to format current buffer
 command! -nargs=0 Format :call CocAction('format')
@@ -174,68 +208,4 @@ nnoremap <leader>gi :call CocActionAsync('showSignatureHelp')<esc>
 
 command! CocOutput CocCommand workspace.showOutput
 
-" inoremap <silent> <expr> <c-e> coc#util#has_float() ? ToggleExpandFloat(0) : "\<c-e>"
-" nnoremap <silent> <expr> <c-e> coc#util#has_float() ? ToggleExpandFloat(1) : "\<c-e>"
-
-" inoremap <silent> <expr> <c-f> coc#util#has_float() ? FloatScrollMultiple(1) : "\<c-f>"
-" inoremap <silent> <expr> <c-b> coc#util#has_float() ? FloatScrollMultiple(0) :  "\<c-b>"
-" nnoremap <expr> <C-f> coc#util#has_float() ? coc#util#float_scroll(1) : "\<C-f>"
-" nnoremap <expr> <C-b> coc#util#has_float() ? coc#util#float_scroll(0) : "\<C-b>"
-
-
-" TODO: include word wrap
-" function! ToggleExpandFloat(normal) abort
-"     let retval = a:normal ? "\<esc>" : ''
-"     let float = coc#util#get_float()
-"     if !float | return '' | endif
-"     let buf = nvim_win_get_buf(float)
-"
-"     let buf_height = nvim_buf_line_count(buf)
-"     let win_height = nvim_win_get_height(float)
-"     let b:last_expand_height = get(b:, 'last_expand_height', win_height)
-"
-"     if buf_height == win_height && b:last_expand_height < win_height
-"         call nvim_win_set_height(float, b:last_expand_height)
-"         return retval
-"     endif
-"
-"     if buf_height <= win_height | return '' | endif
-"     let b:last_expand_height = win_height
-"     call nvim_win_set_height(float, buf_height)
-"     return retval
-" endfun
-"
-" " https://gitter.im/neoclide/coc.nvim?at=5e013bebc0c8ef301b01ff69
-" function! FloatScroll(forward) abort
-"     let float = coc#util#get_float()
-"     if !float | return '' | endif
-"     let buf = nvim_win_get_buf(float)
-"     let buf_height = nvim_buf_line_count(buf)
-"     let win_height = nvim_win_get_height(float)
-"     if buf_height < win_height | return '' | endif
-"     let pos = nvim_win_get_cursor(float)
-"     if a:forward
-"         if pos[0] == 1
-"             let pos[0] += 3 * win_height / 4
-"         elseif pos[0] + win_height / 2 + 1 < buf_height
-"             let pos[0] += win_height / 2 + 1
-"         else
-"             let pos[0] = buf_height
-"         endif
-"     else
-"         if pos[0] == buf_height
-"             let pos[0] -= 3 * win_height / 4
-"         elseif pos[0] - win_height / 2 + 1  > 1
-"             let pos[0] -= win_height / 2 + 1
-"         else
-"             let pos[0] = 1
-"         endif
-"     endif
-"     call nvim_win_set_cursor(float, pos)
-"     return ''
-" endfunction
-"
-" function FloatScrollMultiple(down)
-"     call FloatScroll(a:down)
-"     return FloatScroll(a:down)
-" endfun
+let g:coc_borderchars = ['─', '│', '─', '│', '╭', '╮', '╯', '╰']

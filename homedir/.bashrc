@@ -41,7 +41,7 @@ alias gcheckout='git checkout'
 alias ssh='TERM=xterm ssh'
 alias objdump='objdump -M intel'
 alias httrack='httrack --disable-security-limits --max-rate=0'
-alias grep='grep --exclude-dir=.git --color'
+alias grep='grep --exclude-dir=.git --exclude-dir=.mypy_cache --color'
 alias open='xdg-open'
 alias audacity='env PULSE_LATENCY_MSEC=60 audacity'
 # alias audacity='pasuspender -- audacity'
@@ -115,6 +115,9 @@ _fzf_compgen_dir() {
     bfs -L "$1" -path "*.ccache" -prune -o -path "*.git" -prune -o -path "*.config/teamviewer*" -prune -o -type d 2> /dev/null
 }
 
+# nvm (slow startup)
+# source /usr/share/nvm/init-nvm.sh
+
 # Retain cwd when opening new terminals
 # http://unix.stackexchange.com/questions/93476/gnome-terminal-keep-track-of-directory-in-new-tab
 source /etc/profile.d/vte.sh
@@ -179,6 +182,10 @@ bind 'set menu-complete-display-prefix On'
 # pyenv
 eval "$(pyenv init -)"
 # eval "$(pyenv virtualenv-init -)"
+
+# pipenv
+# Takes ages to load
+# eval "$(_PIPENV_COMPLETE=bash_source pipenv)"
 
 # env vars
 export LANG='en_US.UTF-8'

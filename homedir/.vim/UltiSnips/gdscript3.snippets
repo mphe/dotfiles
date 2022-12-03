@@ -55,8 +55,22 @@ endsnippet
 
 
 snippet setter "Property Setter" m
-setget _set_$1
+setget set_$1
 
-func _set_$1(value$2):
+func set_$1(value$2) -> void:
 	$1 = value
+endsnippet
+
+
+snippet prop "Property with setter" m
+export var $1: $2 setget set_$1
+
+func set_$1(value: $2) -> void:
+	$1 = value
+endsnippet
+
+snippet nodepath "export NodePath" m
+export(NodePath, $2) var $1_path
+
+onready var _$1: $2 = get_node($1_path) as $2
 endsnippet
