@@ -127,6 +127,19 @@ awful.rules.rules = {
         }
     },
 
+    -- Fix Godot Popups being always centered and hide them in taskbar
+    {
+        rule = {
+            instance = "Godot_Engine",
+            type = "utility",
+        },
+        properties = {
+            placement = awful.placement.restore,
+            buttons = {},
+            skip_taskbar = true,
+        }
+    },
+
     -- Maximized clients
     {
         rule_any = { class = { "Aseprite", }, },

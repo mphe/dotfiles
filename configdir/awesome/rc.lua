@@ -424,23 +424,10 @@ local globalkeys = awful.util.table.join(
     awful.key({}, "XF86AudioMute", function() volwidget:toggleMute() end,
               { description = "mute", group = "media" }),
 
-    awful.key({}, "XF86AudioStop", function()
-            utils.async("mpc --wait stop", function(_) mpdwidget:update() end)
-        end,
-        { description = "stop", group = "media" }),
-
-    awful.key({}, "XF86AudioNext", function()
-            utils.async("mpc --wait next", function(_) mpdwidget:update() end)
-        end,
-        { description = "next", group = "media" }),
-
-    awful.key({}, "XF86AudioPrev", function()
-            utils.async("mpc --wait prev", function(_) mpdwidget:update() end)
-        end,
-        { description = "previous", group = "media" }),
-
-    awful.key({}, "XF86AudioPlay", function() awful.spawn("mpc toggle") end,
-        { description = "toggle play/pause", group = "media" }),
+    awful.key({}, "XF86AudioStop", function() mpdwidget:stop() end, { description = "stop", group = "media" }),
+    awful.key({}, "XF86AudioNext", function() mpdwidget:next() end, { description = "next", group = "media" }),
+    awful.key({}, "XF86AudioPrev", function() mpdwidget:prev() end, { description = "previous", group = "media" }),
+    awful.key({}, "XF86AudioPlay", function() mpdwidget:toggle() end, { description = "toggle play/pause", group = "media" }),
     -- }}}
 
     -- Screenshot

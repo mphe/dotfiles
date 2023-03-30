@@ -99,4 +99,24 @@ function MPDWidget:attach(box)
     end)
 end
 
+function MPDWidget:mpcCommand(args)
+    utils.async("mpc --wait " .. args, function(_) self:update() end)
+end
+
+function MPDWidget:stop()
+    self:mpcCommand("stop")
+end
+
+function MPDWidget:toggle()
+    self:mpcCommand("toggle")
+end
+
+function MPDWidget:next()
+    self:mpcCommand("next")
+end
+
+function MPDWidget:prev()
+    self:mpcCommand("prev")
+end
+
 return MPDWidget

@@ -25,6 +25,7 @@
     "diagnostic.locationlistUpdate": true,
     "diagnostic.virtualText": true,
     "diagnostic.virtualTextPrefix": " ◾",
+    "diagnostic.virtualTextCurrentLineOnly": false,
     "sh.enable": false,
     "semanticTokens.filetypes": [ "*" ],
     "coc.preferences.currentFunctionSymbolAutoUpdate": true,
@@ -89,6 +90,8 @@
     "jedi.executable.command": "/usr/bin/jedi-language-server",
     "jedi.jediSettings.autoImportModules": [ "numpy", "pandas", "bs4" ],
 
+    "java.home": "/usr/lib/jvm/java-11-openjdk",
+
     // "clangd.enabled": false,
     "clangd.path": "~/.config/coc/extensions/coc-clangd-data/install/13.0.0/clangd_13.0.0/bin/clangd",
 
@@ -99,8 +102,19 @@
     // "latex.build.onSave": true,
     // "latex.build.args": [ "-pdf", "-interaction=nonstopmode", "-synctex=1", "-pvc", "%f" ],
 
-    // "cSpell.enabled": false,
-    // "cSpell.enabledLanguageIds": [ "tex" ],
+    "cSpell.enabledLanguageIds": [
+      "latex",
+      "plaintext",
+      "tex"
+    ],
+
+    "go.goplsOptions": {
+        "semanticTokens": true,
+        "codelenses": {
+            "gc_details": true
+        }
+    },
+
 
     "languageserver": {
         // "ccls": {
@@ -125,7 +139,8 @@
         //     "args": [ "--stdin" ],
         //     "settings": {}
         // }
-    }
+    },
+    "snippets.ultisnips.pythonPrompt": false,
 
     // "diagnostic-languageserver.enable": false,
     // "diagnostic-languageserver.filetypes": {

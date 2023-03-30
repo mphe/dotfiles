@@ -59,12 +59,91 @@ if &term ==? 'xterm-termite'
     let g:solarized_termcolors=256
 endif
 
+augroup SyntaxFix
+autocmd FileType c,cpp call s:CSyntaxFixes()
+autocmd FileType scala call s:ScalaSyntaxFixes()
+autocmd VimEnter * call s:StyleOverrides()
+autocmd ColorScheme * call s:StyleOverrides()
+augroup END
+
+" https://vi.stackexchange.com/questions/16813/avoid-highlighting-defined-by-matchadd-in-comments
+function! s:CSyntaxFixes()
+    " let l:commentassert = '\(\/\/.*\|\/\*.*\)\@<!'
+    " call matchadd('cString', l:commentassert . '".\{-}"')
+    hi doxygenBrief ctermfg=10 guifg=#586e75 gui=italic cterm=italic
+    hi link doxygenStart doxygenBrief
+    hi link doxygenComment doxygenBrief
+    hi link doxygenContinueComment doxygenBrief
+endfun
+
+function! s:ScalaSyntaxFixes()
+    highlight! link scalaSquareBracketsBrackets Normal
+    highlight! link scalaInstanceDeclaration Type
+    highlight! link scalaCapitalWord Type
+    highlight! link scalaCapitalWord Function
+    highlight! link scalaKeywordModifier Keyword
+    highlight! CocErrorLine ctermbg=NONE guibg=NONE
+    highlight! ALEWarning cterm=NONE gui=NONE
+
+    " Add this line at the start of the python syntax file
+    syn match scalaFunctionCall "\zs\(\k\w*\)*\s*\ze("
+    highlight link scalaFunctionCall Function
+endfun
+
+function! s:StyleOverrides()
+    call s:ApplyBarBar()
+endfun
+
+function s:ApplyBarBar()
+    " Meaning of terms:
+    "
+    " format: "Buffer" + status + part
+    "
+    " status:
+    "     *Current: current buffer
+    "     *Visible: visible but not current buffer
+    "    *Inactive: invisible but not current buffer
+    "
+    " part:
+    "        *Icon: filetype icon
+    "       *Index: buffer index
+    "         *Mod: when modified
+    "        *Sign: the separator between buffers
+    "      *Target: letter in buffer-picking mode
+    "
+    " BufferTabpages: tabpage indicator
+    " BufferTabpageFill: filler after the buffer section
+    " BufferOffset: offset section, created with set_offset()
+
+    " call s:hl('BufferDefaultCurrentSign', { 'guibg': s:blue3, 'guifg': s:blue })
+    " highlight! link BufferDefaultInactiveSign LineNr
+
+    highlight! link BufferDefaultCurrent Pmenu
+    highlight! BufferDefaultCurrentMod guibg=#094655
+
+    exec 'highlight BufferDefaultCurrentSign guibg=' . s:blue3 . ' guifg=' . s:base03
+    " exec 'highlight! BufferDefaultCurrentIcon guibg=' . s:base03 . ' guifg=' . s:blue3
+
+    highlight! link BufferDefaultInactive LineNr
+    exec 'highlight BufferDefaultInactiveSign guibg=' . s:normal_bg . ' guifg=' . s:base03
+    " exec 'highlight BufferDefaultInactiveSign guibg=' . s:normal_bg . ' guifg=' . s:normal_fg
+
+    exec 'highlight BufferDefaultVisible guibg=' . s:normal_bg . ' guifg=' . s:normal_fg
+    exec 'highlight BufferDefaultVisibleSign guibg=' . s:normal_bg . ' guifg=' . s:base03
+    exec 'highlight BufferDefaultVisibleMod guibg=' . s:normal_bg
+
+    exec 'highlight BufferDefaultTabpageFill guibg=' . s:base03 . ' guifg=' . s:base03
+    " exec 'highlight BufferDefaultTabpageFill guibg=' . s:normal_bg . ' guifg=' . s:normal_bg
+endfun
+
+
 if has('nvim')
     set termguicolors
     colorscheme flattened_dark
 else
     colorscheme solarized
 endif
+
 
 " Search highlight color
 highlight Search cterm=NONE ctermbg=240 ctermfg=black gui=NONE guibg=#586e75 guifg=#073642
@@ -212,70 +291,5 @@ hi link CocSemNumber Number
 hi link CocSemRegexp Normal
 hi link CocSemOperator Operator
 
-" https://vi.stackexchange.com/questions/16813/avoid-highlighting-defined-by-matchadd-in-comments
-function! s:CSyntaxFixes()
-    " let l:commentassert = '\(\/\/.*\|\/\*.*\)\@<!'
-    " call matchadd('cString', l:commentassert . '".\{-}"')
-    hi doxygenBrief ctermfg=10 guifg=#586e75 gui=italic cterm=italic
-    hi link doxygenStart doxygenBrief
-    hi link doxygenComment doxygenBrief
-    hi link doxygenContinueComment doxygenBrief
-endfun
-
-function! s:ScalaSyntaxFixes()
-    highlight! link scalaSquareBracketsBrackets Normal
-    highlight! link scalaInstanceDeclaration Type
-    highlight! link scalaCapitalWord Type
-    highlight! link scalaCapitalWord Function
-    highlight! link scalaKeywordModifier Keyword
-    highlight! CocErrorLine ctermbg=NONE guibg=NONE
-    highlight! ALEWarning cterm=NONE gui=NONE
-
-    " Add this line at the start of the python syntax file
-    syn match scalaFunctionCall "\zs\(\k\w*\)*\s*\ze("
-    highlight link scalaFunctionCall Function
-endfun
-
-function! s:StyleOverrides()
-    call ApplyBarBar()
-endfun
-
-augroup SyntaxFix
-autocmd FileType c,cpp call s:CSyntaxFixes()
-autocmd FileType scala call s:ScalaSyntaxFixes()
-autocmd VimEnter * call s:StyleOverrides()
-augroup END
-
 hi texStatement ctermbg=NONE guibg=NONE
-
-
-function ApplyBarBar()
-    " Meaning of terms:
-    "
-    " format: "Buffer" + status + part
-    "
-    " status:
-    "     *Current: current buffer
-    "     *Visible: visible but not current buffer
-    "    *Inactive: invisible but not current buffer
-    "
-    " part:
-    "        *Icon: filetype icon
-    "       *Index: buffer index
-    "         *Mod: when modified
-    "        *Sign: the separator between buffers
-    "      *Target: letter in buffer-picking mode
-    "
-    " BufferTabpages: tabpage indicator
-    " BufferTabpageFill: filler after the buffer section
-    " BufferOffset: offset section, created with set_offset()
-    highlight! link BufferDefaultCurrent Pmenu
-    highlight! BufferDefaultCurrentMod guibg=#094655
-    call s:hl('BufferDefaultCurrentSign', { 'guibg': s:blue3, 'guifg': s:blue })
-    highlight! link BufferDefaultInactiveSign LineNr
-    highlight! link BufferDefaultInactive LineNr
-    call s:hl('BufferDefaultVisible', { 'guibg': s:normal_bg, 'guifg': s:normal_fg })
-    call s:hl('BufferDefaultVisibleSign', { 'guibg': s:normal_bg, 'guifg': s:normal_fg })
-    call s:hl('BufferDefaultVisibleMod', { 'guibg': s:normal_bg })
-    highlight! link BufferDefaultTabpageFill Comment
-endfun
+exec 'highlight VirtColumn guifg=' . s:normal_bg . ' guibg=NONE'

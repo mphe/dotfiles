@@ -6,14 +6,6 @@ let s:error_symbol = "\uf05e  "
 let s:warning_symbol = "\uf071  "
 let s:info_symbol = "\uf05a  "
 
-" lightline-bufferline
-" set showtabline=2
-" let g:lightline#bufferline#unnamed = '[No Name]'
-" let g:lightline#bufferline#modified = '[+]'
-" let g:lightline#bufferline#read_only = ' ⭤'
-" let g:lightline#bufferline#filename_modifier = ':t'
-" let g:lightline#bufferline#clickable = 1
-
 
 " lightline {{{
 
@@ -21,6 +13,7 @@ let g:lightline = {}
 let g:lightline.enable = { 'statusline': 1, 'tabline': 0 }
 let g:lightline.colorscheme = 'custom_solarized'
 
+" let g:lightline.separator = { 'left': '', 'right': '' }
 let g:lightline.separator = { 'left': '', 'right': '' }
 " let g:lightline.subseparator = { 'left': '', 'right': '' }
 " let g:lightline.tabline_subseparator = { 'left': '', 'right': '' }

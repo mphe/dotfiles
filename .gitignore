@@ -8,3 +8,5 @@ homedir/.ncmpcpp/patterns.list
 configdir/ranger/bookmarks
 configdir/ranger/history
 configdir/ranger/tagged
+.metals
+.vim-bookmarks

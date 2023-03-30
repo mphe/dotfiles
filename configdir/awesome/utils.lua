@@ -71,8 +71,15 @@ function M.read(fname, def, val)
 end
 
 function M.async(cmd, callback)
-    awful.spawn.easy_async(cmd, function(stdout, stderr, exitreason, exitcode)
+    awful.spawn.easy_async(cmd, function(stdout, _stderr, _exitreason, _exitcode)
         callback(stdout)
+    end)
+end
+
+-- Same as async() but converts stdout to a number
+function M.async_value(cmd, callback)
+    M.async(cmd, function(stdout)
+        callback(tonumber(stdout))
     end)
 end
 
@@ -158,6 +165,8 @@ function M.do_placement(c)
         or c.class == "xpad" then
         return
     end
+
+    -- M.debugtable({ type = c.type, class = c.class, name = c.name, c.instance })
 
     local placement_rule = awful.placement.centered+awful.placement.no_offscreen
 

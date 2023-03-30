@@ -98,9 +98,17 @@ set display+=lastline
 " set ignorecase
 
 set colorcolumn=100
+
+" Make gq break lines at 100 but don't automatically break lines while typing
 set textwidth=100
+set formatoptions-=t
 
 set mouse=a
+
+" Ensure there is always a sign column to prevent flickering when signs get
+" removed and added within a fraction of a second, when the linter updates,
+" causing the sign column to appear and disappear constantly while typing.
+set signcolumn=yes
 
 " Enable doxygen tag highlighting
 let g:load_doxygen_syntax = 1
@@ -143,6 +151,8 @@ cnoreabbrev E e
 
 " -------------------------------------- Functions and Commands {{{
 
+command! OpenExplorer silent exec '!xdg-open .'
+
 " Function for time measurement
 function! HowLong(command)
     " We don't want to be prompted by a message if the command being tried is
@@ -183,6 +193,39 @@ endfunction
 " change directory to current file
 command! Cdhere cd %:h
 
+
+" Better GQ operator that uses colorcolumn as text width {{{
+" See also
+" - https://learnvimscriptthehardway.stevelosh.com/chapters/33.html
+" - https://vi.stackexchange.com/questions/19770/how-to-create-new-operator-by-using-existing-operator-with-current-motion
+
+function! BetterGQ(type)
+    let old_textwidth = &textwidth
+    exec 'set textwidth=' . &colorcolumn
+
+    call s:ExecuteOperator(a:type, a:0 > 0, 'gq')
+
+    exec 'set textwidth=' . old_textwidth
+endfun
+
+function! s:ExecuteOperator(type, visual, operator)
+  " Use normal! to make sure no user mappings are used
+    if a:visual
+        exec 'normal! gv' . a:operator
+    else
+        if a:type ==# 'line'
+            exec 'normal! ''[V'']' . a:operator
+        else
+            exec 'normal! ''[v'']' . a:operator
+        endif
+    endif
+endfunction
+
+" nnoremap gq :set operatorfunc=BetterGQ<CR>g@
+" vnoremap gq :<c-u>call BetterGQ(visualmode())<CR>
+
+" }}}
+
 " -------------------------------------- Functions end }}}
 
 
@@ -197,7 +240,6 @@ Plug 'qualiabyte/vim-colorstepper'
 
 Plug 'scrooloose/nerdtree'
 Plug 'itchyny/lightline.vim'
-" Plug 'mengelbrecht/lightline-bufferline'
 Plug 'Lokaltog/vim-easymotion'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
@@ -214,7 +256,7 @@ Plug 'jeetsukumaran/vim-buffergator'
 
 Plug 'majutsushi/tagbar'
 Plug 'SirVer/ultisnips'
-Plug 'reconquest/vim-pythonx'
+" Plug 'reconquest/vim-pythonx'
 Plug 'honza/vim-snippets'
 Plug 'kien/ctrlp.vim'
 Plug 'kshenoy/vim-signature'
@@ -267,7 +309,7 @@ Plug 'MattesGroeger/vim-bookmarks'
 " Auto detect indent
 Plug 'tpope/vim-sleuth'
 
-" IntelliJ <-> Neovim bridge
+" IntelliJ a-> Neovim bridge
 " Plug 'beeender/Comrade'
 
 " Scrollbar with diagnostics and search markers
@@ -296,6 +338,11 @@ Plug 'ap/vim-css-color'
 " typescript/javascript indent
 " Plug 'jason0x43/vim-js-indent'
 
+Plug 'Konfekt/FastFold'
+
+" Custom symbol as color column
+Plug 'lukas-reineke/virt-column.nvim'
+
 if has('nvim')
     Plug 'rcarriga/nvim-notify'
     if s:use_treesitter
@@ -310,9 +357,10 @@ if has('nvim')
 
     Plug 'kyazdani42/nvim-web-devicons'
     Plug 'romgrk/barbar.nvim'
-    " Plug 'akinsho/bufferline.nvim'
+
+    " Easy custom highlight patterns
+    Plug 'folke/paint.nvim'
 else
-    Plug 'Konfekt/FastFold'
 endif
 
 if s:use_vim_omnisharp
@@ -332,11 +380,11 @@ source /home/marvin/.vim/themes/solarized.vim
 set fillchars+=vert:│
 
 " Highlight trailing whitespace
-highlight! link TrailingWhitespace Error
-augroup trailing_spaces_hl
-  au!
-  autocmd Syntax * syn match TrailingWhitespace /\s\+$\| \+\ze\t/
-augroup END
+" highlight! link TrailingWhitespace Error
+" augroup trailing_spaces_hl
+"   au!
+"   autocmd Syntax * syn match TrailingWhitespace /\s\+$\| \+\ze\t/
+" augroup END
 
 " -------------------------------------- Style config end }}}
 
@@ -456,6 +504,7 @@ let g:ale_linters = {
     \ 'gdscript3': [],
     \ 'tex': [],
     \ 'css': [],
+    \ 'go': [],
     \ 'cs': [ 'OmniSharp' ],
     \ 'glsl': [ 'glslang' ],
     \ }
@@ -535,23 +584,28 @@ let g:vimtex_compiler_enabled = 0
 let g:vimtex_complete_enabled = 0
 let g:vimtex_delim_timeout = 10
 let g:vimtex_delim_insert_timeout = 10
-let g:vimtex_fold_enabled = 0
+let g:vimtex_fold_enabled = 1
 let g:vimtex_imaps_enabled = 0
 let g:vimtex_mappings_enabled = 0
 
-" latex box
-let g:LatexBox_viewer = 'zathura'
-let g:LatexBox_complete_inlineMath = 1
-let g:LatexBox_custom_indent = 0
-let g:LatexBox_Folding = 1
-let g:LatexBox_fold_automatic = 0
-let g:LatexBox_quickfix = 4
-let g:LatexBox_fold_sections=[ 'part', 'chapter', 'section', 'subsection', 'subsubsection', 'paragraph', 'subparagraph' ]
-let g:LatexBox_completion_close_braces = 0
-let g:LatexBox_complete_inlineMath = 0
+augroup vimtex_build_on_save
+    autocmd!
+    autocmd BufReadPost,BufWritePost * if &ft == 'tex' | exec 'CocCommand latex.Build' | endif
+augroup END
 
-command! LatexPreview silent exec '!zathura ' . expand('%:p:r') . '.pdf' . '&'
-command! LatexJump CocCommand latex.ForwardSearch
+" latex box
+" let g:LatexBox_viewer = 'zathura'
+" let g:LatexBox_complete_inlineMath = 1
+" let g:LatexBox_custom_indent = 0
+" let g:LatexBox_Folding = 1
+" let g:LatexBox_fold_automatic = 0
+" let g:LatexBox_quickfix = 4
+" let g:LatexBox_fold_sections=[ 'part', 'chapter', 'section', 'subsection', 'subsubsection', 'paragraph', 'subparagraph' ]
+" let g:LatexBox_completion_close_braces = 0
+" let g:LatexBox_complete_inlineMath = 0
+
+command! LatexPreview VimtexView
+command! LatexJump VimtexView
 
 let g:tex_flavor = 'latex'
 
@@ -722,102 +776,122 @@ let g:bookmark_save_per_working_dir = 1
 let g:bookmark_auto_save = 1
 nmap mm <Plug>BookmarkToggle
 
-" lightline-bufferline
-" nmap <Leader>1 <Plug>lightline#bufferline#go(1)
-" nmap <Leader>2 <Plug>lightline#bufferline#go(2)
-" nmap <Leader>3 <Plug>lightline#bufferline#go(3)
-" nmap <Leader>4 <Plug>lightline#bufferline#go(4)
-" nmap <Leader>5 <Plug>lightline#bufferline#go(5)
-" nmap <Leader>6 <Plug>lightline#bufferline#go(6)
-" nmap <Leader>7 <Plug>lightline#bufferline#go(7)
-" nmap <Leader>8 <Plug>lightline#bufferline#go(8)
-" nmap <Leader>9 <Plug>lightline#bufferline#go(9)
-" nmap <Leader>0 <Plug>lightline#bufferline#go(10)
-"
-" set showtabline=2
-" let g:lightline#bufferline#unnamed = '[No Name]'
-" let g:lightline#bufferline#modified = '[+]'
-" let g:lightline#bufferline#read_only = ' ⭤'
-" let g:lightline#bufferline#filename_modifier = ':t'
-" let g:lightline#bufferline#clickable = 1
-
 
 " barbar.nvim {{{
 " config {{{
-" NOTE: If barbar's option dict isn't created yet, create it
-let bufferline = get(g:, 'bufferline', {})
+lua << EOF
+require'bufferline'.setup {
+  -- Enable/disable animations
+  animation = true,
 
-" Enable/disable animations
-let bufferline.animation = v:true
+  -- Enable/disable auto-hiding the tab bar when there is a single buffer
+  auto_hide = false,
 
-" Enable/disable auto-hiding the tab bar when there is a single buffer
-let bufferline.auto_hide = v:false
+  -- Enable/disable current/total tabpages indicator (top right corner)
+  tabpages = true,
 
-" Enable/disable current/total tabpages indicator (top right corner)
-let bufferline.tabpages = v:true
+  -- Enables/disable clickable tabs
+  --  - left-click: go to buffer
+  --  - middle-click: delete buffer
+  clickable = true,
 
-" Enable/disable close button
-let bufferline.closable = v:true
+  -- Excludes buffers from the tabline
+  -- exclude_ft = {'javascript'},
+  -- exclude_name = {'package.json'},
 
-" Enables/disable clickable tabs
-"  - left-click: go to buffer
-"  - middle-click: delete buffer
-let bufferline.clickable = v:true
+  -- A buffer to this direction will be focused (if it exists) when closing the current buffer.
+  -- Valid options are 'left' (the default) and 'right'
+  focus_on_close = 'left',
 
-" Excludes buffers from the tabline
-" let bufferline.exclude_ft = ['javascript']
-" let bufferline.exclude_name = ['package.json']
+  -- Hide inactive buffers and file extensions. Other options are `alternate`, `current`, and `visible`.
+  hide = {extensions = true, inactive = false},
 
-" Enable/disable icons
-" if set to 'buffer_number', will show buffer number in the tabline
-" if set to 'numbers', will show buffer index in the tabline
-" if set to 'both', will show buffer index and icons in the tabline
-" if set to 'buffer_number_with_icon', will show buffer number and icons in the tabline
-let bufferline.icons = v:false
+  -- Disable highlighting alternate buffers
+  highlight_alternate = false,
 
-" Sets the icon's highlight group.
-" If false, will use nvim-web-devicons colors
-let bufferline.icon_custom_colors = v:false
+  -- Disable highlighting file icons in inactive buffers
+  highlight_inactive_file_icons = false,
 
-" Configure icons on the bufferline.
-let bufferline.icon_separator_active = '▎'
-" let bufferline.icon_separator_inactive = '▎'
-let bufferline.icon_separator_inactive = '▏'
-" let bufferline.icon_separator_active = ''
-" let bufferline.icon_separator_inactive = ''
-let bufferline.icon_close_tab = ''
-let bufferline.icon_close_tab_modified = '●'
-let bufferline.icon_pinned = '車'
+  -- Enable highlighting visible buffers
+  highlight_visible = true,
 
-" If true, new buffers will be inserted at the start/end of the list.
-" Default is to insert after current buffer.
-let bufferline.insert_at_start = v:false
-let bufferline.insert_at_end = v:false
+  icons = {
+    -- Configure the base icons on the bufferline.
+    buffer_index = false,
+    buffer_number = false,
+    button = '',
+    -- Enables / disables diagnostic symbols
+    diagnostics = {
+      -- [vim.diagnostic.severity.ERROR] = {enabled = false, icon = 'ﬀ'},
+      -- [vim.diagnostic.severity.WARN] = {enabled = false},
+      -- [vim.diagnostic.severity.INFO] = {enabled = false},
+      -- [vim.diagnostic.severity.HINT] = {enabled = false},
+    },
+    filetype = {
+      -- Sets the icon's highlight group.
+      -- If false, will use nvim-web-devicons colors
+      custom_colors = false,
 
-" Sets the maximum padding width with which to surround each tab.
-let bufferline.maximum_padding = 2
+      -- Requires `nvim-web-devicons` if `true`
+      enabled = true,
+    },
 
-" Sets the maximum padding width with which to surround each tab.
-let bufferline.minimum_padding = 1
+    -- Configure the icons on the bufferline when modified or pinned.
+    -- Supports all the base icon options.
+    modified = {button = '●'},
+    pinned = {button = '車'},
 
-" Sets the maximum buffer name length.
-let bufferline.maximum_length = 30
+    -- separator = {left = '▎', right = ''},
+    separator = {left = '', right = ' '},
+    inactive = {separator = {left = '', right = ' '}, button = '×'},
+    -- separator = {left = '█', right = ''},
+    -- inactive = {separator = {left = '', right = ''}, button = '×'},
+    -- separator = {left = '', right = " \u{e0ba}"},
+    -- inactive = {separator = {left = '', right = '\u{e0bd} '}, button = '×'},
+    -- inactive = {separator = {left = '🭛', right = '🭦'}, button = '×'},
+    -- separator = {left = '🭛', right = '🭦'},
+    -- inactive = {separator = {left = '', right = ''}, button = '×'},
+    -- separator = {left = '', right = ''},
 
-" If set, the letters for each buffer in buffer-pick mode will be
-" assigned based on their name. Otherwise or in case all letters are
-" already assigned, the behavior is to assign letters in order of
-" usability (see order below)
-let bufferline.semantic_letters = v:true
 
-" New buffer letters are assigned in this order. This order is
-" optimal for the qwerty keyboard layout but might need adjustement
-" for other layouts.
-let bufferline.letters =
-  \ 'asdfjkl;ghnmxcvbziowerutyqpASDFJKLGHNMXCVBZIOWERUTYQP'
+    -- Configure the icons on the bufferline based on the visibility of a buffer.
+    -- Supports all the base icon options, plus `modified` and `pinned`.
+    -- alternate = {filetype = {enabled = false}},
+    -- current = {buffer_index = false},
+    -- inactive = {button = '×'},
+    -- visible = {modified = {buffer_number = false}},
+  },
 
-" Sets the name of unnamed buffers. By default format is "[Buffer X]"
-" where X is the buffer number. But only a static string is accepted here.
-let bufferline.no_name_title = v:null
+  -- If true, new buffers will be inserted at the start/end of the list.
+  -- Default is to insert after current buffer.
+  insert_at_end = false,
+  insert_at_start = false,
+
+  -- Sets the maximum padding width with which to surround each tab
+  maximum_padding = 2,
+
+  -- Sets the minimum padding width with which to surround each tab
+  minimum_padding = 1,
+
+  -- Sets the maximum buffer name length.
+  maximum_length = 30,
+
+  -- If set, the letters for each buffer in buffer-pick mode will be
+  -- assigned based on their name. Otherwise or in case all letters are
+  -- already assigned, the behavior is to assign letters in order of
+  -- usability (see order below)
+  semantic_letters = true,
+
+  -- New buffer letters are assigned in this order. This order is
+  -- optimal for the qwerty keyboard layout but might need adjustement
+  -- for other layouts.
+  letters = 'asdfjkl;ghnmxcvbziowerutyqpASDFJKLGHNMXCVBZIOWERUTYQP',
+
+  -- Sets the name of unnamed buffers. By default format is "[Buffer X]"
+  -- where X is the buffer number. But only a static string is accepted here.
+  no_name_title = nil,
+}
+EOF
 " }}}
 " mappings {{{
 
@@ -869,258 +943,6 @@ nnoremap <silent> <leader>B    <Cmd>BufferPick<CR>
 " :BarbarEnable - enables barbar (enabled by default)
 " :BarbarDisable - very bad command, should never be used
 " }}}
-" }}}
-
-" bufferline.nvim {{{
-" " config {{{
-" lua << EOF
-" require('bufferline').setup {
-"     options = {
-"         mode = "buffers", -- set to "tabs" to only show tabpages instead
-"         -- numbers = "none" | "ordinal" | "buffer_id" | "both" | function({ ordinal, id, lower, raise }): string,
-"         close_command = "bdelete! %d",       -- can be a string | function, see "Mouse actions"
-"         right_mouse_command = "bdelete! %d", -- can be a string | function, see "Mouse actions"
-"         left_mouse_command = "buffer %d",    -- can be a string | function, see "Mouse actions"
-"         middle_mouse_command = nil,          -- can be a string | function, see "Mouse actions"
-"         indicator = {
-"             -- icon = '▎', -- this should be omitted if indicator style is not 'icon'
-"             -- icon = '',
-"             icon = '',
-"             -- style = 'icon' | 'underline' | 'none',
-"             style = 'icon',
-"             -- style = 'none',
-"         },
-"         -- separator_style = "padded_slant" | "slant" | "thick" | "thin" | { 'any', 'any' },
-"         -- separator_style = { '', '' },
-"         -- separator_style = { '', '' },
-"         -- separator_style = { '🭦 🭛', '🭛🭦' },
-"         -- separator_style = { '', '' },
-"         separator_style = { '', '' },
-"         -- separator_style = "slant",
-"         buffer_close_icon = '',
-"         modified_icon = '●',
-"         close_icon = '',
-"         left_trunc_marker = '',
-"         right_trunc_marker = '',
-"         --- name_formatter can be used to change the buffer's label in the bufferline.
-"         --- Please note some names can/will break the
-"         --- bufferline so use this at your discretion knowing that it has
-"         --- some limitations that will *NOT* be fixed.
-"         -- name_formatter = function(buf)  -- buf contains:
-"         --       -- name                | str        | the basename of the active file
-"         --       -- path                | str        | the full path of the active file
-"         --       -- bufnr (buffer only) | int        | the number of the active buffer
-"         --       -- buffers (tabs only) | table(int) | the numbers of the buffers in the tab
-"         --       -- tabnr (tabs only)   | int        | the "handle" of the tab, can be converted to its ordinal number using: `vim.api.nvim_tabpage_get_number(buf.tabnr)`
-"         -- end,
-"         max_name_length = 18,
-"         max_prefix_length = 15, -- prefix used when a buffer is de-duplicated
-"         truncate_names = true, -- whether or not tab names should be truncated
-"         tab_size = 0,
-"         -- diagnostics = false | "nvim_lsp" | "coc",
-"         diagnostics = false,
-"         diagnostics_update_in_insert = false,
-"         -- NOTE: this will be called a lot so don't do any heavy processing here
-"         -- custom_filter = function(buf_number, buf_numbers)
-"         --     -- filter out filetypes you don't want to see
-"         --     if vim.bo[buf_number].filetype ~= "<i-dont-want-to-see-this>" then
-"         --         return true
-"         --     end
-"         --     -- filter out by buffer name
-"         --     if vim.fn.bufname(buf_number) ~= "<buffer-name-I-dont-want>" then
-"         --         return true
-"         --     end
-"         --     -- filter out based on arbitrary rules
-"         --     -- e.g. filter out vim wiki buffer from tabline in your work repo
-"         --     if vim.fn.getcwd() == "<work-repo>" and vim.bo[buf_number].filetype ~= "wiki" then
-"         --         return true
-"         --     end
-"         --     -- filter out by it's index number in list (don't show first buffer)
-"         --     if buf_numbers[1] ~= buf_number then
-"         --         return true
-"         --     end
-"         -- end,
-"         -- offsets = {
-"         --     {
-"         --         filetype = "NvimTree",
-"         --         text = "File Explorer" | function ,
-"         --         text_align = "left" | "center" | "right",
-"         --         separator = true,
-"         --     }
-"         -- },
-"         color_icons = false,  -- whether or not to add the filetype icon highlights
-"         show_buffer_icons = false,  -- disable filetype icons for buffers
-"         show_buffer_close_icons = true,
-"         show_buffer_default_icon = false,  -- whether or not an unrecognised filetype should show a default icon
-"         show_close_icon = false,
-"         show_tab_indicators = true,
-"         show_duplicate_prefix = true,  -- whether to show duplicate buffer prefix
-"         persist_buffer_sort = true, -- whether or not custom sorted buffers should persist
-"         -- can also be a table containing 2 custom separators
-"         -- [focused and unfocused]. eg: { '|', '|' }
-"         -- enforce_regular_tabs = false | true,
-"         always_show_bufferline = true,
-"         hover = {
-"             enabled = true,
-"             delay = 200,
-"             reveal = {'close'}
-"         },
-"         -- sort_by = 'insert_after_current' |'insert_at_end' | 'id' | 'extension' | 'relative_directory' | 'directory' | 'tabs' | function(buffer_a, buffer_b)
-"         --     -- add custom logic
-"         --     return buffer_a.modified > buffer_b.modified
-"         -- end
-"     },
-"     highlights = {
-"         -- fill = {
-"         --     fg = '<colour-value-here>',
-"         --     bg = '<colour-value-here>',
-"         -- },
-"         background = {
-"             bg = { attribute = "bg", highlight = "CursorLine" },
-"         },
-"         -- tab = {
-"         --     fg = '<colour-value-here>',
-"         --     bg = '<colour-value-here>'
-"         -- },
-"         -- tab_selected = {
-"         --     fg = tabline_sel_bg,
-"         --     bg = '<colour-value-here>'
-"         -- },
-"         -- tab_close = {
-"         --     fg = '<colour-value-here>',
-"         --     bg = '<colour-value-here>'
-"         -- },
-"         -- close_button = {
-"         --     fg = '<colour-value-here>',
-"         --     bg = '<colour-value-here>'
-"         -- },
-"         -- close_button_visible = {
-"         --     fg = '<colour-value-here>',
-"         --     bg = '<colour-value-here>'
-"         -- },
-"         -- close_button_selected = {
-"         --     fg = '<colour-value-here>',
-"         --     bg = '<colour-value-here>'
-"         -- },
-"         -- buffer_visible = {
-"         --     fg = '<colour-value-here>',
-"         --     bg = '<colour-value-here>'
-"         -- },
-"         buffer_selected = {
-"             -- bg = { attribute = "bg", highlight = "Pmenu" },
-"             -- fg = { attribute = "fg", highlight = "Pmenu" },
-"             bg = { attribute = "fg", highlight = "PmenuThumb" },
-"             fg = { attribute = "bg", highlight = "PmenuThumb" },
-"             -- bg = '<colour-value-here>',
-"             bold = false,
-"             italic = false,
-"         },
-"         -- numbers = {
-"         --     fg = '<colour-value-here>',
-"         --     bg = '<colour-value-here>',
-"         -- },
-"         -- numbers_visible = {
-"         --     fg = '<colour-value-here>',
-"         --     bg = '<colour-value-here>',
-"         -- },
-"         -- numbers_selected = {
-"         --     fg = '<colour-value-here>',
-"         --     bg = '<colour-value-here>',
-"         --     bold = true,
-"         --     italic = true,
-"         -- },
-"         modified = {
-"             fg = { attribute = "fg", highlight = "Error" },
-"             bg = { attribute = "bg", highlight = "CursorLine" },
-"         },
-"         -- modified_visible = {
-"         --     fg = { attribute = "fg", highlight = "Error" },
-"         --     bg = { attribute = "bg", highlight = "Error" },
-"         -- },
-"         modified_selected = {
-"             fg = { attribute = "fg", highlight = "Error" },
-"             bg = { attribute = "bg", highlight = "Pmenu" },
-"         },
-"         -- duplicate_selected = {
-"         --     fg = '<colour-value-here>',
-"         --     bg = '<colour-value-here>'
-"         --     italic = true,
-"         -- },
-"         -- duplicate_visible = {
-"         --     fg = '<colour-value-here>',
-"         --     bg = '<colour-value-here>'
-"         --     italic = true
-"         -- },
-"         -- duplicate = {
-"         --     fg = '<colour-value-here>',
-"         --     bg = '<colour-value-here>'
-"         --     italic = true
-"         -- },
-"         separator_selected = {
-"             fg = "#ff0000",
-"             -- fg = { attribute = "bg", highlight = "Pmenu" },
-"             -- bg = '<colour-value-here>'
-"         },
-"         -- separator_visible = {
-"         --     -- fg = { attribute = "bg", highlight = "Pmenu" },
-"         --     -- bg = '<colour-value-here>'
-"         -- },
-"         separator = {
-"             fg = { attribute = "bg", highlight = "Normal" },
-"             -- bg = { attribute = "bg", highlight = "CursorLine" },
-"         },
-"         indicator_selected = {
-"             fg = { attribute = "bg", highlight = "CursorLine" },
-"             bg = { attribute = "bg", highlight = "Pmenu" },
-"         },
-"         -- pick_selected = {
-"         --     fg = '<colour-value-here>',
-"         --     bg = '<colour-value-here>',
-"         --     bold = true,
-"         --     italic = true,
-"         -- },
-"         -- pick_visible = {
-"         --     fg = '<colour-value-here>',
-"         --     bg = '<colour-value-here>',
-"         --     bold = true,
-"         --     italic = true,
-"         -- },
-"         -- pick = {
-"         --     fg = '<colour-value-here>',
-"         --     bg = '<colour-value-here>',
-"         --     bold = true,
-"         --     italic = true,
-"         -- },
-"         -- offset_separator = {
-"         --     fg = win_separator_fg,
-"         --     bg = separator_background_color,
-"         -- },
-"     }
-" }
-" EOF
-" " }}}
-" " mappings {{{
-"
-" " Aliases for muscle memory
-" " cnoreabbrev bf BufferFirst
-" " cnoreabbrev bl BufferLast
-"
-" nnoremap <silent>    <leader>bp <Cmd>BufferLineCyclePrev<CR>
-" nnoremap <silent>    <leader>bn <Cmd>BufferLineCycleNext<CR>
-" nnoremap <silent>    <leader>b< <Cmd>BufferLineMovePrev<CR>
-" nnoremap <silent>    <leader>b> <Cmd>BufferLineMoveNext<CR>
-" nnoremap <silent>    <leader>1 <Cmd>BufferLineGoTo 1<CR>
-" nnoremap <silent>    <leader>2 <Cmd>BufferLineGoTo 2<CR>
-" nnoremap <silent>    <leader>3 <Cmd>BufferLineGoTo 3<CR>
-" nnoremap <silent>    <leader>4 <Cmd>BufferLineGoTo 4<CR>
-" nnoremap <silent>    <leader>5 <Cmd>BufferLineGoTo 5<CR>
-" nnoremap <silent>    <leader>6 <Cmd>BufferLineGoTo 6<CR>
-" nnoremap <silent>    <leader>7 <Cmd>BufferLineGoTo 7<CR>
-" nnoremap <silent>    <leader>8 <Cmd>BufferLineGoTo 8<CR>
-" nnoremap <silent>    <leader>9 <Cmd>BufferLineGoTo 9<CR>
-" nnoremap <silent>    <leader>p <Cmd>BufferLineTogglePin<CR>
-" nnoremap <silent> <leader>B    <Cmd>BufferLinePick<CR>
-" " }}}
 " }}}
 
 " treesitter
@@ -1289,6 +1111,34 @@ nnoremap <leader>> :SidewaysRight<cr>
 " FixCursorHold
 " in millisecond, used for both CursorHold and CursorHoldI, uses updatetime instead if not defined
 let g:cursorhold_updatetime = 100
+
+" table-mode
+let g:table_mode_syntax = 0
+nnoremap <leader>ta :TableModeRealign<CR>
+
+" paint.nvim
+lua<<EOF
+require("paint").setup({
+    highlights = {
+        {
+            -- filter can be a table of buffer options that should match,
+            -- or a function called with buf as param that should return true.
+            -- The example below will paint @something in comments with Constant
+            -- filter = { filetype = "lua" },
+            -- pattern = "%s*%-%-%-%s*(@%w+)",
+            -- hl = "Constant",
+            filter = {},
+            pattern = "%s+$",
+            hl = "Error",
+        },
+    },
+})
+EOF
+
+" virt-column
+lua<<EOF
+require("virt-column").setup()
+EOF
 
 " -------------------------------------- Plugin configuration end }}}
 

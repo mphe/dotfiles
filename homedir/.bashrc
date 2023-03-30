@@ -13,7 +13,7 @@
 
 alias ls='ls -h --color=always --group-directories-first'
 alias ll='ls -l'
-alias less='less -r'
+alias less='less -ri'
 alias pacaur='yay'  # aliases work recursively
 alias yay='yay --sudoloop --devel'
 alias ranger='python3 $(which ranger)'
@@ -50,6 +50,7 @@ alias awrules='vim ~/.config/awesome/rules.lua'
 alias awtheme='vim ~/.config/awesome/themes/custom/theme.lua'
 alias r=ranger-cd
 alias pylint='pylint --output-format colorized'
+alias thesaur='aiksaurus'
 
 
 # Automatically run ls after cd

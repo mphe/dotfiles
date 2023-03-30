@@ -122,8 +122,14 @@ local clientbuttons = awful.util.table.join(
             end
         end
     end),
-    awful.button({ modkey }, 1, awful.mouse.client.move),
-    awful.button({ modkey }, 3, awful.mouse.client.resize))
+    awful.button({ modkey }, 1, function(c)
+        c:raise()
+        awful.mouse.client.move(c)
+    end),
+    awful.button({ modkey }, 3, function(c)
+        c:raise()
+        awful.mouse.client.resize(c)
+    end))
 
 
 return {
