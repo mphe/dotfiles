@@ -95,45 +95,44 @@ function! s:StyleOverrides()
 endfun
 
 function s:ApplyBarBar()
-    " Meaning of terms:
-    "
-    " format: "Buffer" + status + part
-    "
-    " status:
-    "     *Current: current buffer
-    "     *Visible: visible but not current buffer
-    "    *Inactive: invisible but not current buffer
-    "
-    " part:
-    "        *Icon: filetype icon
-    "       *Index: buffer index
-    "         *Mod: when modified
-    "        *Sign: the separator between buffers
-    "      *Target: letter in buffer-picking mode
-    "
-    " BufferTabpages: tabpage indicator
-    " BufferTabpageFill: filler after the buffer section
-    " BufferOffset: offset section, created with set_offset()
+    " darker background for active buffers
+    " let current_bg = s:normal_bg
+    " let current_fg = s:pum_fg
+    " let visible_bg = current_bg
+    " let visible_fg = s:normal_fg
+    " let inactive_bg = s:blue3
+    " let inactive_fg = visible_fg
+    " let bufferline_bg = s:base03
 
-    " call s:hl('BufferDefaultCurrentSign', { 'guibg': s:blue3, 'guifg': s:blue })
-    " highlight! link BufferDefaultInactiveSign LineNr
+    " brighter background for active buffers
+    let current_bg = s:blue3
+    let current_fg = s:pum_fg
+    let inactive_bg = s:normal_bg
+    let inactive_fg = s:normal_fg
+    let visible_bg = inactive_bg
+    let visible_fg = current_fg
+    let bufferline_bg = s:base03
+    let modif_fg = s:red
 
-    highlight! link BufferDefaultCurrent Pmenu
-    highlight! BufferDefaultCurrentMod guibg=#094655
+    exec 'highlight BufferCurrent           guibg=' . current_bg  . ' guifg=' . current_fg
+    exec 'highlight BufferCurrentMod        guibg=' . current_bg  . ' guifg=' . modif_fg
+    exec 'highlight BufferCurrentSign       guibg=' . current_bg  . ' guifg=' . bufferline_bg
+    exec 'highlight BufferInactive          guibg=' . inactive_bg . ' guifg=' . inactive_fg
+    exec 'highlight BufferInactiveSign      guibg=' . inactive_bg . ' guifg=' . bufferline_bg
+    exec 'highlight BufferInactiveMod       guibg=' . inactive_bg . ' guifg=' . modif_fg
+    exec 'highlight BufferVisible           guibg=' . visible_bg  . ' guifg=' . visible_fg
+    exec 'highlight BufferVisibleSign       guibg=' . visible_bg  . ' guifg=' . bufferline_bg
+    exec 'highlight BufferVisibleMod        guibg=' . visible_bg  . ' guifg=' . modif_fg
+    exec 'highlight BufferTabpageFill       guibg=' . bufferline_bg . ' guifg=' . bufferline_bg
 
-    exec 'highlight BufferDefaultCurrentSign guibg=' . s:blue3 . ' guifg=' . s:base03
-    " exec 'highlight! BufferDefaultCurrentIcon guibg=' . s:base03 . ' guifg=' . s:blue3
+    " powerline
+    exec 'highlight BufferCurrentSignRight  guibg=' . bufferline_bg . ' guifg=' . current_bg
+    exec 'highlight BufferInactiveSignRight guibg=' . bufferline_bg . ' guifg=' . inactive_bg
+    exec 'highlight BufferVisibleSignRight  guibg=' . bufferline_bg . ' guifg=' . visible_bg
 
-    highlight! link BufferDefaultInactive LineNr
-    exec 'highlight BufferDefaultInactiveSign guibg=' . s:normal_bg . ' guifg=' . s:base03
-    " exec 'highlight BufferDefaultInactiveSign guibg=' . s:normal_bg . ' guifg=' . s:normal_fg
-
-    exec 'highlight BufferDefaultVisible guibg=' . s:normal_bg . ' guifg=' . s:normal_fg
-    exec 'highlight BufferDefaultVisibleSign guibg=' . s:normal_bg . ' guifg=' . s:base03
-    exec 'highlight BufferDefaultVisibleMod guibg=' . s:normal_bg
-
-    exec 'highlight BufferDefaultTabpageFill guibg=' . s:base03 . ' guifg=' . s:base03
-    " exec 'highlight BufferDefaultTabpageFill guibg=' . s:normal_bg . ' guifg=' . s:normal_bg
+    " slanted
+    " exec 'highlight BufferCurrentSignRight  guibg=' . current_bg  . ' guifg=' . bufferline_bg
+    " exec 'highlight BufferInactiveSignRight guibg=' . inactive_bg . ' guifg=' . bufferline_bg
 endfun
 
 
@@ -186,7 +185,8 @@ hi link CocMenuSel PmenuSel
 hi link CocFloating Pmenu
 
 highlight CocUnderline cterm=underline gui=underline
-highlight CocErrorLine ctermbg=52 guibg=#5F0000
+" highlight CocErrorLine ctermbg=52 guibg=#5F0000
+highlight CocErrorLine ctermbg=52 guibg=#4F2938
 highlight link CocErrorHighlight Error
 highlight CocCodeLens guibg=#073642 guifg=#6C71C4
 highlight! link CocInlayHint CocCodeLens

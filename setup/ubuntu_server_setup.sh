@@ -18,7 +18,7 @@ main() {
     question "Upgrade system" && \
         apt_update && apt upgrade && apt dist-upgrade
 
-    question "Install basic software (python, pip, vim, tmux, ...)" && \
+    question "Install basic software (sudo, python, pip, vim, tmux, ...)" && \
         setup_software
 
     question "Set timezone" && \
@@ -232,6 +232,10 @@ setup_ssh() {
         uncomment_and_edit_line "$SSH_CONFIG" 'PermitRootLogin.*' "PermitRootLogin no" '#'
     fi
 
+    if question "Disable password authentication"; then
+        uncomment_and_edit_line "$SSH_CONFIG" 'PasswordAuthentication.*' "PasswordAuthentication no" '#'
+    fi
+
     if question "Enable keep alives (prevents SSH disconnecting on idle)"; then
         uncomment_and_edit_line "$SSH_CONFIG" 'ClientAliveInterval [0-9]+' "ClientAliveInterval 60" '#'
         uncomment_and_edit_line "$SSH_CONFIG" 'ClientAliveCountMax [0-9]+' "ClientAliveCountMax 10" '#'
@@ -242,7 +246,7 @@ setup_ssh() {
 }
 
 setup_users() {
-    while question "Add user(s)"; do
+    while question "Add/Edit user(s)"; do
         local name="$(prompt Username)"
         [ -z "$name" ] && return 1
 
@@ -268,6 +272,21 @@ setup_users() {
             chmod 600 "/home/$name/.ssh/authorized_keys"
             chown -R "$name:$name" "/home/$name/.ssh"
         fi
+
+        if question "Enable SSH password login for this user"; then
+            echo "
+Match User $name
+PasswordAuthentication yes
+Match all" >> "$SSH_CONFIG"
+        fi
+
+        while question "Add autostart script"; do
+            local script_path="$(prompt "Script path")"
+            script_path="$(realpath "$script_path")"
+            sudo -u "$name" crontab -l 2>/dev/null | { cat; echo "@reboot $script_path"; } | sudo -u "$name" crontab -
+            sudo -u "$name" crontab -l
+            echo
+        done
     done
 }
 
@@ -319,10 +338,12 @@ steam_download() {
 setup_software() {
     dpkg --add-architecture i386
     apt_update
-    apt install sudo vim ufw ranger tmux screen atool python3-pip
+    apt install sudo vim ranger tmux screen atool python3-pip
 }
 
 setup_firewall() {
+    question "Install UFW" && apt install ufw
+
     ufw default deny incoming
     ufw default allow outgoing
 
@@ -481,8 +502,10 @@ APT::Periodic::Download-Upgradeable-Packages "1";
 APT::Periodic::AutocleanInterval "7";
 APT::Periodic::Unattended-Upgrade "1";' > "$periodic_file"
 
-    question "Open config" && \
+    if question "Open config"; then
         $EDITOR "$cfgfile"
+        $EDITOR "$periodic_file"
+    fi
 
     echo Restarting service...
     systemctl restart unattended-upgrades.service
@@ -513,7 +536,8 @@ uncomment_line() {
 # arg4: comment char
 # arg5: use sudo (true/false)
 uncomment_and_edit_line() {
-    replace_in_file "$1" "^\\s*$4\\s*($2)\\s*$" "$3" "$5"
+    uncomment_line "$1" "$2" "$4" "$5"
+    replace_in_file "$1" "$2" "$3" "$5"
 }
 
 main "$@"

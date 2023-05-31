@@ -30,6 +30,8 @@ command CocSetup CocInstall
     \ coc-css
     \ coc-jedi
     \ coc-clangd
+    \ coc-spell-checker
+    \ coc-cspell-dicts
     " \ coc-python
     " \ 'coc-comrade'
     " \ 'coc-metals'

@@ -573,7 +573,7 @@ let g:ctrlp_show_hidden=1
 " let g:ctrlp_custom_ignore = '\.pyc'
 let g:ctrlp_open_multiple_files = 'ijr'
 let g:ctrlp_custom_ignore = {
-            \ 'dir':  '\v[\/](\.(git|hg|svn|clangd|ccls-cache|tmp|mypy_cache)|node_modules)$',
+            \ 'dir':  '\v[\/](\.(git|hg|svn|clangd|ccls-cache|tmp|mypy_cache|cache)|node_modules)$',
             \ 'file': '\v\.(exe|so|dll|pyc|o|a)$'
             \ }
 " let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files . -c -o --exclude-standard && git submodule --quiet foreach --recursive "git ls-files . -c -o --exclude-standard"', 'find %s -type f']
@@ -649,6 +649,9 @@ endfunction
 
 command! ToggleLatexMath call ToggleLatexMath()
 
+" Adds 'c' as vim-surround command to wrap selection in a latex command like \emph{}
+let g:surround_{char2nr('c')} = "\\\1command\1{\r}"
+
 
 " tcomment
 let g:tcommentLineC = {
@@ -685,7 +688,10 @@ au FileType markdown,md let table_mode_corner = '|'
 " easy align
 xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
-let g:easy_align_delimiters = { '>': { 'pattern': '->' } }
+let g:easy_align_delimiters = {
+      \ '>': { 'pattern': '->' },
+      \ '/': { 'pattern': '/' },
+      \ }
 
 " vim-cpp-modern
 " let g:cpp_no_function_highlight = 0
@@ -779,6 +785,7 @@ nmap mm <Plug>BookmarkToggle
 
 " barbar.nvim {{{
 " config {{{
+let g:barbar_auto_setup = v:false
 lua << EOF
 require'bufferline'.setup {
   -- Enable/disable animations
@@ -816,16 +823,17 @@ require'bufferline'.setup {
   highlight_visible = true,
 
   icons = {
+    preset = "powerline",
     -- Configure the base icons on the bufferline.
     buffer_index = false,
     buffer_number = false,
     button = '',
     -- Enables / disables diagnostic symbols
     diagnostics = {
-      -- [vim.diagnostic.severity.ERROR] = {enabled = false, icon = 'ﬀ'},
-      -- [vim.diagnostic.severity.WARN] = {enabled = false},
-      -- [vim.diagnostic.severity.INFO] = {enabled = false},
-      -- [vim.diagnostic.severity.HINT] = {enabled = false},
+      [vim.diagnostic.severity.ERROR] = {enabled = false},
+      [vim.diagnostic.severity.WARN] = {enabled = false},
+      [vim.diagnostic.severity.INFO] = {enabled = false},
+      [vim.diagnostic.severity.HINT] = {enabled = false},
     },
     filetype = {
       -- Sets the icon's highlight group.
@@ -841,15 +849,18 @@ require'bufferline'.setup {
     modified = {button = '●'},
     pinned = {button = '車'},
 
+    -- separator = {left = '', right = ''},
+    -- inactive = {separator = {left = '', right = ''}, button = '×'},
+
+    -- separator = {left = '', right = ' '},
+    -- inactive = {separator = {left = '', right = ' '}, button = '×'},
+    -- inactive = {separator = {left = '🭛', right = '🭦'}, button = '×'},
+    -- separator = {left = '🭛', right = '🭦'},
     -- separator = {left = '▎', right = ''},
-    separator = {left = '', right = ' '},
-    inactive = {separator = {left = '', right = ' '}, button = '×'},
-    -- separator = {left = '█', right = ''},
+    -- separator = {left = '', right = ''},
     -- inactive = {separator = {left = '', right = ''}, button = '×'},
     -- separator = {left = '', right = " \u{e0ba}"},
     -- inactive = {separator = {left = '', right = '\u{e0bd} '}, button = '×'},
-    -- inactive = {separator = {left = '🭛', right = '🭦'}, button = '×'},
-    -- separator = {left = '🭛', right = '🭦'},
     -- inactive = {separator = {left = '', right = ''}, button = '×'},
     -- separator = {left = '', right = ''},
 
@@ -1130,6 +1141,12 @@ require("paint").setup({
             filter = {},
             pattern = "%s+$",
             hl = "Error",
+        },
+        {
+            -- Highlight tags in C++
+            filter = { filetype = "cpp" },
+            pattern = "%[%[(.-)%]%]",
+            hl = "Keyword",
         },
     },
 })

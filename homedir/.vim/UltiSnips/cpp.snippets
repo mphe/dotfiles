@@ -78,7 +78,7 @@ snippet ifdefwin "#ifdef _WIN32"
 endsnippet
 
 snippet ifdefos "#ifdef switch for windows, linux, and others"
-#ifdef __linux__ 
+#ifdef __linux__
 	// linux code goes here
 #elif _WIN32
 	// windows code goes here
@@ -116,8 +116,8 @@ namespace ${2:`!p snip.rv = find_namespace(snip)`}
 }
 endsnippet
 
-snippet fori "for (size_t i = 0; ...) "
-for (size_t i = 0; i < ${1}; ++i)
+snippet fori "for (int i = 0; ...) "
+for (int i = 0; i < ${1}; ++i)
 	${0}
 endsnippet
 

@@ -1,6 +1,7 @@
 {
     // { 'error': "\uf05e  ", 'warning': "\uf071  ", 'info': "\uf05a  " }
     "codeLens.enable": true,
+    "codeLens.position": "eol",
     "diagnostic.enableSign": true,
     // "suggest.floatConfig": {
     //     "border": true
@@ -28,6 +29,7 @@
     "diagnostic.virtualTextCurrentLineOnly": false,
     "sh.enable": false,
     "semanticTokens.filetypes": [ "*" ],
+    // "semanticTokens.highlightPriority": 2048,
     "coc.preferences.currentFunctionSymbolAutoUpdate": true,
     "coc.source.around.firstMatch": false,
     "coc.source.buffer.firstMatch": false,
@@ -77,7 +79,8 @@
         "header-increment": false,
         "single-title": false,
         "no-inline-html": false,
-        "commands-show-output": false
+        "commands-show-output": false,
+        "ul-indent": false,
     },
 
     "Lua.diagnostics.enable": false,
@@ -93,7 +96,8 @@
     "java.home": "/usr/lib/jvm/java-11-openjdk",
 
     // "clangd.enabled": false,
-    "clangd.path": "~/.config/coc/extensions/coc-clangd-data/install/13.0.0/clangd_13.0.0/bin/clangd",
+    // "clangd.path": "~/.config/coc/extensions/coc-clangd-data/install/13.0.0/clangd_13.0.0/bin/clangd",
+    "clangd.path": "/usr/bin/clangd",
 
     // "latex.lint.onSave": true,
     // "latex.lint.onChange": false,
@@ -102,14 +106,27 @@
     // "latex.build.onSave": true,
     // "latex.build.args": [ "-pdf", "-interaction=nonstopmode", "-synctex=1", "-pvc", "%f" ],
 
+    "cSpellExt.enableDictionaries": [ "german" ],
     "cSpell.enabledLanguageIds": [
       "latex",
       "plaintext",
-      "tex"
+      "tex",
+      "text",
+      "markdown"
     ],
+    "cSpell.language": "en,de",
 
     "go.goplsOptions": {
         "semanticTokens": true,
+        "noSemanticString": true,
+        "noSemanticNumber": true,
+        "annotations": {
+            "bounds": true,
+            "escape": true,
+            "inline": true,
+            "nil": true
+        },
+        "staticcheck": true,
         "codelenses": {
             "gc_details": true
         }
