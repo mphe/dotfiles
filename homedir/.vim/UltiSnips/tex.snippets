@@ -225,7 +225,7 @@ snippet ilc "" wm
 endsnippet
 
 snippet cbl "" wm
-\begin{lstlisting}[label=lst:$1,caption={$2}]
+\begin{lstlisting}[float, floatplacement=H, language=$1, caption={$2}, label={lst:$3}]
 ${0}
 \end{lstlisting}
 endsnippet
@@ -265,6 +265,20 @@ snippet listing_setup
 	breaklines=true,
 	showstringspaces=false
 }
+endsnippet
+
+snippet btable "Booktabs table environment" b
+\begin{table}[${1:htpb}]
+	\centering
+	\begin{tabular}{ll}
+		\toprule
+		Header1 & Header2 \\ \midrule
+		Column1 & Column2 \\
+		\bottomrule
+	\end{tabular}
+	\caption{${2:caption}}
+	\label{tab:${3:label}}
+\end{table}
 endsnippet
 
 # vim:ft=snippets:

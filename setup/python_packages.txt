@@ -1,5 +1,10 @@
+# Better debugger
 pdbpp
+
+# Used in scripts/screenshot.sh for system messages
 notify_send_py
+
+# Used by magma-nvim plugin
 cairosvg
 pnglatex
 plotly

@@ -19,14 +19,20 @@
     "diagnostic.infoSign": " ",
     "diagnostic.hintSign": " ",
     "diagnostic.displayByAle": true,
+    "coc.preferences.enableMessageDialog": true,
     "diagnostic.enableMessage": "always",
-    "diagnostic.messageTarget": "echo",
-    "diagnostic.checkCurrentLine": true,
+    "notification.winblend": 0,
+    "notification.timeout": 5000,
+    "notification.border": true,
+    // "notification.highlightGroup": "CursorLine",
+    "diagnostic.messageTarget": "float",
+    "diagnostic.checkCurrentLine": false,
     "diagnostic.refreshOnInsertMode": true,
     "diagnostic.locationlistUpdate": true,
     "diagnostic.virtualText": true,
     "diagnostic.virtualTextPrefix": " ◾",
     "diagnostic.virtualTextCurrentLineOnly": false,
+    "diagnostic.virtualTextLevel": "warning",
     "sh.enable": false,
     "semanticTokens.filetypes": [ "*" ],
     // "semanticTokens.highlightPriority": 2048,
@@ -116,6 +122,9 @@
     ],
     "cSpell.language": "en,de",
 
+    "ltex.diagnosticSeverity": "information",
+    "ltex.language": "auto",
+
     "go.goplsOptions": {
         "semanticTokens": true,
         "noSemanticString": true,
@@ -149,6 +158,12 @@
             "host": "127.0.0.1",
             "filetypes": ["gd", "gdscript3"],
             "port": 6008
+        },
+        // dotnet tool install --global csharp-ls
+        "csharp-ls": {
+            "command": "csharp-ls",
+            "filetypes": ["cs"],
+            "rootPatterns": ["*.csproj", ".vim/", ".git/", ".hg/"]
         }
         // "glsl": {
         //     "filetypes": [ "glsl" ],

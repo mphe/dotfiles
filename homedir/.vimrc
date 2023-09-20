@@ -2,7 +2,7 @@
 autocmd!
 
 let s:use_treesitter = 0
-let s:use_vim_omnisharp = 1
+let s:use_vim_omnisharp = 0
 
 if !has('nvim')
     let s:use_treesitter = 0
@@ -340,8 +340,11 @@ Plug 'ap/vim-css-color'
 
 Plug 'Konfekt/FastFold'
 
+Plug 'weirongxu/plantuml-previewer.vim'
+Plug 'tyru/open-browser.vim'
+
 " Custom symbol as color column
-Plug 'lukas-reineke/virt-column.nvim'
+" Plug 'lukas-reineke/virt-column.nvim'
 
 if has('nvim')
     Plug 'rcarriga/nvim-notify'
@@ -824,6 +827,7 @@ require'bufferline'.setup {
 
   icons = {
     preset = "powerline",
+    -- separator_at_end = false,
     -- Configure the base icons on the bufferline.
     buffer_index = false,
     buffer_number = false,
@@ -1153,9 +1157,9 @@ require("paint").setup({
 EOF
 
 " virt-column
-lua<<EOF
-require("virt-column").setup()
-EOF
+" lua<<EOF
+" require("virt-column").setup()
+" EOF
 
 " -------------------------------------- Plugin configuration end }}}
 
@@ -1176,7 +1180,7 @@ au!
 autocmd FileType cmake,vim,lua setlocal foldmethod=marker
 autocmd FileType sourcepawn,json,jsonc setlocal commentstring=//\ %s
 autocmd FileType text,markdown,tex,unknown setlocal wrap
-autocmd FileType markdown setlocal shiftwidth=2 | setlocal tabstop=2
+autocmd FileType markdown setlocal shiftwidth=2 | setlocal tabstop=2 | setlocal formatoptions-=t
 autocmd FileType scala setlocal previewheight=5
 
 " cursorline in php or html files often severe massive lags
@@ -1205,6 +1209,15 @@ augroup END
 
 
 " -------------------------------------- Key mappings {{{
+
+" Make commands for {} groups better accessible
+nnoremap dib di}
+nnoremap cib ci}
+nnoremap vib vi}
+nnoremap dab da}
+nnoremap cab ca}
+nnoremap vab va}
+
 " Disable Ex mode
 map Q <Nop>
 
