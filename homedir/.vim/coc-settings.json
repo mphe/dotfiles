@@ -18,15 +18,15 @@
     "diagnostic.warningSign": " ",
     "diagnostic.infoSign": " ",
     "diagnostic.hintSign": " ",
-    "diagnostic.displayByAle": true,
+    "diagnostic.displayByAle": false,
     "coc.preferences.enableMessageDialog": true,
-    "diagnostic.enableMessage": "always",
+    "diagnostic.enableMessage": "jump",
     "notification.winblend": 0,
     "notification.timeout": 5000,
     "notification.border": true,
     // "notification.highlightGroup": "CursorLine",
     "diagnostic.messageTarget": "float",
-    "diagnostic.checkCurrentLine": false,
+    "diagnostic.checkCurrentLine": true,
     "diagnostic.refreshOnInsertMode": true,
     "diagnostic.locationlistUpdate": true,
     "diagnostic.virtualText": true,
@@ -124,6 +124,11 @@
 
     "ltex.diagnosticSeverity": "information",
     "ltex.language": "auto",
+    "ltex.disabledRules": {
+        "en-US": [
+            "WHITESPACE_RULE",
+        ]
+    },
 
     "go.goplsOptions": {
         "semanticTokens": true,

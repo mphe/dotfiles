@@ -101,7 +101,7 @@ set colorcolumn=100
 
 " Make gq break lines at 100 but don't automatically break lines while typing
 set textwidth=100
-set formatoptions-=t
+set formatoptions-=tc
 
 set mouse=a
 
@@ -121,6 +121,7 @@ let g:python_pep8_indent_searchpair_timeout = 10
 
 " -------------------------------------- Plugin settings before loading {{{
 " ALE configs that need to be set before ALE is loaded
+let g:ale_use_neovim_diagnostics_api = 0
 let g:ale_lint_on_enter = 1
 let g:ale_lint_on_filetype_changed = 1
 let g:ale_lint_on_text_changed = 1
@@ -264,7 +265,7 @@ Plug 'dense-analysis/ale'
 Plug 'vimperator/vimperator.vim'
 Plug 'Shougo/vimproc.vim'
 Plug 'dhruvasagar/vim-table-mode'
-" Plug '~/dev/python/grayout.vim'
+" Plug '~/extdata/vim/grayout.vim'
 " Plug 'mphe/grayout.vim'
 " Plug 'LaTeX-Box-Team/LaTeX-Box'
 Plug 'lervag/vimtex'
@@ -345,6 +346,9 @@ Plug 'tyru/open-browser.vim'
 
 " Custom symbol as color column
 " Plug 'lukas-reineke/virt-column.nvim'
+
+" Generate TOC in markdown files
+Plug 'mzlogin/vim-markdown-toc'
 
 if has('nvim')
     Plug 'rcarriga/nvim-notify'
@@ -786,180 +790,6 @@ let g:bookmark_auto_save = 1
 nmap mm <Plug>BookmarkToggle
 
 
-" barbar.nvim {{{
-" config {{{
-let g:barbar_auto_setup = v:false
-lua << EOF
-require'bufferline'.setup {
-  -- Enable/disable animations
-  animation = true,
-
-  -- Enable/disable auto-hiding the tab bar when there is a single buffer
-  auto_hide = false,
-
-  -- Enable/disable current/total tabpages indicator (top right corner)
-  tabpages = true,
-
-  -- Enables/disable clickable tabs
-  --  - left-click: go to buffer
-  --  - middle-click: delete buffer
-  clickable = true,
-
-  -- Excludes buffers from the tabline
-  -- exclude_ft = {'javascript'},
-  -- exclude_name = {'package.json'},
-
-  -- A buffer to this direction will be focused (if it exists) when closing the current buffer.
-  -- Valid options are 'left' (the default) and 'right'
-  focus_on_close = 'left',
-
-  -- Hide inactive buffers and file extensions. Other options are `alternate`, `current`, and `visible`.
-  hide = {extensions = true, inactive = false},
-
-  -- Disable highlighting alternate buffers
-  highlight_alternate = false,
-
-  -- Disable highlighting file icons in inactive buffers
-  highlight_inactive_file_icons = false,
-
-  -- Enable highlighting visible buffers
-  highlight_visible = true,
-
-  icons = {
-    preset = "powerline",
-    -- separator_at_end = false,
-    -- Configure the base icons on the bufferline.
-    buffer_index = false,
-    buffer_number = false,
-    button = '',
-    -- Enables / disables diagnostic symbols
-    diagnostics = {
-      [vim.diagnostic.severity.ERROR] = {enabled = false},
-      [vim.diagnostic.severity.WARN] = {enabled = false},
-      [vim.diagnostic.severity.INFO] = {enabled = false},
-      [vim.diagnostic.severity.HINT] = {enabled = false},
-    },
-    filetype = {
-      -- Sets the icon's highlight group.
-      -- If false, will use nvim-web-devicons colors
-      custom_colors = false,
-
-      -- Requires `nvim-web-devicons` if `true`
-      enabled = true,
-    },
-
-    -- Configure the icons on the bufferline when modified or pinned.
-    -- Supports all the base icon options.
-    modified = {button = '●'},
-    pinned = {button = '車'},
-
-    -- separator = {left = '', right = ''},
-    -- inactive = {separator = {left = '', right = ''}, button = '×'},
-
-    -- separator = {left = '', right = ' '},
-    -- inactive = {separator = {left = '', right = ' '}, button = '×'},
-    -- inactive = {separator = {left = '🭛', right = '🭦'}, button = '×'},
-    -- separator = {left = '🭛', right = '🭦'},
-    -- separator = {left = '▎', right = ''},
-    -- separator = {left = '', right = ''},
-    -- inactive = {separator = {left = '', right = ''}, button = '×'},
-    -- separator = {left = '', right = " \u{e0ba}"},
-    -- inactive = {separator = {left = '', right = '\u{e0bd} '}, button = '×'},
-    -- inactive = {separator = {left = '', right = ''}, button = '×'},
-    -- separator = {left = '', right = ''},
-
-
-    -- Configure the icons on the bufferline based on the visibility of a buffer.
-    -- Supports all the base icon options, plus `modified` and `pinned`.
-    -- alternate = {filetype = {enabled = false}},
-    -- current = {buffer_index = false},
-    -- inactive = {button = '×'},
-    -- visible = {modified = {buffer_number = false}},
-  },
-
-  -- If true, new buffers will be inserted at the start/end of the list.
-  -- Default is to insert after current buffer.
-  insert_at_end = false,
-  insert_at_start = false,
-
-  -- Sets the maximum padding width with which to surround each tab
-  maximum_padding = 2,
-
-  -- Sets the minimum padding width with which to surround each tab
-  minimum_padding = 1,
-
-  -- Sets the maximum buffer name length.
-  maximum_length = 30,
-
-  -- If set, the letters for each buffer in buffer-pick mode will be
-  -- assigned based on their name. Otherwise or in case all letters are
-  -- already assigned, the behavior is to assign letters in order of
-  -- usability (see order below)
-  semantic_letters = true,
-
-  -- New buffer letters are assigned in this order. This order is
-  -- optimal for the qwerty keyboard layout but might need adjustement
-  -- for other layouts.
-  letters = 'asdfjkl;ghnmxcvbziowerutyqpASDFJKLGHNMXCVBZIOWERUTYQP',
-
-  -- Sets the name of unnamed buffers. By default format is "[Buffer X]"
-  -- where X is the buffer number. But only a static string is accepted here.
-  no_name_title = nil,
-}
-EOF
-" }}}
-" mappings {{{
-
-" Aliases for muscle memory
-cnoreabbrev bf BufferFirst
-cnoreabbrev bl BufferLast
-cnoreabbrev bd BufferClose
-
-" Move to previous/next
-nnoremap <silent>    <leader>bp <Cmd>BufferPrevious<CR>
-nnoremap <silent>    <leader>bn <Cmd>BufferNext<CR>
-" Re-order to previous/next
-nnoremap <silent>    <leader>b< <Cmd>BufferMovePrevious<CR>
-nnoremap <silent>    <leader>b> <Cmd>BufferMoveNext<CR>
-" Goto buffer in position...
-nnoremap <silent>    <leader>1 <Cmd>BufferGoto 1<CR>
-nnoremap <silent>    <leader>2 <Cmd>BufferGoto 2<CR>
-nnoremap <silent>    <leader>3 <Cmd>BufferGoto 3<CR>
-nnoremap <silent>    <leader>4 <Cmd>BufferGoto 4<CR>
-nnoremap <silent>    <leader>5 <Cmd>BufferGoto 5<CR>
-nnoremap <silent>    <leader>6 <Cmd>BufferGoto 6<CR>
-nnoremap <silent>    <leader>7 <Cmd>BufferGoto 7<CR>
-nnoremap <silent>    <leader>8 <Cmd>BufferGoto 8<CR>
-nnoremap <silent>    <leader>9 <Cmd>BufferGoto 9<CR>
-nnoremap <silent>    <leader>0 <Cmd>BufferLast<CR>
-nnoremap <silent>    <leader>bL <Cmd>BufferLast<CR>
-nnoremap <silent>    <leader>bF <Cmd>BufferFirst<CR>
-" Pin/unpin buffer
-nnoremap <silent>    <leader>p <Cmd>BufferPin<CR>
-" Close buffer
-nnoremap <silent>    <leader>bd <Cmd>BufferClose<CR>
-" Wipeout buffer
-"                          :BufferWipeout
-" Close commands
-"                          :BufferCloseAllButCurrent
-"                          :BufferCloseAllButPinned
-"                          :BufferCloseAllButCurrentOrPinned
-"                          :BufferCloseBuffersLeft
-"                          :BufferCloseBuffersRight
-" Magic buffer-picking mode
-nnoremap <silent> <leader>B    <Cmd>BufferPick<CR>
-" Sort automatically by...
-" nnoremap <silent> <Space>bb <Cmd>BufferOrderByBufferNumber<CR>
-" nnoremap <silent> <Space>bd <Cmd>BufferOrderByDirectory<CR>
-" nnoremap <silent> <Space>bl <Cmd>BufferOrderByLanguage<CR>
-" nnoremap <silent> <Space>bw <Cmd>BufferOrderByWindowNumber<CR>
-
-" Other:
-" :BarbarEnable - enables barbar (enabled by default)
-" :BarbarDisable - very bad command, should never be used
-" }}}
-" }}}
-
 " treesitter
 " https://github.com/nvim-treesitter/nvim-treesitter
 if s:use_treesitter
@@ -991,70 +821,6 @@ EOF
 endif
 
 
-" nvim-scrollbar
-lua << EOF
-require("scrollbar").setup({
-    handle = {
-        text = " ",
-        highlight = "Pmenu",
-    },
-    -- marks = {
-    --     Search = { text = { "-", "=" }, priority = 0, highlight = "orange" },
-    --     Error = { text = { "-", "=" }, priority = 1, highlight = "red" },
-    --     Warn = { text = { "-", "=" }, priority = 2, highlight = "CocWarningSign" },
-    --     Info = { text = { "-", "=" }, priority = 3, highlight = "CocInfoSign" },
-    --     Hint = { text = { "-", "=" }, priority = 4, color = "green" },
-    --     Misc = { text = { "-", "=" }, priority = 5, color = "purple" },
-    -- },
-    excluded_filetypes = {
-        "",
-        "prompt",
-        "TelescopePrompt",
-    },
-    autocmd = {
-        render = {
-            "BufWinEnter",
-            "TabEnter",
-            "TermEnter",
-            "WinEnter",
-            "CmdwinLeave",
-            "TextChanged",
-            "VimResized",
-            "WinScrolled",
-            "InsertLeave",
-        },
-    },
-    handlers = {
-        diagnostic = true,
-        search = false,
-    },
-})
-
-local mark_type_map = {
-    I = "Info",
-    W = "Warn",
-    E = "Error",
-}
-
-function ll_handler(bufnr)
-    local winnr = vim.fn.get(vim.fn.win_findbuf(bufnr), 0, -1)
-    if winnr == -1 then
-        return {}
-    end
-
-    local ll = vim.fn.getloclist(winnr)
-    local marks = {}
-
-    for _, entry in pairs(ll) do
-        if (entry.bufnr or bufnr) == bufnr then
-            table.insert(marks, { line = entry.lnum, type = mark_type_map[entry.type]})
-        end
-    end
-    return marks
-end
-
-require("scrollbar.handlers").register("locationlist", ll_handler)
-EOF
 
 fun! Qf_test()
     lua ll_handler(vim.fn.bufnr())
@@ -1086,39 +852,6 @@ let g:magma_automatically_open_output = v:false
 let g:magma_wrap_output = v:false
 
 
-" nvim-notify
-if has('nvim')
-  lua << EOF
-    require("notify").setup({
-    stages = "slide",   -- Animation style (see below for details)
-    -- stages = "fade_in_slide_out",
-    on_open = nil,      -- Function called when a new window is opened, use for changing win settings/config
-    on_close = nil,     -- Function called when a window is closed
-    render = "default", -- Render function for notifications. See notify-render()
-    timeout = 5000,     -- Default timeout for notifications
-    max_width = nil,    -- Max number of columns for messages
-    max_height = nil,   -- Max number of lines for a message
-    minimum_width = 50, -- Minimum width for notification windows
-
-    -- For stages that change opacity this is treated as the highlight behind the window
-    -- Set this to either a highlight group, an RGB hex value e.g. "#000000" or a function returning an RGB code for dynamic values
-    background_colour = "Normal",
-
-    -- Icons for the different levels
-    icons = {
-        ERROR = " ",
-        WARN = " ",
-        INFO = "",
-        DEBUG = "",
-        TRACE = "✎",
-        },
-    })
-
-    -- Use plugin for all notifications
-    vim.notify = require("notify")
-EOF
-endif
-
 " sideways.vim
 nnoremap <leader>< :SidewaysLeft<cr>
 nnoremap <leader>> :SidewaysRight<cr>
@@ -1131,35 +864,12 @@ let g:cursorhold_updatetime = 100
 let g:table_mode_syntax = 0
 nnoremap <leader>ta :TableModeRealign<CR>
 
-" paint.nvim
-lua<<EOF
-require("paint").setup({
-    highlights = {
-        {
-            -- filter can be a table of buffer options that should match,
-            -- or a function called with buf as param that should return true.
-            -- The example below will paint @something in comments with Constant
-            -- filter = { filetype = "lua" },
-            -- pattern = "%s*%-%-%-%s*(@%w+)",
-            -- hl = "Constant",
-            filter = {},
-            pattern = "%s+$",
-            hl = "Error",
-        },
-        {
-            -- Highlight tags in C++
-            filter = { filetype = "cpp" },
-            pattern = "%[%[(.-)%]%]",
-            hl = "Keyword",
-        },
-    },
-})
-EOF
 
 " virt-column
-" lua<<EOF
-" require("virt-column").setup()
-" EOF
+" lua require("virt-column").setup()
+
+" vim-markdown-toc
+let g:vmt_list_item_char = '-'
 
 " -------------------------------------- Plugin configuration end }}}
 
@@ -1180,7 +890,8 @@ au!
 autocmd FileType cmake,vim,lua setlocal foldmethod=marker
 autocmd FileType sourcepawn,json,jsonc setlocal commentstring=//\ %s
 autocmd FileType text,markdown,tex,unknown setlocal wrap
-autocmd FileType markdown setlocal shiftwidth=2 | setlocal tabstop=2 | setlocal formatoptions-=t
+autocmd FileType markdown setlocal shiftwidth=2 | setlocal tabstop=2 | setlocal formatoptions-=tc
+" autocmd FileType markdown call coc#config('diagnostic.displayByAle', v:false)
 autocmd FileType scala setlocal previewheight=5
 
 " cursorline in php or html files often severe massive lags
@@ -1190,7 +901,8 @@ autocmd FileType php,html,tex setlocal nocursorline
 " autoclose location list after jump
 autocmd FileType qf nmap <buffer> <cr> <cr>:lcl<cr>
 
-autocmd FileType * setlocal formatoptions+=croj
+" autocmd FileType * setlocal formatoptions+=croj
+autocmd FileType * setlocal formatoptions+=roj
 
 " Set filetype by extension
 autocmd BufRead,BufNewFile *.fsh set filetype=glsl
@@ -1366,7 +1078,14 @@ endfun
 nnoremap <silent> <F5> :call F5Refresh()<CR>
 inoremap <silent> <F5> <c-o>:call F5Refresh()<CR>
 
-nnoremap <leader>d :ALEDetail<CR>
+function! ShowDiagnostics()
+  ALEDetail
+  call CocAction('diagnosticInfo')
+endfun
+
+" nnoremap <leader>d :ALEDetail<CR>
+nnoremap <leader>d :call ShowDiagnostics()<CR>
+
 
 nnoremap <F8> :labove<CR>
 nnoremap <F9> :lbelow<CR>
@@ -1403,9 +1122,6 @@ highlight! Folded guibg=NONE gui=bold
 
 " better fold text }}}
 
-" source ~/.vim/completion_preview.vim
-source ~/.vim/coc.vim
-
 function! CheckSize()
     let size = getfsize(@%)
     if size > 10000000 " 10 MB
@@ -1424,50 +1140,13 @@ au BufEnter * :call CheckSize()
 " imap <silent><script><expr> <C-J> copilot#Accept("\<C-J>")
 " let g:copilot_assume_mapped = v:true
 
-" lua <<EOF
-" vim.api.nvim_set_keymap("i", "<C-J>", 'copilot#Accept("<CR>")', { silent = true, expr = true })
-" EOF
-"
+" lua vim.api.nvim_set_keymap("i", "<C-J>", 'copilot#Accept("<CR>")', { silent = true, expr = true })
 
 
-" copilot-client.lua
 
-lua << EOF
-require("copilot").setup()
+" source ~/.vim/completion_preview.vim
+source ~/.vim/coc.vim
 
-function copilot_show()
-  require("copilot.suggestion").next()
-  vim.api.nvim_buf_set_keymap(0, 'i', '<CR>', '<cmd>lua copilot_accept()<CR>', { noremap = true, silent = true })
-end
-
-function copilot_accept()
-  require("copilot.suggestion").accept()
-  copilot_cancel()
-end
-
-function copilot_cancel()
-  if require("copilot.suggestion").is_visible() then
-    require("copilot.suggestion").dismiss()
-  end
-  vim.api.nvim_buf_del_keymap(0, 'i', '<CR>')
-end
-
-vim.api.nvim_create_autocmd("InsertLeave", {
-  command = "silent! lua copilot_cancel()",
-  group = vim.api.nvim_create_augroup("custom_copilot_trigger", { clear = true }),
-})
-
-vim.api.nvim_set_keymap('i', '<C-c>', '<cmd>lua copilot_show()<CR>', { noremap = true, silent = true })
-
--- require('copilot-client').setup {
---   mapping = {
---     accept = '<CR>',
---     -- Next and previos suggestions to be added
---     -- suggest_next = '<C-n>',
---     -- suggest_prev = '<C-p>',
---   },
--- }
-
--- Create a keymap that triggers the suggestion.
--- vim.api.nvim_set_keymap('i', '<C-c>', '<cmd>lua require("copilot-client").suggest()<CR>', { noremap = true, silent = true })
-EOF
+if has('nvim')
+  lua require("config")
+endif

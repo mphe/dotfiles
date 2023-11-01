@@ -159,6 +159,7 @@ highlight CursorLineNr cterm=bold ctermfg=3 ctermbg=black gui=bold guifg=#b58900
 highlight Folded cterm=bold
 
 highlight SignColumn cterm=bold ctermbg=black gui=bold guibg=#073642
+highlight! link StatusLineNC SignColumn
 highlight Error   cterm=underline ctermfg=1 ctermbg=NONE gui=underline guifg=#dc322f guibg=NONE
 highlight link SpellBad Error
 highlight Normal     ctermbg=NONE guibg=NONE
@@ -284,7 +285,7 @@ hi link CocSemFunction LspCxxHlSymFunction
 hi link CocSemMethod LspCxxHlSymClassMethod
 hi link CocSemMacro Macro
 hi link CocSemKeyword Keyword
-hi link CocSemModifier StorageClass
+hi link CocSemModifier Statement
 hi link CocSemComment Comment
 hi link CocSemString String
 hi link CocSemNumber Number

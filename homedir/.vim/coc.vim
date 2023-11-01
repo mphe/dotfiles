@@ -28,13 +28,19 @@ command CocSetup CocInstall
     \ coc-json
     \ coc-html
     \ coc-css
+    \ coc-phpls
+    \ coc-tsserver
     \ coc-jedi
+    \ coc-pyright
     \ coc-clangd
+    \ coc-cmake
+    \ coc-go
     \ coc-spell-checker
     \ coc-cspell-dicts
-    " \ coc-python
-    " \ 'coc-comrade'
-    " \ 'coc-metals'
+    \ coc-ltex
+    \ coc-markdownlint
+    \ coc-texlab
+    " \ coc-java
 
 " Use tab for trigger completion with characters ahead and navigate.
 " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
