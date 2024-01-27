@@ -580,7 +580,7 @@ let g:ctrlp_show_hidden=1
 " let g:ctrlp_custom_ignore = '\.pyc'
 let g:ctrlp_open_multiple_files = 'ijr'
 let g:ctrlp_custom_ignore = {
-            \ 'dir':  '\v[\/](\.(git|hg|svn|clangd|ccls-cache|tmp|mypy_cache|cache)|node_modules)$',
+            \ 'dir':  '\v[\/](\.(godot|import|git|hg|svn|clangd|ccls-cache|tmp|mypy_cache|cache)|node_modules)$',
             \ 'file': '\v\.(exe|so|dll|pyc|o|a)$'
             \ }
 " let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files . -c -o --exclude-standard && git submodule --quiet foreach --recursive "git ls-files . -c -o --exclude-standard"', 'find %s -type f']
