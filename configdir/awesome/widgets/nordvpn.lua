@@ -3,6 +3,7 @@ local utils = require("utils")
 local gears = require("gears")
 local wibox = require("wibox")
 local BaseWidget = require("widgets.base").BaseWidget
+local icons = require("icons")
 
 local NordVPNWidget = BaseWidget.derive()
 
@@ -22,8 +23,7 @@ function NordVPNWidget:create(args)
     args = args or {}
 
     self.status = {}
-    self.widget = wibox.widget.textbox()
-    local box = self:init(self.widget)
+    local box = self:init(nil, icons.vpn_disconnected)
 
     -- For some reason, spaces after the unicode symbol are swallowed, so we put the separating space here
     box:insert(2, wibox.widget.textbox(" "))
@@ -109,9 +109,9 @@ function NordVPNWidget:update(after_cb)
         end,
         output_done = function(reason, code)  -- luacheck: ignore
             if self:is_connected() then
-                self.widget:set_text("\u{f023}")
+                self:set_icon(icons.vpn)
             else
-                self.widget:set_text("\u{f3c1}")
+                self:set_icon(icons.vpn_disconnected)
             end
 
             if after_cb then

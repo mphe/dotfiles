@@ -28,6 +28,8 @@ local icons      = {
     },
     nvidia = beautiful.lookup_icon_colored("status/nvidia-card"),
     nvidia_green = beautiful.lookup_icon_colored("status/nvidia-card", "#00aa00"),
+    vpn = beautiful.lookup_icon_colored("status/network-vpn"),
+    vpn_disconnected = beautiful.lookup_icon_colored("status/network-vpn-disconnected"),
 }
 
 -- Adds entries <basename>_<level> to `icons` table with icon paths according to strformat.
