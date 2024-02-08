@@ -20,7 +20,17 @@ awful.rules.rules = {
             screen = awful.screen.preferred,
             floating = true,  -- Make all clients floating
             size_hints_honor = true,
-            placement = utils.do_placement,
+            placement = function(c)
+                -- Exceptions
+                if
+                    c.class == "Unity"
+                    or c.class == "jetbrains-studio"
+                    or c.class == "xpad" then
+                    return
+                end
+
+                utils.do_placement(c)
+            end,
         }
     }, -- }}}
 
@@ -37,11 +47,10 @@ awful.rules.rules = {
                 -- "firefox",
                 "Chromium",
                 -- "Navigator",
-                -- "TelegramDesktop",
+                "TelegramDesktop",
                 "discord",
                 "Zathura",
             },
-            name = { "Telegram" },
             instance = {
                 "Unity",
                 "Navigator", -- firefox

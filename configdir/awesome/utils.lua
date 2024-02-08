@@ -158,17 +158,9 @@ end
 
 
 function M.do_placement(c)
-    -- except rules
-    if (c.class == "TelegramDesktop" and c.name == "Media viewer")
-        or c.class == "Unity"
-        or c.class == "jetbrains-studio"
-        or c.class == "xpad" then
-        return
-    end
-
     -- M.debugtable({ type = c.type, class = c.class, name = c.name, c.instance })
 
-    local placement_rule = awful.placement.centered+awful.placement.no_offscreen
+    local placement_rule = awful.placement.centered + awful.placement.no_offscreen
 
     if c.motif_wm_hints then
         -- local hint = c.motif_wm_hints.functions
@@ -192,21 +184,27 @@ function M.do_placement(c)
         end
     end
 
-    local sw = c.screen.workarea.width
-    local sh = c.screen.workarea.height
-    local cw = c:geometry().width
-    local ch = c:geometry().height
+    -- If the program is not actively requesting a certain size, ensure the window is inside screen.
+    if not c.size_hints or not c.size_hints.user_size then
+        local sw = c.screen.workarea.width
+        local sh = c.screen.workarea.height
+        local cw = c:geometry().width
+        local ch = c:geometry().height
 
-    if ch > sh then
-        cw = cw * sh / ch
-        c:geometry({ height = sh, width = cw })
-    end
-    if cw > sw then
-        local fac = sh / ch
-        c:geometry({ width = sw, height = ch * fac })
+        if ch > sh then
+            cw = cw * sh / ch
+            c:geometry({ height = sh, width = cw })
+        end
+        if cw > sw then
+            local fac = sh / ch
+            c:geometry({ width = sw, height = ch * fac })
+        end
     end
 
-    placement_rule(c, { honor_workarea = true })
+    -- If the program is not actively requesting a certain position, place the window manually
+    if not c.size_hints or not c.size_hints.user_position then
+        placement_rule(c, { honor_workarea = true })
+    end
 end
 
 
