@@ -5,7 +5,7 @@ cd "$(dirname "$(readlink -f "\$0")")" || exit 1
 
 endsnippet
 
-snippet doc "Skeleton for script documentation"
+snippet help "Skeleton for script documentation"
 if [ \$# -eq 0 ] || [ "\$1" == "-h" ] || [ "\$1" == "--help" ]; then
 	echo "${1:docstring}"
 	echo -e "Usage:\n\t\$\{0##*/\} [options] ${2:arguments}"

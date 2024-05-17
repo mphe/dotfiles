@@ -307,6 +307,10 @@ Plug 'inkarkat/vim-EnhancedJumps'
 Plug 'MattesGroeger/vim-bookmarks'
 " Plug 'Jorengarenar/vim-syntaxMarkerFold'
 
+" should be unnecessary because vim and neovim have qml support integrated now, but for some reason
+" it doesn't work for me
+Plug 'https://github.com/peterhoeg/vim-qml.git'
+
 " Auto detect indent
 Plug 'tpope/vim-sleuth'
 

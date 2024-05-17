@@ -42,7 +42,7 @@ require'bufferline'.setup {
     -- Configure the base icons on the bufferline.
     buffer_index = false,
     buffer_number = false,
-    button = '',
+    button = '',
     -- Enables / disables diagnostic symbols
     diagnostics = {
       [vim.diagnostic.severity.ERROR] = {enabled = false},
@@ -62,7 +62,7 @@ require'bufferline'.setup {
     -- Configure the icons on the bufferline when modified or pinned.
     -- Supports all the base icon options.
     modified = {button = '●'},
-    pinned = {button = '車'},
+    pinned = {button = ''},
 
     -- separator = {left = '', right = ''},
     -- inactive = {separator = {left = '', right = ''}, button = '×'},

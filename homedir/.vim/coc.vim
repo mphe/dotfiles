@@ -19,28 +19,29 @@ set shortmess+=c
 
 let g:coc_default_semantic_highlight_groups = 1
 
-command CocSetup CocInstall
-    \ coc-snippets
-    \ coc-actions
-    \ coc-vimlsp
-    \ coc-sh
-    \ coc-lua
-    \ coc-json
-    \ coc-html
-    \ coc-css
-    \ coc-phpls
-    \ coc-tsserver
-    \ coc-jedi
-    \ coc-pyright
-    \ coc-clangd
-    \ coc-cmake
-    \ coc-go
-    \ coc-spell-checker
-    \ coc-cspell-dicts
-    \ coc-ltex
-    \ coc-markdownlint
-    \ coc-texlab
-    " \ coc-java
+let g:coc_global_extensions = [
+      \ 'coc-snippets',
+      \ 'coc-actions',
+      \ 'coc-vimlsp',
+      \ 'coc-sh',
+      \ 'coc-lua',
+      \ 'coc-json',
+      \ 'coc-html',
+      \ 'coc-css',
+      \ 'coc-phpls',
+      \ 'coc-tsserver',
+      \ 'coc-jedi',
+      \ 'coc-pyright',
+      \ 'coc-clangd',
+      \ 'coc-cmake',
+      \ 'coc-go',
+      \ 'coc-spell-checker',
+      \ 'coc-cspell-dicts',
+      \ 'coc-ltex',
+      \ 'coc-markdownlint',
+      \ 'coc-texlab',
+      \ ]
+    " \ 'coc-java',
 
 " Use tab for trigger completion with characters ahead and navigate.
 " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by

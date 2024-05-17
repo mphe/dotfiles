@@ -9,59 +9,92 @@ SSH_PORT=22
 EDITOR="${EDITOR:-vim}"
 APT_UPDATE=false
 
+OPTIONS=(
+    upgrade_system
+    setup_software
+    set_timezone
+    setup_locale
+    setup_users
+    setup_groups
+    setup_smtp
+    setup_auto_updates
+    setup_apache
+    setup_ssh
+    setup_firewall
+    setup_swap
+    setup_steam
+    setup_gitlab
+    run_reboot
+    restart_sshd
+)
+
+OPTION_NAMES=(
+    "Upgrade system"
+    "Install basic software (sudo, python, pip, vim, tmux, ...)"
+    "Set timezone"
+    "Add german locale"
+    "Add/Edit user(s)"
+    "Add group(s)"
+    "Setup E-Mail sending (using msmtp)"
+    "Setup automatic stable updates"
+    "Setup LAMP Stack (Apache, PHP, MySQL)"
+    "Configure SSH"
+    "Configure firewall"
+    "Create swapfile"
+    "Setup steam"
+    "Setup GitLab"
+    "Reboot"
+    "Restart SSH daemon"
+)
+
 main() {
     if [ "$USER" != "root" ]; then
         echo "Error: Needs root"
         exit 1
     fi
 
-    question "Upgrade system" && \
-        apt_update && apt upgrade && apt dist-upgrade
+    while true; do
+        echo
+        echo "Options"
+        echo "======="
 
-    question "Install basic software (sudo, python, pip, vim, tmux, ...)" && \
-        setup_software
+        for i in "${!OPTION_NAMES[@]}"; do
+            echo "$i) ${OPTION_NAMES[$i]}"
+        done
+        echo
 
-    question "Set timezone" && \
-        dpkg-reconfigure tzdata
+        local selection=""
 
-    question "Add german locale" && \
-        setup_locale
+        while [ -z "$selection" ] || [ "$selection" -lt 0 ] || [ "$selection" -ge "${#OPTIONS[@]}" ]; do
+            selection="$(prompt "Selection")"
+        done
 
-    setup_users
-
-    question "Add group(s)" && \
-        setup_groups
-
-    question "Setup E-Mail sending (using msmtp)" && \
-        setup_smtp
-
-    question "Setup automatic stable updates" && \
-        setup_auto_updates
-
-    question "Setup LAMP Stack (Apache, PHP, MySQL)" && \
-        setup_apache
-
-    question "Configure SSH" && \
-        setup_ssh
-
-    question "Configure firewall" && \
-        setup_firewall
-
-    question "Create swapfile" && \
-        create_swapfile "$(prompt "Size in GB" 1)"
-
-    question "Setup steam" && \
-        setup_steam
-
-    question "Setup GitLab" && \
-        setup_gitlab
-
-    question "Reboot" && \
-        systemctl reboot
-
-    question "Restart SSH daemon" && \
-        systemctl restart sshd
+        echo
+        ${OPTIONS[$selection]}
+    done
 }
+
+
+upgrade_system() {
+    apt_update && apt upgrade && apt dist-upgrade
+}
+
+set_timezone() {
+    dpkg-reconfigure tzdata
+}
+
+setup_swap() {
+    create_swapfile "$(prompt "Size in GB" 1)"
+}
+
+run_reboot() {
+    systemctl reboot
+}
+
+restart_sshd() {
+    systemctl restart sshd
+}
+
 
 apt_update() {
     $APT_UPDATE || apt update
@@ -246,47 +279,62 @@ setup_ssh() {
 }
 
 setup_users() {
-    while question "Add/Edit user(s)"; do
-        local name="$(prompt Username)"
-        [ -z "$name" ] && return 1
+    local name="$(prompt Username)"
+    [ -z "$name" ] && return 1
 
-        if id -u "$name" > /dev/null 2>&1; then
-            echo "User already exists"
+    if id -u "$name" > /dev/null 2>&1; then
+        echo "User already exists"
+    else
+        if question "Disable login"; then
+            adduser --disabled-login "$name" || return
         else
-            if question "No login"; then
-                adduser --disabled-login "$name" || continue
-            else
-                adduser "$name" || continue
-            fi
+            adduser "$name" || return
         fi
+    fi
 
-        if question "Add to sudo group"; then
-            gpasswd -a "$name" sudo
-        fi
+    if question "Add to sudo group"; then
+        gpasswd -a "$name" sudo
+    fi
 
-        if question "Add SSH public key for login"; then
-            local key="$(prompt "Public Key")"
-            mkdir -p "/home/$name/.ssh"
-            chmod 700 "/home/$name/.ssh"
-            echo "$key" >> "/home/$name/.ssh/authorized_keys"
-            chmod 600 "/home/$name/.ssh/authorized_keys"
-            chown -R "$name:$name" "/home/$name/.ssh"
-        fi
+    if question "Add SSH public key for login"; then
+        local key="$(prompt "Public Key")"
+        mkdir -p "/home/$name/.ssh"
+        chmod 700 "/home/$name/.ssh"
+        echo "$key" >> "/home/$name/.ssh/authorized_keys"
+        chmod 600 "/home/$name/.ssh/authorized_keys"
+        chown -R "$name:$name" "/home/$name/.ssh"
+    fi
 
-        if question "Enable SSH password login for this user"; then
-            echo "
+    if question "Enable SSH password login for this user"; then
+        echo "
 Match User $name
 PasswordAuthentication yes
 Match all" >> "$SSH_CONFIG"
-        fi
+    fi
 
-        while question "Add autostart script"; do
-            local script_path="$(prompt "Script path")"
-            script_path="$(realpath "$script_path")"
-            sudo -u "$name" crontab -l 2>/dev/null | { cat; echo "@reboot $script_path"; } | sudo -u "$name" crontab -
-            sudo -u "$name" crontab -l
-            echo
-        done
+    if question "Configure as SFTP user (disable SSH, allow SFTP, restrict to /var/www/<userdir>/htdocs)"; then
+        local userdir="$(prompt "User directory in /var/www/ (typically the domain or user name, e.g. my.domain.com)")"
+        echo "
+Match User $name
+ChrootDirectory /var/www/$userdir
+ForceCommand internal-sftp -d /htdocs
+PermitTunnel no
+AllowAgentForwarding no
+AllowTcpForwarding no
+X11Forwarding no
+Match all" >> "$SSH_CONFIG"
+    fi
+
+    if question "Change user shell to /bin/false"; then
+        usermod --shell /bin/false "$name"
+    fi
+
+    while question "Add autostart script (cron)"; do
+        local script_path="$(prompt "Script path")"
+        script_path="$(realpath "$script_path")"
+        sudo -u "$name" crontab -l 2>/dev/null | { cat; echo "@reboot $script_path"; } | sudo -u "$name" crontab -
+        sudo -u "$name" crontab -l
+        echo
     done
 }
 
@@ -399,23 +447,25 @@ setup_apache() {
         [ -z "$domain" ] && continue
 
         local hostpath="$WWW_DIR/$domain"
-        mkdir -p "$hostpath"
-        [ -e "$hostpath/index.html" ] || echo "Index" > "$hostpath/index.html"
+        local htdocspath="$hostpath/htdocs"
+        mkdir -p "$htdocspath"
+        [ -e "$htdocspath/index.html" ] || echo "Index" > "$htdocspath/index.html"
 
         local owner="$(prompt "Owner user")"
-        [ -n "$owner" ] && id -u "$owner" && chown -R "$owner:$owner" "$hostpath"
+        [ -n "$owner" ] && id -u "$owner" && chown -R "$owner:$owner" "$htdocspath"
 
         local conf="/etc/apache2/sites-available/$domain.conf"
         local aliases="$(prompt "Aliases (Separated by space) (Leave empty if unsure)")"
 
         echo "<VirtualHost *:80>
+    StrictHostCheck ON
     ServerAdmin webmaster@localhost
     ServerName $domain" > "$conf"
 
     [ -n "$aliases" ] && \
         echo "    ServerAlias $aliases" >> "$conf"
 
-        echo "    DocumentRoot $hostpath
+        echo "    DocumentRoot $htdocspath
     ErrorLog \${APACHE_LOG_DIR}/error.log
     CustomLog \${APACHE_LOG_DIR}/access.log combined
 </VirtualHost>" >> "$conf"
@@ -433,14 +483,16 @@ setup_apache() {
     echo Restarting apache...
     systemctl restart apache2
 
-    if question "Setup https"; then
+    if question "Install certbot"; then
         echo Installing certbot...
         snap install core
         snap refresh core
         apt remove certbot
         snap install --classic certbot
         ln -s /snap/bin/certbot /usr/bin/certbot
+    fi
 
+    if question "Setup https"; then
         echo Running certbot
         certbot --apache
 

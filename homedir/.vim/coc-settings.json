@@ -146,6 +146,23 @@
         }
     },
 
+    "lightbulb.enableVirtualText": false,
+    "lightbulb.virtualTextPosition": "right_align",
+    "lightbulb.enableSign": true,
+    "lightbulb.text": {
+        "default": "💡",
+        "quickfix": "💡"
+    },
+    "lightbulb.only": [
+        // "refactor",
+        "quickfix",
+        // "refactor.extract",
+        "refactor.inline",
+        "refactor.rewrite",
+        // "source",
+        // "source.organizeImports",
+        "source.fixAll",
+    ],
 
     "languageserver": {
         // "ccls": {
@@ -168,7 +185,9 @@
         "csharp-ls": {
             "command": "csharp-ls",
             "filetypes": ["cs"],
-            "rootPatterns": ["*.csproj", ".vim/", ".git/", ".hg/"]
+            "rootPatterns": [ "*.sln" ],
+            // "rootPatterns": [ "*.sln", "*.csproj" ],
+            // "trace.server": "verbose",
         }
         // "glsl": {
         //     "filetypes": [ "glsl" ],

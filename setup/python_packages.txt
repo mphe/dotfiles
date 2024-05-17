@@ -5,7 +5,7 @@ pdbpp
 notify_send_py
 
 # Used by magma-nvim plugin
-cairosvg
+# cairosvg  # exists as system package
 pnglatex
 plotly
 kaleido

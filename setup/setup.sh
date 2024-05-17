@@ -3,12 +3,16 @@
 cd "$(dirname "$(readlink -f "$0")")" || exit 1
 source util.sh
 
-if question "Install packages (requires yay)"; then
-    sed -r '/^\s*$/d' packages.txt | xargs yay -Sy --needed
+if question "Install general-use packages (requires yay)"; then
+    ./setup-packages.sh
 fi
 
 if question "Install python packages"; then
-    sudo pip install -r python_packages.txt
+    ./setup-python-packages.sh
+fi
+
+if question "Install Awesome WM Desktop Environment packages"; then
+    ./setup-awesome-de.sh
 fi
 
 if question "Set alacritty as default terminal for nemo"; then
@@ -31,4 +35,12 @@ question "Setup ssh" &&./setup-ssh.sh
 question "Setup xampp" &&./setup-xampp.sh
 question "Minimize hibernation image size" && sudo cp ./hibernation_image_size.conf /etc/tmpfiles.d/
 
-return 0
+if question "Disable sudo timeout"; then
+    echo 'Defaults passwd_timeout=0' | sudo tee -a /etc/sudoers
+fi
+
+if question "Disable Discord auto-update"; then
+    sed -i ~"/.config/discord/settings.json" '0,/{/s/{/{\n  "SKIP_HOST_UPDATE": true,/'
+fi
+
+exit 0

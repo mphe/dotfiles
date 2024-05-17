@@ -121,7 +121,9 @@ _fzf_compgen_dir() {
 
 # Retain cwd when opening new terminals
 # http://unix.stackexchange.com/questions/93476/gnome-terminal-keep-track-of-directory-in-new-tab
-source /etc/profile.d/vte.sh
+if [ -f /etc/profile.d/vte.sh ]; then
+    source /etc/profile.d/vte.sh
+fi
 
 export PROMPT_COMMAND=prompt_command
 
@@ -190,10 +192,11 @@ eval "$(pyenv init -)"
 
 # env vars
 export LANG='en_US.UTF-8'
-export PATH="/home/marvin/bin:/home/marvin/scripts:$PATH"
+export PATH="/home/marvin/bin:/home/marvin/git/scripts/scripts:$PATH"
 export PATH="/home/marvin/.gem/ruby/2.7.0/bin:$PATH"
 export PATH="/home/marvin/.local/bin:$PATH"
 export PATH="/home/marvin/golib/bin:$PATH"
+export PATH="$PATH:/home/marvin/.dotnet/tools"
 export EDITOR=nvim
 
 # Needed for Unity development with vim using coc-omnisharp
