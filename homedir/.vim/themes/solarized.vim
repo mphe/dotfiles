@@ -138,7 +138,8 @@ endfun
 
 if has('nvim')
     set termguicolors
-    colorscheme flattened_dark
+    " colorscheme flattened_dark
+    colorscheme solarized8
 else
     colorscheme solarized
 endif

@@ -882,3 +882,6 @@ end)
 --     end
 -- end)
 -- }}}
+
+
+awful.spawn.with_shell(configdir .. "/autorun.sh")
