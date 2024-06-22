@@ -199,15 +199,19 @@ highlight link DiagnosticVirtualTextInfo CocInfoSign
 highlight link DiagnosticVirtualTextHint CocHintSign
 
 " ale
-highlight link ALEError CocErrorHighlight
-highlight link ALEErrorLine CocErrorLine
-highlight link ALEErrorSign CocErrorSign
-highlight link ALEWarningSign CocWarningSign
-highlight link ALEInfoSign CocInfoSign
+highlight! link ALEError CocErrorHighlight
+highlight! link ALEErrorLine CocErrorLine
+highlight! link ALEErrorSign CocErrorSign
+highlight! link ALEWarning CocWarningHighlight
+highlight! link ALEWarningLine CocWarningLine
+highlight! link ALEWarningSign CocWarningSign
+highlight! link ALEInfo CocInfoHighlight
+highlight! link ALEInfoLine CocInfoLine
+highlight! link ALEInfoSign CocInfoSign
 
-highlight link ALEVirtualTextError ALEErrorSign
-highlight link ALEVirtualTextWarning ALEWarningSign
-highlight link ALEVirtualTextInfo ALEInfoSign
+highlight! link ALEVirtualTextError ALEErrorSign
+highlight! link ALEVirtualTextWarning ALEWarningSign
+highlight! link ALEVirtualTextInfo ALEInfoSign
 
 " ycm
 highlight link YcmWarningSign CocWarningSign

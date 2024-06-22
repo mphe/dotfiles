@@ -10,3 +10,6 @@
 [submodule "telegram-desktop-nemo-action"]
 	path = telegram-desktop-nemo-action
 	url = https://github.com/AJAYK-01/telegram-desktop-nemo-action
+[submodule "KDE/klassy"]
+	path = KDE/klassy
+	url = https://github.com/paulmcauley/klassy

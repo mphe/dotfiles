@@ -2,6 +2,7 @@
     // { 'error': "\uf05e  ", 'warning': "\uf071  ", 'info': "\uf05a  " }
     "codeLens.enable": true,
     "codeLens.position": "eol",
+    "inlayHint.enableParameter": false,
     "diagnostic.enableSign": true,
     // "suggest.floatConfig": {
     //     "border": true

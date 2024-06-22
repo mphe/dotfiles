@@ -1,0 +1,2 @@
+*.svgz filter=lfs diff=lfs merge=lfs -text
+*.knsv filter=lfs diff=lfs merge=lfs -text

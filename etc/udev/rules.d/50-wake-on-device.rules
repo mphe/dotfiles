@@ -1,0 +1,10 @@
+# usb hubs
+ACTION=="add", SUBSYSTEM=="usb", DRIVERS=="usb", ATTRS{idVendor}=="1d6b", ATTRS{idProduct}=="0002", ATTR{power/wakeup}="disabled"
+ACTION=="add", SUBSYSTEM=="usb", DRIVERS=="usb", ATTRS{idVendor}=="1d6b", ATTRS{idProduct}=="0003", ATTR{power/wakeup}="disabled"
+
+# hp wireless mouse
+ACTION=="add", SUBSYSTEM=="usb", DRIVERS=="usb", ATTRS{idVendor}=="03f0", ATTRS{idProduct}=="104c", ATTR{power/wakeup}="disabled"
+
+# logitech wireless mouse
+# ACTION=="add", SUBSYSTEM=="usb", DRIVERS=="usb", ATTR{idVendor}=="046d", ATTR{idProduct}=="c52b", ATTR{power/wakeup}="disabled", ATTR{driver/1-2/power/wakeup}="disabled"
+
