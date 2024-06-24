@@ -123,6 +123,10 @@
     ],
     "cSpell.language": "en,de",
 
+    "ltex.dictionary": {
+        "en-US": [ ":~/.ltex/en-US.txt" ],
+        "de-DE": [ ":~/.ltex/de-DE.txt" ],
+    },
     "ltex.diagnosticSeverity": "information",
     "ltex.language": "auto",
     "ltex.disabledRules": {
