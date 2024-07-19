@@ -106,10 +106,11 @@
     // "clangd.path": "~/.config/coc/extensions/coc-clangd-data/install/13.0.0/clangd_13.0.0/bin/clangd",
     "clangd.path": "/usr/bin/clangd",
 
+    "texlab.forwardSearch.executable": "zathura",
+    "texlab.forwardSearch.args": [ "--synctex-forward", "%l:1:%f", "%p" ],
     // "latex.lint.onSave": true,
     // "latex.lint.onChange": false,
     // "latex.forwardSearch.executable": "zathura",
-    // "latex.forwardSearch.args": [ "--synctex-forward", "%l:1:%f", "%p" ],
     // "latex.build.onSave": true,
     // "latex.build.args": [ "-pdf", "-interaction=nonstopmode", "-synctex=1", "-pvc", "%f" ],
 

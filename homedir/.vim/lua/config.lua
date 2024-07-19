@@ -287,6 +287,12 @@ require("paint").setup({
             pattern = "%[%[(.-)%]%]",
             hl = "Keyword",
         },
+        {
+            -- Highlight links in markdown that do not have a URL part.
+            filter = { filetype = "markdown" },
+            pattern = "%[(.-)%]",
+            hl = "markdownLinkText",
+        },
     },
 })
 -- }}}

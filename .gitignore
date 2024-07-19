@@ -10,3 +10,4 @@ configdir/ranger/history
 configdir/ranger/tagged
 .metals
 .vim-bookmarks
+.mypy_cache

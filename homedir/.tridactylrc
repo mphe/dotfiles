@@ -49,4 +49,6 @@ set newtab moz-extension://fcc7eb82-283d-47ef-acc3-c4215d5ac73a/newtab.html
 " fix space input lag
 unbind --mode=ex <Space>
 
+setnull searchurls.github
+
 " vim: ft=vim

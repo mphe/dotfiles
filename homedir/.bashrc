@@ -198,6 +198,7 @@ export PATH="/home/marvin/.local/bin:$PATH"
 export PATH="/home/marvin/golib/bin:$PATH"
 export PATH="$PATH:/home/marvin/.dotnet/tools"
 export EDITOR=nvim
+export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
 
 # Needed for Unity development with vim using coc-omnisharp
 # / at the end seems to be important

@@ -231,13 +231,18 @@ endfunction
 
 
 " -------------------------------------- vim-plug {{{
+
+if !has('nvim')
+    finish
+endif
+
 call plug#begin('~/.vim/plugged')
 
 " color schemes
 Plug 'altercation/vim-colors-solarized'
 Plug 'lifepillar/vim-solarized8'
 Plug 'romainl/flattened'
-Plug 'qualiabyte/vim-colorstepper'
+" Plug 'qualiabyte/vim-colorstepper'
 
 Plug 'scrooloose/nerdtree'
 Plug 'itchyny/lightline.vim'
@@ -384,7 +389,7 @@ call plug#end()
 
 
 " -------------------------------------- Style config {{{
-source /home/marvin/.vim/themes/solarized.vim
+source ~/.vim/themes/solarized.vim
 " source /home/marvin/.vim/themes/dark.vim
 
 " set the split char tmux uses
@@ -405,7 +410,7 @@ set fillchars+=vert:│
 " localvimrc
 let g:localvimrc_reverse = 1
 let g:localvimrc_blacklist = [ expand('~/.vimrc'), resolve(expand('~/.vimrc')) ]
-let g:localvimrc_name = [ '.lvimrc', '.vimrc' ]
+let g:localvimrc_name = [ '.lvimrc', ]
 
 " lightline
 source ~/.vim/lightline_cfg.vim
@@ -508,9 +513,11 @@ let g:ale_disable_lsp = 1
 let g:ale_virtualtext_cursor = 1
 let g:ale_virtualtext_prefix = ' ◾'
 
+    " \ 'cpp': [ 'clangtidy' ],
+    " \ 'c': [ 'clangtidy' ],
 let g:ale_linters = {
-    \ 'cpp': [ 'clangtidy' ],
-    \ 'c': [ 'clangtidy' ],
+    \ 'cpp': [],
+    \ 'c': [],
     \ 'java': [],
     \ 'gdscript3': [],
     \ 'tex': [],
@@ -519,9 +526,11 @@ let g:ale_linters = {
     \ 'cs': [ 'OmniSharp' ],
     \ 'glsl': [ 'glslang' ],
     \ }
+    " \ 'cpp': [ 'clangtidy' ],
+    " \ 'c': [ 'clangtidy' ],
 let g:ale_fixers = {
-    \ 'cpp': [ 'clangtidy' ],
-    \ 'c': [ 'clangtidy' ],
+    \ 'cpp': [ ],
+    \ 'c': [ ],
     \ 'java': [],
     \ }
 
@@ -585,7 +594,7 @@ let g:ctrlp_show_hidden=1
 let g:ctrlp_open_multiple_files = 'ijr'
 let g:ctrlp_custom_ignore = {
             \ 'dir':  '\v[\/](\.(godot|import|git|hg|svn|clangd|ccls-cache|tmp|mypy_cache|cache)|node_modules)$',
-            \ 'file': '\v\.(exe|so|dll|pyc|o|a)$'
+            \ 'file': '\v\.(exe|so|dll|pyc|o|a|obj)$'
             \ }
 " let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files . -c -o --exclude-standard && git submodule --quiet foreach --recursive "git ls-files . -c -o --exclude-standard"', 'find %s -type f']
 
@@ -615,8 +624,11 @@ augroup END
 " let g:LatexBox_completion_close_braces = 0
 " let g:LatexBox_complete_inlineMath = 0
 
-command! LatexPreview VimtexView
-command! LatexJump VimtexView
+" command! LatexPreview VimtexView
+" command! LatexJump VimtexView
+command! LatexJump CocCommand latex.ForwardSearch
+
+
 
 let g:tex_flavor = 'latex'
 
@@ -1059,6 +1071,8 @@ function! F5Refresh()
             Latexmk
         elseif exists(':CocCommand')
             CocCommand latex.Build
+            CocCommand latex.ForwardSearch
+        else
             LatexJump
         endif
     elseif &filetype ==# 'markdown' || &filetype ==# 'md'

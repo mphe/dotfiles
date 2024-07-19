@@ -23,6 +23,7 @@ yay -Sy --needed \
     zathura-pdf-poppler \
     texlive \
     texlive-bin \
+    texlive-langgerman \
     ttf-font-awesome \
     terminus-font-italic \
     terminus-font-ll2-td1 \
@@ -44,7 +45,6 @@ yay -Sy --needed \
     ncmpcpp \
     mpc \
     mpd-mpris \
-    ums \
     parallel \
     ncdu \
     fzf \

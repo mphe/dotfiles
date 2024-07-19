@@ -8,7 +8,7 @@ CloseButtonIconColorInactive=AsSelected
 LookAndFeelSet=Utterly-Nord-Solid
 
 [ShadowStyle]
-ShadowSize=ShadowMedium
+ShadowSize=ShadowSmall
 
 [Style]
 WindowDragMode=WD_NONE

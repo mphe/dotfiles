@@ -62,6 +62,7 @@ endif
 augroup SyntaxFix
 autocmd FileType c,cpp call s:CSyntaxFixes()
 autocmd FileType scala call s:ScalaSyntaxFixes()
+autocmd FileType markdown call s:MarkdownStyles()
 autocmd VimEnter * call s:StyleOverrides()
 autocmd ColorScheme * call s:StyleOverrides()
 augroup END
@@ -88,6 +89,11 @@ function! s:ScalaSyntaxFixes()
     " Add this line at the start of the python syntax file
     syn match scalaFunctionCall "\zs\(\k\w*\)*\s*\ze("
     highlight link scalaFunctionCall Function
+endfun
+
+function! s:MarkdownStyles()
+    " These styles also affect the hover popup, hence only apply it when actually editing a markdown file
+    hi! link markdownCode CocCodeLens
 endfun
 
 function! s:StyleOverrides()
@@ -164,6 +170,7 @@ highlight! link StatusLineNC SignColumn
 highlight Error   cterm=underline ctermfg=1 ctermbg=NONE gui=underline guifg=#dc322f guibg=NONE
 highlight link SpellBad Error
 highlight Normal     ctermbg=NONE guibg=NONE
+" exec 'highlight Normal     ctermbg=NONE guibg=' . s:base03
 highlight PmenuSbar  ctermfg=12 ctermbg=0
 highlight Pmenu      cterm=NONE ctermbg=17 ctermfg=251 gui=NONE guibg=#094655 guifg=#C6C6C6
 highlight VertSplit  ctermbg=0 guibg=#073642
@@ -274,28 +281,28 @@ hi link LspCxxHlSymParameterString Constant
 " hi link AutoType Type
 " hi link Namespace cUserFunction
 
-hi link CocSemNamespace LspCxxHlGroupNamespace
+hi link CocSemTypeNamespace LspCxxHlGroupNamespace
 hi link CocSemType Type
-hi link CocSemClass LspCxxHlSymClass
-hi link CocSemEnum LspCxxHlSymEnum
-hi link CocSemInterface Type
-hi link CocSemStruct LspCxxHlSymStruct
-hi link CocSemTypeParameter LspCxxHlSymTypeParameter
-hi link CocSemParameter Normal
-hi link CocSemVariable LspCxxHlGroupMemberVariable
-hi link CocSemProperty LspCxxHlGroupMemberVariable
-hi link CocSemEnumMember LspCxxHlGroupEnumConstant
-hi link CocSemEvent Identifier
-hi link CocSemFunction LspCxxHlSymFunction
-hi link CocSemMethod LspCxxHlSymClassMethod
-hi link CocSemMacro Macro
-hi link CocSemKeyword Keyword
-hi link CocSemModifier Statement
-hi link CocSemComment Comment
-hi link CocSemString String
-hi link CocSemNumber Number
-hi link CocSemRegexp Normal
-hi link CocSemOperator Operator
+hi link CocSemTypeClass LspCxxHlSymClass
+hi link CocSemTypeEnum LspCxxHlSymEnum
+hi link CocSemTypeInterface Type
+hi link CocSemTypeStruct LspCxxHlSymStruct
+hi link CocSemTypeParameter Normal
+hi link CocSemTypeVariable LspCxxHlGroupMemberVariable
+hi link CocSemTypeProperty LspCxxHlGroupMemberVariable
+hi link CocSemTypeEnumMember LspCxxHlGroupEnumConstant
+hi link CocSemTypeEvent Identifier
+hi link CocSemTypeFunction LspCxxHlSymFunction
+hi link CocSemTypeMethod LspCxxHlSymClassMethod
+hi link CocSemTypeMacro Macro
+hi link CocSemTypeKeyword Keyword
+hi link CocSemTypeModifier Statement
+hi link CocSemTypeComment Comment
+hi link CocSemTypeString String
+hi link CocSemTypeNumber Number
+hi link CocSemTypeRegexp Normal
+hi link CocSemTypeOperator Operator
+
 
 hi texStatement ctermbg=NONE guibg=NONE
 exec 'highlight VirtColumn guifg=' . s:normal_bg . ' guibg=NONE'
