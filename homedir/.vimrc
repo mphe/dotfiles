@@ -22,6 +22,13 @@ set smarttab
 set autoindent
 set cinoptions+=j1
 
+set cinoptions+=j1
+
+" Do not indent content within namespaces in C++
+set cinoptions+=N-s
+" Sames goes for extern "C" blocks
+set cinoptions+=E-s
+
 " enable folding
 set foldmethod=syntax
 " set nofoldenable
@@ -223,12 +230,14 @@ function! s:ExecuteOperator(type, visual, operator)
 endfunction
 
 " nnoremap gq :set operatorfunc=BetterGQ<CR>g@
-" vnoremap gq :<c-u>call BetterGQ(visualmode())<CR>
+" vnoremap gq :<c-u>call BetterGQ(visualmode())<!-- <CR> -->
 
 " }}}
 
 " -------------------------------------- Functions end }}}
 
+source ~/.vim/themes/solarized.vim
+call ApplySolarizedStylePre()
 
 " -------------------------------------- vim-plug {{{
 
@@ -389,7 +398,8 @@ call plug#end()
 
 
 " -------------------------------------- Style config {{{
-source ~/.vim/themes/solarized.vim
+call ApplySolarizedStyle()
+" source ~/.vim/themes/solarized.vim
 " source /home/marvin/.vim/themes/dark.vim
 
 " set the split char tmux uses

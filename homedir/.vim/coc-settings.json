@@ -4,15 +4,29 @@
     "codeLens.position": "eol",
     "inlayHint.enableParameter": false,
     "diagnostic.enableSign": true,
-    // "suggest.floatConfig": {
-    //     "border": true
-    // },
-    // "signature.floatConfig": {
-    //     "border": true
-    // },
-    // "hover.floatConfig": {
-    //     "border": true
-    // },
+
+    "suggest.floatConfig": {
+        "border": true,
+        "borderhighlight": "CocFloatingBorder"
+    },
+    "signature.floatConfig": {
+        "border": true,
+        "borderhighlight": "CocFloatingBorder"
+    },
+    "hover.floatConfig": {
+        "border": true,
+        "borderhighlight": "CocFloatingBorder"
+    },
+    "floatFactory.floatConfig": {
+        "border": true,
+        "borderhighlight": "CocFloatingBorder"
+    },
+    "diagnostic.floatConfig": {
+        "border": true,
+        "borderhighlight": "CocFloatingBorder"
+    },
+    "dialog.floatBorderHighlight": "CocFloatingBorder",
+
     // "diagnostic.errorSign": ">>",
     // "diagnostic.warningSign": "!!",
     "diagnostic.errorSign": " ",
@@ -135,6 +149,11 @@
             "WHITESPACE_RULE",
         ]
     },
+    "ltex.enabled": [
+        "bibtex",
+        "latex",
+        "markdown",
+    ],
 
     "go.goplsOptions": {
         "semanticTokens": true,
@@ -169,6 +188,8 @@
         // "source.organizeImports",
         "source.fixAll",
     ],
+
+    "workspace.rootPatterns": [ ".vim", ".git", ".coc-root" ],
 
     "languageserver": {
         // "ccls": {

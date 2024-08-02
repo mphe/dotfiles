@@ -218,3 +218,17 @@ nnoremap <leader>gi :call CocActionAsync('showSignatureHelp')<esc>
 command! CocOutput CocCommand workspace.showOutput
 
 let g:coc_borderchars = ['─', '│', '─', '│', '╭', '╮', '╯', '╰']
+
+
+
+command! CocJumpDefinition     call CocAction('jumpDefinition')
+command! CocJumpDeclaration    call CocAction('jumpDeclaration')
+command! CocJumpImplementation call CocAction('jumpImplementation')
+command! CocJumpTypeDefinition call CocAction('jumpTypeDefinition')
+command! CocJumpReferences     call CocAction('jumpReferences')
+command! CocJumpUsed           call CocAction('jumpUsed')
+command! CocDefinitions        call CocAction('definitions')
+command! CocDeclarations       call CocAction('declarations')
+command! CocImplementations    call CocAction('implementations')
+command! CocTypeDefinitions    call CocAction('typeDefinitions')
+command! CocReferences         call CocAction('references')

@@ -64,6 +64,8 @@ require'bufferline'.setup {
     modified = {button = '●'},
     pinned = {button = ''},
 
+    gitsigns = { enabled = false },
+
     -- separator = {left = '', right = ''},
     -- inactive = {separator = {left = '', right = ''}, button = '×'},
 
