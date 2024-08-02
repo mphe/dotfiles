@@ -176,15 +176,15 @@ endfunction
 command! -nargs=1 HowLong call HowLong(<q-args>)
 
 
-function RunClangTidy()
-    let l:checks = join(ale#Var(bufnr('%'), 'cpp_clangtidy_checks'), ',')
-    exec '!clang-tidy ' . shellescape(expand('%:p')) . ' --fix --fix-errors --checks=' . shellescape(l:checks)
-    normal <esc>
-    e
-    ALELint
-endfun
-
-command! ClangTidy call RunClangTidy()
+" function RunClangTidy()
+"     let l:checks = join(ale#Var(bufnr('%'), 'cpp_clangtidy_checks'), ',')
+"     exec '!clang-tidy ' . shellescape(expand('%:p')) . ' --fix --fix-errors --checks=' . shellescape(l:checks)
+"     normal <esc>
+"     e
+"     ALELint
+" endfun
+"
+" command! ClangTidy call RunClangTidy()
 
 function! ProfileStart()
     profile start profile.log
@@ -539,8 +539,8 @@ let g:ale_linters = {
     " \ 'cpp': [ 'clangtidy' ],
     " \ 'c': [ 'clangtidy' ],
 let g:ale_fixers = {
-    \ 'cpp': [ ],
-    \ 'c': [ ],
+    \ 'cpp': [],
+    \ 'c': [],
     \ 'java': [],
     \ }
 
@@ -550,8 +550,8 @@ let g:ale_linters_ignore = [ 'lacheck', 'pyright', 'shell']
 
 let g:ale_cs_csc_options = ' /warn:4 /langversion:7.2'
 
-let g:ale_cpp_clangtidy_checks = [ 'modernize-use-override' ]
-let g:ale_c_clangtidy_checks = [ 'modernize-use-override' ]
+" let g:ale_cpp_clangtidy_checks = [ 'modernize-use-override' ]
+" let g:ale_c_clangtidy_checks = [ 'modernize-use-override' ]
 " let g:ale_exclude_highlights = [ '.*clang-diagnostic-.*' ]
 
 let g:ale_type_map = {

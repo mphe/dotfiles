@@ -131,10 +131,7 @@
     "cSpellExt.enableDictionaries": [ "german" ],
     "cSpell.enabledLanguageIds": [
       "latex",
-      "plaintext",
       "tex",
-      "text",
-      "markdown"
     ],
     "cSpell.language": "en,de",
 
@@ -207,6 +204,9 @@
             "host": "127.0.0.1",
             "filetypes": ["gd", "gdscript3"],
             "port": 6008
+        },
+        "gdshader-lsp": {
+            "filetypes": [ "gdshader" ]
         },
         // dotnet tool install --global csharp-ls
         "csharp-ls": {
