@@ -346,11 +346,6 @@ Plug 'tzachar/magma-nvim', { 'do': ':UpdateRemotePlugins' }
 " Open a scratch buffer to quickly evaluate code
 Plug 'shift-d/scratch.nvim'
 
-" Plug 'github/copilot.vim'
-" Plug 'samodostal/copilot-client.lua'
-Plug 'zbirenbaum/copilot.lua'
-Plug 'nvim-lua/plenary.nvim'
-
 " Preview colours in source code while editing
 Plug 'ap/vim-css-color'
 
@@ -368,12 +363,15 @@ Plug 'tyru/open-browser.vim'
 " Generate TOC in markdown files
 Plug 'mzlogin/vim-markdown-toc'
 
+Plug 'shiracamus/vim-syntax-x86-objdump-d'
+
 if has('nvim')
     Plug 'rcarriga/nvim-notify'
     if s:use_treesitter
         Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
     endif
 
+    " Required by: telescope, copilot, codeium.nvim
     Plug 'nvim-lua/plenary.nvim'
     Plug 'nvim-telescope/telescope.nvim', { 'branch': '0.1.x' }
 
@@ -385,6 +383,17 @@ if has('nvim')
 
     " Easy custom highlight patterns
     Plug 'folke/paint.nvim'
+
+    Plug 'sakhnik/nvim-gdb'
+
+    " Plug 'github/copilot.vim'
+    " Plug 'samodostal/copilot-client.lua'
+    " Plug 'zbirenbaum/copilot.lua'
+
+    " Required by: codeium.nvim
+    " Plug 'hrsh7th/nvim-cmp'
+    " Plug 'Exafunction/codeium.nvim'
+    Plug 'Exafunction/codeium.vim', { 'branch': 'main' }
 else
 endif
 
@@ -421,6 +430,7 @@ set fillchars+=vert:│
 let g:localvimrc_reverse = 1
 let g:localvimrc_blacklist = [ expand('~/.vimrc'), resolve(expand('~/.vimrc')) ]
 let g:localvimrc_name = [ '.lvimrc', ]
+let g:localvimrc_persistent = 1
 
 " lightline
 source ~/.vim/lightline_cfg.vim
@@ -814,6 +824,8 @@ let g:bookmark_no_default_key_mappings = 1
 let g:bookmark_save_per_working_dir = 1
 let g:bookmark_auto_save = 1
 nmap mm <Plug>BookmarkToggle
+nmap <leader>mm <Plug>BookmarkShowAll
+highlight link BookmarkSign SignColumn
 
 
 " treesitter
@@ -942,6 +954,7 @@ autocmd FileType *
 "     \ nnoremap <F8> :labove<CR>|
 "     \ nnoremap <F9> :lbelow<CR>
 
+au BufEnter * :call CheckSize()
 augroup END
 " -------------------------------------- Autocmds end }}}
 
@@ -1151,6 +1164,11 @@ highlight! Folded guibg=NONE gui=bold
 " better fold text }}}
 
 function! CheckSize()
+    " Disassemblies can be quite large but should be syntax highlighted
+    if &filetype ==# 'dis'
+        return
+    endif
+
     let size = getfsize(@%)
     if size > 10000000 " 10 MB
         echo 'Warning: The file is larger than 10MB -> Disabling ALE and Syntax'
@@ -1160,8 +1178,6 @@ function! CheckSize()
     endif
 endfun
 
-au BufEnter * :call CheckSize()
-
 
 " copilot
 " let g:copilot_no_tab_map = v:true
@@ -1170,6 +1186,14 @@ au BufEnter * :call CheckSize()
 
 " lua vim.api.nvim_set_keymap("i", "<C-J>", 'copilot#Accept("<CR>")', { silent = true, expr = true })
 
+
+" codeium
+
+let g:codeium_disable_bindings = 1
+let g:codeium_manual = v:true
+let g:codeium_no_map_tab = v:true
+imap <C-c> <Cmd>call codeium#CycleOrComplete()<CR>
+" NOTE: <CR> accept keybind is mapped in coc.vim as they both bind <CR>
 
 
 " source ~/.vim/completion_preview.vim

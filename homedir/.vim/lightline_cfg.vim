@@ -60,7 +60,7 @@ let g:lightline.active = {
     \     [ 'lineinfo' ],
     \     [ 'fileformat', 'fileencoding', 'filetype' ],
     \     [ 'linter_infos', 'linter_warnings', 'linter_errors', 'linter_checking' ],
-    \     [ 'current_function' ],
+    \     [ 'codeium', 'current_function' ],
     \ ]
     \ }
 
@@ -105,7 +105,8 @@ let g:lightline.component_function = {
     \ 'fileformat': 'LightLineFileFormat',
     \ 'fileencoding': 'LightLineFileEnc',
     \ 'filetype': 'LightLineFileType',
-    \ 'customlineinfo': 'LightLineLineInfo'
+    \ 'customlineinfo': 'LightLineLineInfo',
+    \ 'codeium': 'CodeiumStatus'
     \ }
 
 let g:lightline.component_visible_condition = {
@@ -128,6 +129,16 @@ let g:lightline.component_raw = {'buffers': 1}
 
 
 " lightline functions {{{
+
+function! CodeiumStatus()
+    let str = codeium#GetStatusString()
+    if str ==# ' ON' || str ==# '   '
+        return ''
+    else
+        return '{…} ' . codeium#GetStatusString()
+    endif
+endfunction
+
 function! LightLineLineInfo()
     return col('.') . ':' . line('.') . '/' . line('$')
 endfunction

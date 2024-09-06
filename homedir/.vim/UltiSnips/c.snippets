@@ -20,3 +20,23 @@ endsnippet
 snippet sinc "Include <...>"
 #include <$1>
 endsnippet
+
+snippet ignore-clangtidy-nextline "Ignore clang-tidy warning in next line"
+// NOLINTNEXTLINE($0)
+endsnippet
+
+snippet ignore-clangtidy "Ignore clang-tidy warning"
+// NOLINT($0)
+endsnippet
+
+snippet extern_c_cpp "Add extern 'C' guards"
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+$0
+
+#ifdef __cplusplus
+}
+#endif
+endsnippet

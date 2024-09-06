@@ -301,41 +301,58 @@ require("paint").setup({
 
 
 -- copilot-client.lua {{{
-require("copilot").setup()
+local use_copilot = false
+if use_copilot then
+    require("copilot").setup()
 
-function copilot_show()
-  require("copilot.suggestion").next()
-  vim.api.nvim_buf_set_keymap(0, 'i', '<CR>', '<cmd>lua copilot_accept()<CR>', { noremap = true, silent = true })
+    function copilot_show()
+      require("copilot.suggestion").next()
+      vim.api.nvim_buf_set_keymap(0, 'i', '<CR>', '<cmd>lua copilot_accept()<CR>', { noremap = true, silent = true })
+    end
+
+    function copilot_accept()
+      require("copilot.suggestion").accept()
+      copilot_cancel()
+    end
+
+    function copilot_cancel()
+      if require("copilot.suggestion").is_visible() then
+        require("copilot.suggestion").dismiss()
+      end
+      vim.api.nvim_buf_del_keymap(0, 'i', '<CR>')
+    end
+
+    vim.api.nvim_create_autocmd("InsertLeave", {
+      command = "silent! lua copilot_cancel()",
+      group = vim.api.nvim_create_augroup("custom_copilot_trigger", { clear = true }),
+    })
+
+    vim.api.nvim_set_keymap('i', '<C-c>', '<cmd>lua copilot_show()<CR>', { noremap = true, silent = true })
+
+    -- require('copilot-client').setup {
+    --   mapping = {
+    --     accept = '<CR>',
+    --     -- Next and previos suggestions to be added
+    --     -- suggest_next = '<C-n>',
+    --     -- suggest_prev = '<C-p>',
+    --   },
+    -- }
+
+    -- Create a keymap that triggers the suggestion.
+    -- vim.api.nvim_set_keymap('i', '<C-c>', '<cmd>lua require("copilot-client").suggest()<CR>', { noremap = true, silent = true })
 end
+-- }}}
 
-function copilot_accept()
-  require("copilot.suggestion").accept()
-  copilot_cancel()
-end
 
-function copilot_cancel()
-  if require("copilot.suggestion").is_visible() then
-    require("copilot.suggestion").dismiss()
-  end
-  vim.api.nvim_buf_del_keymap(0, 'i', '<CR>')
-end
+-- codeium {{{
+-- local cmp = require("cmp")
+--
+-- cmp.setup({
+--     sources = {
+--         { name = "codeium" }
+--     }
+-- })
+--
+-- require("codeium").setup({})
 
-vim.api.nvim_create_autocmd("InsertLeave", {
-  command = "silent! lua copilot_cancel()",
-  group = vim.api.nvim_create_augroup("custom_copilot_trigger", { clear = true }),
-})
-
-vim.api.nvim_set_keymap('i', '<C-c>', '<cmd>lua copilot_show()<CR>', { noremap = true, silent = true })
-
--- require('copilot-client').setup {
---   mapping = {
---     accept = '<CR>',
---     -- Next and previos suggestions to be added
---     -- suggest_next = '<C-n>',
---     -- suggest_prev = '<C-p>',
---   },
--- }
-
--- Create a keymap that triggers the suggestion.
--- vim.api.nvim_set_keymap('i', '<C-c>', '<cmd>lua require("copilot-client").suggest()<CR>', { noremap = true, silent = true })
 -- }}}

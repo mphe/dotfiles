@@ -81,10 +81,32 @@ else
   inoremap <silent><expr> <c-@> coc#refresh()
 endif
 
+" Copied from plugin source
+" TODO: Expose directly in Codeium plugin
+function! CodeiumGetCurrentCompletionItem() abort
+  if exists('b:_codeium_completions') &&
+        \ has_key(b:_codeium_completions, 'items') &&
+        \ has_key(b:_codeium_completions, 'index') &&
+        \ b:_codeium_completions.index < len(b:_codeium_completions.items)
+    return get(b:_codeium_completions.items, b:_codeium_completions.index)
+  endif
+
+  return v:null
+endfunction
+
+function OnEnterExpr()
+  if coc#pum#visible()
+    return coc#pum#confirm()
+  elseif CodeiumGetCurrentCompletionItem() is v:null
+    return "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+  else
+    return codeium#Accept()
+  endif
+endfun
+
 " Make <CR> to accept selected completion item or notify coc.nvim to format
 " <C-g>u breaks current undo, please make your own choice.
-inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
-                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+inoremap <silent><expr> <CR> OnEnterExpr()
 
 
 " Use `[g` and `]g` to navigate diagnostics
@@ -220,6 +242,7 @@ command! CocOutput CocCommand workspace.showOutput
 let g:coc_borderchars = ['─', '│', '─', '│', '╭', '╮', '╯', '╰']
 
 
+nnoremap <leader>v <Plug>(coc-cursors-operator)
 
 command! CocJumpDefinition     call CocAction('jumpDefinition')
 command! CocJumpDeclaration    call CocAction('jumpDeclaration')

@@ -123,7 +123,9 @@ function ApplySolarizedStyle()
     highlight CocCodeLens guibg=#073642 guifg=#6C71C4
     highlight! link CocInlayHint CocCodeLens
 
-    exec 'highlight CocInlayHintType guifg=' . s:yellow . ' guibg=#333333'
+    highlight link CocInlayHintType Comment
+    " exec 'highlight CocInlayHintType guifg=' . s:yellow . ' guibg=#333333'
+    " exec 'highlight CocInlayHintType guifg=' . s:base01 . ' guibg=' . s:normal_bg
     " exec 'highlight CocInlayHintType guifg=' . s:yellow . ' guibg=' . s:pum_bg
     " exec 'highlight CocInlayHintType guibg=' . s:normal_bg
 
@@ -179,7 +181,7 @@ function ApplySolarizedStyle()
     highlight link cUserFunction Function
 
     " vim-lsp-cxx colors
-    hi link LspCxxHlGroupEnumConstant Normal
+    hi link LspCxxHlGroupEnumConstant Constant
     hi LspCxxHlGroupNamespace  ctermfg=13 guifg=#6C71C4
     hi link LspCxxHlGroupMemberVariable Normal
     hi link LspCxxHlSymTypeParameter Normal
@@ -217,8 +219,8 @@ function ApplySolarizedStyle()
     hi link CocSemTypeStruct LspCxxHlSymStruct
     hi link CocSemTypeParameter Normal
     hi link CocSemTypeVariable LspCxxHlGroupMemberVariable
+    hi link CocSemTypeModVariableReadonly Constant
     hi link CocSemTypeProperty LspCxxHlGroupMemberVariable
-    hi link CocSemTypeEnumMember LspCxxHlGroupEnumConstant
     hi link CocSemTypeEvent Identifier
     hi link CocSemTypeFunction LspCxxHlSymFunction
     hi link CocSemTypeMethod LspCxxHlSymClassMethod
