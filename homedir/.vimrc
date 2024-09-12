@@ -3,6 +3,8 @@ autocmd!
 
 let s:use_treesitter = 0
 let s:use_vim_omnisharp = 0
+let g:config_use_copilot = 1
+let g:config_use_codeium = 0
 
 if !has('nvim')
     let s:use_treesitter = 0
@@ -373,6 +375,7 @@ if has('nvim')
 
     " Required by: telescope, copilot, codeium.nvim
     Plug 'nvim-lua/plenary.nvim'
+
     Plug 'nvim-telescope/telescope.nvim', { 'branch': '0.1.x' }
 
     " Fix CursorHold performance
@@ -386,15 +389,13 @@ if has('nvim')
 
     Plug 'sakhnik/nvim-gdb'
 
-    " Plug 'github/copilot.vim'
-    " Plug 'samodostal/copilot-client.lua'
-    " Plug 'zbirenbaum/copilot.lua'
-
-    " Required by: codeium.nvim
-    " Plug 'hrsh7th/nvim-cmp'
-    " Plug 'Exafunction/codeium.nvim'
-    Plug 'Exafunction/codeium.vim', { 'branch': 'main' }
-else
+    if g:config_use_copilot
+        " Plug 'github/copilot.vim'
+        " Plug 'samodostal/copilot-client.lua'
+        Plug 'zbirenbaum/copilot.lua'
+    elseif g:config_use_codeium
+        Plug 'Exafunction/codeium.vim', { 'branch': 'main' }
+    endif
 endif
 
 if s:use_vim_omnisharp
@@ -1188,12 +1189,13 @@ endfun
 
 
 " codeium
-
-let g:codeium_disable_bindings = 1
-let g:codeium_manual = v:true
-let g:codeium_no_map_tab = v:true
-imap <C-c> <Cmd>call codeium#CycleOrComplete()<CR>
-" NOTE: <CR> accept keybind is mapped in coc.vim as they both bind <CR>
+if g:config_use_codeium
+    let g:codeium_disable_bindings = 1
+    let g:codeium_manual = v:true
+    let g:codeium_no_map_tab = v:true
+    imap <C-c> <Cmd>call codeium#CycleOrComplete()<CR>
+    " NOTE: <CR> accept keybind is mapped in coc.vim as they both bind <CR>
+endif
 
 
 " source ~/.vim/completion_preview.vim

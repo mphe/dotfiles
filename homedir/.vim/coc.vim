@@ -97,11 +97,11 @@ endfunction
 function OnEnterExpr()
   if coc#pum#visible()
     return coc#pum#confirm()
-  elseif CodeiumGetCurrentCompletionItem() is v:null
-    return "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
-  else
+  elseif g:config_use_codeium && CodeiumGetCurrentCompletionItem() isnot v:null
     return codeium#Accept()
   endif
+
+  return "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 endfun
 
 " Make <CR> to accept selected completion item or notify coc.nvim to format

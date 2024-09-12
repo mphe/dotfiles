@@ -131,6 +131,10 @@ let g:lightline.component_raw = {'buffers': 1}
 " lightline functions {{{
 
 function! CodeiumStatus()
+    if !g:config_use_codeium
+        return
+    endif
+
     let str = codeium#GetStatusString()
     if str ==# ' ON' || str ==# '   '
         return ''

@@ -1,3 +1,5 @@
+local vim = vim
+
 -- barbar.nvim {{{
 -- config {{{
 vim.g.barbar_auto_setup = false
@@ -301,8 +303,7 @@ require("paint").setup({
 
 
 -- copilot-client.lua {{{
-local use_copilot = false
-if use_copilot then
+if vim.g.config_use_copilot == 1 then
     require("copilot").setup()
 
     function copilot_show()
@@ -341,18 +342,4 @@ if use_copilot then
     -- Create a keymap that triggers the suggestion.
     -- vim.api.nvim_set_keymap('i', '<C-c>', '<cmd>lua require("copilot-client").suggest()<CR>', { noremap = true, silent = true })
 end
--- }}}
-
-
--- codeium {{{
--- local cmp = require("cmp")
---
--- cmp.setup({
---     sources = {
---         { name = "codeium" }
---     }
--- })
---
--- require("codeium").setup({})
-
 -- }}}
