@@ -149,6 +149,9 @@ let g:ale_lint_delay = 2000
 "                 \ let g:ale_lint_on_filetype_changed = 0
 " augroup END
 
+" nvim-gdb
+let g:nvimgdb_disable_start_keymaps = 1
+
 " -------------------------------------- Plugin settings before loading }}}
 
 
@@ -238,8 +241,10 @@ endfunction
 
 " -------------------------------------- Functions end }}}
 
+source ~/.vim/themes/common_style.vim
 source ~/.vim/themes/solarized.vim
 call ApplySolarizedStylePre()
+call ApplyCommonStylePre()
 
 " -------------------------------------- vim-plug {{{
 
@@ -408,6 +413,7 @@ call plug#end()
 
 
 " -------------------------------------- Style config {{{
+call ApplyCommonStyle()
 call ApplySolarizedStyle()
 " source ~/.vim/themes/solarized.vim
 " source /home/marvin/.vim/themes/dark.vim

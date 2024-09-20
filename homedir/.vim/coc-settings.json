@@ -88,6 +88,8 @@
 
     "list.maxPreviewHeight": 20,
 
+    "symbol-line.default": "",
+
     "highlight.colors.enable": false,
 
     "typescript.preferences.quoteStyle": "double",

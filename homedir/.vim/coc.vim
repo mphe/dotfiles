@@ -20,6 +20,7 @@ set shortmess+=c
 let g:coc_default_semantic_highlight_groups = 1
 
 let g:coc_global_extensions = [
+      \ 'coc-symbol-line',
       \ 'coc-snippets',
       \ 'coc-actions',
       \ 'coc-vimlsp',
@@ -27,12 +28,15 @@ let g:coc_global_extensions = [
       \ 'coc-lua',
       \ 'coc-json',
       \ 'coc-html',
+      \ 'coc-html-css-support',
       \ 'coc-css',
       \ 'coc-phpls',
       \ 'coc-tsserver',
+      \ 'coc-biome',
       \ 'coc-jedi',
       \ 'coc-pyright',
       \ 'coc-clangd',
+      \ 'coc-clang-format-style-options',
       \ 'coc-cmake',
       \ 'coc-go',
       \ 'coc-spell-checker',

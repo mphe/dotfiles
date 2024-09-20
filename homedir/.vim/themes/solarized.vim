@@ -1,7 +1,6 @@
 " ------------------ General
 set t_Co=256
 set background=dark
-set guifont="Terminus"
 
 let s:base03  = '#002b36'
 let s:base02  = '#073642'

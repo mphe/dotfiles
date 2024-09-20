@@ -87,8 +87,9 @@ let g:lightline.tabline = {
 let g:lightline.component = {
     \ 'lineinfo': '%3l:%-2v / %L',
     \ 'maxlines': '%L',
-    \ 'current_function': '%{get(b:,"coc_current_function","")}',
+    \ 'current_function': '%{%get(b:, "coc_symbol_line", "")%}',
     \ }
+    " \ 'current_function': '%{get(b:,"coc_current_function","")}',
 
 
 let g:lightline.component_expand = {
