@@ -133,7 +133,7 @@ let g:lightline.component_raw = {'buffers': 1}
 
 function! CodeiumStatus()
     if !g:config_use_codeium
-        return
+        return ''
     endif
 
     let str = codeium#GetStatusString()
