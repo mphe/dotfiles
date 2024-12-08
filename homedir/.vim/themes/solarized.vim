@@ -2,6 +2,8 @@
 set t_Co=256
 set background=dark
 
+let s:transparent_background = 0
+
 let s:base03  = '#002b36'
 let s:base02  = '#073642'
 let s:base01  = '#586e75'
@@ -46,19 +48,18 @@ function ApplySolarizedStyle()
 
     if has('nvim')
         set termguicolors
-        " colorscheme flattened_dark
-        colorscheme solarized8
+    endif
+
+    if g:use_treesitter
+        colorscheme solarized
     else
         colorscheme solarized
+        " colorscheme solarized8
     endif
 
     exec 'highlight NormalBgFg gui=NONE guibg=' . s:base03 . ' guifg=' . s:base1
     exec 'highlight BrighterBgFg gui=NONE guibg=' . s:base02 . ' guifg=' . s:base4
     exec 'highlight BrightBgFg guibg=' . s:pum_bg . ' guifg=' . s:pum_fg
-
-    " ------------------ Solarized
-    " let g:solarized_termtrans = 1
-    " let g:solarized_hitrail = 1
 
     augroup SyntaxFix
         autocmd!
@@ -71,6 +72,7 @@ function ApplySolarizedStyle()
 
     " Search highlight color
     highlight Search cterm=NONE ctermbg=240 ctermfg=black gui=NONE guibg=#586e75 guifg=#073642
+    highlight! link CurSearch Search
     highlight link EasyMotionMoveHL Search
     " highlight link Search EasyMotionMoveHL
     " highlight Search cterm=bold,reverse ctermfg=40 gui=bold,reverse guifg=#7fbf00
@@ -87,13 +89,21 @@ function ApplySolarizedStyle()
     highlight! link StatusLineNC SignColumn
     highlight Error   cterm=underline ctermfg=1 ctermbg=NONE gui=underline guifg=#dc322f guibg=NONE
     highlight link SpellBad Error
-    highlight Normal     ctermbg=NONE guibg=NONE
-    " exec 'highlight Normal     ctermbg=NONE guibg=' . s:base03
+
+    if s:transparent_background
+        highlight Normal     ctermbg=NONE guibg=NONE
+    endif
+
     highlight PmenuSbar  ctermfg=12 ctermbg=0
     hi! link Pmenu BrightBgFg
     highlight VertSplit  ctermbg=0 guibg=#073642
     highlight Comment cterm=NONE gui=NONE
     highlight! link QuickFixLine CursorLine
+
+    " treesitter
+    if g:use_treesitter
+        highlight! link @module Normal
+    endif
 
     " coc
     highlight CocErrorSign   cterm=bold ctermbg=black ctermfg=9   gui=bold guibg=#073642 guifg=#cb4b16

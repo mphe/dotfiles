@@ -1,13 +1,13 @@
 " Clean autocmds
 autocmd!
 
-let s:use_treesitter = 0
+let g:use_treesitter = 0
 let s:use_vim_omnisharp = 0
 let g:config_use_copilot = 1
 let g:config_use_codeium = 0
 
 if !has('nvim')
-    let s:use_treesitter = 0
+    let g:use_treesitter = 0
 endif
 
 " -------------------------------------- General settings start {{{
@@ -255,9 +255,15 @@ endif
 call plug#begin('~/.vim/plugged')
 
 " color schemes
-Plug 'altercation/vim-colors-solarized'
-Plug 'lifepillar/vim-solarized8'
-Plug 'romainl/flattened'
+if g:use_treesitter
+    Plug 'ishan9299/nvim-solarized-lua' " Has treesitter support
+else
+    Plug 'ishan9299/nvim-solarized-lua' " Has treesitter support
+    Plug 'lifepillar/vim-solarized8'
+    " Plug 'altercation/vim-colors-solarized' " Unused I think
+endif
+
+" Plug 'romainl/flattened'
 " Plug 'qualiabyte/vim-colorstepper'
 
 Plug 'scrooloose/nerdtree'
@@ -309,7 +315,6 @@ Plug 'romainl/vim-cool'
 Plug 'neoclide/jsonc.vim'
 Plug 'dominikduda/vim_current_word'
 " Plug 'bfrg/vim-cpp-modern'
-Plug 'jackguo380/vim-lsp-cxx-highlight'
 Plug 'lambdalisue/suda.vim'
 Plug 'tpope/vim-liquid'
 Plug 'embear/vim-localvimrc'
@@ -374,8 +379,8 @@ Plug 'shiracamus/vim-syntax-x86-objdump-d'
 
 if has('nvim')
     Plug 'rcarriga/nvim-notify'
-    if s:use_treesitter
-        Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
+    if g:use_treesitter
+        Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
     endif
 
     " Required by: telescope, copilot, codeium.nvim
@@ -765,10 +770,6 @@ let g:vim_current_word#highlight_delay = 1500
 " markdown preview
 let g:mkdp_auto_close = 0
 
-" vim-lsp-cxx
-" let g:lsp_cxx_hl_log_file = 'lspcxxlog.txt'
-" let g:lsp_cxx_hl_verbose_log = 1
-
 " chromatica
 let g:chromatica#enable_at_startup = 1
 let g:chromatica#responsive_mode = 1
@@ -833,38 +834,6 @@ let g:bookmark_auto_save = 1
 nmap mm <Plug>BookmarkToggle
 nmap <leader>mm <Plug>BookmarkShowAll
 highlight link BookmarkSign SignColumn
-
-
-" treesitter
-" https://github.com/nvim-treesitter/nvim-treesitter
-if s:use_treesitter
-    set foldmethod=expr
-    set foldexpr=nvim_treesitter#foldexpr()
-
-    lua << EOF
-    require'nvim-treesitter.configs'.setup {
-        ensure_installed = "all", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
-        ignore_install = {}, -- List of parsers to ignore installing
-        highlight = {
-            enable = true,
-            disable = { "json" },  -- list of language that will be disabled
-            custom_captures = {
-                -- Highlight the @foo.bar capture group with the "Identifier" highlight group.
-                -- ["foo.bar"] = "Identifier",
-            },
-            -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
-            -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
-            -- Using this option may slow down your editor, and you may see some duplicate highlights.
-            -- Instead of true it can also be a list of languages
-            additional_vim_regex_highlighting = false,
-        },
-        indent = {
-            enable = true
-        }
-    }
-EOF
-endif
-
 
 
 fun! Qf_test()

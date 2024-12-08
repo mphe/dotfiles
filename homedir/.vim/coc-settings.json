@@ -134,6 +134,7 @@
     "cSpell.enabledLanguageIds": [
       "latex",
       "tex",
+      "text",
     ],
     "cSpell.language": "en,de",
 
@@ -217,7 +218,23 @@
             "rootPatterns": [ "*.sln" ],
             // "rootPatterns": [ "*.sln", "*.csproj" ],
             // "trace.server": "verbose",
+        },
+        // Install using swipl: ?- pack_install(lsp_server).
+        // https://github.com/jamesnvc/lsp_server
+        "prolog-lsp": {
+            "command": "swipl",
+            "args": ["-g", "use_module(library(lsp_server)).",
+                "-g", "lsp_server:main",
+                "-t", "halt",
+                "--", "stdio"
+            ],
+            "filetypes": ["prolog"]
         }
+        // "qml": {
+        //     "command": "qmlls6",
+        //     // "args": [ "-I", "/usr/lib/qt6/qml" ],
+        //     "filetypes": ["qml"]
+        // }
         // "glsl": {
         //     "filetypes": [ "glsl" ],
         //     "command": "glslls",
@@ -226,6 +243,9 @@
         // }
     },
     "snippets.ultisnips.pythonPrompt": false,
+    "cSpell.userWords": [
+      "Easybox"
+    ],
 
     // "diagnostic-languageserver.enable": false,
     // "diagnostic-languageserver.filetypes": {
