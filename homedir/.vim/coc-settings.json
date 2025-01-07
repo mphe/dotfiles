@@ -45,7 +45,7 @@
     "diagnostic.refreshOnInsertMode": true,
     "diagnostic.locationlistUpdate": true,
     "diagnostic.virtualText": true,
-    "diagnostic.virtualTextPrefix": " ◾",
+    "diagnostic.virtualTextPrefix": " 󰨓 ",
     "diagnostic.virtualTextCurrentLineOnly": false,
     "diagnostic.virtualTextLevel": "warning",
     "sh.enable": false,
@@ -205,8 +205,8 @@
         // },
         "godot": {
             "host": "127.0.0.1",
-            "filetypes": ["gd", "gdscript3"],
-            "port": 6008
+            "filetypes": ["gd", "gdscript"],
+            "port": 6005
         },
         "gdshader-lsp": {
             "filetypes": [ "gdshader" ]

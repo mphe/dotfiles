@@ -12,3 +12,16 @@ lua <<EOF
 $0
 EOF
 endsnippet
+
+snippet letget "Create or get global variable with default value."
+let g:${1:variable_name} = get(g:, '$1', ${2:'default value'})
+endsnippet
+
+snippet once "Include guards"
+if exists('${1:g:plugin_loaded}')
+	finish
+endif
+let $1 = 1
+
+$0
+endsnippet

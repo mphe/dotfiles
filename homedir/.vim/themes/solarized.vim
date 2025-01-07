@@ -42,24 +42,18 @@ function ApplySolarizedStylePre()
 endfun
 
 function ApplySolarizedStyle()
-    if &term ==? 'xterm-termite'
-        let g:solarized_termcolors=256
-    endif
-
     if has('nvim')
         set termguicolors
     endif
 
-    if g:use_treesitter
-        colorscheme solarized
-    else
-        colorscheme solarized
-        " colorscheme solarized8
-    endif
+    colorscheme solarized
 
     exec 'highlight NormalBgFg gui=NONE guibg=' . s:base03 . ' guifg=' . s:base1
     exec 'highlight BrighterBgFg gui=NONE guibg=' . s:base02 . ' guifg=' . s:base4
     exec 'highlight BrightBgFg guibg=' . s:pum_bg . ' guifg=' . s:pum_fg
+    exec 'highlight BlueFg guifg=' s:blue
+    exec 'highlight VioletFg guifg=' s:violet
+    exec 'highlight MagentaFg guifg=' s:magenta
 
     augroup SyntaxFix
         autocmd!
@@ -69,6 +63,20 @@ function ApplySolarizedStyle()
         " autocmd VimEnter * call s:EarlyStyleOverrides()
         " autocmd ColorScheme * call s:EarlyStyleOverrides()
     augroup END
+
+    " make comments non-italic
+    highlight Comment cterm=NONE gui=NONE
+
+    " treesitter (also used by coc implicitly) {{{
+    hi link @module VioletFg
+    hi link @keyword.storage @keyword
+    hi link @comment Comment
+
+    " gdscript
+    hi link @attribute.gdscript Keyword
+    hi link @string.special.url.gdscript Macro  " $ or % node paths
+
+    " }}}
 
     " Search highlight color
     highlight Search cterm=NONE ctermbg=240 ctermfg=black gui=NONE guibg=#586e75 guifg=#073642
@@ -83,12 +91,17 @@ function ApplySolarizedStyle()
     highlight CursorLineNr cterm=bold ctermfg=3 ctermbg=black gui=bold guifg=#b58900 guibg=#073642
 
     " No underline in folds
-    highlight Folded cterm=bold
+    highlight Folded cterm=bold gui=bold
 
     highlight SignColumn cterm=bold ctermbg=black gui=bold guibg=#073642
     highlight! link StatusLineNC SignColumn
-    highlight Error   cterm=underline ctermfg=1 ctermbg=NONE gui=underline guifg=#dc322f guibg=NONE
+    highlight link WinSeparator LineNr
+
+    highlight clear Error
+    exec 'highlight Error cterm=undercurl ctermfg=1 gui=undercurl guisp=' . s:red
     highlight link SpellBad Error
+    highlight DiagnosticUnderlineWarn gui=undercurl
+    highlight DiagnosticUnderlineError gui=undercurl
 
     if s:transparent_background
         highlight Normal     ctermbg=NONE guibg=NONE
@@ -97,13 +110,7 @@ function ApplySolarizedStyle()
     highlight PmenuSbar  ctermfg=12 ctermbg=0
     hi! link Pmenu BrightBgFg
     highlight VertSplit  ctermbg=0 guibg=#073642
-    highlight Comment cterm=NONE gui=NONE
     highlight! link QuickFixLine CursorLine
-
-    " treesitter
-    if g:use_treesitter
-        highlight! link @module Normal
-    endif
 
     " coc
     highlight CocErrorSign   cterm=bold ctermbg=black ctermfg=9   gui=bold guibg=#073642 guifg=#cb4b16
@@ -126,9 +133,8 @@ function ApplySolarizedStyle()
     exec 'highlight CocFloatingBorder guifg=' . s:blue
 
     highlight CocUnderline cterm=underline gui=underline
-    " highlight CocErrorLine ctermbg=52 guibg=#5F0000
-    highlight CocErrorLine ctermbg=52 guibg=#4F2938
-    highlight link CocErrorHighlight Error
+    " highlight CocErrorLine ctermbg=52 guibg=#4F2938
+    " highlight link CocErrorHighlight Error
     highlight CocCodeLens guibg=#073642 guifg=#6C71C4
     highlight! link CocInlayHint CocCodeLens
 
@@ -142,6 +148,12 @@ function ApplySolarizedStyle()
     highlight link DiagnosticVirtualTextWarn CocWarningSign
     highlight link DiagnosticVirtualTextInfo CocInfoSign
     highlight link DiagnosticVirtualTextHint CocHintSign
+
+    hi link CocSemType CocSemTypeType
+    hi link CocSemTypeStruct CocSemTypeType
+    hi link CocSemTypeEnumMember @constant
+    hi link CocSemTypeModVariableReadonly @constant
+    hi link CocSemTypeEvent @property
 
     " ale
     highlight! link ALEError CocErrorHighlight
@@ -164,16 +176,12 @@ function ApplySolarizedStyle()
     highlight link YcmErrorSection CocErrorHighlight
     highlight link YcmErrorLine CocErrorLine
 
-
-    highlight link SyntasticErrorLine ALEErrorLine
-
     " Add this line at the start of the python syntax file
     " syn match pythonFunctionCall "\zs\(\k\w*\)*\s*\ze("
-    highlight link pythonFunctionCall cUserFunction
+    highlight link pythonFunctionCall Function
 
     highlight CurrentWordTwins ctermbg=black guibg=#094655
     highlight link CurrentWord CurrentWordTwins
-
 
     highlight fugitiveUnstagedSection ctermfg=red guifg=#dc322f
     highlight link fugitiveUntrackedSection fugitiveUnstagedSection
@@ -185,65 +193,11 @@ function ApplySolarizedStyle()
     highlight link cModifier cStatement
     highlight link cStructure cStatement
 
-    " vim-cpp-modern
-    " highlight cUserFunction ctermfg=13 guifg=#6C71C4
-    highlight link cUserFunction Function
-
-    " vim-lsp-cxx colors
-    hi link LspCxxHlGroupEnumConstant Constant
-    hi LspCxxHlGroupNamespace  ctermfg=13 guifg=#6C71C4
-    hi link LspCxxHlGroupMemberVariable Normal
-    hi link LspCxxHlSymTypeParameter Normal
-
-    " hi link LspCxxHlSymFunction cUserFunction
-    hi link LspCxxHlSymFunction Function
-    hi link LspCxxHlSymMethod LspCxxHlSymFunction
-    hi link LspCxxHlSymClassFunction LspCxxHlSymFunction
-    hi link LspCxxHlSymClassMethod LspCxxHlSymFunction
-    hi link LspCxxHlSymStructMethod LspCxxHlSymFunction
-    hi link LspCxxHlSymStaticMethod LspCxxHlSymFunction
-    hi link LspCxxHlSymConstructor LspCxxHlSymFunction
-
-    " hi link LspCxxHlSymClass Function
-    hi link LspCxxHlSymClass Type
-    hi link LspCxxHlSymStruct LspCxxHlSymClass
-    hi link LspCxxHlSymEnum LspCxxHlSymClass
-    hi link LspCxxHlSymTypeAlias LspCxxHlSymClass
-
-    hi link LspCxxHlSymConstant Constant
-    hi link LspCxxHlSymParameterConstant Constant
-    hi link LspCxxHlSymParameterString Constant
-    " hi link LspCxxHlGroupConstant Constant
-    " hi link LspCxxHlGroupEnumConstant Constant
-
-    " hi link AutoType Type
-    " hi link Namespace cUserFunction
-
-    hi link CocSemTypeNamespace LspCxxHlGroupNamespace
-    hi link CocSemType Type
-    hi link CocSemTypeClass LspCxxHlSymClass
-    hi link CocSemTypeEnum LspCxxHlSymEnum
-    hi link CocSemTypeEnumMember Constant
-    hi link CocSemTypeInterface Type
-    hi link CocSemTypeStruct LspCxxHlSymStruct
-    hi link CocSemTypeParameter Normal
-    hi link CocSemTypeVariable LspCxxHlGroupMemberVariable
-    hi link CocSemTypeModVariableReadonly Constant
-    hi link CocSemTypeProperty LspCxxHlGroupMemberVariable
-    hi link CocSemTypeEvent Identifier
-    hi link CocSemTypeFunction LspCxxHlSymFunction
-    hi link CocSemTypeMethod LspCxxHlSymClassMethod
-    hi link CocSemTypeMacro Macro
-    hi link CocSemTypeKeyword Keyword
-    hi link CocSemTypeModifier Statement
-    hi link CocSemTypeComment Comment
-    hi link CocSemTypeString String
-    hi link CocSemTypeNumber Number
-    hi link CocSemTypeRegexp Normal
-    hi link CocSemTypeOperator Operator
-
     hi texStatement ctermbg=NONE guibg=NONE
     exec 'highlight VirtColumn guifg=' . s:normal_bg . ' guibg=NONE'
+
+    " tagbar
+    hi link TagbarAccessProtected BlueFg
 endfun
 
 

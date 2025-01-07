@@ -1,3 +1,5 @@
+scriptencoding utf-8
+
 " Clean autocmds
 autocmd!
 
@@ -33,7 +35,7 @@ set cinoptions+=E-s
 
 " enable folding
 set foldmethod=syntax
-" set nofoldenable
+set nofoldenable  " don't fold anything automatically
 " set foldlevel=1
 " Don't fold anything when opening a new buffer
 set foldlevelstart=99
@@ -89,7 +91,9 @@ set previewheight=3
 
 " Gvim settings
 " set guioptions=aic
-set guicursor=
+
+" Always use a non-blinking block cursor in all modes
+set guicursor=a:block
 
 set laststatus=2
 
@@ -123,8 +127,13 @@ set signcolumn=yes
 let g:load_doxygen_syntax = 1
 
 " Prevent lag when inserting new lines in python files due to indent scripts
-let g:pyindent_searchpair_timeout = 10
 let g:python_pep8_indent_searchpair_timeout = 10
+let g:pyindent_searchpair_timeout = 10
+"
+" Configure Python indent to better match PEP8 indent (not as good as the pep8 vim plugin)
+let g:python_indent = {}
+let g:python_indent.open_paren = 'shiftwidth()'
+let g:python_indent.closed_paren_align_last_line = v:false
 
 " -------------------------------------- General settings end }}}
 
@@ -255,15 +264,7 @@ endif
 call plug#begin('~/.vim/plugged')
 
 " color schemes
-if g:use_treesitter
-    Plug 'ishan9299/nvim-solarized-lua' " Has treesitter support
-else
-    Plug 'ishan9299/nvim-solarized-lua' " Has treesitter support
-    Plug 'lifepillar/vim-solarized8'
-    " Plug 'altercation/vim-colors-solarized' " Unused I think
-endif
-
-" Plug 'romainl/flattened'
+Plug 'ishan9299/nvim-solarized-lua' " Has treesitter support
 " Plug 'qualiabyte/vim-colorstepper'
 
 Plug 'scrooloose/nerdtree'
@@ -308,7 +309,7 @@ Plug 'vim-python/python-syntax'
 Plug 'withgod/vim-sourcepawn'
 Plug 'junegunn/vim-easy-align'
 Plug 'osyo-manga/vim-over'
-Plug 'Rubonnek/vim-gdscript3'
+Plug 'mphe/vim-gdscript4'
 Plug 'gaving/vim-textobj-argument'
 Plug 'farmergreg/vim-lastplace'
 Plug 'romainl/vim-cool'
@@ -335,7 +336,7 @@ Plug 'MattesGroeger/vim-bookmarks'
 
 " should be unnecessary because vim and neovim have qml support integrated now, but for some reason
 " it doesn't work for me
-Plug 'https://github.com/peterhoeg/vim-qml.git'
+Plug 'peterhoeg/vim-qml'
 
 " Auto detect indent
 Plug 'tpope/vim-sleuth'
@@ -420,18 +421,10 @@ call plug#end()
 " -------------------------------------- Style config {{{
 call ApplyCommonStyle()
 call ApplySolarizedStyle()
-" source ~/.vim/themes/solarized.vim
-" source /home/marvin/.vim/themes/dark.vim
 
 " set the split char tmux uses
 set fillchars+=vert:│
 
-" Highlight trailing whitespace
-" highlight! link TrailingWhitespace Error
-" augroup trailing_spaces_hl
-"   au!
-"   autocmd Syntax * syn match TrailingWhitespace /\s\+$\| \+\ze\t/
-" augroup END
 
 " -------------------------------------- Style config end }}}
 
@@ -507,21 +500,6 @@ augroup au_tagbar
     autocmd FileType tagbar setlocal nocursorline nocursorcolumn
 augroup END
 
-let g:tagbar_type_gdscript3 = {
-			\ 'ctagstype' :'gdscript3',
-			\ 'kinds': [
-                            \ 'c:constants',
-                            \ 'p:preloads',
-                            \ 'e:exports',
-                            \ 'o:onready',
-                            \ 'v:variables',
-                            \ 's:signals',
-                            \ 'f:functions',
-                            \ 't:static functions',
-                        \ ]
-                        \ }
-let g:tagbar_type_gdscript3.deffile = expand('~/.vim/ctags/gdscript3.ctags')
-
 
 " ColorStepper Keys
 " nmap <S-F6> <Plug>ColorstepPrev
@@ -543,7 +521,7 @@ command! UltiSnipReload call UltiSnips#RefreshSnippets()
 " ale
 let g:ale_disable_lsp = 1
 let g:ale_virtualtext_cursor = 1
-let g:ale_virtualtext_prefix = ' ◾'
+let g:ale_virtualtext_prefix = ' 󰨓 '
 
     " \ 'cpp': [ 'clangtidy' ],
     " \ 'c': [ 'clangtidy' ],
@@ -885,6 +863,29 @@ nnoremap <leader>ta :TableModeRealign<CR>
 " vim-markdown-toc
 let g:vmt_list_item_char = '-'
 
+
+" copilot
+" let g:copilot_no_tab_map = v:true
+" imap <silent><script><expr> <C-J> copilot#Accept("\<C-J>")
+" let g:copilot_assume_mapped = v:true
+
+" lua vim.api.nvim_set_keymap("i", "<C-J>", 'copilot#Accept("<CR>")', { silent = true, expr = true })
+
+
+" codeium
+if g:config_use_codeium
+    let g:codeium_disable_bindings = 1
+    let g:codeium_manual = v:true
+    let g:codeium_no_map_tab = v:true
+    imap <C-c> <Cmd>call codeium#CycleOrComplete()<CR>
+    " NOTE: <CR> accept keybind is mapped in coc.vim as they both bind <CR>
+endif
+
+
+" vim-gdscript4
+
+let g:gdscript_use_python_indent = 1
+
 " -------------------------------------- Plugin configuration end }}}
 
 
@@ -1112,6 +1113,11 @@ vmap <c-c> "+y
 
 " -------------------------------------- Key mappings end }}}
 
+" -------------------------------------- auto correct {{{
+iabbrev cosnt const
+iabbrev cosntexpr constexpr
+"  }}}
+
 
 " better fold text {{{
 " indent folds
@@ -1153,24 +1159,6 @@ function! CheckSize()
         setlocal syntax=off
     endif
 endfun
-
-
-" copilot
-" let g:copilot_no_tab_map = v:true
-" imap <silent><script><expr> <C-J> copilot#Accept("\<C-J>")
-" let g:copilot_assume_mapped = v:true
-
-" lua vim.api.nvim_set_keymap("i", "<C-J>", 'copilot#Accept("<CR>")', { silent = true, expr = true })
-
-
-" codeium
-if g:config_use_codeium
-    let g:codeium_disable_bindings = 1
-    let g:codeium_manual = v:true
-    let g:codeium_no_map_tab = v:true
-    imap <C-c> <Cmd>call codeium#CycleOrComplete()<CR>
-    " NOTE: <CR> accept keybind is mapped in coc.vim as they both bind <CR>
-endif
 
 
 " source ~/.vim/completion_preview.vim
