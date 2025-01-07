@@ -1,0 +1,40 @@
+Checks:
+  - bugprone-*
+  - -bugprone-easily-swappable-parameters
+  - cert-*
+  - clang-analyzer-*
+  - concurrency-*
+  - cppcoreguidelines-*
+  - -cppcoreguidelines-init-variables  # Produces false positves when initialization happens later
+  - -cppcoreguidelines-avoid-magic-numbers  # This also triggers with literals like 3.1415
+  - -cppcoreguidelines-avoid-non-const-global-variables
+  - -cppcoreguidelines-avoid-do-while  # Often used in C macros
+  - -cppcoreguidelines-pro-type-vararg  # Unavoidable in embedded code
+  - -cppcoreguidelines-pro-bounds-array-to-pointer-decay  # Unavoidable in embedded code
+  - -cppcoreguidelines-pro-bounds-constant-array-index
+  - -cppcoreguidelines-avoid-c-arrays
+  - -cppcoreguidelines-owning-memory
+  - -cppcoreguidelines-pro-type-reinterpret-cast
+  - -cppcoreguidelines-pro-type-union-access
+  - -cppcoreguidelines-macro-usage  # False positives
+  - -cppcoreguidelines-non-private-member-variables-in-classes
+  - -cppcoreguidelines-pro-bounds-pointer-arithmetic  # includes indexing like ptr[i]
+  - -cppcoreguidelines-avoid-goto  # Sometimes useful for error handling, especially in C code
+  - misc-*
+  - -misc-non-private-member-variables-in-classes
+  - -misc-use-anonymous-namespace
+  - -misc-include-cleaner
+  - performance-*
+  - portability-*
+  - readability-*
+  - -readability-braces-around-statements
+  - -readability-uppercase-literal-suffix
+  - -readability-magic-numbers  # This also triggers with literals like 3.1415
+  - -readability-redundant-access-specifiers
+  - -readability-implicit-bool-conversion
+  - -readability-function-cognitive-complexity
+  - -readability-identifier-length
+  - -readability-isolate-declaration
+CheckOptions:
+  cppcoreguidelines-special-member-functions.AllowSoleDefaultDtor: true
+  cppcoreguidelines-special-member-functions.AllowImplicitlyDeletedCopyOrMove: true
