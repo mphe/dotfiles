@@ -41,7 +41,7 @@ alias gcheckout='git checkout'
 alias ssh='TERM=xterm ssh'
 alias objdump='objdump -M intel'
 alias httrack='httrack --disable-security-limits --max-rate=0'
-alias grep='grep --exclude-dir=.git --exclude-dir=.mypy_cache --color'
+alias grep='grep --exclude-dir=.git --exclude-dir=.mypy_cache --exclude-dir=.vs --color'
 alias open='xdg-open'
 alias audacity='env PULSE_LATENCY_MSEC=60 audacity'
 # alias audacity='pasuspender -- audacity'
@@ -104,8 +104,17 @@ git_prompt() {
 
 # fzf
 set -o vi
-source /usr/share/fzf/key-bindings.bash
-source /usr/share/fzf/completion.bash
+if [ -f /usr/share/fzf/key-bindings.bash ]; then
+    source /usr/share/fzf/key-bindings.bash
+elif [ -f /usr/share/doc/fzf/examples/key-bindings.bash ]; then
+    source /usr/share/doc/fzf/examples/key-bindings.bash
+fi
+
+if [ -f /usr/share/fzf/completion.bash ]; then
+    source /usr/share/fzf/completion.bash
+elif [ -f /usr/share/bash-completion/completions/fzf ]; then
+    source /usr/share/bash-completion/completions/fzf
+fi
 export FZF_COMPLETION_TRIGGER=',,'
 export FZF_DEFAULT_OPTS='--color=16'
 _fzf_compgen_path() {
@@ -183,8 +192,10 @@ bind 'set colored-completion-prefix On'
 bind 'set menu-complete-display-prefix On'
 
 # pyenv
-eval "$(pyenv init -)"
-# eval "$(pyenv virtualenv-init -)"
+if which pyenv > /dev/null; then
+    eval "$(pyenv init -)"
+    # eval "$(pyenv virtualenv-init -)"
+fi
 
 # pipenv
 # Takes ages to load

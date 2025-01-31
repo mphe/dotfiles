@@ -2,6 +2,7 @@ Checks:
   - bugprone-*
   - -bugprone-easily-swappable-parameters
   - cert-*
+  - -cert-err58-cpp  # False positives when having const objects in global scope.
   - clang-analyzer-*
   - concurrency-*
   - cppcoreguidelines-*
@@ -20,10 +21,12 @@ Checks:
   - -cppcoreguidelines-non-private-member-variables-in-classes
   - -cppcoreguidelines-pro-bounds-pointer-arithmetic  # includes indexing like ptr[i]
   - -cppcoreguidelines-avoid-goto  # Sometimes useful for error handling, especially in C code
+  - -cppcoreguidelines-avoid-const-or-ref-data-members  # Sometimes this is desired or irrelevant.
   - misc-*
   - -misc-non-private-member-variables-in-classes
   - -misc-use-anonymous-namespace
   - -misc-include-cleaner
+  - -misc-no-recursion
   - performance-*
   - portability-*
   - readability-*
@@ -35,6 +38,12 @@ Checks:
   - -readability-function-cognitive-complexity
   - -readability-identifier-length
   - -readability-isolate-declaration
+  - -readability-delete-null-pointer  # Allow checking for null before delete for readability
+  - -readability-math-missing-parentheses  # Math rules should be known
 CheckOptions:
   cppcoreguidelines-special-member-functions.AllowSoleDefaultDtor: true
   cppcoreguidelines-special-member-functions.AllowImplicitlyDeletedCopyOrMove: true
+  cppcoreguidelines-pro-type-member-init.UseAssignment: true
+  performance-move-const-arg.CheckTriviallyCopyableMove: false  # Might be desirable to indicate ownership of pointers
+  # There are various typedefs of std::shared_ptr named XYZPtr, hence whitelist them as acceptable to pass by value
+  performance-unnecessary-value-param.AllowedTypes: Ptr$
