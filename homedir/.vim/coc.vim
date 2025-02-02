@@ -245,7 +245,7 @@ command! CocOutput CocCommand workspace.showOutput
 
 let g:coc_borderchars = ['─', '│', '─', '│', '╭', '╮', '╯', '╰']
 
-
+nnoremap CC :CocListResume<cr>
 nnoremap <leader>v <Plug>(coc-cursors-operator)
 
 command! CocJumpDefinition     call CocAction('jumpDefinition')

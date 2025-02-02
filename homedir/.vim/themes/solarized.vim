@@ -100,6 +100,7 @@ function ApplySolarizedStyle()
     highlight clear Error
     exec 'highlight Error cterm=undercurl ctermfg=1 gui=undercurl guisp=' . s:red
     highlight link SpellBad Error
+    highlight DiagnosticUnderlineInfo gui=undercurl
     highlight DiagnosticUnderlineWarn gui=undercurl
     highlight DiagnosticUnderlineError gui=undercurl
 

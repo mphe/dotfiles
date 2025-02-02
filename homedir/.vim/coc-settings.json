@@ -104,6 +104,7 @@
         "no-inline-html": false,
         "commands-show-output": false,
         "ul-indent": false,
+        "no-alt-text": false,
     },
 
     "Lua.diagnostics.enable": false,

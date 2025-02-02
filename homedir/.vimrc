@@ -378,6 +378,8 @@ Plug 'mzlogin/vim-markdown-toc'
 
 Plug 'shiracamus/vim-syntax-x86-objdump-d'
 
+Plug 'JafarDakhan/vim-gml'
+
 if has('nvim')
     Plug 'rcarriga/nvim-notify'
     if g:use_treesitter
