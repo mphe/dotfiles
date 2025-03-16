@@ -243,9 +243,9 @@ nnoremap <leader>gi :call CocActionAsync('showSignatureHelp')<esc>
 
 command! CocOutput CocCommand workspace.showOutput
 
-let g:coc_borderchars = ['─', '│', '─', '│', '╭', '╮', '╯', '╰']
+" let g:coc_borderchars = ['─', '│', '─', '│', '╭', '╮', '╯', '╰']
 
-nnoremap CC :CocListResume<cr>
+nnoremap <f2> :CocListResume<cr>
 nnoremap <leader>v <Plug>(coc-cursors-operator)
 
 command! CocJumpDefinition     call CocAction('jumpDefinition')

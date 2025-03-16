@@ -7,22 +7,27 @@
 
     "suggest.floatConfig": {
         "border": true,
+        "rounded": true,
         "borderhighlight": "CocFloatingBorder"
     },
     "signature.floatConfig": {
         "border": true,
+        "rounded": true,
         "borderhighlight": "CocFloatingBorder"
     },
     "hover.floatConfig": {
         "border": true,
+        "rounded": true,
         "borderhighlight": "CocFloatingBorder"
     },
     "floatFactory.floatConfig": {
         "border": true,
+        "rounded": true,
         "borderhighlight": "CocFloatingBorder"
     },
     "diagnostic.floatConfig": {
         "border": true,
+        "rounded": true,
         "borderhighlight": "CocFloatingBorder"
     },
     "dialog.floatBorderHighlight": "CocFloatingBorder",

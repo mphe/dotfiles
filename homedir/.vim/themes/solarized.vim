@@ -22,6 +22,9 @@ let s:cyan    = '#2aa198'
 let s:green   = '#859900'
 let s:blue3   = '#094655'
 
+" custom colors for more variety
+let s:blue_light = '#65a5de'
+
 let s:base4   = '#a3b1b1'
 let s:pum_fg  = '#C6C6C6'
 let s:pum_bg = s:blue3
@@ -51,9 +54,9 @@ function ApplySolarizedStyle()
     exec 'highlight NormalBgFg gui=NONE guibg=' . s:base03 . ' guifg=' . s:base1
     exec 'highlight BrighterBgFg gui=NONE guibg=' . s:base02 . ' guifg=' . s:base4
     exec 'highlight BrightBgFg guibg=' . s:pum_bg . ' guifg=' . s:pum_fg
-    exec 'highlight BlueFg guifg=' s:blue
-    exec 'highlight VioletFg guifg=' s:violet
-    exec 'highlight MagentaFg guifg=' s:magenta
+    exec 'highlight BlueFg guifg=' . s:blue
+    exec 'highlight VioletFg guifg=' . s:violet
+    exec 'highlight MagentaFg guifg=' . s:magenta
 
     augroup SyntaxFix
         autocmd!
@@ -70,7 +73,8 @@ function ApplySolarizedStyle()
     " treesitter (also used by coc implicitly) {{{
     hi link @module VioletFg
     hi link @keyword.storage @keyword
-    hi link @comment Comment
+    hi! link @comment Comment
+    exec 'hi @property guifg=' . s:blue_light
 
     " gdscript
     hi link @attribute.gdscript Keyword
@@ -152,6 +156,7 @@ function ApplySolarizedStyle()
 
     hi link CocSemType CocSemTypeType
     hi link CocSemTypeStruct CocSemTypeType
+    hi link CocSemTypeClass CocSemTypeType
     hi link CocSemTypeEnumMember @constant
     hi link CocSemTypeModVariableReadonly @constant
     hi link CocSemTypeEvent @property
