@@ -1,1 +1,284 @@
-/home/marvin/.vim/coc-settings.json
+{
+    // { 'error': "\uf05e  ", 'warning': "\uf071  ", 'info': "\uf05a  " }
+    "codeLens.enable": true,
+    "codeLens.position": "eol",
+    "inlayHint.enableParameter": false,
+    "diagnostic.enableSign": true,
+
+    "suggest.floatConfig": {
+        "border": true,
+        "rounded": true,
+        "borderhighlight": "CocFloatingBorder"
+    },
+    "signature.floatConfig": {
+        "border": true,
+        "rounded": true,
+        "borderhighlight": "CocFloatingBorder"
+    },
+    "hover.floatConfig": {
+        "border": true,
+        "rounded": true,
+        "borderhighlight": "CocFloatingBorder"
+    },
+    "floatFactory.floatConfig": {
+        "border": true,
+        "rounded": true,
+        "borderhighlight": "CocFloatingBorder"
+    },
+    "diagnostic.floatConfig": {
+        "border": true,
+        "rounded": true,
+        "borderhighlight": "CocFloatingBorder"
+    },
+    "dialog.floatBorderHighlight": "CocFloatingBorder",
+
+    // "diagnostic.errorSign": ">>",
+    // "diagnostic.warningSign": "!!",
+    "diagnostic.errorSign": " ",
+    "diagnostic.warningSign": " ",
+    "diagnostic.infoSign": " ",
+    "diagnostic.hintSign": " ",
+    "diagnostic.displayByAle": false,
+    "coc.preferences.enableMessageDialog": true,
+    "diagnostic.enableMessage": "jump",
+    "notification.winblend": 0,
+    "notification.timeout": 5000,
+    "notification.border": true,
+    // "notification.highlightGroup": "CursorLine",
+    "diagnostic.messageTarget": "float",
+    "diagnostic.checkCurrentLine": true,
+    "diagnostic.refreshOnInsertMode": true,
+    "diagnostic.locationlistUpdate": true,
+    "diagnostic.virtualText": true,
+    "diagnostic.virtualTextPrefix": " 󰨓 ",
+    "diagnostic.virtualTextCurrentLineOnly": false,
+    "diagnostic.virtualTextLevel": "warning",
+    "sh.enable": false,
+    "semanticTokens.filetypes": [ "*" ],
+    // "semanticTokens.highlightPriority": 2048,
+    "coc.preferences.currentFunctionSymbolAutoUpdate": true,
+    "coc.source.around.firstMatch": false,
+    "coc.source.buffer.firstMatch": false,
+    // "coc.preferences.extensionUpdateCheck": "never",
+    "suggest.noselect": true,
+    "suggest.disableMenuShortcut": true,
+    "suggest.completionItemKindLabels": {
+        "constructor": " ",
+        "method": " ",
+        "function": " ",
+        "operator": " ",
+        "struct": " ",
+        "class": " ",
+        "interface": " ",
+        "enum": " ",
+        "enumMember": " ",
+        "variable": " ",
+        "value": " ",
+        "property": " ",
+        "field": " ",
+        "constant": " ",
+        "module": " ",
+        "file": " "
+        // "text": "\ue612",
+        // "color": "\ue22b",
+        // "unit": "\uf475",
+        // "event": "\ufacd",
+        // "folder": "\uf114",
+        // "snippet": "\ue60b",
+        // "typeParameter": "\uf728",
+        // "keyword": "\uf1de",
+        // "reference": "\ufa46",
+        // "default": "\uf29c"
+    },
+
+    "list.maxPreviewHeight": 20,
+
+    "symbol-line.default": "",
+
+    "highlight.colors.enable": false,
+
+    "typescript.preferences.quoteStyle": "double",
+
+    "markdownlint.config": {
+        "default": true,
+        "line_length": false,
+        "emphasis": false,
+        "blank_lines": false,
+        "header-increment": false,
+        "single-title": false,
+        "no-inline-html": false,
+        "commands-show-output": false,
+        "ul-indent": false,
+        "no-alt-text": false,
+    },
+
+    "Lua.diagnostics.enable": false,
+
+    "pyright.enable": true,
+    "pyright.server": "/home/marvin/git/pyright/packages/pyright/langserver.index.js",
+    "pyright.disableCompletion": true,
+    "jedi.enable": true,
+    "jedi.completion.resolveEagerly": true,
+    "jedi.executable.command": "/usr/bin/jedi-language-server",
+    "jedi.jediSettings.autoImportModules": [ "numpy", "pandas", "bs4" ],
+
+    "java.home": "/usr/lib/jvm/java-11-openjdk",
+
+    // "clangd.enabled": false,
+    // "clangd.path": "~/.config/coc/extensions/coc-clangd-data/install/13.0.0/clangd_13.0.0/bin/clangd",
+    "clangd.path": "/usr/bin/clangd",
+
+    "texlab.forwardSearch.executable": "zathura",
+    "texlab.forwardSearch.args": [ "--synctex-forward", "%l:1:%f", "%p" ],
+    // "latex.lint.onSave": true,
+    // "latex.lint.onChange": false,
+    // "latex.forwardSearch.executable": "zathura",
+    // "latex.build.onSave": true,
+    // "latex.build.args": [ "-pdf", "-interaction=nonstopmode", "-synctex=1", "-pvc", "%f" ],
+
+    "cSpellExt.enableDictionaries": [ "german" ],
+    "cSpell.enabledLanguageIds": [
+      "latex",
+      "tex",
+      "text",
+    ],
+    "cSpell.language": "en,de",
+
+    "ltex.dictionary": {
+        "en-US": [ ":~/.ltex/en-US.txt" ],
+        "de-DE": [ ":~/.ltex/de-DE.txt" ],
+    },
+    "ltex.diagnosticSeverity": "information",
+    "ltex.language": "auto",
+    "ltex.disabledRules": {
+        "en-US": [
+            "WHITESPACE_RULE",
+        ]
+    },
+    "ltex.enabled": [
+        "bibtex",
+        "latex",
+        "markdown",
+    ],
+
+    "go.goplsOptions": {
+        "semanticTokens": true,
+        "noSemanticString": true,
+        "noSemanticNumber": true,
+        "annotations": {
+            "bounds": true,
+            "escape": true,
+            "inline": true,
+            "nil": true
+        },
+        "staticcheck": true,
+        "codelenses": {
+            "gc_details": true
+        }
+    },
+
+    "lightbulb.enableVirtualText": false,
+    "lightbulb.virtualTextPosition": "right_align",
+    "lightbulb.enableSign": true,
+    "lightbulb.text": {
+        "default": "💡",
+        "quickfix": "💡"
+    },
+    "lightbulb.only": [
+        // "refactor",
+        "quickfix",
+        // "refactor.extract",
+        "refactor.inline",
+        "refactor.rewrite",
+        // "source",
+        // "source.organizeImports",
+        "source.fixAll",
+    ],
+
+    "workspace.rootPatterns": [ ".vim", ".git", ".coc-root" ],
+
+    "languageserver": {
+        // "ccls": {
+        //     "command": "ccls",
+        //     "filetypes": ["c", "cpp", "objc", "objcpp"],
+        //     "rootPatterns": [".ccls", "compile_commands.json", ".git/", ".hg/"],
+        //     "initializationOptions": {
+        //         "cache": { "directory": "/tmp/ccls" },
+        //         // "cache": { "directory": ".ccls-cache" },
+        //         // "client": { "snippetSupport": true },
+        //         "highlight": { "lsRanges" : true }
+        //     }
+        // },
+        "godot": {
+            "host": "127.0.0.1",
+            "filetypes": ["gd", "gdscript"],
+            "port": 6005
+        },
+        "gdshader-lsp": {
+            "filetypes": [ "gdshader" ]
+        },
+        // dotnet tool install --global csharp-ls
+        "csharp-ls": {
+            "command": "csharp-ls",
+            "filetypes": ["cs"],
+            "rootPatterns": [ "*.sln" ],
+            // "rootPatterns": [ "*.sln", "*.csproj" ],
+            // "trace.server": "verbose",
+        },
+        // Install using swipl: ?- pack_install(lsp_server).
+        // https://github.com/jamesnvc/lsp_server
+        "prolog-lsp": {
+            "command": "swipl",
+            "args": ["-g", "use_module(library(lsp_server)).",
+                "-g", "lsp_server:main",
+                "-t", "halt",
+                "--", "stdio"
+            ],
+            "filetypes": ["prolog"]
+        }
+        // "qml": {
+        //     "command": "qmlls6",
+        //     // "args": [ "-I", "/usr/lib/qt6/qml" ],
+        //     "filetypes": ["qml"]
+        // }
+        // "glsl": {
+        //     "filetypes": [ "glsl" ],
+        //     "command": "glslls",
+        //     "args": [ "--stdin" ],
+        //     "settings": {}
+        // }
+    },
+    "snippets.ultisnips.pythonPrompt": false,
+    "cSpell.userWords": [
+      "Easybox"
+    ],
+
+    // "diagnostic-languageserver.enable": false,
+    // "diagnostic-languageserver.filetypes": {
+    //     "cpp": [ "clangtidy" ],
+    //     "c": [ "clangtidy" ],
+    //     "java": [],
+    //     "gdscript3": [],
+    //     "tex": [],
+    //     "css": [],
+    //     "cs": [ "OmniSharp" ],
+    //     "vim": "vint",
+    //     "email": "languagetool",
+    //     "markdown": [ "write-good", "markdownlint" ],
+    //     "sh": "shellcheck",
+    //     "elixir": ["mix_credo", "mix_credo_compile"],
+    //     "eelixir": ["mix_credo", "mix_credo_compile"],
+    //     "php": ["phpstan", "psalm"],
+    //     "yaml": [ "yamllint" ],
+    //     "cmake": [ "cmake-lint", "cmakelint" ],
+    //     "systemd": "systemd-analyze",
+    //     "python": [ "flake8", "mypy", "pylint" ],
+    //     "lua":  "luacheck"
+    // },
+    // "diagnostic-languageserver.mergeConfig": true,
+    // "diagnostic-languageserver.linters": {
+    //     "flake8": { "args": [ "--ignore=F403,F401,E201,E202,F841,E501,E221,E241,E722,F405" ] },
+    //     "mypy": { "args": ["--install-types", "--non-interactive", "--namespace-packages", "--show-error-codes", "--show-error-context", "--show-column-numbers", "--no-strict-optional", "--ignore-missing-imports", "--check-untyped-defs", "--allow-untyped-globals"] },
+    //     "pylint": { "args": [ "-j", "4", "--ignored-modules=scapy,numpy,matplotlib,pyplot", "--disable=C,syntax-error,too-few-public-methods,global-statement,useless-object-inheritance,try-except-raise,broad-except,too-many-branches,too-many-arguments,protected-access,chained-comparison" ] }
+    // }
+}

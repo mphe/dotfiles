@@ -1,7 +1,3 @@
-homedir/.vim/view
-homedir/.vim/bundle/*
-homedir/.vim/plugged/*
-!homedir/.vim/bundle/Vundle.vim
 *.pyc
 homedir/.ncmpcpp/error.log
 homedir/.ncmpcpp/patterns.list
