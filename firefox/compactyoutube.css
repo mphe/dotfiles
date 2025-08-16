@@ -2,59 +2,22 @@
 @name compact youtube
 @namespace github.com/openstyles/stylus
 @version 1.0.0
-@description makes youtube's grid view more compact
+@description makes youtube's subscription grid view more compact
 @author Me
 ==/UserStyle== */
 
-@-moz-document domain("youtube.com") {
-    :root {
-        --compactwidth: 170px;
-        --compactheight: 95px;
-    }
+@-moz-document url-prefix("https://www.youtube.com/feed/subscriptions") {
+/* Smaller subscription thumbnails */
+ytd-rich-grid-renderer {
+  --ytd-rich-grid-items-per-row: 6 !important;
+  --ytd-rich-grid-posts-per-row: 6 !important;
+  --ytd-rich-grid-slim-items-per-row: 6 !important;
+  --ytd-rich-grid-game-cards-per-row: 6 !important;
+  --ytd-rich-grid-mini-game-cards-per-row: 6 !important;
+}
 
-    #items.ytd-grid-renderer > ytd-grid-video-renderer.ytd-grid-renderer {
-        width: var(--compactwidth) !important;
-        margin-bottom: 12px !important;
-        margin-right: 10px !important;
-    }
-
-    ytd-browse[guide-persistent-and-visible] ytd-two-column-browse-results-renderer.ytd-browse {
-        width: 85% !important;
-    }
-
-    #items.ytd-grid-renderer > ytd-grid-video-renderer.ytd-grid-renderer ytd-thumbnail {
-        width: var(--compactwidth) !important;
-    }
-
-    ytd-thumbnail.ytd-grid-video-renderer {
-        height: var(--compactheight) !important;
-    }
-
-    h3.ytd-grid-video-renderer {
-        margin: 2px 0 3px !important;
-    }
-
-    #metadata-line.ytd-grid-video-renderer {
-        /*display: none !important;*/
-    }
-
-    ytd-badge-supported-renderer {
-        display: none !important;
-    }
-
-    #meta.ytd-grid-video-renderer {
-        padding-right: 0px !important;
-    }
-
-    ytd-grid-video-renderer #video-title.yt-simple-endpoint.ytd-grid-video-renderer
-    {
-        /*max-height: none !important;*/
-        line-height: 1.5rem !important;
-        color: rgb(22, 122, 198);
-        font-size: 14px !important;
-        /*font-family: Open Sans !important;*/
-        /*font-weight: 600 !important;*/
-        /*font-weight: 500 !important;
-        font-family: Roboto !important;*/
-    }
+/* Hide shorts */
+#dismissible.ytd-rich-shelf-renderer {
+    display: none !important;
+}
 }
