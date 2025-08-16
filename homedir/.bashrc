@@ -207,9 +207,15 @@ export PATH="/home/marvin/bin:/home/marvin/git/scripts/scripts:$PATH"
 export PATH="/home/marvin/.gem/ruby/2.7.0/bin:$PATH"
 export PATH="/home/marvin/.local/bin:$PATH"
 export PATH="/home/marvin/golib/bin:$PATH"
-export PATH="$PATH:/home/marvin/.dotnet/tools"
+export PATH="$PATH:/home/marvin/.cargo/bin"
+export PATH="$PATH:/usr/lib/emscripten"
 export EDITOR=nvim
 export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
+
+# Scripted dotnet install to support maui.
+# See https://learn.microsoft.com/en-us/dotnet/core/install/linux-scripted-manual#scripted-install.
+export DOTNET_ROOT="$HOME/.dotnet"
+export PATH="$DOTNET_ROOT:$DOTNET_ROOT/tools:$PATH"
 
 # Needed for Unity development with vim using coc-omnisharp
 # / at the end seems to be important

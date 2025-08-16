@@ -40,10 +40,12 @@ Checks:
   - -readability-isolate-declaration
   - -readability-delete-null-pointer  # Allow checking for null before delete for readability
   - -readability-math-missing-parentheses  # Math rules should be known
+  - -readability-use-anyofallof  # Not always more readable and sometimes false-positives
 CheckOptions:
   cppcoreguidelines-special-member-functions.AllowSoleDefaultDtor: true
   cppcoreguidelines-special-member-functions.AllowImplicitlyDeletedCopyOrMove: true
   cppcoreguidelines-pro-type-member-init.UseAssignment: true
   performance-move-const-arg.CheckTriviallyCopyableMove: false  # Might be desirable to indicate ownership of pointers
-  # There are various typedefs of std::shared_ptr named XYZPtr, hence whitelist them as acceptable to pass by value
+  # It is common to typedef std::shared_ptr as XYZPtr, hence whitelist them as acceptable to pass by value
   performance-unnecessary-value-param.AllowedTypes: Ptr$
+  cppcoreguidelines-rvalue-reference-param-not-moved.IgnoreNonDeducedTemplateTypes: true

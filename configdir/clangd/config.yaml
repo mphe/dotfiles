@@ -1,7 +1,14 @@
+Hover:
+  ShowAKA: Yes
+Diagnostics:
+  UnusedIncludes: Strict
+CompileFlags:
+  Add: [ "-Wall", "-Wimplicit-fallthrough" ]
 InlayHints:
   Enabled: Yes
   BlockEnd: No
-  Designators: Yes
+  Designators: No
   ParameterNames: No
   DeducedTypes: Yes
+  DefaultArguments: Yes
   TypeNameLimit: 0

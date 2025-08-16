@@ -1,6 +1,7 @@
 [ButtonColors]
 ButtonBackgroundColorsActive=Accent
 ButtonBackgroundColorsInactive=Accent
+ButtonIconColorsActive=TitleBarText
 CloseButtonIconColorActive=AsSelected
 CloseButtonIconColorInactive=AsSelected
 
